@@ -20,6 +20,7 @@ extension NSDate {
 		self.init( timeIntervalSince1970: NSTimeInterval( timestamp ) / 1000 )
 	}
 	
+	@available(iOS 8.0, *)
 	func dateByAddingMonths( months: Int ) -> NSDate {
 		let calendar = NSCalendar.currentCalendar()
 		return calendar.dateByAddingUnit( .Month, value: months, toDate: self, options: [] )!
