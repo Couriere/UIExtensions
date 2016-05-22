@@ -18,7 +18,7 @@ extension UIImage {
 		UIGraphicsBeginImageContextWithOptions( rect.size, false, 0 );
 		color.setFill()
 		UIRectFill( rect )
-		self.init( CGImage: UIGraphicsGetImageFromCurrentImageContext().CGImage! )
+		self.init( CGImage: UIGraphicsGetImageFromCurrentImageContext().CGImage!, scale: UIScreen.mainScreen().scale, orientation: .Up )
 		UIGraphicsEndImageContext()
 	}
 }

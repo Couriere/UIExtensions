@@ -30,7 +30,7 @@ extension UIAlertView {
 		let view = UIAlertView( title: title, message: message, delegate: self, cancelButtonTitle: cancelButtonTitle )
 	
 		if let buttons = buttonTitles {
-			for var i = 1; i < buttons.count; i++ {
+			for var i = 1; i < buttons.count; i += 1 {
 				view.addButtonWithTitle( buttons[ i ] )
 			}
 		}

@@ -11,6 +11,57 @@ extension Int {
 	func toString() -> String {
 		return "\( self )"
 	}
+	
+	var radians: CGFloat { return CGFloat( M_PI ) * CGFloat( self ) / 180 }
+	
+	/**
+	Возвращает корректную форму существительного для числительного
+	
+	- parameter wordForms: Возможные формы слова.
+	
+	- returns: Правильная форма слова из вариантов.
+	
+	wordForms - массив из трёх вариантов существительного. Например:
+	( "Стол", "Стола", "Столов" )
+	*/
+	
+	func pluralWithForms( wordForms: ( String, String, String ) ) -> String	{
+		
+		let correctForm: String
+		
+		let absNumber = abs( self )
+		if ( absNumber % 100 ) > 10 && ( absNumber % 100 ) < 20 {
+			correctForm = wordForms.2
+		} else {
+			switch absNumber % 10 {
+			case 1:
+				correctForm = wordForms.0
+			case 2, 3, 4:
+				correctForm = wordForms.1
+			default:
+				correctForm = wordForms.2
+			}
+		}
+		
+		return "\( self ) \( correctForm )"
+	}
+	
+	/**
+	Возвращает корректную форму существительного для числительного
+	из слова с добавлением стандартных окончаний [а], [ов]
+	
+	- parameter word:	Исходное слово
+	
+	- returns: Правильную форму исходного слова для указанного числительного
+	
+	word - слово для нормализации. Например:
+	Стол -> [ "Стол", "Стола", "Столов" ]
+	*/
+	
+	func pluralForWord( word: String ) -> String {
+		let wordForms = ( word, word + "а", word + "ов" )
+		return self.pluralWithForms( wordForms )
+	}
 }
 
 extension Float {

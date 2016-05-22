@@ -17,6 +17,7 @@ extension UIColor {
 	/// Skips any leading whitespace and ignores any trailing characters.
 	convenience init?( hex: String ) {
 
+		guard hex.length == 6 else { return nil }
 		let scanner = NSScanner( string: hex )
 		var hexNum: UInt32 = 0
 		
@@ -24,6 +25,14 @@ extension UIColor {
 		self.init( int: hexNum )
 	}
 
+	/// Returns random color with supplied alpha.
+	convenience init( randomWithAlpha alpha: CGFloat ) {
+		let randomRed = Int( arc4random_uniform( 256 ) )
+		let randomGreen = Int( arc4random_uniform( 256 ) )
+		let randomBlue = Int( arc4random_uniform( 256 ) )
+		self.init( intRed: randomRed, intGreen: randomGreen, intBlue: randomBlue, alpha: alpha )
+	}
+	
 	
 	private convenience init( int: UInt32 ) {
 		
@@ -33,4 +42,5 @@ extension UIColor {
 		
 		self.init( red: r / 255, green: g / 255, blue: b / 255, alpha: 1.0 )
 	}
+	
 }
