@@ -10,6 +10,13 @@ extension Array {
 	subscript ( safe index: Int ) -> Element? {
 		return indices ~= index ? self[ index ] : nil
 	}
+	
+	func chunk( subSize: Index.Distance ) -> [[ Element ]] {
+		return 0.stride( to: self.count, by: subSize ).map { startIndex in
+			let endIndex = startIndex.advancedBy( subSize, limit: self.count )
+			return Array( self[ startIndex ..< endIndex ] )
+		}
+	}
 }
 
 extension Array where Element: Equatable {
