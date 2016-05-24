@@ -25,4 +25,9 @@ extension NSDate {
 		let calendar = NSCalendar.currentCalendar()
 		return calendar.dateByAddingUnit( .Month, value: months, toDate: self, options: [] )!
 	}
+	
+	static var thisYear: Int {
+		let calendar = NSCalendar.currentCalendar()
+		return calendar.components( [ .Year ], fromDate: NSDate() ).year
+	}
 }
