@@ -45,3 +45,9 @@ extension Dictionary {
 		}
 	}
 }
+
+func + <K,V>( left: Dictionary<K,V>, right: Dictionary<K,V> ) -> Dictionary<K,V> {
+	var map = left
+	map.addEntriesFromDictionary( right )
+	return map
+}
