@@ -33,3 +33,11 @@ extension UIView {
 	}
 
 }
+
+extension UIView {
+	///
+	convenience init( useAutolayout: Bool ) {
+		self.init( frame: .zero )
+		translatesAutoresizingMaskIntoConstraints = useAutolayout
+	}
+}

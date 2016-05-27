@@ -33,14 +33,26 @@ extension UIView {
 		self.removeConstraints( constraints )
 	}
 	
-	func constrainToSuperview() {
-		let bindings = [ "self": self ]
-		superview!.addConstraints( NSLayoutConstraint.constraintsWithVisualFormat( "H:|[self]|", options: [],
-			metrics: nil, views: bindings ))
-		superview!.addConstraints( NSLayoutConstraint.constraintsWithVisualFormat( "V:|[self]|", options: [],
-			metrics: nil, views: bindings ))
+	func constrainToSuperview() -> [ NSLayoutConstraint ]  {
+		return constrainHorizontallyToSuperview() + constrainVerticallyToSuperview()
 	}
 	
+	func constrainHorizontallyToSuperview() -> [ NSLayoutConstraint ] {
+		let bindings = [ "self": self ]
+		let constraints = NSLayoutConstraint
+			.constraintsWithVisualFormat( "H:|[self]|", options: [], metrics: nil, views: bindings )
+		superview!.addConstraints( constraints )
+		return constraints
+	}
+	
+	func constrainVerticallyToSuperview() -> [ NSLayoutConstraint ] {
+		let bindings = [ "self": self ]
+		let constraints = NSLayoutConstraint.constraintsWithVisualFormat( "V:|[self]|", options: [],
+		                                                                  metrics: nil, views: bindings )
+		superview!.addConstraints( constraints )
+		return constraints
+	}
+		
 	func constrainToSuperviewWithTopLayoutGuide() {
 		let bindings: [ String: AnyObject ] = [ "self": self, "topGuide": parentViewController!.topLayoutGuide ]
 		superview!.addConstraints( NSLayoutConstraint.constraintsWithVisualFormat( "H:|[self]|", options: [],
@@ -129,7 +141,23 @@ extension UIView {
 		return constraint
 	}
 	
+	
+
+	// MARK: - Alignment constraints.
+	
+	func alignAttribute( attribute: NSLayoutAttribute, withView view: UIView,
+	                     constant: CGFloat = 0, priority: UILayoutPriority = 1000 ) {
+		
+		let constraint = NSLayoutConstraint( item: self, attribute: attribute, relatedBy: .Equal,
+		                                     toItem: view, attribute: attribute, multiplier: 1, constant: constant )
+		constraint.priority = priority
+		superview!.addConstraint( constraint )
+	}
+	
+	
+	
 	// MARK: - Size constraints
+	
 	func constrainTo( width width: CGFloat ) -> NSLayoutConstraint {
 		let constraint = NSLayoutConstraint( item: self, attribute: .Width, relatedBy: .Equal,
 			toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: width )
