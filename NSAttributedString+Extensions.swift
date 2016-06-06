@@ -7,6 +7,12 @@
 
 import UIKit
 
+public func +( left: NSAttributedString, right: NSAttributedString ) -> NSAttributedString {
+	let mutable = NSMutableAttributedString( attributedString: left )
+	mutable.appendAttributedString( right )
+	return mutable
+}
+
 extension NSMutableAttributedString {
 	
 	/// Вставляет изображение в строку и устанавливает его

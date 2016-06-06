@@ -37,18 +37,20 @@ extension UIView {
 		return constrainHorizontallyToSuperview() + constrainVerticallyToSuperview()
 	}
 	
-	func constrainHorizontallyToSuperview() -> [ NSLayoutConstraint ] {
+	func constrainHorizontallyToSuperview( inset inset: CGFloat = 0 ) -> [ NSLayoutConstraint ] {
 		let bindings = [ "self": self ]
 		let constraints = NSLayoutConstraint
-			.constraintsWithVisualFormat( "H:|[self]|", options: [], metrics: nil, views: bindings )
+			.constraintsWithVisualFormat( "H:|-(inset)-[self]-(inset)-|",
+			                              options: [], metrics: [ "inset": inset ], views: bindings )
 		superview!.addConstraints( constraints )
 		return constraints
 	}
 	
-	func constrainVerticallyToSuperview() -> [ NSLayoutConstraint ] {
+	func constrainVerticallyToSuperview( inset inset: CGFloat = 0 ) -> [ NSLayoutConstraint ] {
 		let bindings = [ "self": self ]
-		let constraints = NSLayoutConstraint.constraintsWithVisualFormat( "V:|[self]|", options: [],
-		                                                                  metrics: nil, views: bindings )
+		let constraints = NSLayoutConstraint
+			.constraintsWithVisualFormat( "V:|-(inset)-[self]-(inset)-|",
+			                              options: [], metrics: [ "inset": inset ], views: bindings )
 		superview!.addConstraints( constraints )
 		return constraints
 	}
@@ -145,28 +147,37 @@ extension UIView {
 
 	// MARK: - Alignment constraints.
 	
-	func alignAttribute( attribute: NSLayoutAttribute, withView view: UIView,
-	                     constant: CGFloat = 0, priority: UILayoutPriority = 1000 ) {
+	/**
+		Constrain receiver to another view.
+		- parameter attribute: Receiver attribute to constrain to.
+		- parameter view: View to constrain receiver to.
+		- parameter attribute: Attribute of another view to constrain receiver to. If `nil` it become equal to `attribute`.
+		- parameter constant: Constant of a newly created constraint. Defaults to zero.
+		- parameter priority: Priority of a newly created constraint. Defaults to `Required`
+	*/
+	func alignAttribute( attribute: NSLayoutAttribute, withView view: UIView, viewAttribute: NSLayoutAttribute? = nil,
+	                     constant: CGFloat = 0, priority: UILayoutPriority = 1000 ) -> NSLayoutConstraint {
 		
 		let constraint = NSLayoutConstraint( item: self, attribute: attribute, relatedBy: .Equal,
-		                                     toItem: view, attribute: attribute, multiplier: 1, constant: constant )
+		                                     toItem: view, attribute: viewAttribute ?? attribute, multiplier: 1, constant: constant )
 		constraint.priority = priority
 		superview!.addConstraint( constraint )
+		return constraint
 	}
 	
 	
 	
 	// MARK: - Size constraints
 	
-	func constrainTo( width width: CGFloat ) -> NSLayoutConstraint {
-		let constraint = NSLayoutConstraint( item: self, attribute: .Width, relatedBy: .Equal,
+	func constrainTo( width width: CGFloat, relatedBy: NSLayoutRelation? = nil ) -> NSLayoutConstraint {
+		let constraint = NSLayoutConstraint( item: self, attribute: .Width, relatedBy: relatedBy ?? .Equal,
 			toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: width )
 		self.addConstraint( constraint )
 		return constraint;
 	}
 	
-	func constrainTo( height height: CGFloat ) -> NSLayoutConstraint	{
-		let constraint = NSLayoutConstraint( item: self, attribute: .Height, relatedBy: .Equal,
+	func constrainTo( height height: CGFloat, relatedBy: NSLayoutRelation? = nil ) -> NSLayoutConstraint	{
+		let constraint = NSLayoutConstraint( item: self, attribute: .Height, relatedBy: relatedBy ?? .Equal,
 			toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: height )
 		self.addConstraint( constraint )
 		return constraint;

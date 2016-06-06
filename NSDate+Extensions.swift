@@ -30,4 +30,21 @@ extension NSDate {
 		let calendar = NSCalendar.currentCalendar()
 		return calendar.components( [ .Year ], fromDate: NSDate() ).year
 	}
+	
+	func startOfHour( hour: Int ) -> NSDate {
+
+		let componentUnits: NSCalendarUnit = [.Year, .Month, .Day, .Hour, .Minute, .Second, .NSWeekdayCalendarUnit]
+		let components = NSDate.gregorianRUCalendar.components( componentUnits, fromDate: self )
+		
+		components.hour = hour
+		components.minute = 0
+		components.second = 0
+		
+		return NSDate.gregorianRUCalendar.dateFromComponents( components )!
+	}
+	
+	private	static let gregorianRUCalendar = NSCalendar( calendarIdentifier: NSCalendarIdentifierGregorian )!.then {
+		$0.locale = NSLocale( localeIdentifier: "ru_RU" )
+	}
+
 }
