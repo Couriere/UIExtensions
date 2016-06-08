@@ -43,8 +43,10 @@ extension NSDate {
 		return NSDate.gregorianRUCalendar.dateFromComponents( components )!
 	}
 	
-	private	static let gregorianRUCalendar = NSCalendar( calendarIdentifier: NSCalendarIdentifierGregorian )!.then {
-		$0.locale = NSLocale( localeIdentifier: "ru_RU" )
-	}
+	private	static let gregorianRUCalendar: NSCalendar = {
+		let calendar = NSCalendar( calendarIdentifier: NSCalendarIdentifierGregorian )!
+		calendar.locale = NSLocale( localeIdentifier: "ru_RU" )
+		return calendar
+	}()
 
 }
