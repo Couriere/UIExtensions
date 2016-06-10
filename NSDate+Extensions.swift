@@ -31,7 +31,8 @@ extension NSDate {
 		return calendar.components( [ .Year ], fromDate: NSDate() ).year
 	}
 	
-	func startOfHour( hour: Int ) -> NSDate {
+	/// Returns same date with time set to a start of specified hour.
+	public func startOfHour( hour: Int ) -> NSDate {
 
 		let componentUnits: NSCalendarUnit = [.Year, .Month, .Day, .Hour, .Minute, .Second, .NSWeekdayCalendarUnit]
 		let components = NSDate.gregorianRUCalendar.components( componentUnits, fromDate: self )
@@ -41,6 +42,22 @@ extension NSDate {
 		components.second = 0
 		
 		return NSDate.gregorianRUCalendar.dateFromComponents( components )!
+	}
+	
+	/// Returns start of the day, same date with time 00:00:00.
+	/// - parameter timeZone: Use this time zone. If `nil` use system time zone.
+	public func startOfDay( timeZone: NSTimeZone? = nil ) -> NSDate {
+		let calendar = NSCalendar( calendarIdentifier: NSCalendarIdentifierGregorian )!
+		if let timeZone = timeZone { calendar.timeZone = timeZone }
+		
+		let componentUnits: NSCalendarUnit = [.Year, .Month, .Day, .Hour, .Minute, .Second, .NSWeekdayCalendarUnit]
+		let components = calendar.components( componentUnits, fromDate: self )
+		
+		components.hour = 0
+		components.minute = 0
+		components.second = 0
+		
+		return calendar.dateFromComponents( components )!
 	}
 	
 	private	static let gregorianRUCalendar: NSCalendar = {
