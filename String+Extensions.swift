@@ -29,7 +29,7 @@ extension String {
 		return newString
 	}
 	
-	func formatAsPhoneNumber() -> String {
+	var asPhoneNumber: String {
 		let tendigits = substringFromIndex( endIndex.advancedBy(-10 ))
 		let city = tendigits.substringWithRange( rangeFromNSRange( NSMakeRange( 0, 3 )))
 		let triad = tendigits.substringWithRange( rangeFromNSRange( NSMakeRange( 3, 3 )))
