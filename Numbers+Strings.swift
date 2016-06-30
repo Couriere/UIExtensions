@@ -62,6 +62,15 @@ extension Int {
 		let wordForms = ( word, word + "а", word + "ов" )
 		return self.pluralWithForms( wordForms )
 	}
+	
+	
+	var rub: String {
+		if #available( iOS 8, * ) {
+			return "\( self )₽"
+		} else {
+			return "\( self )Р"
+		}
+	}
 }
 
 extension Float {
