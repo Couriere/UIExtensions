@@ -155,10 +155,10 @@ extension UIView {
 		- parameter constant: Constant of a newly created constraint. Defaults to zero.
 		- parameter priority: Priority of a newly created constraint. Defaults to `Required`
 	*/
-	func alignAttribute( attribute: NSLayoutAttribute, withView view: UIView,
-	                     viewAttribute: NSLayoutAttribute? = nil,
-	                     relation: NSLayoutRelation = .Equal,
-	                     constant: CGFloat = 0, priority: UILayoutPriority = 1000 ) -> NSLayoutConstraint {
+	func align( attribute attribute: NSLayoutAttribute, withView view: UIView,
+	                      viewAttribute: NSLayoutAttribute? = nil,
+	                      relation: NSLayoutRelation = .Equal,
+	                      constant: CGFloat = 0, priority: UILayoutPriority = 1000 ) -> NSLayoutConstraint {
 		
 		let constraint = NSLayoutConstraint( item: self, attribute: attribute, relatedBy: relation,
 		                                     toItem: view, attribute: viewAttribute ?? attribute, multiplier: 1, constant: constant )
