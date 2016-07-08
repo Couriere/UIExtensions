@@ -6,6 +6,18 @@
 //
 import Foundation
 
+extension CollectionType {
+	/// Returns the first element where `predicate` returns `true` for the
+	/// corresponding value, or `nil` if such value is not found.
+	///
+	/// - Complexity: O(`self.count`).
+	@warn_unused_result
+	public func element(@noescape predicate: (Self.Generator.Element) throws -> Bool) rethrows -> Self.Generator.Element? {
+		guard let index = try indexOf( predicate ) else { return nil }
+		return self[ index ]
+	}
+}
+
 extension Array {
 	subscript ( safe index: Int ) -> Element? {
 		return indices ~= index ? self[ index ] : nil
