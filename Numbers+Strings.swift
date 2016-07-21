@@ -8,7 +8,7 @@
 import UIKit
 
 extension Int {
-	func toString() -> String {
+	var string: String {
 		return "\( self )"
 	}
 	
