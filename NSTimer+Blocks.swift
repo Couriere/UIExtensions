@@ -27,6 +27,20 @@ extension NSTimer {
 		return timer
 	}
 	
+
+	/**
+	Creates and schedules a one-time `NSTimer` instance.
+	
+	- parameter time: The date and time to begin execution.
+	- parameter handler: A closure to execute after `delay`.
+	
+	- returns: The newly-created `NSTimer` instance.
+	*/
+	class func schedule( time time: NSDate, handler: ( NSTimer! ) -> Void) -> NSTimer {
+		return schedule( delay: time.timeIntervalSinceNow, handler: handler )
+	}
+	
+	
 	/**
 	Creates and schedules a repeating `NSTimer` instance.
 	
