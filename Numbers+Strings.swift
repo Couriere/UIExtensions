@@ -40,7 +40,7 @@ extension Int {
 	Стол -> [ "Стол", "Стола", "Столов" ]
 	*/
 	func pluralForWord( word: String ) -> String {
-		return word.plural( forNumber: self )
+		return "\( self ) \( word.plural( forNumber: self ))"
 	}
 	
 	
