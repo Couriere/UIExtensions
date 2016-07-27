@@ -17,19 +17,20 @@ extension NSMutableAttributedString {
 	
 	/// Вставляет изображение в строку и устанавливает его
 	/// вертикально в центр строки.
-	func insertImage( image: UIImage, atLocation location: Int ) {
+	func insertImage( image: UIImage, atLocation location: Int, verticalOffset: CGFloat = 0 ) {
 		
 		let textAttachment = NSTextAttachment()
 		textAttachment.image = image
-		let attrStringWithImage = NSAttributedString( attachment:textAttachment )
+		let attrStringWithImage = NSAttributedString( attachment: textAttachment )
 		
-		let font = attribute( NSFontAttributeName, atIndex: location, effectiveRange: nil ) as? UIFont ?? UIFont.systemFontOfSize( UIFont.systemFontSize() )
+		let safeLocation = max( 0, min( self.length - 1, location ))
+		let font = attribute( NSFontAttributeName, atIndex: safeLocation, effectiveRange: nil ) as? UIFont ?? UIFont.systemFontOfSize( UIFont.systemFontSize() )
 		let mid = font.descender + font.capHeight
 		textAttachment.bounds = CGRectIntegral(
-			CGRect( x: 0, y: font.descender - image.size.height / 2 + mid + 2,
+			CGRect( x: 0, y: font.descender - image.size.height / 2 + mid + 2 - verticalOffset,
 				width: image.size.width, height: image.size.height ))
 		
-		self.replaceCharactersInRange( NSMakeRange( location, 0 ), withAttributedString: attrStringWithImage )
+		self.insertAttributedString( attrStringWithImage, atIndex: location )
 	}
 }
 
