@@ -28,7 +28,7 @@ extension NSMutableAttributedString {
 		let mid = font.descender + font.capHeight
 		textAttachment.bounds = CGRectIntegral(
 			CGRect( x: 0, y: font.descender - image.size.height / 2 + mid + 2 - verticalOffset,
-				width: image.size.width, height: image.size.height ))
+				width: image.size.width + 1, height: image.size.height ))
 		
 		self.insertAttributedString( attrStringWithImage, atIndex: location )
 	}
