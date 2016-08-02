@@ -48,8 +48,6 @@ extension UINavigationController {
 			coordinator.animateAlongsideTransition( nil ) { _ in
 				completion()
 			}
-		} else {
-			assertionFailure()
 		}
 	}
 }
