@@ -37,6 +37,14 @@ extension NSMutableAttributedString {
 
 extension NSAttributedString {
 	
+	func setAttributes( attributes: [ String: AnyObject ] ) -> NSAttributedString {
+		let mutable = self is NSMutableAttributedString ?
+			self as! NSMutableAttributedString : NSMutableAttributedString( attributedString: self )
+		let range = NSMakeRange( 0, mutable.length )
+		mutable.addAttributes( attributes, range: range )
+		return mutable
+	}
+	
 	func color( color: UIColor ) -> NSAttributedString {
 		
 		let mutable = self is NSMutableAttributedString ?
@@ -58,6 +66,12 @@ extension NSAttributedString {
 
 extension String {
 	
+	func setAttributes( attributes: [ String: AnyObject ] ) -> NSAttributedString {
+		let result = NSMutableAttributedString( string: self, attributes: attributes )
+		return result
+	}
+	
+
 	func color( color: UIColor ) -> NSAttributedString {
 		let result = NSMutableAttributedString( string: self, attributes: [ NSForegroundColorAttributeName: color ] )
 		return result
