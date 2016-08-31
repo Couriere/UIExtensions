@@ -51,3 +51,54 @@ extension UINavigationController {
 		}
 	}
 }
+
+
+/// Pre iOS7 push/pop animation style
+extension UINavigationController {
+	func pushViewControllerRetro( viewController: UIViewController ) {
+		let transition = CATransition()
+		transition.duration = 0.25
+		transition.timingFunction = CAMediaTimingFunction( name: kCAMediaTimingFunctionEaseInEaseOut )
+		transition.type = kCATransitionPush;
+		transition.subtype = kCATransitionFromRight;
+		view.layer.addAnimation( transition, forKey: "RetroPush" )
+		
+		pushViewController( viewController, animated: false )
+	}
+	
+	func popViewControllerRetro() {
+		let transition = CATransition()
+		transition.duration = 0.25
+		transition.timingFunction = CAMediaTimingFunction( name: kCAMediaTimingFunctionEaseInEaseOut )
+		transition.type = kCATransitionPush
+		transition.subtype = kCATransitionFromLeft
+		view.layer.addAnimation( transition, forKey: "RetroPop" )
+		
+		popViewControllerAnimated( false )
+	}
+}
+
+/// Custom segues for retro Push/Pop
+class RetroPushSegue: UIStoryboardSegue {
+	override func perform() {
+		
+		guard let navigationController = self.sourceViewController.navigationController else {
+			assertionFailure( "Must be called within UINavigationController" )
+			return
+		}
+		navigationController.pushViewControllerRetro( self.destinationViewController )
+	}
+}
+
+class RetroPushSegueUnwind: UIStoryboardSegue {
+	override func perform() {
+		
+		guard let navigationController = self.sourceViewController.navigationController else {
+			assertionFailure( "Must be called within UINavigationController" )
+			return
+		}
+		navigationController.popViewControllerRetro()
+	}
+}
+
+
