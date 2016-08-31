@@ -18,13 +18,16 @@ extension UIView {
 	- returns: Instance of ofType class, loaded from xib
 	*/
 	class func viewFromXib( xib: String ) -> Self? {
-		let views = NSBundle.mainBundle().loadNibNamed( xib, owner: nil, options: nil )
+
+		let nib = UINib( nibName: xib, bundle: nil )
+		let views = nib.instantiateWithOwner( nil, options: nil )
+		
 		for anyObject in views {
 			if anyObject.dynamicType === self {
 				return helperConvertObject( anyObject, type: self )
 			}
 		}
-		
+	
 		return nil
 	}
 	
