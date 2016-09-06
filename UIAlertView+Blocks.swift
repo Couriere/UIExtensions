@@ -29,11 +29,7 @@ extension UIAlertView {
 	
 		let view = UIAlertView( title: title, message: message, delegate: self, cancelButtonTitle: cancelButtonTitle )
 	
-		if let buttons = buttonTitles {
-			for var i = 1; i < buttons.count; i += 1 {
-				view.addButtonWithTitle( buttons[ i ] )
-			}
-		}
+		buttonTitles?.forEach { view.addButtonWithTitle( $0 ) }
 		
 		objc_setAssociatedObject( view, &TAG_DISMISS_HANDLER, AlertViewHelper( handler: handler ), objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
