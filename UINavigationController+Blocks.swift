@@ -8,12 +8,61 @@
 import UIKit
 
 extension UIViewController {
+	
 	static var topPresentedViewController: UIViewController? {
 		var controller = UIApplication.sharedApplication().keyWindow?.rootViewController
 		while controller?.presentedViewController != nil {
 			controller = controller?.presentedViewController
 		}
 		return controller
+	}
+	
+	/// Показывает контроллер из контроллера, находящегося на вершине стека.
+	/// Если в данный момент этот контроллер показывается или скрывается, то показ
+	/// откладывается до момента завершения перехода.
+	/// Метод моментально возвращает контроль и проверяет возможность показа асинхронно.
+	static func safePresentFromTopViewController( controller controller: UIViewController, animated: Bool, completion: ( () -> Void )? = nil ) {
+		
+		dispatch_async( dispatch_get_main_queue() ) {
+			
+			func checkTopViewController() {
+				
+				if let topViewController = topPresentedViewController {
+					
+					guard !topViewController.isBeingPresented() && !topViewController.isBeingDismissed() else {
+					
+						// Верхний контроллер в стеке сейчас в процессе показа или скрытия.
+						if let transitionCoordinator = topViewController.transitionCoordinator() {
+							// Сейчас у контроллера должен быть `transitionCoordinator`.
+							// Используем его, чтобы определить момент завершения перехода.
+							transitionCoordinator.animateAlongsideTransition( nil ) { _ in
+								checkTopViewController()
+							}
+
+						} else {
+							// Если по каким-то причинам координатор перехода отсутствует,
+							// повторяем запрос через некоторое время.
+							assertionFailure()
+							dispatch_after( timeInterval: 0.1 ) { checkTopViewController() }
+						}
+						
+						return
+					}
+					
+					// Показываем наш контроллер.
+					topViewController.presentViewController( controller, animated: animated, completion: completion )
+				
+				} else {
+					// Если верхний контроллер в стеке на может быть найден,
+					// то ничего не делаем и вызываем обработчика завершения.
+					completion?()
+				}
+			}
+			
+			// Запускаем цикл.
+			checkTopViewController()
+		}
+		
 	}
 }
 
