@@ -33,6 +33,9 @@ extension Then {
 	///         $0.textColor = UIColor.blackColor()
 	///         $0.text = "Hello, World!"
 	///     }
+	///
+	/// **NOTE!!!** Sets `translatesAutoresizingMaskIntoConstraints = false`
+	/// to UIView descendants.
 	public func then(@noescape block: inout Self -> Void) -> Self {
 		var copy = self
 		if let view = copy as? UIView { view.translatesAutoresizingMaskIntoConstraints = false }
