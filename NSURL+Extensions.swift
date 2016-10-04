@@ -8,29 +8,29 @@
 
 import Foundation
 
-extension NSURL {
+extension URL {
 	
-	var URLByDeletingQuery: NSURL? {
-		let components = NSURLComponents( URL: self, resolvingAgainstBaseURL: false )
+	var URLByDeletingQuery: URL? {
+		var components = URLComponents( url: self, resolvingAgainstBaseURL: false )
 		components?.query = nil
-		return components?.URL
+		return components?.url
 	}
 	
 	var freeSpace: Int64? {
-		let systemAttributes = try? NSFileManager.defaultManager().attributesOfFileSystemForPath( self.path ?? "" )
-		let freeSpace = ( systemAttributes?[ NSFileSystemFreeSize ] as? NSNumber )?.longLongValue
+		let systemAttributes = try? FileManager.default.attributesOfFileSystem( forPath: self.path ?? "" )
+		let freeSpace = ( systemAttributes?[ FileAttributeKey.systemFreeSize ] as? NSNumber )?.int64Value
 		return freeSpace
 	}
 	
 	// MARK: - System paths
 	
-	static var libraryPath: NSURL {
-		let path = try! NSFileManager.defaultManager().URLForDirectory( .LibraryDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false )
+	static var libraryPath: URL {
+		let path = try! FileManager.default.url( for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
 		return path
 	}
 
-	static var documentsPath: NSURL {
-		let path = try! NSFileManager.defaultManager().URLForDirectory( .DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false )
+	static var documentsPath: URL {
+		let path = try! FileManager.default.url( for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
 		return path
 	}
 	

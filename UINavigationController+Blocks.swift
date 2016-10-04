@@ -10,7 +10,7 @@ import UIKit
 extension UIViewController {
 	
 	static var topPresentedViewController: UIViewController? {
-		var controller = UIApplication.sharedApplication().keyWindow?.rootViewController
+		var controller = UIApplication.shared.keyWindow?.rootViewController
 		while controller?.presentedViewController != nil {
 			controller = controller?.presentedViewController
 		}
@@ -21,21 +21,21 @@ extension UIViewController {
 	/// Если в данный момент этот контроллер показывается или скрывается, то показ
 	/// откладывается до момента завершения перехода.
 	/// Метод моментально возвращает контроль и проверяет возможность показа асинхронно.
-	static func safePresentFromTopViewController( controller controller: UIViewController, animated: Bool, completion: ( () -> Void )? = nil ) {
+	static func safePresentFromTopViewController( controller: UIViewController, animated: Bool, completion: ( () -> Void )? = nil ) {
 		
-		dispatch_async( dispatch_get_main_queue() ) {
+		DispatchQueue.main.async {
 			
 			func checkTopViewController() {
 				
 				if let topViewController = topPresentedViewController {
 					
-					guard !topViewController.isBeingPresented() && !topViewController.isBeingDismissed() else {
+					guard !topViewController.isBeingPresented && !topViewController.isBeingDismissed else {
 					
 						// Верхний контроллер в стеке сейчас в процессе показа или скрытия.
-						if let transitionCoordinator = topViewController.transitionCoordinator() {
+						if let transitionCoordinator = topViewController.transitionCoordinator {
 							// Сейчас у контроллера должен быть `transitionCoordinator`.
 							// Используем его, чтобы определить момент завершения перехода.
-							transitionCoordinator.animateAlongsideTransition( nil ) { _ in
+							transitionCoordinator.animate( alongsideTransition: nil ) { _ in
 								checkTopViewController()
 							}
 
@@ -43,14 +43,14 @@ extension UIViewController {
 							// Если по каким-то причинам координатор перехода отсутствует,
 							// повторяем запрос через некоторое время.
 							assertionFailure()
-							dispatch_after( timeInterval: 0.1 ) { checkTopViewController() }
+							DispatchQueue.main.asyncAfter( timeInterval: 0.1 ) { checkTopViewController() }
 						}
 						
 						return
 					}
 					
 					// Показываем наш контроллер.
-					topViewController.presentViewController( controller, animated: animated, completion: completion )
+					topViewController.present( controller, animated: animated, completion: completion )
 				
 				} else {
 					// Если верхний контроллер в стеке на может быть найден,
@@ -68,33 +68,33 @@ extension UIViewController {
 
 extension UINavigationController {
 	
-	func pushViewController( viewController: UIViewController, animated: Bool, completion: () -> Void ) {
+	func pushViewController( _ viewController: UIViewController, animated: Bool, completion: @escaping () -> Void ) {
 			
 		pushViewController( viewController, animated: animated )
 		setCompletionHandler( completion )
 	}
 
-	func popViewControllerAnimated( animated: Bool, completion: () -> Void ) {
+	func popViewControllerAnimated( _ animated: Bool, completion: @escaping () -> Void ) {
 		
-		popViewControllerAnimated( animated )
+		popViewController( animated: animated )
 		setCompletionHandler( completion )
 	}
 
-	func popToViewController( viewController: UIViewController, animated: Bool, completion: () -> Void ) {
+	func popToViewController( _ viewController: UIViewController, animated: Bool, completion: @escaping () -> Void ) {
 
 		popToViewController( viewController, animated: animated )
 		setCompletionHandler( completion )
 	}
 	
-	func popToRootViewControllerAnimated( animated: Bool, completion: () -> Void ) {
+	func popToRootViewControllerAnimated( _ animated: Bool, completion: @escaping () -> Void ) {
 		
-		popToRootViewControllerAnimated( animated )
+		popToRootViewController( animated: animated )
 		setCompletionHandler( completion )
 	}
 	
-	private func setCompletionHandler( completion: () -> Void ) {
-		if let coordinator = transitionCoordinator() {
-			coordinator.animateAlongsideTransition( nil ) { _ in
+	fileprivate func setCompletionHandler( _ completion: @escaping () -> Void ) {
+		if let coordinator = transitionCoordinator {
+			coordinator.animate( alongsideTransition: nil ) { _ in
 				completion()
 			}
 		}
@@ -104,13 +104,13 @@ extension UINavigationController {
 
 /// Pre iOS7 push/pop animation style
 extension UINavigationController {
-	func pushViewControllerRetro( viewController: UIViewController ) {
+	func pushViewControllerRetro( _ viewController: UIViewController ) {
 		let transition = CATransition()
 		transition.duration = 0.25
 		transition.timingFunction = CAMediaTimingFunction( name: kCAMediaTimingFunctionEaseInEaseOut )
 		transition.type = kCATransitionPush;
 		transition.subtype = kCATransitionFromRight;
-		view.layer.addAnimation( transition, forKey: "RetroPush" )
+		view.layer.add( transition, forKey: "RetroPush" )
 		
 		pushViewController( viewController, animated: false )
 	}
@@ -121,9 +121,9 @@ extension UINavigationController {
 		transition.timingFunction = CAMediaTimingFunction( name: kCAMediaTimingFunctionEaseInEaseOut )
 		transition.type = kCATransitionPush
 		transition.subtype = kCATransitionFromLeft
-		view.layer.addAnimation( transition, forKey: "RetroPop" )
+		view.layer.add( transition, forKey: "RetroPop" )
 		
-		popViewControllerAnimated( false )
+		popViewController( animated: false )
 	}
 }
 
@@ -131,18 +131,18 @@ extension UINavigationController {
 class RetroPushSegue: UIStoryboardSegue {
 	override func perform() {
 		
-		guard let navigationController = self.sourceViewController.navigationController else {
+		guard let navigationController = self.source.navigationController else {
 			assertionFailure( "Must be called within UINavigationController" )
 			return
 		}
-		navigationController.pushViewControllerRetro( self.destinationViewController )
+		navigationController.pushViewControllerRetro( self.destination )
 	}
 }
 
 class RetroPushSegueUnwind: UIStoryboardSegue {
 	override func perform() {
 		
-		guard let navigationController = self.sourceViewController.navigationController else {
+		guard let navigationController = self.source.navigationController else {
 			assertionFailure( "Must be called within UINavigationController" )
 			return
 		}

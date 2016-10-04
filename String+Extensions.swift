@@ -11,21 +11,25 @@ extension String {
 	
 	var length: Int { return self.characters.count }
 	
-	func stringByReplacingCharactersInRange( range: NSRange, withString replacement: String ) -> String {
+	func stringByReplacingCharactersInRange( _ range: NSRange, withString replacement: String ) -> String {
 		let newString = self as NSString
-		return newString.stringByReplacingCharactersInRange( range, withString: replacement )
+		return newString.replacingCharacters( in: range, with: replacement )
 	}
 	
 	var asPhoneNumber: String {
 		
 		guard length >= 10 else { return self }
 		
-		let tendigits = substringFromIndex( endIndex.advancedBy( -10 ))
+		let tendigits = substring( from: characters.index( endIndex, offsetBy: -10 ))
 		let index = tendigits.startIndex
-		let city = tendigits.substringToIndex( index + 3 )
-		let triad = tendigits.substringWithRange( index + 3..<index + 6 )
-		let firstpair = tendigits.substringWithRange( index + 6..<index + 8 )
-		let secondpair = tendigits.substringWithRange( index + 8..<index + 10 )
+		let triadIndex = tendigits.characters.index( index, offsetBy: 3 )
+		let firstPairIndex = tendigits.characters.index( index, offsetBy: 6 )
+		let secondPairIndex = tendigits.characters.index( index, offsetBy: 8 )
+
+		let city = tendigits.substring( to: triadIndex )
+		let triad = tendigits.substring( with: triadIndex..<firstPairIndex )
+		let firstpair = tendigits.substring( with: firstPairIndex..<secondPairIndex )
+		let secondpair = tendigits.substring( with: secondPairIndex..<tendigits.characters.endIndex )
 		
 		return "+7 \( city ) \( triad ) \( firstpair ) \( secondpair )"
 	}
@@ -33,7 +37,7 @@ extension String {
 	var digitsOnly: String {
 		get {
 			let range = startIndex..<endIndex
-			return stringByReplacingOccurrencesOfString("[^0-9]", withString: "", options: NSStringCompareOptions.RegularExpressionSearch, range: range )
+			return replacingOccurrences(of: "[^0-9]", with: "", options: NSString.CompareOptions.regularExpression, range: range )
 		}
 	}
 	
@@ -44,17 +48,12 @@ extension String {
 			let index = number.length - PhoneNumberLength
 			if index <= 0 { return number }
 			
-			return number.substringFromIndex( number.startIndex.advancedBy(index ) )
+			return number.substring( from: number.characters.index(number.startIndex, offsetBy: index) )
 		}
 	}
 	
 	var rub: String { return self + "₽" }
 }
-
-private func +<T: ForwardIndexType>( lhs: T, rhs: T.Distance )->T {
-	return lhs.advancedBy( rhs )
-}
-
 
 
 /**

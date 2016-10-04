@@ -13,8 +13,8 @@ extension UIView {
 
 		var parent: UIResponder? = self
 		repeat {
-			if parent!.isKindOfClass( UIViewController ) { break }
-			parent = parent?.nextResponder()
+			if parent!.isKind( of: UIViewController.self ) { break }
+			parent = parent?.next
 		} while parent != nil
 		
 		return parent as? UIViewController;
@@ -33,23 +33,23 @@ extension UIView {
 		self.removeConstraints( constraints )
 	}
 	
-	func constrainToSuperview() -> [ NSLayoutConstraint ]  {
+	@discardableResult func constrainToSuperview() -> [ NSLayoutConstraint ]  {
 		return constrainHorizontallyToSuperview() + constrainVerticallyToSuperview()
 	}
 	
-	func constrainHorizontallyToSuperview( inset inset: CGFloat = 0 ) -> [ NSLayoutConstraint ] {
+	@discardableResult func constrainHorizontallyToSuperview( inset: CGFloat = 0 ) -> [ NSLayoutConstraint ] {
 		let bindings = [ "self": self ]
 		let constraints = NSLayoutConstraint
-			.constraintsWithVisualFormat( "H:|-(inset)-[self]-(inset)-|",
+			.constraints( withVisualFormat: "H:|-(inset)-[self]-(inset)-|",
 			                              options: [], metrics: [ "inset": inset ], views: bindings )
 		superview!.addConstraints( constraints )
 		return constraints
 	}
 	
-	func constrainVerticallyToSuperview( inset inset: CGFloat = 0 ) -> [ NSLayoutConstraint ] {
+	@discardableResult func constrainVerticallyToSuperview( inset: CGFloat = 0 ) -> [ NSLayoutConstraint ] {
 		let bindings = [ "self": self ]
 		let constraints = NSLayoutConstraint
-			.constraintsWithVisualFormat( "V:|-(inset)-[self]-(inset)-|",
+			.constraints( withVisualFormat: "V:|-(inset)-[self]-(inset)-|",
 			                              options: [], metrics: [ "inset": inset ], views: bindings )
 		superview!.addConstraints( constraints )
 		return constraints
@@ -57,22 +57,22 @@ extension UIView {
 		
 	func constrainToSuperviewWithTopLayoutGuide() {
 		let bindings: [ String: AnyObject ] = [ "self": self, "topGuide": parentViewController!.topLayoutGuide ]
-		superview!.addConstraints( NSLayoutConstraint.constraintsWithVisualFormat( "H:|[self]|", options: [],
+		superview!.addConstraints( NSLayoutConstraint.constraints( withVisualFormat: "H:|[self]|", options: [],
 			metrics: nil, views: bindings ))
-		superview!.addConstraints( NSLayoutConstraint.constraintsWithVisualFormat( "V:[topGuide][self]|", options: [],
+		superview!.addConstraints( NSLayoutConstraint.constraints( withVisualFormat: "V:[topGuide][self]|", options: [],
 			metrics: nil, views: bindings ))
 	}
 	
-	func constrainToTopLayoutGuide() -> NSLayoutConstraint {
-		let constraint = NSLayoutConstraint( item: self, attribute: .Top, relatedBy: .Equal,
-			toItem: parentViewController!.topLayoutGuide, attribute: .Bottom, multiplier: 1, constant: 0 )
+	@discardableResult func constrainToTopLayoutGuide() -> NSLayoutConstraint {
+		let constraint = NSLayoutConstraint( item: self, attribute: .top, relatedBy: .equal,
+			toItem: parentViewController!.topLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0 )
 		superview!.addConstraint( constraint )
 		return constraint
 	}
 	
-	func constrainToBottomLayoutGuide() -> NSLayoutConstraint {
-		let constraint = NSLayoutConstraint( item: self, attribute: .Bottom, relatedBy: .Equal,
-			toItem: parentViewController!.bottomLayoutGuide, attribute: .Top, multiplier: 1, constant: 0 )
+	@discardableResult func constrainToBottomLayoutGuide() -> NSLayoutConstraint {
+		let constraint = NSLayoutConstraint( item: self, attribute: .bottom, relatedBy: .equal,
+			toItem: parentViewController!.bottomLayoutGuide, attribute: .top, multiplier: 1, constant: 0 )
 		superview!.addConstraint( constraint )
 		return constraint
 	}
@@ -81,11 +81,11 @@ extension UIView {
 	
 	// MARK: - Centering
 
-	func centerInSuperview() -> [ NSLayoutConstraint ] {
+	@discardableResult func centerInSuperview() -> [ NSLayoutConstraint ] {
 		return [ centerHorizontallyInSuperview(), centerVerticallyInSuperview() ]
 	}
 	
-	func centerWithView( view: UIView ) -> [ NSLayoutConstraint ] {
+	@discardableResult func centerWithView( _ view: UIView ) -> [ NSLayoutConstraint ] {
 		return [ centerHorizontallyWithView( view ), centerVerticallyWithView( view ) ]
 	}
 	
@@ -93,25 +93,25 @@ extension UIView {
 	// MARK: - Horizontal center
 		
 		
-	func centerHorizontallyInSuperview() -> NSLayoutConstraint {
+	@discardableResult func centerHorizontallyInSuperview() -> NSLayoutConstraint {
 		return centerHorizontallyWithView( superview!, constant: 0, priority: 1000 )
 	}
-	func centerHorizontallyInSuperview( constant: CGFloat ) -> NSLayoutConstraint {
+	@discardableResult func centerHorizontallyInSuperview( _ constant: CGFloat ) -> NSLayoutConstraint {
 		return centerHorizontallyWithView( superview!, constant: constant, priority: 1000 )
 	}
-	func centerHorizontallyInSuperview( constant: CGFloat, priority: UILayoutPriority ) -> NSLayoutConstraint {
+	@discardableResult func centerHorizontallyInSuperview( _ constant: CGFloat, priority: UILayoutPriority ) -> NSLayoutConstraint {
 		return centerHorizontallyWithView( superview!, constant: constant, priority: priority )
 	}
 
-	func centerHorizontallyWithView( view: UIView ) -> NSLayoutConstraint {
+	@discardableResult func centerHorizontallyWithView( _ view: UIView ) -> NSLayoutConstraint {
 		return centerHorizontallyWithView( view, constant: 0, priority: 1000 )
 	}
-	func centerHorizontallyWithView( view: UIView, constant: CGFloat ) -> NSLayoutConstraint {
+	@discardableResult func centerHorizontallyWithView( _ view: UIView, constant: CGFloat ) -> NSLayoutConstraint {
 		return centerHorizontallyWithView( view, constant: constant, priority: 1000 )
 	}
-	func centerHorizontallyWithView( view: UIView, constant: CGFloat, priority: UILayoutPriority ) -> NSLayoutConstraint {
-		let constraint = NSLayoutConstraint( item: self, attribute: .CenterX, relatedBy: .Equal,
-			toItem: view, attribute: .CenterX, multiplier: 1, constant: constant )
+	@discardableResult func centerHorizontallyWithView( _ view: UIView, constant: CGFloat, priority: UILayoutPriority ) -> NSLayoutConstraint {
+		let constraint = NSLayoutConstraint( item: self, attribute: .centerX, relatedBy: .equal,
+			toItem: view, attribute: .centerX, multiplier: 1, constant: constant )
 		constraint.priority = priority
 		superview!.addConstraint( constraint )
 		return constraint
@@ -119,25 +119,25 @@ extension UIView {
 
 	// MARK: - Vertical center
 	
-	func centerVerticallyInSuperview() -> NSLayoutConstraint {
+	@discardableResult func centerVerticallyInSuperview() -> NSLayoutConstraint {
 		return centerVerticallyWithView( superview!, constant: 0, priority: 1000 )
 	}
-	func centerVerticallyInSuperview( constant: CGFloat ) -> NSLayoutConstraint	{
+	@discardableResult func centerVerticallyInSuperview( _ constant: CGFloat ) -> NSLayoutConstraint	{
 		return centerVerticallyWithView( superview!, constant: constant, priority: 1000 )
 	}
-	func centerVerticallyInSuperview( constant: CGFloat, priority: UILayoutPriority ) -> NSLayoutConstraint	{
+	@discardableResult func centerVerticallyInSuperview( _ constant: CGFloat, priority: UILayoutPriority ) -> NSLayoutConstraint	{
 		return centerVerticallyWithView( superview!, constant: constant, priority: priority )
 	}
 	
-	func centerVerticallyWithView( view: UIView ) -> NSLayoutConstraint {
+	@discardableResult func centerVerticallyWithView( _ view: UIView ) -> NSLayoutConstraint {
 		return centerVerticallyWithView( view, constant: 0, priority: 1000 )
 	}
-	func centerVerticallyWithView( view: UIView, constant: CGFloat ) -> NSLayoutConstraint	{
+	@discardableResult func centerVerticallyWithView( _ view: UIView, constant: CGFloat ) -> NSLayoutConstraint	{
 		return centerVerticallyWithView( view, constant: constant, priority: 1000 )
 	}
-	func centerVerticallyWithView( view: UIView, constant: CGFloat, priority: UILayoutPriority ) -> NSLayoutConstraint	{
-		let constraint = NSLayoutConstraint( item: self, attribute: .CenterY, relatedBy: .Equal,
-			toItem: view, attribute: .CenterY, multiplier: 1, constant: constant )
+	@discardableResult func centerVerticallyWithView( _ view: UIView, constant: CGFloat, priority: UILayoutPriority ) -> NSLayoutConstraint	{
+		let constraint = NSLayoutConstraint( item: self, attribute: .centerY, relatedBy: .equal,
+			toItem: view, attribute: .centerY, multiplier: 1, constant: constant )
 		constraint.priority = priority
 		superview!.addConstraint( constraint )
 		return constraint
@@ -155,9 +155,9 @@ extension UIView {
 		- parameter constant: Constant of a newly created constraint. Defaults to zero.
 		- parameter priority: Priority of a newly created constraint. Defaults to `Required`
 	*/
-	func align( attribute attribute: NSLayoutAttribute, withView view: UIView,
+	@discardableResult func align( attribute: NSLayoutAttribute, withView view: UIView,
 	                      viewAttribute: NSLayoutAttribute? = nil,
-	                      relation: NSLayoutRelation = .Equal,
+	                      relation: NSLayoutRelation = .equal,
 	                      constant: CGFloat = 0, priority: UILayoutPriority = 1000 ) -> NSLayoutConstraint {
 		
 		let constraint = NSLayoutConstraint( item: self, attribute: attribute, relatedBy: relation,
@@ -171,62 +171,62 @@ extension UIView {
 	
 	// MARK: - Size constraints
 	
-	func constrainTo( width width: CGFloat, relatedBy: NSLayoutRelation? = nil ) -> NSLayoutConstraint {
-		let constraint = NSLayoutConstraint( item: self, attribute: .Width, relatedBy: relatedBy ?? .Equal,
-			toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: width )
+	@discardableResult func constrainTo( width: CGFloat, relatedBy: NSLayoutRelation? = nil ) -> NSLayoutConstraint {
+		let constraint = NSLayoutConstraint( item: self, attribute: .width, relatedBy: relatedBy ?? .equal,
+			toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width )
 		self.addConstraint( constraint )
 		return constraint;
 	}
 	
-	func constrainTo( height height: CGFloat, relatedBy: NSLayoutRelation? = nil ) -> NSLayoutConstraint	{
-		let constraint = NSLayoutConstraint( item: self, attribute: .Height, relatedBy: relatedBy ?? .Equal,
-			toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: height )
+	@discardableResult func constrainTo( height: CGFloat, relatedBy: NSLayoutRelation? = nil ) -> NSLayoutConstraint	{
+		let constraint = NSLayoutConstraint( item: self, attribute: .height, relatedBy: relatedBy ?? .equal,
+			toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height )
 		self.addConstraint( constraint )
 		return constraint;
 	}
 	
-	func constrainTo( size size: CGSize ) {
-		constrainTo( width: size.width )
-		constrainTo( height: size.height )
+	@discardableResult func constrainTo( size: CGSize ) -> [ NSLayoutConstraint ] {
+		return [ constrainTo( width: size.width ),
+		         constrainTo( height: size.height ) ]
 	}
 
-	func equalSizeWithView( view: UIView, constant: CGFloat = 0, multiplier: CGFloat = 1 ) -> [ NSLayoutConstraint ] {
+	@discardableResult func equalSizeWithView( _ view: UIView, constant: CGFloat = 0, multiplier: CGFloat = 1 ) -> [ NSLayoutConstraint ] {
 		return [ equalWidthWithView( view, constant: constant, multiplier: multiplier ),
 				 equalHeightWithView( view, constant: constant, multiplier: multiplier ) ]
 	}
 
-	func equalHeightWithView( view: UIView, constant: CGFloat = 0, multiplier: CGFloat = 1 ) -> NSLayoutConstraint {
-		let constraint = NSLayoutConstraint( item: self, attribute: .Height, relatedBy: .Equal,
-			toItem: view, attribute: .Height, multiplier: multiplier, constant: constant )
+	@discardableResult func equalHeightWithView( _ view: UIView, constant: CGFloat = 0, multiplier: CGFloat = 1 ) -> NSLayoutConstraint {
+		let constraint = NSLayoutConstraint( item: self, attribute: .height, relatedBy: .equal,
+			toItem: view, attribute: .height, multiplier: multiplier, constant: constant )
 		superview!.addConstraint( constraint )
 		return constraint;
 	}
 
-	func equalWidthWithView( view: UIView, constant: CGFloat = 0, multiplier: CGFloat = 1 ) -> NSLayoutConstraint {
-		let constraint = NSLayoutConstraint( item: self, attribute: .Width, relatedBy: .Equal,
-			toItem: view, attribute: .Width, multiplier: multiplier, constant: constant )
+	@discardableResult func equalWidthWithView( _ view: UIView, constant: CGFloat = 0, multiplier: CGFloat = 1 ) -> NSLayoutConstraint {
+		let constraint = NSLayoutConstraint( item: self, attribute: .width, relatedBy: .equal,
+			toItem: view, attribute: .width, multiplier: multiplier, constant: constant )
 		superview!.addConstraint( constraint )
 		return constraint;
 	}
 
 	// MARK: - Aspect ratio
-	func constrainAspectRatioTo( multiplier: CGFloat, constant: CGFloat = 0 ) -> NSLayoutConstraint {
-		let constraint = NSLayoutConstraint( item: self, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Height, multiplier: multiplier, constant: constant )
+	@discardableResult func constrainAspectRatioTo( _ multiplier: CGFloat, constant: CGFloat = 0 ) -> NSLayoutConstraint {
+		let constraint = NSLayoutConstraint( item: self, attribute: .width, relatedBy: .equal, toItem: self, attribute: .height, multiplier: multiplier, constant: constant )
 		addConstraint( constraint )
 		return constraint
 	}
 	
 	
 	// MARK: - Arbitrary format constraints
-	func constrainWithFormat( format: String ) -> [ NSLayoutConstraint ] {
+	@discardableResult func constrainWithFormat( _ format: String ) -> [ NSLayoutConstraint ] {
 		return constrainWithFormat( format, views: nil, metrics: nil )
 	}
 	
-	func constrainWithFormat( format: String, views: [ String: UIView ]? ) -> [ NSLayoutConstraint ] {
+	@discardableResult func constrainWithFormat( _ format: String, views: [ String: UIView ]? ) -> [ NSLayoutConstraint ] {
 		return constrainWithFormat( format, views: views, metrics: nil )
 	}
 	
-	func constrainWithFormat( format: String, views: [ String: UIView ]? = nil, metrics: [ String: CGFloat ]? ) -> [ NSLayoutConstraint ] {
+	@discardableResult func constrainWithFormat( _ format: String, views: [ String: UIView ]? = nil, metrics: [ String: CGFloat ]? ) -> [ NSLayoutConstraint ] {
 		var mutableViews = views
 		if mutableViews != nil {
 			mutableViews![ "self" ] = self
@@ -234,16 +234,16 @@ extension UIView {
 			mutableViews = [ "self": self ]
 		}
 		
-		let constraints = NSLayoutConstraint.constraintsWithVisualFormat( format, options: [], metrics: metrics, views: mutableViews! )
+		let constraints = NSLayoutConstraint.constraints( withVisualFormat: format, options: [], metrics: metrics, views: mutableViews! )
 		superview!.addConstraints( constraints )
 		return constraints
 	}
 	
 	
 	// MARK: - Calculating autolayout view size
-	func systemLayoutSizeFittingSize( targetSize: CGSize, constrainedToWidth width: CGFloat ) -> CGSize {
+	func systemLayoutSizeFittingSize( _ targetSize: CGSize, constrainedToWidth width: CGFloat ) -> CGSize {
 		let constraint = constrainTo( width: width )
-		let size = systemLayoutSizeFittingSize( targetSize )
+		let size = systemLayoutSizeFitting( targetSize )
 		removeConstraint( constraint )
 		return size
 	}

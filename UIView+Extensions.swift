@@ -17,21 +17,23 @@ extension UIView {
 	
 	- returns: Instance of ofType class, loaded from xib
 	*/
-	class func viewFromXib( xib: String ) -> Self? {
+	class func viewFromXib( _ xib: String? = nil ) -> Self? {
 
-		let nib = UINib( nibName: xib, bundle: nil )
-		let views = nib.instantiateWithOwner( nil, options: nil )
+		let xibFile = xib ?? NSStringFromClass( self as! AnyClass ).components( separatedBy: "." ).last!
+
+		let nib = UINib( nibName: xibFile, bundle: nil )
+		let views = nib.instantiate( withOwner: nil, options: nil )
 		
 		for anyObject in views {
-			if anyObject.dynamicType === self {
-				return helperConvertObject( anyObject, type: self )
+			if type(of: (anyObject) as AnyObject) === self {
+				return helperConvertObject( anyObject as AnyObject, type: self )
 			}
 		}
 	
 		return nil
 	}
 	
-	private class func helperConvertObject<T>( object: AnyObject, type: T.Type ) -> T? {
+	fileprivate class func helperConvertObject<T>( _ object: AnyObject, type: T.Type ) -> T? {
 		return object as? T
 	}
 

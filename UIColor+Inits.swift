@@ -18,10 +18,10 @@ extension UIColor {
 	convenience init?( hex: String, alpha: CGFloat = 1 ) {
 
 		guard hex.length == 6 else { return nil }
-		let scanner = NSScanner( string: hex )
+		let scanner = Scanner( string: hex )
 		var hexNum: UInt32 = 0
 		
-		guard scanner.scanHexInt( &hexNum ) else { return nil }
+		guard scanner.scanHexInt32( &hexNum ) else { return nil }
 		self.init( int: hexNum, alpha: alpha )
 	}
 
@@ -34,7 +34,7 @@ extension UIColor {
 	}
 	
 	
-	private convenience init( int: UInt32, alpha: CGFloat = 1 ) {
+	fileprivate convenience init( int: UInt32, alpha: CGFloat = 1 ) {
 		
 		let r = CGFloat(( int >> 16 ) & 0xFF )
 		let g = CGFloat(( int >> 8 ) & 0xFF )

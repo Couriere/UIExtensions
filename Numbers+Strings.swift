@@ -25,7 +25,7 @@ extension Int {
 	( "Стол", "Стола", "Столов" )
 	*/
 	
-	func pluralWithForms( wordForms: ( String, String, String ) ) -> String	{
+	func pluralWithForms( _ wordForms: ( String, String, String ) ) -> String	{
 		return "\( self ) \( pluralString( forNumber: self, fromWordForms: wordForms ) )"
 	}
 	
@@ -39,7 +39,7 @@ extension Int {
 	word - слово для нормализации. Например:
 	Стол -> [ "Стол", "Стола", "Столов" ]
 	*/
-	func pluralForWord( word: String ) -> String {
+	func pluralForWord( _ word: String ) -> String {
 		return "\( self ) \( word.plural( forNumber: self ))"
 	}
 	
@@ -57,12 +57,12 @@ extension Float {
 	func toString() -> String {
 		return "\( self )"
 	}
-	func toString( precisionString: String ) -> String {
+	func toString( _ precisionString: String ) -> String {
 		return String( format: "%" + precisionString + "f", self )
 	}
 }
 
-extension NSTimeInterval {
+extension TimeInterval {
 	var toString: String {
 		let seconds = Int( isNaN ? 0 : self )
 		return String( format: "%.2d:%.2d:%.2d", seconds / 3600, seconds % 3600 / 60, seconds % 60 )
@@ -71,10 +71,10 @@ extension NSTimeInterval {
 
 
 infix operator |= { associativity left precedence 140 }
-func |= ( inout left: Bool, right: Bool ) {
+func |= ( left: inout Bool, right: Bool ) {
 	left = left || right
 }
 
-func *= ( inout left: CGRect, right: CGFloat ) {
+func *= ( left: inout CGRect, right: CGFloat ) {
 	left = CGRect( x: left.origin.x * right, y: left.origin.y * right, width: left.size.width * right, height: left.size.height * right )
 }

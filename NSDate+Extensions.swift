@@ -7,62 +7,62 @@
 
 import UIKit
 
-extension NSDate {
+extension Date {
 	// ..<
-	func isBetweenDate( firstDate: NSDate, andDate secondDate: NSDate ) -> Bool {
+	func isBetweenDate( _ firstDate: Date, andDate secondDate: Date ) -> Bool {
 		let startResult = firstDate.compare( self )
-		return ( startResult == .OrderedSame || startResult == .OrderedAscending ) && self.compare( secondDate ) == .OrderedAscending
+		return ( startResult == .orderedSame || startResult == .orderedAscending ) && self.compare( secondDate ) == .orderedAscending
 	}
 	
 	var timestamp: UInt64 { return UInt64( timeIntervalSince1970 * 1000 ) }
 	
-	convenience init( timestamp: UInt64 ) {
-		self.init( timeIntervalSince1970: NSTimeInterval( timestamp ) / 1000 )
+	init( timestamp: UInt64 ) {
+		self.init( timeIntervalSince1970: TimeInterval( timestamp ) / 1000 )
 	}
 	
 	@available(iOS 8.0, *)
-	func dateByAddingMonths( months: Int ) -> NSDate {
-		let calendar = NSCalendar.currentCalendar()
-		return calendar.dateByAddingUnit( .Month, value: months, toDate: self, options: [] )!
+	func dateByAddingMonths( _ months: Int ) -> Date {
+		let calendar = Calendar.current
+		return (calendar as NSCalendar).date( byAdding: .month, value: months, to: self, options: [] )!
 	}
 	
 	static var thisYear: Int {
-		let calendar = NSCalendar.currentCalendar()
-		return calendar.components( [ .Year ], fromDate: NSDate() ).year
+		let calendar = Calendar.current
+		return (calendar as NSCalendar).components( [ .year ], from: Date() ).year!
 	}
 	
 	/// Returns same date with time set to a start of specified hour.
-	public func startOfHour( hour: Int ) -> NSDate {
+	public func startOfHour( _ hour: Int ) -> Date {
 
-		let componentUnits: NSCalendarUnit = [.Year, .Month, .Day, .Hour, .Minute, .Second, .NSWeekdayCalendarUnit]
-		let components = NSDate.gregorianRUCalendar.components( componentUnits, fromDate: self )
+		let componentUnits: NSCalendar.Unit = [.year, .month, .day, .hour, .minute, .second, .NSWeekdayCalendarUnit]
+		var components = (Date.gregorianRUCalendar as NSCalendar).components( componentUnits, from: self )
 		
 		components.hour = hour
 		components.minute = 0
 		components.second = 0
 		
-		return NSDate.gregorianRUCalendar.dateFromComponents( components )!
+		return Date.gregorianRUCalendar.date( from: components )!
 	}
 	
 	/// Returns start of the day, same date with time 00:00:00.
 	/// - parameter timeZone: Use this time zone. If `nil` use system time zone.
-	public func startOfDay( timeZone: NSTimeZone? = nil ) -> NSDate {
-		let calendar = NSCalendar( calendarIdentifier: NSCalendarIdentifierGregorian )!
+	public func startOfDay( _ timeZone: TimeZone? = nil ) -> Date {
+		var calendar = Calendar( identifier: Calendar.Identifier.gregorian )
 		if let timeZone = timeZone { calendar.timeZone = timeZone }
 		
-		let componentUnits: NSCalendarUnit = [.Year, .Month, .Day, .Hour, .Minute, .Second, .NSWeekdayCalendarUnit]
-		let components = calendar.components( componentUnits, fromDate: self )
+		let componentUnits: NSCalendar.Unit = [.year, .month, .day, .hour, .minute, .second, .NSWeekdayCalendarUnit]
+		var components = (calendar as NSCalendar).components( componentUnits, from: self )
 		
 		components.hour = 0
 		components.minute = 0
 		components.second = 0
 		
-		return calendar.dateFromComponents( components )!
+		return calendar.date( from: components )!
 	}
 	
-	private	static let gregorianRUCalendar: NSCalendar = {
-		let calendar = NSCalendar( calendarIdentifier: NSCalendarIdentifierGregorian )!
-		calendar.locale = NSLocale( localeIdentifier: "ru_RU" )
+	fileprivate	static let gregorianRUCalendar: Calendar = {
+		var calendar = Calendar( identifier: Calendar.Identifier.gregorian )
+		calendar.locale = Locale( identifier: "ru_RU" )
 		return calendar
 	}()
 

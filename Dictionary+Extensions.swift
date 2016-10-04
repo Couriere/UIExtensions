@@ -16,15 +16,15 @@ extension Dictionary {
 		}
 	}
 	
-	func map<U>(transform: Value -> U) -> [Key : U] {
+	func map<U>(_ transform: (Value) -> U) -> [Key : U] {
 		return Dictionary<Key, U>(self.map({ (key, value) in (key, transform(value)) }))
 	}
 	
-	func map<T : Hashable, U>(transform: (Key, Value) -> (T, U)) -> [T : U] {
+	func map<T : Hashable, U>(_ transform: (Key, Value) -> (T, U)) -> [T : U] {
 		return Dictionary<T, U>(self.map(transform))
 	}
 	
-	mutating func addEntriesFromDictionary<KeyType,ValueType>( dict: [KeyType: ValueType] ) {
+	mutating func addEntriesFromDictionary<KeyType,ValueType>( _ dict: [KeyType: ValueType] ) {
 		for ( key, value ) in dict {
 			updateValue( value as! Value, forKey: key as! Key )
 		}
@@ -37,7 +37,7 @@ extension Dictionary {
 			return defaultValue
 		}
 	}
-	func valueForKey<T>( key: Key, defaultValue: T ) -> T {
+	func valueForKey<T>( _ key: Key, defaultValue: T ) -> T {
 		if let value = self[ key ] as? T {
 			return value
 		} else {

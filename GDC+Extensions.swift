@@ -12,12 +12,15 @@ Dispatch block to main threah synchronously. Preventing deadlock in case, when w
 
 - parameter block: Block to be dispatched.
 */
-func dispatch_main_thread_sync( block: dispatch_block_t )
+func dispatch_main_thread_sync( _ block: ()->() )
 {
-	if NSThread.isMainThread() { block() } else { dispatch_sync( dispatch_get_main_queue(), block ) }
+	if Thread.isMainThread { block() } else { DispatchQueue.main.sync(execute: block ) }
 }
 
-func dispatch_after( timeInterval timeInterval: NSTimeInterval, queue: dispatch_queue_t? = nil, block: dispatch_block_t! ) {
-	let delayTime = dispatch_time( DISPATCH_TIME_NOW, Int64( timeInterval * NSTimeInterval( NSEC_PER_SEC )))
-	dispatch_after( delayTime, queue ?? dispatch_get_main_queue(), block )
+extension DispatchQueue {
+
+	func asyncAfter( timeInterval: TimeInterval, block: @escaping () -> Void ) {
+		let delayTime = DispatchTime.now() + Double(Int64( timeInterval * TimeInterval( NSEC_PER_SEC ))) / Double(NSEC_PER_SEC)
+		self.asyncAfter( deadline: delayTime, execute: block )
+	}
 }

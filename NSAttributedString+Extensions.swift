@@ -9,7 +9,7 @@ import UIKit
 
 public func +( left: NSAttributedString, right: NSAttributedString ) -> NSAttributedString {
 	let mutable = NSMutableAttributedString( attributedString: left )
-	mutable.appendAttributedString( right )
+	mutable.append( right )
 	return mutable
 }
 
@@ -17,27 +17,26 @@ extension NSMutableAttributedString {
 	
 	/// Вставляет изображение в строку и устанавливает его
 	/// вертикально в центр строки.
-	func insertImage( image: UIImage, atLocation location: Int, verticalOffset: CGFloat = 0 ) {
+	func insertImage( _ image: UIImage, atLocation location: Int, verticalOffset: CGFloat = 0 ) {
 		
 		let textAttachment = NSTextAttachment()
 		textAttachment.image = image
 		let attrStringWithImage = NSAttributedString( attachment: textAttachment )
 		
 		let safeLocation = max( 0, min( self.length - 1, location ))
-		let font = attribute( NSFontAttributeName, atIndex: safeLocation, effectiveRange: nil ) as? UIFont ?? UIFont.systemFontOfSize( UIFont.systemFontSize() )
+		let font = attribute( NSFontAttributeName, at: safeLocation, effectiveRange: nil ) as? UIFont ?? UIFont.systemFont( ofSize: UIFont.systemFontSize )
 		let mid = font.descender + font.capHeight
-		textAttachment.bounds = CGRectIntegral(
-			CGRect( x: 0, y: font.descender - image.size.height / 2 + mid + 2 - verticalOffset,
-				width: image.size.width + 1, height: image.size.height ))
+		textAttachment.bounds = CGRect( x: 0, y: font.descender - image.size.height / 2 + mid + 2 - verticalOffset,
+				width: image.size.width + 1, height: image.size.height ).integral
 		
-		self.insertAttributedString( attrStringWithImage, atIndex: location )
+		self.insert( attrStringWithImage, at: location )
 	}
 }
 
 
 extension NSAttributedString {
 	
-	func setAttributes( attributes: [ String: AnyObject ] ) -> NSAttributedString {
+	func setAttributes( _ attributes: [ String: AnyObject ] ) -> NSAttributedString {
 		let mutable = self is NSMutableAttributedString ?
 			self as! NSMutableAttributedString : NSMutableAttributedString( attributedString: self )
 		let range = NSMakeRange( 0, mutable.length )
@@ -45,7 +44,7 @@ extension NSAttributedString {
 		return mutable
 	}
 	
-	func color( color: UIColor ) -> NSAttributedString {
+	func color( _ color: UIColor ) -> NSAttributedString {
 		
 		let mutable = self is NSMutableAttributedString ?
 			self as! NSMutableAttributedString : NSMutableAttributedString( attributedString: self )
@@ -54,7 +53,7 @@ extension NSAttributedString {
 		return mutable
 	}
 	
-	func font( font: UIFont ) -> NSAttributedString {
+	func font( _ font: UIFont ) -> NSAttributedString {
 		let mutable = self is NSMutableAttributedString ?
 			self as! NSMutableAttributedString : NSMutableAttributedString( attributedString: self )
 		let range = NSMakeRange( 0, mutable.length )
@@ -66,18 +65,18 @@ extension NSAttributedString {
 
 extension String {
 	
-	func setAttributes( attributes: [ String: AnyObject ] ) -> NSAttributedString {
+	func setAttributes( _ attributes: [ String: AnyObject ] ) -> NSAttributedString {
 		let result = NSMutableAttributedString( string: self, attributes: attributes )
 		return result
 	}
 	
 
-	func color( color: UIColor ) -> NSAttributedString {
+	func color( _ color: UIColor ) -> NSAttributedString {
 		let result = NSMutableAttributedString( string: self, attributes: [ NSForegroundColorAttributeName: color ] )
 		return result
 	}
 	
-	func font( font: UIFont ) -> NSAttributedString {
+	func font( _ font: UIFont ) -> NSAttributedString {
 		let result = NSMutableAttributedString( string: self, attributes: [ NSFontAttributeName: font ] )
 		return result
 	}

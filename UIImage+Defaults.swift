@@ -10,7 +10,7 @@ import UIKit
 extension UIImage {
 
 	convenience init( color: UIColor ) {
-		self.init( size: CGSizeMake( 1, 1 ), color: color )
+		self.init( size: CGSize( width: 1, height: 1 ), color: color )
 	}
 	
 	convenience init( size: CGSize, color: UIColor ) {
@@ -18,7 +18,7 @@ extension UIImage {
 		UIGraphicsBeginImageContextWithOptions( rect.size, false, 0 );
 		color.setFill()
 		UIRectFill( rect )
-		self.init( CGImage: UIGraphicsGetImageFromCurrentImageContext()!.CGImage!, scale: UIScreen.mainScreen().scale, orientation: .Up )
+		self.init( cgImage: UIGraphicsGetImageFromCurrentImageContext()!.cgImage!, scale: UIScreen.main.scale, orientation: .up )
 		UIGraphicsEndImageContext()
 	}
 }

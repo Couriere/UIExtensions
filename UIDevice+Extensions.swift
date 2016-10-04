@@ -17,8 +17,8 @@ extension UIDevice {
 		var identifier = ""
 		
 		for child in machineMirror.children {
-			if let value = child.value as? Int8 where value != 0 {
-				identifier.append( UnicodeScalar( UInt8( value )))
+			if let value = child.value as? Int8 , value != 0 {
+				identifier.append( String(UnicodeScalar( UInt8( value ))))
 			}
 		}
 		return identifier
@@ -60,11 +60,11 @@ extension UIDevice {
 	
 	var deviceTypeString: String {
 		
-		if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+		if UIDevice.current.userInterfaceIdiom == .pad {
 			return "iphonehd"
 		}
 
-		if UIScreen.mainScreen().scale > 1 {
+		if UIScreen.main.scale > 1 {
 			return "ipadhd"
 		}
 		

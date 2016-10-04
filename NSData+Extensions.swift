@@ -7,18 +7,18 @@
 
 import UIKit
 
-extension NSData {
+extension Data {
 
 	/// Hexadecimal representation of NSData.
 	var hexadecimalString: String {
 	
-		guard self.length > 0 else { return "" }
+		guard self.count > 0 else { return "" }
 		
-		let charBuffer = UnsafePointer<UInt8>( self.bytes )
-		let dataBuffer = UnsafeBufferPointer<UInt8>( start: charBuffer, count: self.length )
+		let charBuffer = (self as NSData).bytes.bindMemory(to: UInt8.self, capacity: self.count)
+		let dataBuffer = UnsafeBufferPointer<UInt8>( start: charBuffer, count: self.count )
 	
 		let hexString = dataBuffer.reduce( "" ) { result, value in
-			return result.stringByAppendingFormat( "%02lx", value )
+			return result.appendingFormat( "%02lx", value )
 		}
 		
 		return hexString
