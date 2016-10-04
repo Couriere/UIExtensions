@@ -17,7 +17,7 @@ extension URL {
 	}
 	
 	var freeSpace: Int64? {
-		let systemAttributes = try? FileManager.default.attributesOfFileSystem( forPath: self.path ?? "" )
+		let systemAttributes = try? FileManager.default.attributesOfFileSystem( forPath: self.path )
 		let freeSpace = ( systemAttributes?[ FileAttributeKey.systemFreeSize ] as? NSNumber )?.int64Value
 		return freeSpace
 	}
