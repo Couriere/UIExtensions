@@ -64,13 +64,13 @@ extension Float {
 
 extension TimeInterval {
 	var toString: String {
-		let seconds = Int( isNaN ? 0 : self )
+		let seconds = Int( isFinite ? self : 0  )
 		return String( format: "%.2d:%.2d:%.2d", seconds / 3600, seconds % 3600 / 60, seconds % 60 )
 	}
 }
 
 
-infix operator |= { associativity left precedence 140 }
+infix operator |=: AssignmentPrecedence
 func |= ( left: inout Bool, right: Bool ) {
 	left = left || right
 }
