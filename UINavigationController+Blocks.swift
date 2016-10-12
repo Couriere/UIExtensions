@@ -23,13 +23,25 @@ extension UIViewController {
 	/// Метод моментально возвращает контроль и проверяет возможность показа асинхронно.
 	static func safePresentFromTopViewController( controller: UIViewController, animated: Bool, completion: ( () -> Void )? = nil ) {
 		
+		safeTopPresentedViewController {
+			guard let topViewController = $0 else { completion?(); return }
+				
+			// Показываем наш контроллер.
+			topViewController.present( controller, animated: animated, completion: completion )
+		}
+	}
+	
+	/// Вызывает блок завершения после того, как контроллер на вершине стека контроллеров
+	/// будет готов к показу нового, то есть не будет в процессе появления или скрытия.
+	static func safeTopPresentedViewController( controllerReadyHandler: @escaping ( _ topPresentedViewController: UIViewController? ) -> Void ) {
+	
 		DispatchQueue.main.async {
 			
 			func checkTopViewController() {
 				
 				if let topViewController = topPresentedViewController {
 					
-					guard !topViewController.isBeingPresented && !topViewController.isBeingDismissed else {
+					if topViewController.isBeingPresented || topViewController.isBeingDismissed {
 					
 						// Верхний контроллер в стеке сейчас в процессе показа или скрытия.
 						if let transitionCoordinator = topViewController.transitionCoordinator {
@@ -49,20 +61,19 @@ extension UIViewController {
 						return
 					}
 					
-					// Показываем наш контроллер.
-					topViewController.present( controller, animated: animated, completion: completion )
+					// Выполняем блок завершения.
+					controllerReadyHandler( topViewController )
 				
 				} else {
 					// Если верхний контроллер в стеке на может быть найден,
-					// то ничего не делаем и вызываем обработчика завершения.
-					completion?()
+					// то ничего не делаем и вызываем обработчик завершения.
+					controllerReadyHandler( nil )
 				}
 			}
 			
 			// Запускаем цикл.
 			checkTopViewController()
 		}
-		
 	}
 }
 
