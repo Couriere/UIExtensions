@@ -17,13 +17,19 @@ extension UIColor {
 	/// Skips any leading whitespace and ignores any trailing characters.
 	convenience init?( hex: String, alpha: CGFloat = 1 ) {
 
-		guard hex.length == 6 else { return nil }
-		let scanner = Scanner( string: hex )
+		// Search for the first streak of six hexadecimal characters.
+		let items = hex.components( separatedBy: UIColor.invertedHexCharactersSet )
+		guard let hexString = items.element( where: { $0.characters.count >= 6 } ) else { return nil }
+		
+		let colorString = hexString.substring( to: hexString.characters.index( hexString.startIndex, offsetBy: 6 ))
+
+		let scanner = Scanner( string: colorString )
 		var hexNum: UInt32 = 0
 		
 		guard scanner.scanHexInt32( &hexNum ) else { return nil }
 		self.init( int: hexNum, alpha: alpha )
 	}
+	private static let invertedHexCharactersSet = CharacterSet( charactersIn: "0123456789abcdefABCDEF" ).inverted
 
 	/// Returns random color with supplied alpha.
 	convenience init( randomWithAlpha alpha: CGFloat ) {
@@ -42,5 +48,16 @@ extension UIColor {
 		
 		self.init( red: r / 255, green: g / 255, blue: b / 255, alpha: alpha )
 	}
-	
+}
+
+extension UIColor {
+
+	/// Returns contrast color to receivers one.
+	var contrast: UIColor {
+		var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+		
+		getRed( &red, green: &green, blue: &blue, alpha: &alpha )
+		let lightness = ( red + green + blue ) / 3
+		return lightness > 0.5 ? .black : .white
+	}
 }
