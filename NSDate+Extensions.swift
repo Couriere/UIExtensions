@@ -7,6 +7,8 @@
 
 import UIKit
 
+extension Calendar: Then {}
+
 extension Date {
 	// ..<
 	func isBetweenDate( _ firstDate: Date, andDate secondDate: Date ) -> Bool {
@@ -20,50 +22,48 @@ extension Date {
 		self.init( timeIntervalSince1970: TimeInterval( timestamp ) / 1000 )
 	}
 	
-	@available(iOS 8.0, *)
 	func dateByAddingMonths( _ months: Int ) -> Date {
 		let calendar = Calendar.current
-		return (calendar as NSCalendar).date( byAdding: .month, value: months, to: self, options: [] )!
+		return calendar.date( byAdding: .month, value: months, to: self )!
 	}
 	
 	static var thisYear: Int {
 		let calendar = Calendar.current
-		return (calendar as NSCalendar).components( [ .year ], from: Date() ).year!
+		return calendar.dateComponents( [ .year ], from: Date() ).year!
 	}
 	
 	/// Returns same date with time set to a start of specified hour.
 	public func startOfHour( _ hour: Int ) -> Date {
 
-		let componentUnits: NSCalendar.Unit = [.year, .month, .day, .hour, .minute, .second, .NSWeekdayCalendarUnit]
-		var components = (Date.gregorianRUCalendar as NSCalendar).components( componentUnits, from: self )
+		let components: Set<Calendar.Component> = [ .year, .month, .day, .hour, .minute, .second, .weekday ]
+		var dateComponents = Date.gregorianRUCalendar.dateComponents( components, from: self )
 		
-		components.hour = hour
-		components.minute = 0
-		components.second = 0
+		dateComponents.hour = hour
+		dateComponents.minute = 0
+		dateComponents.second = 0
 		
-		return Date.gregorianRUCalendar.date( from: components )!
+		return Date.gregorianRUCalendar.date( from: dateComponents )!
 	}
 	
 	/// Returns start of the day, same date with time 00:00:00.
 	/// - parameter timeZone: Use this time zone. If `nil` use system time zone.
 	public func startOfDay( _ timeZone: TimeZone? = nil ) -> Date {
-		var calendar = Calendar( identifier: Calendar.Identifier.gregorian )
+		
+		var calendar = Calendar( identifier: .gregorian )
 		if let timeZone = timeZone { calendar.timeZone = timeZone }
 		
-		let componentUnits: NSCalendar.Unit = [.year, .month, .day, .hour, .minute, .second, .NSWeekdayCalendarUnit]
-		var components = (calendar as NSCalendar).components( componentUnits, from: self )
+		let components: Set<Calendar.Component> = [ .year, .month, .day, .hour, .minute, .second, .weekday ]
+		var dateComponents = calendar.dateComponents( components, from: self )
 		
-		components.hour = 0
-		components.minute = 0
-		components.second = 0
+		dateComponents.hour = 0
+		dateComponents.minute = 0
+		dateComponents.second = 0
 		
-		return calendar.date( from: components )!
+		return calendar.date( from: dateComponents )!
 	}
 	
-	fileprivate	static let gregorianRUCalendar: Calendar = {
-		var calendar = Calendar( identifier: Calendar.Identifier.gregorian )
-		calendar.locale = Locale( identifier: "ru_RU" )
-		return calendar
-	}()
+	static let gregorianRUCalendar = Calendar( identifier: .gregorian ).with {
+		$0.locale = Locale( identifier: "ru_RU" )
+	}
 
 }
