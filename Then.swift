@@ -64,7 +64,7 @@ extension Then where Self: AnyObject {
 	///       $0.set("devxoul@gmail.com", forKey: "email")
 	///       $0.synchronize()
 	///     }
-	@discardableResult public func `do`(_ block: (Self) -> Void) {
+	public func `do`(_ block: (Self) -> Void) {
 		block(self)
 	}
 	
