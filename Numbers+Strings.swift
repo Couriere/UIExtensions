@@ -12,7 +12,7 @@ extension Int {
 		return "\( self )"
 	}
 	
-	var radians: CGFloat { return CGFloat( M_PI ) * CGFloat( self ) / 180 }
+	var radians: CGFloat { return .pi * CGFloat( self ) / 180 }
 	
 	
 	/**
