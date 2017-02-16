@@ -44,13 +44,7 @@ extension Int {
 	}
 	
 	
-	var rub: String {
-		if #available( iOS 8, * ) {
-			return "\( self )₽"
-		} else {
-			return "\( self )Р"
-		}
-	}
+	var rub: String { return "\( self )₽" }
 }
 
 extension Float {
