@@ -7,9 +7,8 @@
 
 import UIKit
 
-@available(iOS 8.0, *) typealias UIAlertControllerHandler = ( _ alertController: UIAlertController, _ selectedIndex: Int ) -> Void
+typealias UIAlertControllerHandler = ( _ alertController: UIAlertController, _ selectedIndex: Int ) -> Void
 
-@available(iOS 8.0, *)
 extension UIAlertController {
 	
 	class func showAlertControllerWithTitle( _ title: String?, message: String?, buttonTitles: [ String ]? = nil, parentController: UIViewController? = nil, handler: UIAlertControllerHandler? = nil ) {
@@ -44,7 +43,6 @@ extension UIAlertController {
 	}
 }
 
-@available(iOS 8.0, *)
 extension UIViewController {
 	func showUIAlertControllerWithTitle( _ title: String?, message: String?, buttonTitles: [ String ]? = nil, handler: UIAlertControllerHandler? = nil ) {
 		UIAlertController.showAlertControllerWithTitle( title, message: message, buttonTitles: buttonTitles, parentController: self, handler: handler )
