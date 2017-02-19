@@ -55,13 +55,12 @@ extension UIView {
 
 	@discardableResult
 	func constrainToSuperview( insets: UIEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
-		let bindings = [ "self": self ]
 		
 		let constraints = [
 			NSLayoutConstraint( item: self, attribute: .left, relatedBy: .equal, toItem: superview, attribute: .left, multiplier: 1, constant: insets.left ),
-			NSLayoutConstraint( item: superview, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1, constant: insets.right ),
+			NSLayoutConstraint( item: superview!, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1, constant: insets.right ),
 			NSLayoutConstraint( item: self, attribute: .top, relatedBy: .equal, toItem: superview, attribute: .top, multiplier: 1, constant: insets.top ),
-			NSLayoutConstraint( item: superview, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: insets.bottom )
+			NSLayoutConstraint( item: superview!, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: insets.bottom )
 		]
 
 		constraints.forEach { $0.isActive = true }
