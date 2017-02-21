@@ -51,8 +51,7 @@ extension Then where Self: AnyObject {
 	///       $0.textColor = UIColor.blackColor()
 	///       $0.text = "Hello, World!"
 	///     }
-	@discardableResult public func then(_ block: (Self) -> Void) -> Self {
-		if let view = self as? UIView { view.translatesAutoresizingMaskIntoConstraints = false }
+	@discardableResult public func then( _ block: (Self) -> Void ) -> Self {
 		block(self)
 		return self
 	}
@@ -68,6 +67,23 @@ extension Then where Self: AnyObject {
 		block(self)
 	}
 	
+}
+
+extension Then where Self: UIView {
+	
+	/// Makes it available to set properties with closures just after initializing.
+	/// By defaut turns off `translatesAutoresizingMaskIntoConstraints` property.
+	///
+	///     let label = UILabel().then {
+	///       $0.textAlignment = .Center
+	///       $0.textColor = UIColor.blackColor()
+	///       $0.text = "Hello, World!"
+	///     }
+	@discardableResult public func then( useAutolayout: Bool = true, _ block: (Self) -> Void ) -> Self {
+		self.translatesAutoresizingMaskIntoConstraints = !useAutolayout
+		block(self)
+		return self
+	}
 }
 
 extension NSObject: Then {}
