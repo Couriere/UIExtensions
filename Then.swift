@@ -92,3 +92,21 @@ extension CGPoint: Then {}
 extension CGRect: Then {}
 extension CGSize: Then {}
 extension CGVector: Then {}
+
+
+extension Optional {
+
+	/// Executes given block with unwrapped value of optional as parameter when said optional is not `nil`.
+	///
+	///		let nonNilOptional: Int? = 1
+	///		nonNilOptional.then { print( $0 ) }  => Prints `1`
+	///		let nilOptional: Int? = 1
+	///		nilOptional.then { print( $0 ) }  => Nothing happens
+	///
+	func then( _ block: ( Wrapped ) -> Void ) {
+		switch self {
+		case .none: return
+		case .some( let value ): block( value )
+		}
+	}
+}
