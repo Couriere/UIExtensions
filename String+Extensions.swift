@@ -57,6 +57,40 @@ extension String {
 
 
 /**
+	SHA Encoding
+*/
+extension String {
+	
+	var SHA1: Data? {
+		
+		guard let data = self.data( using: .utf8 ) else { return nil }
+		
+		var digest: [UInt8] = Array( repeating: 0, count: Int( CC_SHA1_DIGEST_LENGTH ))
+		
+		data.withUnsafeBytes {
+			_ = CC_SHA1( $0, CC_LONG( data.count ), &digest )
+		}
+		
+		return Data( bytes: digest )
+	}
+	
+	func HMACSHA1( key: String ) -> Data? {
+		
+		guard let dataToDigest = self.data( using: .utf8 ) as NSData?,
+			let keyData = key.data( using: .utf8 ) as NSData? else { return nil }
+		
+		let digestLength = Int( CC_SHA1_DIGEST_LENGTH )
+		let result = UnsafeMutablePointer<UInt8>.allocate( capacity: digestLength )
+		
+		CCHmac( CCHmacAlgorithm( kCCHmacAlgSHA1 ), keyData.bytes, keyData.length, dataToDigest.bytes, dataToDigest.length, result )
+		
+		return Data( bytes: result, count: digestLength )
+	}
+}
+
+
+
+/**
 Возвращает корректную форму существительного для числительного
 
 - parameter wordForms: Возможные формы слова.
