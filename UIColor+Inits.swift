@@ -19,7 +19,7 @@ extension UIColor {
 
 		// Search for the first streak of six hexadecimal characters.
 		let items = hex.components( separatedBy: UIColor.invertedHexCharactersSet )
-		guard let hexString = items.element( where: { $0.characters.count >= 6 } ) else { return nil }
+		guard let hexString = items.first( where: { $0.characters.count >= 6 } ) else { return nil }
 		
 		let colorString = hexString.substring( to: hexString.characters.index( hexString.startIndex, offsetBy: 6 ))
 
