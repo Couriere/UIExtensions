@@ -16,12 +16,12 @@ extension Dictionary {
 		}
 	}
 	
-	func map<U>(_ transform: (Value) -> U) -> [Key : U] {
-		return Dictionary<Key, U>(self.map({ (key, value) in (key, transform(value)) }))
+	func map<U>( _ transform: ( Value ) throws -> U ) throws -> [Key : U] {
+		return Dictionary<Key, U>( try self.map { key, value in ( key, try transform( value )) } )
 	}
 	
-	func map<T : Hashable, U>(_ transform: (Key, Value) -> (T, U)) -> [T : U] {
-		return Dictionary<T, U>(self.map(transform))
+	func map<T : Hashable, U>(_ transform: (Key, Value) throws -> (T, U)) throws -> [T : U] {
+		return Dictionary<T, U>( try self.map( transform ))
 	}
 	
 	mutating func addEntriesFromDictionary<KeyType,ValueType>( _ dict: [KeyType: ValueType] ) {
