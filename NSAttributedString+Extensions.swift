@@ -8,7 +8,7 @@
 import UIKit
 
 public func +( left: NSAttributedString, right: NSAttributedString ) -> NSAttributedString {
-	let mutable = NSMutableAttributedString( attributedString: left )
+	let mutable = left.mutable()
 	mutable.append( right )
 	return mutable
 }
@@ -35,32 +35,34 @@ extension NSMutableAttributedString {
 
 
 extension NSAttributedString {
-	
+
+	func mutable() -> NSMutableAttributedString {
+		return self as? NSMutableAttributedString ?? NSMutableAttributedString( attributedString: self )
+	}
+
 	func setAttributes( _ attributes: [ String: AnyObject ] ) -> NSAttributedString {
-		let mutable = self is NSMutableAttributedString ?
-			self as! NSMutableAttributedString : NSMutableAttributedString( attributedString: self )
+		
+		let mutable = self.mutable()
 		let range = NSMakeRange( 0, mutable.length )
 		mutable.addAttributes( attributes, range: range )
 		return mutable
 	}
-	
+
 	func color( _ color: UIColor ) -> NSAttributedString {
 		
-		let mutable = self is NSMutableAttributedString ?
-			self as! NSMutableAttributedString : NSMutableAttributedString( attributedString: self )
+		let mutable = self.mutable()
 		let range = NSMakeRange( 0, mutable.length )
 		mutable.addAttribute( NSForegroundColorAttributeName, value: color, range: range )
 		return mutable
 	}
-	
+
 	func font( _ font: UIFont ) -> NSAttributedString {
-		let mutable = self is NSMutableAttributedString ?
-			self as! NSMutableAttributedString : NSMutableAttributedString( attributedString: self )
+		
+		let mutable = self.mutable()
 		let range = NSMakeRange( 0, mutable.length )
 		mutable.addAttribute( NSFontAttributeName, value: font, range: range )
 		return mutable
 	}
-	
 }
 
 extension String {
