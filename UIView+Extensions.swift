@@ -18,7 +18,7 @@ extension UIView {
 	class func makeFromXib( named xibName: String? = nil ) -> Self? {
 
 		guard let xibFile = xibName ??
-			NSStringFromClass( self ).components( separatedBy: "." ).last
+			NSStringFromClass( self as! AnyClass ).components( separatedBy: "." ).last
 			else {
 				return nil
 		}
