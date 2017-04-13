@@ -100,7 +100,7 @@ extension Optional {
 	///
 	///		let nonNilOptional: Int? = 1
 	///		nonNilOptional.then { print( $0 ) }  => Prints `1`
-	///		let nilOptional: Int? = 1
+	///		let nilOptional: Int? = nil
 	///		nilOptional.then { print( $0 ) }  => Nothing happens
 	///
 	func then( _ block: ( Wrapped ) -> Void ) {
@@ -110,3 +110,68 @@ extension Optional {
 		}
 	}
 }
+
+
+/// Syntax sugar for boolean variables.
+/// Following methods execute blocks when Bool value is either `true` or `false`
+/// and can be chained.
+///
+///		let bool = false
+///		bool
+///			.then { print( "This will not be executed" ) }
+///			.else { print( "This line will be printed" ) }
+///
+extension Bool {
+
+	/// Executes given block when self is equal to `true`.
+	/// Can be chained.
+	@discardableResult
+	func then( completion: () -> Void ) -> Bool {
+		if self { completion() }
+		return self
+	}
+
+	/// Executes given block when self is equal to `false`.
+	/// Can be chained.
+	@discardableResult
+	func `else`( completion: () -> Void ) -> Bool {
+		if !self { completion() }
+		return self
+	}
+}
+
+
+/// Syntax sugar for optional boolean variables.
+/// Following methods execute blocks when Bool? value is either `true`, `false` or `nil`.
+/// Calls can be chained.
+///
+///		let bool: Bool? = true
+///		bool
+///			.else { print( "This will not be executed" ) }
+///			.then { print( "This line will be printed" ) }
+///
+///		let nilBool: Bool? = nil
+///		nilBool
+///			.then { print( "This will not be executed" ) }
+///			.else { print( "This line will be printed" ) }
+///
+extension Optional where Wrapped == Bool {
+
+	/// Executes given block when self is equal to `true`.
+	/// Can be chained.
+	@discardableResult
+	func then( completion: () -> Void ) -> Bool? {
+		if case .some( let value ) = self { value.then( completion: completion ) }
+		return self
+	}
+
+	/// Executes given block when self is equal to `false` or `nil`.
+	/// Can be chained.
+	@discardableResult
+	func `else`( completion: () -> Void ) -> Bool? {
+		if case .some = self { return self }
+		completion()
+		return self
+	}
+}
+
