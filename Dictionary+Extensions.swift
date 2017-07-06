@@ -20,7 +20,7 @@ extension Dictionary {
 		return Dictionary<Key, U>( try self.map { key, value in ( key, try transform( value )) } )
 	}
 	
-	func map<T : Hashable, U>(_ transform: (Key, Value) throws -> (T, U)) throws -> [T : U] {
+	func map<T, U>(_ transform: (Key, Value) throws -> (T, U)) throws -> [T : U] {
 		return Dictionary<T, U>( try self.map( transform ))
 	}
 	
