@@ -68,27 +68,31 @@ extension UIView {
 	}
 	
 	@discardableResult
-	func constrainToSuperviewWithTopLayoutGuide() -> [ NSLayoutConstraint ] {
-		let bindings: [ String: AnyObject ] = [ "self": self, "topGuide": parentViewController!.topLayoutGuide ]
+	func constrainToSuperviewWithTopLayoutGuide( insets:  UIEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
 		let constraints = [
-			NSLayoutConstraint.constraints( withVisualFormat: "H:|[self]|", options: [], metrics: nil, views: bindings ),
-			NSLayoutConstraint.constraints( withVisualFormat: "V:[topGuide][self]|", options: [], metrics: nil, views: bindings ) ].flatMap { $0 }
+			NSLayoutConstraint( item: self, attribute: .left, relatedBy: .equal, toItem: superview, attribute: .left, multiplier: 1, constant: insets.left ),
+			NSLayoutConstraint( item: superview!, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1, constant: insets.right ),
+			NSLayoutConstraint( item: superview!, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: insets.bottom ),
+
+			NSLayoutConstraint.constraints( withVisualFormat: "V:[topGuide]-(\(insets.top))-[self]", options: [], metrics: nil, views: [ "self": self, "topGuide": parentViewController!.topLayoutGuide ] ).first!
+		]
+
 		constraints.forEach { $0.isActive = true }
 		return constraints
 	}
 	
 	@discardableResult
-	func constrainToTopLayoutGuide() -> NSLayoutConstraint {
+	func constrainToTopLayoutGuide( inset: CGFloat = 0 ) -> NSLayoutConstraint {
 		let constraint = NSLayoutConstraint( item: self, attribute: .top, relatedBy: .equal,
-			toItem: parentViewController!.topLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0 )
+			toItem: parentViewController!.topLayoutGuide, attribute: .bottom, multiplier: 1, constant: inset )
 		constraint.isActive = true
 		return constraint
 	}
 	
 	@discardableResult
-	func constrainToBottomLayoutGuide() -> NSLayoutConstraint {
+	func constrainToBottomLayoutGuide( inset: CGFloat = 0 ) -> NSLayoutConstraint {
 		let constraint = NSLayoutConstraint( item: self, attribute: .bottom, relatedBy: .equal,
-			toItem: parentViewController!.bottomLayoutGuide, attribute: .top, multiplier: 1, constant: 0 )
+			toItem: parentViewController!.bottomLayoutGuide, attribute: .top, multiplier: 1, constant: inset )
 		constraint.isActive = true
 		return constraint
 	}
