@@ -9,11 +9,11 @@ import Foundation
 
 extension String {
 	
-	var length: Int { return self.characters.count }
+	var length: Int { return count }
 	
-	func stringByReplacingCharactersInRange( _ range: NSRange, withString replacement: String ) -> String {
-		let newString = self as NSString
-		return newString.replacingCharacters( in: range, with: replacement )
+	func stringByReplacingCharactersInRange<T: StringProtocol>( _ nsRange: NSRange, withString replacement: T ) -> String {
+		guard let range = Range( nsRange, in: self ) else { return self }
+		return self.replacingCharacters( in: range, with: replacement )
 	}
 	
 	var asPhoneNumber: String {
@@ -37,7 +37,7 @@ extension String {
 	var digitsOnly: String {
 		get {
 			let range = startIndex..<endIndex
-			return replacingOccurrences(of: "[^0-9]", with: "", options: NSString.CompareOptions.regularExpression, range: range )
+			return replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression, range: range )
 		}
 	}
 	
