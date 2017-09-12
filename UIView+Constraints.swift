@@ -116,12 +116,12 @@ extension UIView {
 		
 		
 	@discardableResult
-	func centerHorizontallyInSuperview( _ constant: CGFloat = 0, priority: UILayoutPriority = 1000 ) -> NSLayoutConstraint {
+	func centerHorizontallyInSuperview( _ constant: CGFloat = 0, priority: UILayoutPriority = .required ) -> NSLayoutConstraint {
 		return centerHorizontallyWithView( superview!, constant: constant, priority: priority )
 	}
 
 	@discardableResult
-	func centerHorizontallyWithView( _ view: UIView, constant: CGFloat = 0, priority: UILayoutPriority = 1000 ) -> NSLayoutConstraint {
+	func centerHorizontallyWithView( _ view: UIView, constant: CGFloat = 0, priority: UILayoutPriority = .required ) -> NSLayoutConstraint {
 		let constraint = NSLayoutConstraint( item: self, attribute: .centerX, relatedBy: .equal,
 			toItem: view, attribute: .centerX, multiplier: 1, constant: constant )
 		constraint.priority = priority
@@ -131,11 +131,11 @@ extension UIView {
 
 	// MARK: - Vertical center
 	
-	@discardableResult func centerVerticallyInSuperview( _ constant: CGFloat = 0, priority: UILayoutPriority = 1000 ) -> NSLayoutConstraint	{
+	@discardableResult func centerVerticallyInSuperview( _ constant: CGFloat = 0, priority: UILayoutPriority = .required ) -> NSLayoutConstraint	{
 		return centerVerticallyWithView( superview!, constant: constant, priority: priority )
 	}
 	
-	@discardableResult func centerVerticallyWithView( _ view: UIView, constant: CGFloat = 0, priority: UILayoutPriority = 1000 ) -> NSLayoutConstraint	{
+	@discardableResult func centerVerticallyWithView( _ view: UIView, constant: CGFloat = 0, priority: UILayoutPriority = .required ) -> NSLayoutConstraint	{
 		let constraint = NSLayoutConstraint( item: self, attribute: .centerY, relatedBy: .equal,
 			toItem: view, attribute: .centerY, multiplier: 1, constant: constant )
 		constraint.priority = priority
@@ -158,7 +158,7 @@ extension UIView {
 	@discardableResult func align( attribute: NSLayoutAttribute, withView view: UIView,
 	                      viewAttribute: NSLayoutAttribute? = nil,
 	                      relation: NSLayoutRelation = .equal,
-	                      constant: CGFloat = 0, priority: UILayoutPriority = 1000 ) -> NSLayoutConstraint {
+	                      constant: CGFloat = 0, priority: UILayoutPriority = .required ) -> NSLayoutConstraint {
 		
 		let constraint = NSLayoutConstraint( item: self, attribute: attribute, relatedBy: relation,
 		                                     toItem: view, attribute: viewAttribute ?? attribute, multiplier: 1, constant: constant )

@@ -26,7 +26,7 @@ extension UIView {
 		let nib = UINib( nibName: xibFile, bundle: nil )
 		let views = nib.instantiate( withOwner: nil, options: nil ) as [ AnyObject ]
 
-		guard let selfObject = views.first( where : { type( of: $0 ) === self } )
+		guard let selfObject = views.first( where : { type( of: $0 ) == self } )
 			else { return nil }
 
 		return helperConvertObject( selfObject, type: self )

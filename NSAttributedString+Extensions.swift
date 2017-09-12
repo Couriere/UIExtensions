@@ -24,7 +24,7 @@ extension NSMutableAttributedString {
 		let attrStringWithImage = NSAttributedString( attachment: textAttachment )
 		
 		let safeLocation = max( 0, min( self.length - 1, location ))
-		let font = attribute( NSFontAttributeName, at: safeLocation, effectiveRange: nil ) as? UIFont ?? UIFont.systemFont( ofSize: UIFont.systemFontSize )
+		let font = attribute( .font, at: safeLocation, effectiveRange: nil ) as? UIFont ?? UIFont.systemFont( ofSize: UIFont.systemFontSize )
 		let mid = font.descender + font.capHeight
 		textAttachment.bounds = CGRect( x: 0, y: font.descender - image.size.height / 2 + mid + 2 - verticalOffset,
 				width: image.size.width + 1, height: image.size.height ).integral
@@ -40,7 +40,7 @@ extension NSAttributedString {
 		return self as? NSMutableAttributedString ?? NSMutableAttributedString( attributedString: self )
 	}
 
-	func setAttributes( _ attributes: [ String: AnyObject ] ) -> NSAttributedString {
+	func setAttributes( _ attributes: [ NSAttributedStringKey: AnyObject ] ) -> NSAttributedString {
 		
 		let mutable = self.mutable()
 		let range = NSMakeRange( 0, mutable.length )
@@ -52,7 +52,7 @@ extension NSAttributedString {
 		
 		let mutable = self.mutable()
 		let range = NSMakeRange( 0, mutable.length )
-		mutable.addAttribute( NSForegroundColorAttributeName, value: color, range: range )
+		mutable.addAttribute( .foregroundColor, value: color, range: range )
 		return mutable
 	}
 
@@ -60,26 +60,26 @@ extension NSAttributedString {
 		
 		let mutable = self.mutable()
 		let range = NSMakeRange( 0, mutable.length )
-		mutable.addAttribute( NSFontAttributeName, value: font, range: range )
+		mutable.addAttribute( .font, value: font, range: range )
 		return mutable
 	}
 }
 
 extension String {
 	
-	func setAttributes( _ attributes: [ String: AnyObject ] ) -> NSAttributedString {
+	func setAttributes( _ attributes: [ NSAttributedStringKey: AnyObject ] ) -> NSAttributedString {
 		let result = NSMutableAttributedString( string: self, attributes: attributes )
 		return result
 	}
 	
 
 	func color( _ color: UIColor ) -> NSAttributedString {
-		let result = NSMutableAttributedString( string: self, attributes: [ NSForegroundColorAttributeName: color ] )
+		let result = NSMutableAttributedString( string: self, attributes: [ .foregroundColor: color ] )
 		return result
 	}
 	
 	func font( _ font: UIFont ) -> NSAttributedString {
-		let result = NSMutableAttributedString( string: self, attributes: [ NSFontAttributeName: font ] )
+		let result = NSMutableAttributedString( string: self, attributes: [ .font: font ] )
 		return result
 	}
 }
