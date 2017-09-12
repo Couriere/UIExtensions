@@ -20,16 +20,16 @@ extension String {
 		
 		guard length >= 10 else { return self }
 		
-		let tendigits = substring( from: characters.index( endIndex, offsetBy: -10 ))
+		let tendigits = prefix( 10 )
 		let index = tendigits.startIndex
-		let triadIndex = tendigits.characters.index( index, offsetBy: 3 )
-		let firstPairIndex = tendigits.characters.index( index, offsetBy: 6 )
-		let secondPairIndex = tendigits.characters.index( index, offsetBy: 8 )
+		let triadIndex = tendigits.index( index, offsetBy: 3 )
+		let firstPairIndex = tendigits.index( index, offsetBy: 6 )
+		let secondPairIndex = tendigits.index( index, offsetBy: 8 )
 
-		let city = tendigits.substring( to: triadIndex )
-		let triad = tendigits.substring( with: triadIndex..<firstPairIndex )
-		let firstpair = tendigits.substring( with: firstPairIndex..<secondPairIndex )
-		let secondpair = tendigits.substring( with: secondPairIndex..<tendigits.characters.endIndex )
+		let city = tendigits[ ..<triadIndex ]
+		let triad = tendigits[ triadIndex..<firstPairIndex ]
+		let firstpair = tendigits[ firstPairIndex..<secondPairIndex ]
+		let secondpair = tendigits[ secondPairIndex... ]
 		
 		return "+7 \( city ) \( triad ) \( firstpair ) \( secondpair )"
 	}
@@ -43,12 +43,7 @@ extension String {
 	
 	var phoneNumber: String {
 		get {
-			let number = digitsOnly
-			let PhoneNumberLength = 10
-			let index = number.length - PhoneNumberLength
-			if index <= 0 { return number }
-			
-			return number.substring( from: number.characters.index(number.startIndex, offsetBy: index) )
+			return String( digitsOnly.prefix( 10 ))
 		}
 	}
 	

@@ -21,9 +21,9 @@ extension UIColor {
 		let items = hex.components( separatedBy: UIColor.invertedHexCharactersSet )
 		guard let hexString = items.first( where: { $0.characters.count >= 6 } ) else { return nil }
 
-		let colorString = hexString.substring( to: hexString.characters.index( hexString.startIndex, offsetBy: 6 ))
+		let colorString = hexString[ ..<hexString.index( hexString.startIndex, offsetBy: 6 ) ]
 
-		let scanner = Scanner( string: colorString )
+		let scanner = Scanner( string: String( colorString ))
 		var hexNum: UInt32 = 0
 
 		guard scanner.scanHexInt32( &hexNum ) else { return nil }
