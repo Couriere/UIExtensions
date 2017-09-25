@@ -20,7 +20,7 @@ extension String {
 		
 		guard length >= 10 else { return self }
 		
-		let tendigits = prefix( 10 )
+		let tendigits = suffix( 10 )
 		let index = tendigits.startIndex
 		let triadIndex = tendigits.index( index, offsetBy: 3 )
 		let firstPairIndex = tendigits.index( index, offsetBy: 6 )
@@ -43,7 +43,7 @@ extension String {
 	
 	var phoneNumber: String {
 		get {
-			return String( digitsOnly.prefix( 10 ))
+			return String( digitsOnly.suffix( 10 ))
 		}
 	}
 	
