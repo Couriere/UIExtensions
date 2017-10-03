@@ -46,8 +46,6 @@ extension String {
 			return String( digitsOnly.suffix( 10 ))
 		}
 	}
-	
-	var rub: String { return self + "₽" }
 }
 
 
