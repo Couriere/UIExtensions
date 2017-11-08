@@ -9,7 +9,7 @@ import UIKit
 
 extension Calendar: Then {}
 
-extension Date {
+public extension Date {
 	// ..<
 	func isBetweenDate( _ firstDate: Date, andDate secondDate: Date ) -> Bool {
 		let startResult = firstDate.compare( self )
@@ -33,7 +33,7 @@ extension Date {
 	}
 	
 	/// Returns same date with time set to a start of specified hour.
-	public func startOfHour( _ hour: Int ) -> Date {
+	func startOfHour( _ hour: Int ) -> Date {
 
 		let components: Set<Calendar.Component> = [ .year, .month, .day, .hour, .minute, .second, .weekday ]
 		var dateComponents = Date.gregorianRUCalendar.dateComponents( components, from: self )
@@ -47,7 +47,7 @@ extension Date {
 	
 	/// Returns start of the day, same date with time 00:00:00.
 	/// - parameter timeZone: Use this time zone. If `nil` use system time zone.
-	public func startOfDay( _ timeZone: TimeZone? = nil ) -> Date {
+	func startOfDay( _ timeZone: TimeZone? = nil ) -> Date {
 		
 		var calendar = Calendar( identifier: .gregorian )
 		if let timeZone = timeZone { calendar.timeZone = timeZone }

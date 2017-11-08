@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-extension CGRect {
+public extension CGRect {
 
 	/// Center of rect property.
 	var center: CGPoint {

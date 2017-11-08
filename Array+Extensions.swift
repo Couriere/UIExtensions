@@ -6,7 +6,7 @@
 //
 import Foundation
 
-extension Array {
+public extension Array {
 	subscript ( safe index: Int ) -> Element? {
 		return indices ~= index ? self[ index ] : nil
 	}
@@ -19,7 +19,7 @@ extension Array {
 	}
 }
 
-extension Array where Element: Equatable {
+public extension Array where Element: Equatable {
 	
 	mutating func remove( _ element: Element ) {
 		if let index = self.index( of: element ) {
@@ -35,7 +35,7 @@ extension Array where Element: Equatable {
 }
 
 
-extension Set {
+public extension Set {
 	mutating func toggle( _ member: Element ) {
 		if contains( member ) { remove(member) } else { insert(member) }
 	}

@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
 	
 	var length: Int { return count }
 	
@@ -48,6 +48,7 @@ extension String {
 	}
 }
 
+#if BUILD_AS_SUBMODULE
 
 /**
 	SHA Encoding
@@ -80,6 +81,8 @@ extension String {
 		return Data( bytes: result, count: digestLength )
 	}
 }
+#endif
+
 
 
 
@@ -94,7 +97,7 @@ wordForms - массив из трёх вариантов существител
 ( "Стол", "Стола", "Столов" )
 */
 
-func pluralString( forNumber number: Int, fromWordForms: ( String, String, String ) ) -> String	{
+public func pluralString( forNumber number: Int, fromWordForms: ( String, String, String ) ) -> String	{
 	
 	let correctForm: String
 	
@@ -115,7 +118,7 @@ func pluralString( forNumber number: Int, fromWordForms: ( String, String, Strin
 	return correctForm
 }
 
-extension String {
+public extension String {
 	
 	/**
 	Возвращает корректную форму существительного для числительного

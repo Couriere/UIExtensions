@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension URL {
+public extension URL {
 	
 	var URLByDeletingQuery: URL? {
 		var components = URLComponents( url: self, resolvingAgainstBaseURL: false )

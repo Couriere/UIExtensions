@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension Dictionary {
+public extension Dictionary {
 
 	init(_ elements: [Element]){
 		self.init()
@@ -46,7 +46,7 @@ extension Dictionary {
 	}
 }
 
-func + <K,V>( left: Dictionary<K,V>, right: Dictionary<K,V> ) -> Dictionary<K,V> {
+public func + <K,V>( left: Dictionary<K,V>, right: Dictionary<K,V> ) -> Dictionary<K,V> {
 	var map = left
 	map.addEntriesFromDictionary( right )
 	return map

@@ -28,7 +28,7 @@ import UIKit
 ///	Reusable identifier can be changed by overriding `class var identifier: String`
 ///	In that case cells, created from `xib`, must change cell identifier in its `xib` accordingly.
 
-extension UITableViewCell {
+public extension UITableViewCell {
 	
 	class var identifier: String { return NSStringFromClass( self ).components( separatedBy: "." ).last! }
 	

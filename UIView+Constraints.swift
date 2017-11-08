@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIView {
+public extension UIView {
 	
 	var parentViewController: UIViewController? {
 

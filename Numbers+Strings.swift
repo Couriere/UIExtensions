@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension Int {
+public extension Int {
 	var string: String {
 		return "\( self )"
 	}
@@ -47,7 +47,7 @@ extension Int {
 	var rub: String { return "\( self )₽" }
 }
 
-extension Float {
+public extension Float {
 	func toString() -> String {
 		return "\( self )"
 	}
@@ -56,7 +56,7 @@ extension Float {
 	}
 }
 
-extension TimeInterval {
+public extension TimeInterval {
 	var toString: String {
 		let seconds = Int( isFinite ? self : 0  )
 		return String( format: "%.2d:%.2d:%.2d", seconds / 3600, seconds % 3600 / 60, seconds % 60 )
@@ -65,10 +65,10 @@ extension TimeInterval {
 
 
 infix operator |=: AssignmentPrecedence
-func |= ( left: inout Bool, right: Bool ) {
+public func |= ( left: inout Bool, right: Bool ) {
 	left = left || right
 }
 
-func *= ( left: inout CGRect, right: CGFloat ) {
+public func *= ( left: inout CGRect, right: CGFloat ) {
 	left = CGRect( x: left.origin.x * right, y: left.origin.y * right, width: left.size.width * right, height: left.size.height * right )
 }

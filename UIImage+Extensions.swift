@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIImage {
+public extension UIImage {
 
 	convenience init( size: CGSize = CGSize( width: 1, height: 1 ), color: UIColor ) {
 		let rect = CGRect( x: 0, y: 0, width: size.width, height: size.height )
@@ -20,7 +20,7 @@ extension UIImage {
 }
 
 
-extension UIImage {
+public extension UIImage {
 
 	//////
 	/// Apply `color` to all non-transparent pixels in image.

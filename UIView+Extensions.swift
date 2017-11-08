@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIView {
+public extension UIView {
 
 	/**
 	Load xib in memory.

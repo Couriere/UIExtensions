@@ -13,7 +13,7 @@ public func +( left: NSAttributedString, right: NSAttributedString ) -> NSAttrib
 	return mutable
 }
 
-extension NSMutableAttributedString {
+public extension NSMutableAttributedString {
 	
 	/// Вставляет изображение в строку и устанавливает его
 	/// вертикально в центр строки.
@@ -34,7 +34,7 @@ extension NSMutableAttributedString {
 }
 
 
-extension NSAttributedString {
+public extension NSAttributedString {
 
 	func mutable() -> NSMutableAttributedString {
 		return self as? NSMutableAttributedString ?? NSMutableAttributedString( attributedString: self )
@@ -65,7 +65,7 @@ extension NSAttributedString {
 	}
 }
 
-extension String {
+public extension String {
 	
 	func setAttributes( _ attributes: [ NSAttributedStringKey: AnyObject ] ) -> NSAttributedString {
 		let result = NSMutableAttributedString( string: self, attributes: attributes )

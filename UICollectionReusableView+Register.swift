@@ -27,7 +27,7 @@ import UIKit
 ///	Reusable identifier can be changed by overriding `class var identifier: String`
 ///	In that case reusable views, created from `xib`, must change cell identifier in its `xib` accordingly.
 
-extension UICollectionReusableView {
+public extension UICollectionReusableView {
 	
 	class var identifier: String { return NSStringFromClass( self ).components( separatedBy: "." ).last! }
 	
@@ -74,7 +74,7 @@ extension UICollectionReusableView {
 ///	Reusable identifier can be changed by overriding `class var identifier: String`
 ///	In that case cells, created from `xib`, must change cell identifier in its `xib` accordingly.
 
-extension UICollectionViewCell {
+public extension UICollectionViewCell {
 	
 	static func registerClass( in collection: UICollectionView ) {
 		collection.register( self, forCellWithReuseIdentifier: identifier )

@@ -7,9 +7,9 @@
 
 import UIKit
 
-typealias UIAlertControllerHandler = ( _ alertController: UIAlertController, _ selectedIndex: Int ) -> Void
+public typealias UIAlertControllerHandler = ( _ alertController: UIAlertController, _ selectedIndex: Int ) -> Void
 
-extension UIAlertController {
+public extension UIAlertController {
 	
 	class func showAlertControllerWithTitle( _ title: String?, message: String?, buttonTitles: [ String ]? = nil, parentController: UIViewController? = nil, handler: UIAlertControllerHandler? = nil ) {
 		dispatch_main_thread_sync {
@@ -43,7 +43,7 @@ extension UIAlertController {
 	}
 }
 
-extension UIViewController {
+public extension UIViewController {
 	func showUIAlertControllerWithTitle( _ title: String?, message: String?, buttonTitles: [ String ]? = nil, handler: UIAlertControllerHandler? = nil ) {
 		UIAlertController.showAlertControllerWithTitle( title, message: message, buttonTitles: buttonTitles, parentController: self, handler: handler )
 	}

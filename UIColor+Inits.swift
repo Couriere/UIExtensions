@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIColor {
+public extension UIColor {
 
 	convenience init( intRed: Int, green: Int, blue: Int, alpha: CGFloat = 1 ) {
 		self.init( red: CGFloat( intRed ) / 255, green: CGFloat( green ) / 255, blue: CGFloat( blue ) / 255, alpha: alpha )
@@ -40,7 +40,7 @@ extension UIColor {
 	}
 
 
-	private convenience init( int: UInt32, alpha: CGFloat = 1 ) {
+	convenience init( int: UInt32, alpha: CGFloat = 1 ) {
 
 		let red = Int( ( int >> 16 ) & 0xFF )
 		let green = Int( ( int >> 8 ) & 0xFF )
@@ -50,7 +50,7 @@ extension UIColor {
 	}
 }
 
-extension UIColor {
+public extension UIColor {
 
 	/// Returns contrast color to receivers one.
 	var contrast: UIColor {

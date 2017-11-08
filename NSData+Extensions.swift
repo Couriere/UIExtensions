@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension Data {
+public extension Data {
 
 	/// Hexadecimal representation of NSData.
 	var hexadecimalString: String {

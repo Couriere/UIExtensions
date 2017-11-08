@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIViewController {
+public extension UIViewController {
 	
 	static var topPresentedViewController: UIViewController? {
 		var controller = UIApplication.shared.keyWindow?.rootViewController
@@ -77,7 +77,7 @@ extension UIViewController {
 	}
 }
 
-extension UINavigationController {
+public extension UINavigationController {
 	
 	func pushViewController( _ viewController: UIViewController, animated: Bool, completion: @escaping () -> Void ) {
 			
@@ -114,7 +114,7 @@ extension UINavigationController {
 
 
 /// Pre iOS7 push/pop animation style
-extension UINavigationController {
+public extension UINavigationController {
 	func pushViewControllerRetro( _ viewController: UIViewController ) {
 		let transition = CATransition()
 		transition.duration = 0.25
@@ -139,8 +139,8 @@ extension UINavigationController {
 }
 
 /// Custom segues for retro Push/Pop
-class RetroPushSegue: UIStoryboardSegue {
-	override func perform() {
+public class RetroPushSegue: UIStoryboardSegue {
+	public override func perform() {
 		
 		guard let navigationController = self.source.navigationController else {
 			assertionFailure( "Must be called within UINavigationController" )
@@ -150,8 +150,8 @@ class RetroPushSegue: UIStoryboardSegue {
 	}
 }
 
-class RetroPushSegueUnwind: UIStoryboardSegue {
-	override func perform() {
+public class RetroPushSegueUnwind: UIStoryboardSegue {
+	public override func perform() {
 		
 		guard let navigationController = self.source.navigationController else {
 			assertionFailure( "Must be called within UINavigationController" )

@@ -94,7 +94,7 @@ extension CGSize: Then {}
 extension CGVector: Then {}
 
 
-extension Optional {
+public extension Optional {
 
 	/// Executes given block with unwrapped value of optional as parameter when said optional is not `nil`.
 	///
@@ -121,7 +121,7 @@ extension Optional {
 ///			.then { print( "This will not be executed" ) }
 ///			.else { print( "This line will be printed" ) }
 ///
-extension Bool {
+public extension Bool {
 
 	/// Executes given block when self is equal to `true`.
 	/// Can be chained.
@@ -155,7 +155,7 @@ extension Bool {
 ///			.then { print( "This will not be executed" ) }
 ///			.else { print( "This line will be printed" ) }
 ///
-extension Optional where Wrapped == Bool {
+public extension Optional where Wrapped == Bool {
 
 	/// Executes given block when self is equal to `true`.
 	/// Can be chained.

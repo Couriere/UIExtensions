@@ -5,8 +5,9 @@
 //  Copyright © 2017. All rights reserved.
 //
 
+import UIKit
 
-extension UILabel {
+public extension UILabel {
 
 	/// Changes UILabel text with crossfade effect.
 	/// Transition is noop if new text is equal to old one.

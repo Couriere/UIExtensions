@@ -11,7 +11,7 @@ import UIKit
 /// Source:
 /// https://gist.github.com/natecook1000/b0285b518576b22c4dc8
 ///
-extension Timer {
+public extension Timer {
 	/**
 	Creates and schedules a one-time `NSTimer` instance.
 	
