@@ -175,3 +175,12 @@ public extension Optional where Wrapped == Bool {
 	}
 }
 
+
+extension Sequence {
+
+	public func pefrorm( _ body: (Element) throws -> Void ) rethrows -> Self {
+		try self.forEach( body )
+		return self
+	}
+}
+
