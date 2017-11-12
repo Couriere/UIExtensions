@@ -1,1 +1,13 @@
 *.DS_Store
+
+
+#ignore Carthage 
+Carthage/
+
+#ignore shared data
+*.xcshareddata
+*.xcuserdata
+*.xcuserstate
+timeline.xctimeline
+contents.xcworkspacedata
+contents.xcplayground
