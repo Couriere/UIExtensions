@@ -12,9 +12,12 @@ Dispatch block to main threah synchronously. Preventing deadlock in case, when w
 
 - parameter block: Block to be dispatched.
 */
-public func dispatch_main_thread_sync( _ block: ()->() )
-{
-	if Thread.isMainThread { block() } else { DispatchQueue.main.sync(execute: block ) }
+public func dispatch_main_thread_sync<T>( _ block: () -> T ) -> T {
+	if Thread.isMainThread {
+		return block()
+	} else {
+		return DispatchQueue.main.sync( execute: block )
+	}
 }
 
 public extension DispatchQueue {

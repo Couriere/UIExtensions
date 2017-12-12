@@ -103,10 +103,11 @@ public extension Optional {
 	///		let nilOptional: Int? = nil
 	///		nilOptional.then { print( $0 ) }  => Nothing happens
 	///
-	func then( _ block: ( Wrapped ) -> Void ) {
+	@discardableResult
+	func then<T>( _ block: ( Wrapped ) throws -> T ) rethrows -> T? {
 		switch self {
-		case .none: return
-		case .some( let value ): block( value )
+		case .none: return nil
+		case .some( let value ): return try block( value )
 		}
 	}
 }
