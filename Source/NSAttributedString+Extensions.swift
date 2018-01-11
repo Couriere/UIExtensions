@@ -24,7 +24,12 @@ public extension NSMutableAttributedString {
 		let attrStringWithImage = NSAttributedString( attachment: textAttachment )
 		
 		let safeLocation = max( 0, min( self.length - 1, location ))
-		let font = attribute( .font, at: safeLocation, effectiveRange: nil ) as? UIFont ?? UIFont.systemFont( ofSize: UIFont.systemFontSize )
+		#if os(tvOS)
+			let systemFontSize: CGFloat = 12
+		#else
+			let systemFontSize = UIFont.systemFontSize
+		#endif
+		let font = attribute( .font, at: safeLocation, effectiveRange: nil ) as? UIFont ?? UIFont.systemFont( ofSize: systemFontSize )
 		let mid = font.descender + font.capHeight
 		textAttachment.bounds = CGRect( x: 0, y: font.descender - image.size.height / 2 + mid + 2 - verticalOffset,
 				width: image.size.width + 1, height: image.size.height ).integral

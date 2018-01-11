@@ -32,6 +32,29 @@
 		AA014FD61FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBF1FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift */; };
 		AA014FD71FB87BCC00E3CC35 /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FC01FB87BCC00E3CC35 /* UILabel+Extensions.swift */; };
 		AA014FD81FB87BCC00E3CC35 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA014FC11FB87BCC00E3CC35 /* Info.plist */; };
+		AAD08DE420076FF50075B57E /* UIExtensions_tvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AAD08DE8200770160075B57E /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAB1FB87BCC00E3CC35 /* Array+Extensions.swift */; };
+		AAD08DE9200770160075B57E /* NSURL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAC1FB87BCC00E3CC35 /* NSURL+Extensions.swift */; };
+		AAD08DEA200770160075B57E /* NSDate+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAD1FB87BCC00E3CC35 /* NSDate+Extensions.swift */; };
+		AAD08DEB200770160075B57E /* UIColor+Inits.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAE1FB87BCC00E3CC35 /* UIColor+Inits.swift */; };
+		AAD08DEC200770160075B57E /* Protocol+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAF1FB87BCC00E3CC35 /* Protocol+Extensions.swift */; };
+		AAD08DED200770160075B57E /* UIAlertController+Blocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB01FB87BCC00E3CC35 /* UIAlertController+Blocks.swift */; };
+		AAD08DEE200770160075B57E /* CoreGraphics+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB11FB87BCC00E3CC35 /* CoreGraphics+Extensions.swift */; };
+		AAD08DEF200770160075B57E /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB21FB87BCC00E3CC35 /* UIView+Extensions.swift */; };
+		AAD08DF0200770160075B57E /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB31FB87BCC00E3CC35 /* String+Extensions.swift */; };
+		AAD08DF1200770160075B57E /* NSData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB41FB87BCC00E3CC35 /* NSData+Extensions.swift */; };
+		AAD08DF2200770160075B57E /* NSTimer+Blocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB51FB87BCC00E3CC35 /* NSTimer+Blocks.swift */; };
+		AAD08DF3200770160075B57E /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB61FB87BCC00E3CC35 /* UIImage+Extensions.swift */; };
+		AAD08DF4200770160075B57E /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB71FB87BCC00E3CC35 /* UIDevice+Extensions.swift */; };
+		AAD08DF5200770160075B57E /* UINavigationController+Blocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB81FB87BCC00E3CC35 /* UINavigationController+Blocks.swift */; };
+		AAD08DF6200770160075B57E /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB91FB87BCC00E3CC35 /* NSAttributedString+Extensions.swift */; };
+		AAD08DF7200770160075B57E /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBA1FB87BCC00E3CC35 /* UIView+Constraints.swift */; };
+		AAD08DF8200770160075B57E /* GDC+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBB1FB87BCC00E3CC35 /* GDC+Extensions.swift */; };
+		AAD08DF9200770160075B57E /* UITableViewCell+Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBC1FB87BCC00E3CC35 /* UITableViewCell+Register.swift */; };
+		AAD08DFA200770160075B57E /* Numbers+Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBD1FB87BCC00E3CC35 /* Numbers+Strings.swift */; };
+		AAD08DFB200770160075B57E /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBE1FB87BCC00E3CC35 /* Dictionary+Extensions.swift */; };
+		AAD08DFC200770160075B57E /* UICollectionReusableView+Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBF1FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift */; };
+		AAD08DFD200770160075B57E /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FC01FB87BCC00E3CC35 /* UILabel+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +95,9 @@
 		AA014FBF1FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionReusableView+Register.swift"; sourceTree = "<group>"; };
 		AA014FC01FB87BCC00E3CC35 /* UILabel+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Extensions.swift"; sourceTree = "<group>"; };
 		AA014FC11FB87BCC00E3CC35 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AAD08DE020076FF40075B57E /* UIExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIExtensions_tvOS.h; sourceTree = "<group>"; };
+		AAD08DE320076FF50075B57E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +116,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AAD08DDC20076FF40075B57E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -99,6 +132,7 @@
 				AA014FAA1FB87BCC00E3CC35 /* Source */,
 				AA014F9D1FB87A0500E3CC35 /* UIExtensionsTests */,
 				AA014FC11FB87BCC00E3CC35 /* Info.plist */,
+				AAD08DE120076FF50075B57E /* UIExtensions tvOS */,
 				AA014F911FB87A0500E3CC35 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -108,6 +142,7 @@
 			children = (
 				AA014F901FB87A0500E3CC35 /* UIExtensions.framework */,
 				AA014F991FB87A0500E3CC35 /* UIExtensionsTests.xctest */,
+				AAD08DE020076FF40075B57E /* UIExtensions.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -150,6 +185,15 @@
 			path = Source;
 			sourceTree = "<group>";
 		};
+		AAD08DE120076FF50075B57E /* UIExtensions tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */,
+				AAD08DE320076FF50075B57E /* Info.plist */,
+			);
+			path = "UIExtensions tvOS";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -160,12 +204,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AAD08DDD20076FF40075B57E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAD08DE420076FF50075B57E /* UIExtensions_tvOS.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		AA014F8F1FB87A0500E3CC35 /* UIExtensions */ = {
+		AA014F8F1FB87A0500E3CC35 /* UIExtensions iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AA014FA41FB87A0500E3CC35 /* Build configuration list for PBXNativeTarget "UIExtensions" */;
+			buildConfigurationList = AA014FA41FB87A0500E3CC35 /* Build configuration list for PBXNativeTarget "UIExtensions iOS" */;
 			buildPhases = (
 				AA014F8B1FB87A0500E3CC35 /* Sources */,
 				AA014F8C1FB87A0500E3CC35 /* Frameworks */,
@@ -176,7 +228,7 @@
 			);
 			dependencies = (
 			);
-			name = UIExtensions;
+			name = "UIExtensions iOS";
 			productName = UIExtensions;
 			productReference = AA014F901FB87A0500E3CC35 /* UIExtensions.framework */;
 			productType = "com.apple.product-type.framework";
@@ -199,6 +251,24 @@
 			productReference = AA014F991FB87A0500E3CC35 /* UIExtensionsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		AAD08DDF20076FF40075B57E /* UIExtensions tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AAD08DE520076FF50075B57E /* Build configuration list for PBXNativeTarget "UIExtensions tvOS" */;
+			buildPhases = (
+				AAD08DDB20076FF40075B57E /* Sources */,
+				AAD08DDC20076FF40075B57E /* Frameworks */,
+				AAD08DDD20076FF40075B57E /* Headers */,
+				AAD08DDE20076FF40075B57E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "UIExtensions tvOS";
+			productName = "UIExtensions tvOS";
+			productReference = AAD08DE020076FF40075B57E /* UIExtensions.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -217,6 +287,10 @@
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
 					};
+					AAD08DDF20076FF40075B57E = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = AA014F8A1FB87A0400E3CC35 /* Build configuration list for PBXProject "UIExtensions" */;
@@ -231,7 +305,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AA014F8F1FB87A0500E3CC35 /* UIExtensions */,
+				AA014F8F1FB87A0500E3CC35 /* UIExtensions iOS */,
+				AAD08DDF20076FF40075B57E /* UIExtensions tvOS */,
 				AA014F981FB87A0500E3CC35 /* UIExtensionsTests */,
 			);
 		};
@@ -247,6 +322,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		AA014F971FB87A0500E3CC35 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAD08DDE20076FF40075B57E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -293,12 +375,41 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AAD08DDB20076FF40075B57E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAD08DF1200770160075B57E /* NSData+Extensions.swift in Sources */,
+				AAD08DF8200770160075B57E /* GDC+Extensions.swift in Sources */,
+				AAD08DFD200770160075B57E /* UILabel+Extensions.swift in Sources */,
+				AAD08DEE200770160075B57E /* CoreGraphics+Extensions.swift in Sources */,
+				AAD08DFA200770160075B57E /* Numbers+Strings.swift in Sources */,
+				AAD08DEA200770160075B57E /* NSDate+Extensions.swift in Sources */,
+				AAD08DF3200770160075B57E /* UIImage+Extensions.swift in Sources */,
+				AAD08DEC200770160075B57E /* Protocol+Extensions.swift in Sources */,
+				AAD08DFB200770160075B57E /* Dictionary+Extensions.swift in Sources */,
+				AAD08DED200770160075B57E /* UIAlertController+Blocks.swift in Sources */,
+				AAD08DF4200770160075B57E /* UIDevice+Extensions.swift in Sources */,
+				AAD08DF0200770160075B57E /* String+Extensions.swift in Sources */,
+				AAD08DEB200770160075B57E /* UIColor+Inits.swift in Sources */,
+				AAD08DE9200770160075B57E /* NSURL+Extensions.swift in Sources */,
+				AAD08DEF200770160075B57E /* UIView+Extensions.swift in Sources */,
+				AAD08DF2200770160075B57E /* NSTimer+Blocks.swift in Sources */,
+				AAD08DE8200770160075B57E /* Array+Extensions.swift in Sources */,
+				AAD08DF9200770160075B57E /* UITableViewCell+Register.swift in Sources */,
+				AAD08DF6200770160075B57E /* NSAttributedString+Extensions.swift in Sources */,
+				AAD08DF5200770160075B57E /* UINavigationController+Blocks.swift in Sources */,
+				AAD08DFC200770160075B57E /* UICollectionReusableView+Register.swift in Sources */,
+				AAD08DF7200770160075B57E /* UIView+Constraints.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		AA014F9C1FB87A0500E3CC35 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = AA014F8F1FB87A0500E3CC35 /* UIExtensions */;
+			target = AA014F8F1FB87A0500E3CC35 /* UIExtensions iOS */;
 			targetProxy = AA014F9B1FB87A0500E3CC35 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -431,7 +542,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.couriere.uiextensions;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = UIExtensions;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -452,7 +563,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.couriere.uiextensions;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = UIExtensions;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -487,6 +598,52 @@
 			};
 			name = Release;
 		};
+		AAD08DE620076FF50075B57E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 96382M8Q3S;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "UIExtensions tvOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ru.couriere.uiextensions;
+				PRODUCT_NAME = UIExtensions;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		AAD08DE720076FF50075B57E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 96382M8Q3S;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "UIExtensions tvOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ru.couriere.uiextensions;
+				PRODUCT_NAME = UIExtensions;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -499,7 +656,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AA014FA41FB87A0500E3CC35 /* Build configuration list for PBXNativeTarget "UIExtensions" */ = {
+		AA014FA41FB87A0500E3CC35 /* Build configuration list for PBXNativeTarget "UIExtensions iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AA014FA51FB87A0500E3CC35 /* Debug */,
@@ -513,6 +670,15 @@
 			buildConfigurations = (
 				AA014FA81FB87A0500E3CC35 /* Debug */,
 				AA014FA91FB87A0500E3CC35 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AAD08DE520076FF50075B57E /* Build configuration list for PBXNativeTarget "UIExtensions tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAD08DE620076FF50075B57E /* Debug */,
+				AAD08DE720076FF50075B57E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
