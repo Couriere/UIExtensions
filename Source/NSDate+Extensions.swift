@@ -65,5 +65,30 @@ public extension Date {
 	static let gregorianRUCalendar = Calendar( identifier: .gregorian ).with {
 		$0.locale = Locale( identifier: "ru_RU" )
 	}
+}
 
+/// Convenience time properties.
+/// Usage: Date() + 2.days + 1.hour
+public extension Int {
+	
+	public var minute: TimeInterval { return TimeInterval( self * 60 ) }
+	public var minutes: TimeInterval { return TimeInterval( self * 60 ) }
+	
+	public var hour: TimeInterval { return TimeInterval( self * 60 * 60 ) }
+	public var hours: TimeInterval { return TimeInterval( self * 60 * 60 ) }
+	
+	public var day: TimeInterval { return TimeInterval( self * 24 * 60 * 60 ) }
+	public var days: TimeInterval { return TimeInterval( self * 24 * 60 * 60 ) }
+}
+
+public extension TimeInterval {
+	
+	public var minute: TimeInterval { return self * 60 }
+	public var minutes: TimeInterval { return self * 60 }
+	
+	public var hour: TimeInterval { return self * 60 * 60 }
+	public var hours: TimeInterval { return self * 60 * 60 }
+	
+	public var day: TimeInterval { return self * 24 * 60 * 60 }
+	public var days: TimeInterval { return self * 24 * 60 * 60 }
 }
