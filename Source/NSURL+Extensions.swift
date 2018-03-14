@@ -1,6 +1,5 @@
 //
 //  NSURL+Extensions.swift
-//  MegafonTV
 //
 //  Created by Vladimir Kazantsev on 19/02/16.
 //  Copyright © 2016 MC2Soft. All rights reserved.

@@ -55,6 +55,10 @@
 		AAD08DFB200770160075B57E /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBE1FB87BCC00E3CC35 /* Dictionary+Extensions.swift */; };
 		AAD08DFC200770160075B57E /* UICollectionReusableView+Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBF1FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift */; };
 		AAD08DFD200770160075B57E /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FC01FB87BCC00E3CC35 /* UILabel+Extensions.swift */; };
+		D73FC32F2059632D00F239D0 /* UIStackView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73FC32D2059632C00F239D0 /* UIStackView+Extensions.swift */; };
+		D73FC3302059632D00F239D0 /* UIStackView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73FC32D2059632C00F239D0 /* UIStackView+Extensions.swift */; };
+		D73FC3312059632D00F239D0 /* UIStoryboard+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73FC32E2059632C00F239D0 /* UIStoryboard+Extensions.swift */; };
+		D73FC3322059632D00F239D0 /* UIStoryboard+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73FC32E2059632C00F239D0 /* UIStoryboard+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +102,8 @@
 		AAD08DE020076FF40075B57E /* UIExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIExtensions_tvOS.h; sourceTree = "<group>"; };
 		AAD08DE320076FF50075B57E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D73FC32D2059632C00F239D0 /* UIStackView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extensions.swift"; sourceTree = "<group>"; };
+		D73FC32E2059632C00F239D0 /* UIStoryboard+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +187,8 @@
 				AA014FBE1FB87BCC00E3CC35 /* Dictionary+Extensions.swift */,
 				AA014FBF1FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift */,
 				AA014FC01FB87BCC00E3CC35 /* UILabel+Extensions.swift */,
+				D73FC32D2059632C00F239D0 /* UIStackView+Extensions.swift */,
+				D73FC32E2059632C00F239D0 /* UIStoryboard+Extensions.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -348,6 +356,7 @@
 				AA014FC81FB87BCC00E3CC35 /* CoreGraphics+Extensions.swift in Sources */,
 				AA014FD41FB87BCC00E3CC35 /* Numbers+Strings.swift in Sources */,
 				AA014FC41FB87BCC00E3CC35 /* NSDate+Extensions.swift in Sources */,
+				D73FC32F2059632D00F239D0 /* UIStackView+Extensions.swift in Sources */,
 				AA014FCD1FB87BCC00E3CC35 /* UIImage+Extensions.swift in Sources */,
 				AA014FC61FB87BCC00E3CC35 /* Protocol+Extensions.swift in Sources */,
 				AA014FD51FB87BCC00E3CC35 /* Dictionary+Extensions.swift in Sources */,
@@ -359,6 +368,7 @@
 				AA014FC91FB87BCC00E3CC35 /* UIView+Extensions.swift in Sources */,
 				AA014FCC1FB87BCC00E3CC35 /* NSTimer+Blocks.swift in Sources */,
 				AA014FC21FB87BCC00E3CC35 /* Array+Extensions.swift in Sources */,
+				D73FC3312059632D00F239D0 /* UIStoryboard+Extensions.swift in Sources */,
 				AA014FD31FB87BCC00E3CC35 /* UITableViewCell+Register.swift in Sources */,
 				AA014FD01FB87BCC00E3CC35 /* NSAttributedString+Extensions.swift in Sources */,
 				AA014FCF1FB87BCC00E3CC35 /* UINavigationController+Blocks.swift in Sources */,
@@ -385,6 +395,7 @@
 				AAD08DEE200770160075B57E /* CoreGraphics+Extensions.swift in Sources */,
 				AAD08DFA200770160075B57E /* Numbers+Strings.swift in Sources */,
 				AAD08DEA200770160075B57E /* NSDate+Extensions.swift in Sources */,
+				D73FC3302059632D00F239D0 /* UIStackView+Extensions.swift in Sources */,
 				AAD08DF3200770160075B57E /* UIImage+Extensions.swift in Sources */,
 				AAD08DEC200770160075B57E /* Protocol+Extensions.swift in Sources */,
 				AAD08DFB200770160075B57E /* Dictionary+Extensions.swift in Sources */,
@@ -396,6 +407,7 @@
 				AAD08DEF200770160075B57E /* UIView+Extensions.swift in Sources */,
 				AAD08DF2200770160075B57E /* NSTimer+Blocks.swift in Sources */,
 				AAD08DE8200770160075B57E /* Array+Extensions.swift in Sources */,
+				D73FC3322059632D00F239D0 /* UIStoryboard+Extensions.swift in Sources */,
 				AAD08DF9200770160075B57E /* UITableViewCell+Register.swift in Sources */,
 				AAD08DF6200770160075B57E /* NSAttributedString+Extensions.swift in Sources */,
 				AAD08DF5200770160075B57E /* UINavigationController+Blocks.swift in Sources */,
