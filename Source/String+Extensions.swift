@@ -16,6 +16,7 @@ public extension String {
 		return self.replacingCharacters( in: range, with: replacement )
 	}
 	
+	/// Spaces between numbers are no-break spaces.
 	var asPhoneNumber: String {
 		
 		guard length >= 10 else { return self }
@@ -31,7 +32,7 @@ public extension String {
 		let firstpair = tendigits[ firstPairIndex..<secondPairIndex ]
 		let secondpair = tendigits[ secondPairIndex... ]
 		
-		return "+7 \( city ) \( triad ) \( firstpair ) \( secondpair )"
+		return "+7\u{a0}\( city )\u{a0}\( triad )\u{a0}\( firstpair )\u{a0}\( secondpair )"
 	}
 	
 	var digitsOnly: String {
