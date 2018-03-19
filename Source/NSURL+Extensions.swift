@@ -32,6 +32,10 @@ public extension URL {
 		let path = try! FileManager.default.url( for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
 		return path
 	}
-	
+
+	static var cachePath: URL {
+		let path = try! FileManager.default.url( for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
+		return path
+	}
 }
 
