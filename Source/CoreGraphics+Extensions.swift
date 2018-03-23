@@ -5,6 +5,7 @@
 //  Copyright (c) 2015. All rights reserved.
 //
 
+import UIKit
 import CoreGraphics
 
 public extension CGRect {
@@ -17,3 +18,13 @@ public extension CGRect {
 }
 
 
+public extension UIEdgeInsets {
+	
+	public init( constantInset inset: CGFloat ) {
+		self.init( top: inset, left: inset, bottom: inset, right: inset )
+	}
+
+	public init( horizontal: CGFloat = 0, vertical: CGFloat = 0 ) {
+		self.init( top: vertical, left: horizontal, bottom: vertical, right: horizontal )
+	}
+}
