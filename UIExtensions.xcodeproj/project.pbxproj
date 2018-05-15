@@ -32,6 +32,8 @@
 		AA014FD61FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBF1FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift */; };
 		AA014FD71FB87BCC00E3CC35 /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FC01FB87BCC00E3CC35 /* UILabel+Extensions.swift */; };
 		AA014FD81FB87BCC00E3CC35 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA014FC11FB87BCC00E3CC35 /* Info.plist */; };
+		AA0ACE2E20AB6CAB00DFD66B /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBA1FB87BCC00E3CC35 /* UIView+Constraints.swift */; };
+		AA0ACE3320AB89E900DFD66B /* Protocol+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAF1FB87BCC00E3CC35 /* Protocol+Extensions.swift */; };
 		AAD08DE420076FF50075B57E /* UIExtensions_tvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AAD08DE8200770160075B57E /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAB1FB87BCC00E3CC35 /* Array+Extensions.swift */; };
 		AAD08DE9200770160075B57E /* NSURL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAC1FB87BCC00E3CC35 /* NSURL+Extensions.swift */; };
@@ -382,6 +384,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA014F9F1FB87A0500E3CC35 /* UIExtensionsTests.swift in Sources */,
+				AA0ACE3320AB89E900DFD66B /* Protocol+Extensions.swift in Sources */,
+				AA0ACE2E20AB6CAB00DFD66B /* UIView+Constraints.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
