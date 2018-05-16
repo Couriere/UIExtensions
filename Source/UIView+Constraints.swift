@@ -148,7 +148,7 @@ public extension LayoutGuideProtocol {
 
 		let constraint: NSLayoutConstraint
 		if #available( iOS 11, tvOS 11, * ) {
-			let topGuide = ( self as? UIView )?.safeAreaLayoutGuide ?? owningView!.safeAreaLayoutGuide
+			let topGuide = owningView!.safeAreaLayoutGuide
 			constraint = topAnchor.constraint( equalTo: topGuide.topAnchor, constant: inset )
 		} else {
 			let topGuide = parentViewController!.topLayoutGuide
@@ -163,7 +163,7 @@ public extension LayoutGuideProtocol {
 		
 		let constraint: NSLayoutConstraint
 		if #available( iOS 11, tvOS 11, * ) {
-			let bottomGuide = ( self as? UIView )?.safeAreaLayoutGuide ?? owningView!.safeAreaLayoutGuide
+			let bottomGuide = owningView!.safeAreaLayoutGuide
 			constraint = bottomGuide.bottomAnchor.constraint( equalTo: bottomAnchor, constant: inset )
 		} else {
 			let bottomGuide = parentViewController!.bottomLayoutGuide
