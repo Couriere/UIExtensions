@@ -30,7 +30,6 @@
 		AA014FD51FB87BCC00E3CC35 /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBE1FB87BCC00E3CC35 /* Dictionary+Extensions.swift */; };
 		AA014FD61FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBF1FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift */; };
 		AA014FD71FB87BCC00E3CC35 /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FC01FB87BCC00E3CC35 /* UILabel+Extensions.swift */; };
-		AA014FD81FB87BCC00E3CC35 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA014FC11FB87BCC00E3CC35 /* Info.plist */; };
 		AA0ACE2D20AB6BFB00DFD66B /* UIView+Constraints-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0ACE2C20AB6BFB00DFD66B /* UIView+Constraints-Tests.swift */; };
 		AA0ACE2E20AB6CAB00DFD66B /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBA1FB87BCC00E3CC35 /* UIView+Constraints.swift */; };
 		AA0ACE3020AB882F00DFD66B /* UILayoutGuide+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0ACE2F20AB882F00DFD66B /* UILayoutGuide+Constraints.swift */; };
@@ -332,7 +331,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA014FD81FB87BCC00E3CC35 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
