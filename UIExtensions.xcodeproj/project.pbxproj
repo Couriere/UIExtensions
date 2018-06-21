@@ -36,6 +36,8 @@
 		AA0ACE3120AB883500DFD66B /* UILayoutGuide+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0ACE2F20AB882F00DFD66B /* UILayoutGuide+Constraints.swift */; };
 		AA0ACE3220AB883500DFD66B /* UILayoutGuide+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0ACE2F20AB882F00DFD66B /* UILayoutGuide+Constraints.swift */; };
 		AA0ACE3320AB89E900DFD66B /* Protocol+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAF1FB87BCC00E3CC35 /* Protocol+Extensions.swift */; };
+		AA37BB9B20DBA55700AF07F7 /* Array+Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA37BB9A20DBA55700AF07F7 /* Array+Extensions-Tests.swift */; };
+		AA37BB9C20DBA67D00AF07F7 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAB1FB87BCC00E3CC35 /* Array+Extensions.swift */; };
 		AAD08DE420076FF50075B57E /* UIExtensions_tvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AAD08DE8200770160075B57E /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAB1FB87BCC00E3CC35 /* Array+Extensions.swift */; };
 		AAD08DE9200770160075B57E /* NSURL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAC1FB87BCC00E3CC35 /* NSURL+Extensions.swift */; };
@@ -104,6 +106,7 @@
 		AA014FC11FB87BCC00E3CC35 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA0ACE2C20AB6BFB00DFD66B /* UIView+Constraints-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Constraints-Tests.swift"; sourceTree = "<group>"; };
 		AA0ACE2F20AB882F00DFD66B /* UILayoutGuide+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILayoutGuide+Constraints.swift"; sourceTree = "<group>"; };
+		AA37BB9A20DBA55700AF07F7 /* Array+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AAD08DE020076FF40075B57E /* UIExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIExtensions_tvOS.h; sourceTree = "<group>"; };
 		AAD08DE320076FF50075B57E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -162,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				AA0ACE2C20AB6BFB00DFD66B /* UIView+Constraints-Tests.swift */,
+				AA37BB9A20DBA55700AF07F7 /* Array+Extensions-Tests.swift */,
 				AA014FA01FB87A0500E3CC35 /* Info.plist */,
 			);
 			path = UIExtensionsTests;
@@ -387,6 +391,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA37BB9B20DBA55700AF07F7 /* Array+Extensions-Tests.swift in Sources */,
+				AA37BB9C20DBA67D00AF07F7 /* Array+Extensions.swift in Sources */,
 				AA0ACE3020AB882F00DFD66B /* UILayoutGuide+Constraints.swift in Sources */,
 				AA0ACE3320AB89E900DFD66B /* Protocol+Extensions.swift in Sources */,
 				AA0ACE2E20AB6CAB00DFD66B /* UIView+Constraints.swift in Sources */,
