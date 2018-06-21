@@ -128,6 +128,20 @@ public extension NSAttributedString {
 		mutable.addAttribute( .paragraphStyle, value: paragraph, range: wholeRange )
 		return mutable
 	}
+
+	/// Returns a copy of an attributed string with `lineBreakMode` property of
+	/// `paragraphStyle` attribute set.
+	/// - note: Searches source string for the first `paragraphStyle` attribute,
+	/// change its `lineBreakMode` property and set `paragraphStyle` over the whole string.
+	/// If no existing `paragraphStyle` attribute found, creates a new one.
+	/// - note: All existing paragraph styles attributes in string will be overwritten.
+	public func settingLineBreakMode( _ lineBreakMode: NSLineBreakMode ) -> NSAttributedString {
+		let mutable = self.mutable()
+		let paragraph = mutable.paragraphStyle
+		paragraph.lineBreakMode = lineBreakMode
+		mutable.addAttribute( .paragraphStyle, value: paragraph, range: wholeRange )
+		return mutable
+	}
 }
 
 public extension NSMutableAttributedString {
@@ -226,7 +240,20 @@ public extension NSMutableAttributedString {
 		self.addAttribute( .paragraphStyle, value: paragraph, range: wholeRange )
 		return self
 	}
-	
+
+	/// Sets `lineBreakMode` property of `paragraphStyle` attribute.
+	/// - note: Searches string for the first `paragraphStyle` attribute,
+	/// change its `lineBreakMode` property and set `paragraphStyle` over the whole string.
+	/// If no existing `paragraphStyle` attribute found, creates a new one.
+	/// - note: All existing paragraph styles attributes in string will be overwritten.
+	@discardableResult
+	public func lineBreakMode( _ lineBreakMode: NSLineBreakMode ) -> Self {
+		let paragraph = self.paragraphStyle
+		paragraph.lineBreakMode = lineBreakMode
+		self.addAttribute( .paragraphStyle, value: paragraph, range: wholeRange )
+		return self
+	}
+
 	/// Inserts image in attributed string at specified location.
 	/// - parameter image: Image to insert in string.
 	/// - parameter location: Location in string to insert. If `nil`, image will be appended to the string.
@@ -324,7 +351,13 @@ public extension String {
 		paragraph.alignment = alignment
 		return withParagraphStyle( paragraph )
 	}
-	
+
+	public func withLineBreakMode( _ lineBreakMode: NSLineBreakMode ) -> NSMutableAttributedString {
+		let paragraph = NSMutableParagraphStyle()
+		paragraph.lineBreakMode = lineBreakMode
+		return withParagraphStyle( paragraph )
+	}
+
 	/// Creates attributed string and inserts image in it at specified location.
 	/// - parameter image: Image to insert in string.
 	/// - parameter location: Location in string to insert. If `nil`, image will be appended to the string.
