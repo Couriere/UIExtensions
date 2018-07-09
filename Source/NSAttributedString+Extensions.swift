@@ -167,7 +167,7 @@ public extension NSMutableAttributedString {
 		return self
 	}
 	
-	/// Sets new `strikethrough style and color` attributes 		.
+	/// Sets new `strikethrough style and color` attributes.
 	@discardableResult
 	public func strikethroughStyle( _ style: NSUnderlineStyle, color: UIColor? = nil ) -> Self {
 		self.addAttributes( [ .strikethroughStyle: style.rawValue, .strikethroughColor: color as Any ], range: wholeRange )
@@ -331,24 +331,32 @@ public extension String {
 	public func withLineSpacing( _ lineSpacing: CGFloat ) -> NSMutableAttributedString {
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.lineSpacing = lineSpacing
+		// Устанавливаем перенос строк по-умолчанию.
+		paragraph.lineBreakMode = .byTruncatingTail
 		return withParagraphStyle( paragraph )
 	}
 	
 	public func withLineHeightMultiple( _ multiple: CGFloat ) -> NSMutableAttributedString {
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.lineHeightMultiple = multiple
+		// Устанавливаем перенос строк по-умолчанию.
+		paragraph.lineBreakMode = .byTruncatingTail
 		return withParagraphStyle( paragraph )
 	}
 	
 	public func withMinimumLineHeight( _ minimumLineHeight: CGFloat ) -> NSMutableAttributedString {
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.minimumLineHeight = minimumLineHeight
+		// Устанавливаем перенос строк по-умолчанию.
+		paragraph.lineBreakMode = .byTruncatingTail
 		return withParagraphStyle( paragraph )
 	}
 	
 	public func withAlignment( _ alignment: NSTextAlignment ) -> NSMutableAttributedString {
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.alignment = alignment
+		// Устанавливаем перенос строк по-умолчанию.
+		paragraph.lineBreakMode = .byTruncatingTail
 		return withParagraphStyle( paragraph )
 	}
 
@@ -377,7 +385,10 @@ private extension NSAttributedString {
 		guard length > 0,
 			let currentStyle =
 			self.attribute( .paragraphStyle, at: 0, longestEffectiveRange: nil, in: wholeRange ) as? NSParagraphStyle else {
-				return NSMutableParagraphStyle()
+				let newParagraphStyle = NSMutableParagraphStyle()
+				// Устанавливаем перенос строк по-умолчанию.
+				newParagraphStyle.lineBreakMode = .byTruncatingTail
+				return newParagraphStyle
 		}
 		
 		return currentStyle.mutableCopy() as! NSMutableParagraphStyle
