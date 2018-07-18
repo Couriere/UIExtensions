@@ -70,7 +70,10 @@ public extension Date {
 /// Convenience time properties.
 /// Usage: Date() + 2.days + 1.hour
 public extension Int {
-	
+
+	public var second: TimeInterval { return TimeInterval( self ) }
+	public var seconds: TimeInterval { return TimeInterval( self ) }
+
 	public var minute: TimeInterval { return TimeInterval( self * 60 ) }
 	public var minutes: TimeInterval { return TimeInterval( self * 60 ) }
 	
@@ -83,6 +86,9 @@ public extension Int {
 
 public extension TimeInterval {
 	
+	public var second: TimeInterval { return self }
+	public var seconds: TimeInterval { return self }
+
 	public var minute: TimeInterval { return self * 60 }
 	public var minutes: TimeInterval { return self * 60 }
 	
