@@ -38,11 +38,21 @@ public extension Array {
 
 	```
 	[ 10, 20 ] + 30 => [ 10, 20, 30 ]
+	[ 10, 20 ].appending( 30 ) => [ 10, 20, 30 ]
 	```
 	*/
 	public static func +( array: Array, element: Element ) -> Array {
-		return array + [ element ]
+		var mutableArray = array
+		mutableArray.append( element )
+		return mutableArray
 	}
+
+	public func appending( _ element: Element ) -> Array<Element> {
+		var mutableArray = self
+		mutableArray.append( element )
+		return mutableArray
+	}
+
 
 	/**
 	Returns an array with appended optional element.

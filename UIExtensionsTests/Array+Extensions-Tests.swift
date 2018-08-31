@@ -39,6 +39,18 @@ class ArrayExtensionsTests: XCTestCase {
 		XCTAssertEqual( emptyArray + optionalEmptyIntVar, [] )
 	}
 
+	func testAppending() {
+		let array: [ Int ] = [ 10, 20, 30 ]
+
+		let intVar = 40
+
+		XCTAssertEqual( array.appending( intVar ), [ 10, 20, 30, 40 ] )
+
+		let emptyArray: [ Int ] = []
+
+		XCTAssertEqual( emptyArray.appending( intVar ), [ 40 ] )
+	}
+
 	func testPlusEqualOperator() {
 		var array: [ Int ] = [ 10, 20, 30 ]
 
