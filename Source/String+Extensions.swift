@@ -8,84 +8,36 @@
 import Foundation
 
 public extension String {
-	
-	var length: Int { return count }
-	
-	func stringByReplacingCharactersInRange<T: StringProtocol>( _ nsRange: NSRange, withString replacement: T ) -> String {
-		guard let range = Range( nsRange, in: self ) else { return self }
+
+	/// Returns a new string in which the characters in a specified range of the receiver are replaced by a given string.
+	/// - parameter range: A range of characters in the receiver.
+	/// - parameter replacement: The string with which to replace the characters in range.
+	/// - returns: A new string in which the characters in range of the receiver are replaced by replacement.
+	public func replacingCharacters<T: StringProtocol>( in range: NSRange, with replacement: T ) -> String {
+		guard let range = Range( range, in: self ) else { fatalError( "range out of bounds" ) }
 		return self.replacingCharacters( in: range, with: replacement )
 	}
-	
-	/// Spaces between numbers are no-break spaces.
-	var asPhoneNumber: String {
-		
-		guard length >= 10 else { return self }
-		
-		let tendigits = suffix( 10 )
-		let index = tendigits.startIndex
-		let triadIndex = tendigits.index( index, offsetBy: 3 )
-		let firstPairIndex = tendigits.index( index, offsetBy: 6 )
-		let secondPairIndex = tendigits.index( index, offsetBy: 8 )
 
-		let city = tendigits[ ..<triadIndex ]
-		let triad = tendigits[ triadIndex..<firstPairIndex ]
-		let firstpair = tendigits[ firstPairIndex..<secondPairIndex ]
-		let secondpair = tendigits[ secondPairIndex... ]
-		
-		return "+7\u{a0}\( city )\u{a0}\( triad )\u{a0}\( firstpair )\u{a0}\( secondpair )"
-	}
-	
-	var digitsOnly: String {
+	/// Returns new string by removing all non-digit symbols from receiver.
+	public var digitsOnly: String {
 		get {
 			let range = startIndex..<endIndex
-			return replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression, range: range )
+			return replacingOccurrences( of: "[^0-9]", with: "", options: .regularExpression, range: range )
 		}
 	}
-	
-	var phoneNumber: String {
-		get {
-			return String( digitsOnly.suffix( 10 ))
-		}
+
+	/// Returns `true` if receiver holds correct email address.
+	public var isValidEmail: Bool {
+		let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+		return NSPredicate( format: "SELF MATCHES %@", emailRegex ).evaluate( with: self )
 	}
 }
 
-#if BUILD_AS_SUBMODULE
+
 
 /**
-	SHA Encoding
+	Russian language only methods.
 */
-extension String {
-	
-	var SHA1: Data? {
-		
-		guard let data = self.data( using: .utf8 ) else { return nil }
-		
-		var digest: [UInt8] = Array( repeating: 0, count: Int( CC_SHA1_DIGEST_LENGTH ))
-		
-		data.withUnsafeBytes {
-			_ = CC_SHA1( $0, CC_LONG( data.count ), &digest )
-		}
-		
-		return Data( bytes: digest )
-	}
-	
-	func HMACSHA1( key: String ) -> Data? {
-		
-		guard let dataToDigest = self.data( using: .utf8 ) as NSData?,
-			let keyData = key.data( using: .utf8 ) as NSData? else { return nil }
-		
-		let digestLength = Int( CC_SHA1_DIGEST_LENGTH )
-		let result = UnsafeMutablePointer<UInt8>.allocate( capacity: digestLength )
-		
-		CCHmac( CCHmacAlgorithm( kCCHmacAlgSHA1 ), keyData.bytes, keyData.length, dataToDigest.bytes, dataToDigest.length, result )
-		
-		return Data( bytes: result, count: digestLength )
-	}
-}
-#endif
-
-
-
 
 /**
 Возвращает корректную форму существительного для числительного
