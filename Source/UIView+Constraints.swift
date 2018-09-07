@@ -12,6 +12,12 @@ extension UIView: LayoutGuideProtocol {
 	public var owningView: UIView? { return superview }
 }
 
+extension Int {
+
+	/// Returns UILayoutPriority value with the receiver's priority.
+	var layoutPriority: UILayoutPriority { return UILayoutPriority( Float( self )) }
+}
+
 public extension UIView {
 	
 	func removeOutsideConstraints() {
