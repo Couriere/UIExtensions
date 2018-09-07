@@ -6,7 +6,6 @@
 //
 
 import XCTest
-//@testable import UIExtensions
 
 class UIView_Constraints_Tests: XCTestCase {
 	

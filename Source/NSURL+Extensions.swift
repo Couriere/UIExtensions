@@ -21,6 +21,7 @@ public extension URL {
 		return freeSpace
 	}
 	
+	#if os(iOS) || os(tvOS)
 	// MARK: - System paths
 	
 	static var libraryPath: URL {
@@ -37,5 +38,5 @@ public extension URL {
 		let path = try! FileManager.default.url( for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
 		return path
 	}
+	#endif
 }
-

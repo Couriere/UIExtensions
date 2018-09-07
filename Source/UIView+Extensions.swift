@@ -9,8 +9,21 @@ import UIKit
 
 public extension UIView {
 
+	/// Adds views to the end of the receiver’s list of subviews.
+	public func addSubviews( _ views: [ UIView ] ) {
+		views.forEach { addSubview( $0 ) }
+	}
+
+	/// Removes all subviews from the receiver.
+	public func removeAllSubviews() {
+		subviews.forEach { $0.removeFromSuperview() }
+	}
+}
+
+public extension UIView {
+
 	/**
-	Load xib in memory.
+	Loads view from xib in memory.
 
 	- parameter xib:    Name of the xib. Default to type name.
 	- returns: Instance of ofType class, loaded from xib

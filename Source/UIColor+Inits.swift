@@ -9,6 +9,12 @@ import UIKit
 
 public extension UIColor {
 
+	/// Initializes and returns a color object using the specified opacity and Int RGB component values.
+	/// - parameter intRed: The red value of the color object, specified as a value from 0 to 255.
+	/// - parameter green: The red value of the color object, specified as a value from 0 to 255.
+	/// - parameter blue: The red value of the color object, specified as a value from 0 to 255.
+	/// - parameter alpha: The opacity value of the color object, specified as a value from 0.0 to 1.0.
+	/// Alpha values below 0.0 are interpreted as 0.0, and values above 1.0 are interpreted as 1.0.
 	convenience init( intRed: Int, green: Int, blue: Int, alpha: CGFloat = 1 ) {
 		self.init( red: CGFloat( intRed ) / 255, green: CGFloat( green ) / 255, blue: CGFloat( blue ) / 255, alpha: alpha )
 	}
@@ -31,6 +37,7 @@ public extension UIColor {
 	}
 	private static let invertedHexCharactersSet = CharacterSet( charactersIn: "0123456789abcdefABCDEF" ).inverted
 
+
 	/// Returns random color with supplied alpha.
 	convenience init( randomWithAlpha alpha: CGFloat ) {
 		let randomRed = Int( arc4random_uniform( 256 ) )
@@ -52,8 +59,9 @@ public extension UIColor {
 
 public extension UIColor {
 
-	/// Returns contrast color to receivers one.
-	var contrast: UIColor {
+	/// Returns contrast color for the receiver.
+	/// - returns: Either black or white color, depending on lightness of the receiver.
+	var contrastColor: UIColor {
 		var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
 
 		getRed( &red, green: &green, blue: &blue, alpha: &alpha )
