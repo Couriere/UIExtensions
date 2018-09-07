@@ -185,34 +185,50 @@
 		AA014FAA1FB87BCC00E3CC35 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				AA014FAB1FB87BCC00E3CC35 /* Array+Extensions.swift */,
-				AA014FAC1FB87BCC00E3CC35 /* NSURL+Extensions.swift */,
-				AA014FAD1FB87BCC00E3CC35 /* NSDate+Extensions.swift */,
+				AA3ED30C2142767900D65DDD /* Foundation */,
+				AA3ED30A2142766500D65DDD /* UI */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		AA3ED30A2142766500D65DDD /* UI */ = {
+			isa = PBXGroup;
+			children = (
 				AA014FAE1FB87BCC00E3CC35 /* UIColor+Inits.swift */,
-				AA014FAF1FB87BCC00E3CC35 /* Protocol+Extensions.swift */,
-				AA3ED3072142713F00D65DDD /* Optional+Extensions.swift */,
 				AA014FB01FB87BCC00E3CC35 /* UIAlertController+Blocks.swift */,
-				AA014FB11FB87BCC00E3CC35 /* CoreGraphics+Extensions.swift */,
 				AA014FB21FB87BCC00E3CC35 /* UIView+Extensions.swift */,
-				AA014FB31FB87BCC00E3CC35 /* String+Extensions.swift */,
-				AA014FB91FB87BCC00E3CC35 /* NSAttributedString+Extensions.swift */,
-				AA014FB41FB87BCC00E3CC35 /* NSData+Extensions.swift */,
-				AA014FB51FB87BCC00E3CC35 /* NSTimer+Blocks.swift */,
 				AA014FB61FB87BCC00E3CC35 /* UIImage+Extensions.swift */,
 				AA014FB71FB87BCC00E3CC35 /* UIDevice+Extensions.swift */,
 				AA014FB81FB87BCC00E3CC35 /* UINavigationController+Blocks.swift */,
 				AA014FBA1FB87BCC00E3CC35 /* UIView+Constraints.swift */,
 				AA0ACE2F20AB882F00DFD66B /* UILayoutGuide+Constraints.swift */,
-				AA014FBB1FB87BCC00E3CC35 /* GDC+Extensions.swift */,
 				AA014FBC1FB87BCC00E3CC35 /* UITableViewCell+Register.swift */,
-				AA014FBD1FB87BCC00E3CC35 /* Numbers+Extensions.swift */,
-				AA014FBE1FB87BCC00E3CC35 /* Dictionary+Extensions.swift */,
 				AA014FBF1FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift */,
 				AA014FC01FB87BCC00E3CC35 /* UILabel+Extensions.swift */,
 				D73FC32D2059632C00F239D0 /* UIStackView+Extensions.swift */,
 				D73FC32E2059632C00F239D0 /* UIStoryboard+Extensions.swift */,
 			);
-			path = Source;
+			path = UI;
+			sourceTree = "<group>";
+		};
+		AA3ED30C2142767900D65DDD /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				AA014FAB1FB87BCC00E3CC35 /* Array+Extensions.swift */,
+				AA014FAC1FB87BCC00E3CC35 /* NSURL+Extensions.swift */,
+				AA014FAD1FB87BCC00E3CC35 /* NSDate+Extensions.swift */,
+				AA014FAF1FB87BCC00E3CC35 /* Protocol+Extensions.swift */,
+				AA3ED3072142713F00D65DDD /* Optional+Extensions.swift */,
+				AA014FB11FB87BCC00E3CC35 /* CoreGraphics+Extensions.swift */,
+				AA014FB31FB87BCC00E3CC35 /* String+Extensions.swift */,
+				AA014FB91FB87BCC00E3CC35 /* NSAttributedString+Extensions.swift */,
+				AA014FB41FB87BCC00E3CC35 /* NSData+Extensions.swift */,
+				AA014FB51FB87BCC00E3CC35 /* NSTimer+Blocks.swift */,
+				AA014FBB1FB87BCC00E3CC35 /* GDC+Extensions.swift */,
+				AA014FBD1FB87BCC00E3CC35 /* Numbers+Extensions.swift */,
+				AA014FBE1FB87BCC00E3CC35 /* Dictionary+Extensions.swift */,
+			);
+			path = Foundation;
 			sourceTree = "<group>";
 		};
 		AAD08DE120076FF50075B57E /* UIExtensions tvOS */ = {
