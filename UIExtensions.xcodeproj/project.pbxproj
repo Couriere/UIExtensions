@@ -44,6 +44,8 @@
 		AA3ED30F2142774A00D65DDD /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3ED30D2142774A00D65DDD /* Event.swift */; };
 		AA3ED3102142774A00D65DDD /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3ED30D2142774A00D65DDD /* Event.swift */; };
 		AA3ED3122142777900D65DDD /* EventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3ED3112142777900D65DDD /* EventTests.swift */; };
+		AA3ED314214278F600D65DDD /* Array+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3ED313214278F600D65DDD /* Array+Async.swift */; };
+		AA3ED315214278F600D65DDD /* Array+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3ED313214278F600D65DDD /* Array+Async.swift */; };
 		AA7EC73F2142677300386C7E /* Numbers+Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7EC73E2142677300386C7E /* Numbers+Extensions-Tests.swift */; };
 		AA7EC7402142677700386C7E /* Numbers+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBD1FB87BCC00E3CC35 /* Numbers+Extensions.swift */; };
 		AAD08DE420076FF50075B57E /* UIExtensions_tvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -120,6 +122,7 @@
 		AA3ED3072142713F00D65DDD /* Optional+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Extensions.swift"; sourceTree = "<group>"; };
 		AA3ED30D2142774A00D65DDD /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		AA3ED3112142777900D65DDD /* EventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTests.swift; sourceTree = "<group>"; };
+		AA3ED313214278F600D65DDD /* Array+Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Async.swift"; sourceTree = "<group>"; };
 		AA7EC73E2142677300386C7E /* Numbers+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Numbers+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AAD08DE020076FF40075B57E /* UIExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIExtensions_tvOS.h; sourceTree = "<group>"; };
@@ -223,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				AA014FAB1FB87BCC00E3CC35 /* Array+Extensions.swift */,
+				AA3ED313214278F600D65DDD /* Array+Async.swift */,
 				AA014FAC1FB87BCC00E3CC35 /* NSURL+Extensions.swift */,
 				AA014FAD1FB87BCC00E3CC35 /* NSDate+Extensions.swift */,
 				AA014FAF1FB87BCC00E3CC35 /* Protocol+Extensions.swift */,
@@ -415,6 +419,7 @@
 				AA014FC31FB87BCC00E3CC35 /* NSURL+Extensions.swift in Sources */,
 				AA014FC91FB87BCC00E3CC35 /* UIView+Extensions.swift in Sources */,
 				AA014FCC1FB87BCC00E3CC35 /* NSTimer+Blocks.swift in Sources */,
+				AA3ED314214278F600D65DDD /* Array+Async.swift in Sources */,
 				AA014FC21FB87BCC00E3CC35 /* Array+Extensions.swift in Sources */,
 				D73FC3312059632D00F239D0 /* UIStoryboard+Extensions.swift in Sources */,
 				AA014FD31FB87BCC00E3CC35 /* UITableViewCell+Register.swift in Sources */,
@@ -468,6 +473,7 @@
 				AAD08DE9200770160075B57E /* NSURL+Extensions.swift in Sources */,
 				AAD08DEF200770160075B57E /* UIView+Extensions.swift in Sources */,
 				AAD08DF2200770160075B57E /* NSTimer+Blocks.swift in Sources */,
+				AA3ED315214278F600D65DDD /* Array+Async.swift in Sources */,
 				AAD08DE8200770160075B57E /* Array+Extensions.swift in Sources */,
 				D73FC3322059632D00F239D0 /* UIStoryboard+Extensions.swift in Sources */,
 				AAD08DF9200770160075B57E /* UITableViewCell+Register.swift in Sources */,
