@@ -46,6 +46,23 @@ public extension Dictionary {
 	}
 }
 
+public extension Dictionary where Value: OptionalType {
+
+	/// Transforms dictionary with optional values to
+	/// dictionary with values of the same but not optional type.
+	/// All keys with `nil` values are dropped.
+	var sanitized: [ Key: Value.Wrapped ] {
+
+		var sanitizedDictionary: [ Key: Value.Wrapped ] = [:]
+
+		self.forEach {
+			if let value = $0.value.value { sanitizedDictionary[ $0.key ] = value }
+		}
+
+		return sanitizedDictionary
+	}
+}
+
 public func + <K,V>( left: Dictionary<K,V>, right: Dictionary<K,V> ) -> Dictionary<K,V> {
 	var map = left
 	map.addEntriesFromDictionary( right )
