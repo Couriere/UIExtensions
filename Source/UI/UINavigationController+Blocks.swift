@@ -85,7 +85,7 @@ public extension UINavigationController {
 		setCompletionHandler( completion )
 	}
 
-	func popViewControllerAnimated( _ animated: Bool, completion: @escaping () -> Void ) {
+	func popViewController( animated: Bool, completion: @escaping () -> Void ) {
 		
 		popViewController( animated: animated )
 		setCompletionHandler( completion )
@@ -97,13 +97,13 @@ public extension UINavigationController {
 		setCompletionHandler( completion )
 	}
 	
-	func popToRootViewControllerAnimated( _ animated: Bool, completion: @escaping () -> Void ) {
+	func popToRootViewController( animated: Bool, completion: @escaping () -> Void ) {
 		
 		popToRootViewController( animated: animated )
 		setCompletionHandler( completion )
 	}
 	
-	fileprivate func setCompletionHandler( _ completion: @escaping () -> Void ) {
+	private func setCompletionHandler( _ completion: @escaping () -> Void ) {
 		if let coordinator = transitionCoordinator {
 			coordinator.animate( alongsideTransition: nil ) { _ in
 				completion()
@@ -115,6 +115,7 @@ public extension UINavigationController {
 
 /// Pre iOS7 push/pop animation style
 public extension UINavigationController {
+	
 	func pushViewControllerRetro( _ viewController: UIViewController ) {
 		let transition = CATransition()
 		transition.duration = 0.25
