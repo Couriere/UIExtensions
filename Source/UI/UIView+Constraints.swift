@@ -243,10 +243,10 @@ public extension LayoutGuideProtocol {
 		- parameter constant: Constant of a newly created constraint. Defaults to zero.
 		- parameter priority: Priority of a newly created constraint. Defaults to `Required`
 	*/
-	@discardableResult func align( attribute: NSLayoutAttribute,
+	@discardableResult func align( attribute: NSLayoutConstraint.Attribute,
 								   withView guide: LayoutGuideProtocol,
-								   viewAttribute: NSLayoutAttribute? = nil,
-								   relation: NSLayoutRelation = .equal,
+								   viewAttribute: NSLayoutConstraint.Attribute? = nil,
+								   relation: NSLayoutConstraint.Relation = .equal,
 								   constant: CGFloat = 0,
 								   multiplier: CGFloat = 1,
 								   priority: UILayoutPriority = .required ) -> NSLayoutConstraint {
@@ -296,14 +296,14 @@ public extension LayoutGuideProtocol {
 	
 	// MARK: - Size constraints
 	
-	@discardableResult func constrainTo( width: CGFloat, relatedBy: NSLayoutRelation? = nil ) -> NSLayoutConstraint {
+	@discardableResult func constrainTo( width: CGFloat, relatedBy: NSLayoutConstraint.Relation? = nil ) -> NSLayoutConstraint {
 		let constraint = NSLayoutConstraint( item: self, attribute: .width, relatedBy: relatedBy ?? .equal,
 			toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width )
 		constraint.isActive = true
 		return constraint
 	}
 	
-	@discardableResult func constrainTo( height: CGFloat, relatedBy: NSLayoutRelation? = nil ) -> NSLayoutConstraint	{
+	@discardableResult func constrainTo( height: CGFloat, relatedBy: NSLayoutConstraint.Relation? = nil ) -> NSLayoutConstraint	{
 		let constraint = NSLayoutConstraint( item: self, attribute: .height, relatedBy: relatedBy ?? .equal,
 			toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height )
 		constraint.isActive = true

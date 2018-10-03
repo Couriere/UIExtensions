@@ -44,7 +44,7 @@ public extension UITableViewCell {
 	static func dequeueCellFromTableView( _ tableView: UITableView ) -> Self {
 		return helperGetObjectWithId( tableView.dequeueReusableCell( withIdentifier: identifier )!, type: self )
 	}
-	private class func helperGetObjectWithId<T>( _ cell: UITableViewCell, type: T.Type ) -> T! {
+	private class func helperGetObjectWithId<T>( _ cell: UITableViewCell, type: T.Type ) -> T {
 		return cell as! T
 	}
 	

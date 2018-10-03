@@ -119,9 +119,9 @@ public extension UINavigationController {
 	func pushViewControllerRetro( _ viewController: UIViewController ) {
 		let transition = CATransition()
 		transition.duration = 0.25
-		transition.timingFunction = CAMediaTimingFunction( name: kCAMediaTimingFunctionEaseInEaseOut )
-		transition.type = kCATransitionPush;
-		transition.subtype = kCATransitionFromRight;
+		transition.timingFunction = CAMediaTimingFunction( name: .easeInEaseOut )
+		transition.type = .push
+		transition.subtype = .fromRight
 		view.layer.add( transition, forKey: "RetroPush" )
 		
 		pushViewController( viewController, animated: false )
@@ -130,9 +130,9 @@ public extension UINavigationController {
 	func popViewControllerRetro() {
 		let transition = CATransition()
 		transition.duration = 0.25
-		transition.timingFunction = CAMediaTimingFunction( name: kCAMediaTimingFunctionEaseInEaseOut )
-		transition.type = kCATransitionPush
-		transition.subtype = kCATransitionFromLeft
+		transition.timingFunction = CAMediaTimingFunction( name: .easeInEaseOut )
+		transition.type = .push
+		transition.subtype = .fromLeft
 		view.layer.add( transition, forKey: "RetroPop" )
 		
 		popViewController( animated: false )

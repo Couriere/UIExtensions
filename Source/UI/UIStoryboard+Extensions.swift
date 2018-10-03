@@ -25,7 +25,7 @@ public extension UIViewController {
 		return helperConvertObject( result, type: self )
 	}
 	
-	private class func helperConvertObject<T>( _ object: AnyObject, type: T.Type ) -> T! {
+	private class func helperConvertObject<T>( _ object: AnyObject, type: T.Type ) -> T {
 		return object as! T
 	}
 }

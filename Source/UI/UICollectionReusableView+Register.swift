@@ -47,7 +47,7 @@ public extension UICollectionReusableView {
 		
 		return helperGetObjectWithId( collectionView.dequeueReusableSupplementaryView( ofKind: elementKind, withReuseIdentifier: identifier, for: indexPath ), type: self )
 	}
-	fileprivate class func helperGetObjectWithId<T>( _ cell: UICollectionReusableView, type: T.Type ) -> T! {
+	fileprivate class func helperGetObjectWithId<T>( _ cell: UICollectionReusableView, type: T.Type ) -> T {
 		return cell as! T
 	}
 }

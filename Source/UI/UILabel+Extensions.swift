@@ -16,12 +16,13 @@ public extension UILabel {
 	func crossfadeTo( text: String?, duration: TimeInterval = 0.2 ) {
 		if text != self.text {
 			let animation = CATransition().then {
-				$0.timingFunction = CAMediaTimingFunction( name: kCAMediaTimingFunctionEaseInEaseOut )
-				$0.type = kCATransitionFade
+				$0.timingFunction = CAMediaTimingFunction( name: .easeInEaseOut )
+				$0.type = CATransitionType.fade
 				$0.duration = duration
 			}
-			layer.add( animation, forKey: kCATransitionFade )
+			layer.add( animation, forKey: CATransitionType.fade.rawValue )
 			self.text = text
 		}
 	}
 }
+
