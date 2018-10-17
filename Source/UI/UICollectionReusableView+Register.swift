@@ -14,7 +14,7 @@ import UIKit
 ///		... in `viewDidLoad()`:
 ///
 ///			ClassOfReusableViewCreatedInCode.registerSupplementaryClass( in: collection, forKind: UICollectionElementKindSectionFooter )
-///			ClassOfReusableViewCreatedFromXib.registerSupplementaryXib( in: collection, forKind: UICollectionElementKindSectionFooter )/
+///			ClassOfReusableViewCreatedFromXib.registerSupplementaryXib( in: collection, forKind: UICollectionElementKindSectionFooter )
 ///
 ///		... in `collectionView( _:, viewForSupplementaryElementOfKind:, at: ) -> UICollectionReusableView`:
 ///
@@ -40,8 +40,8 @@ public extension UICollectionReusableView {
 		collection.register( nib, forSupplementaryViewOfKind: forKind, withReuseIdentifier: identifier )
 	}
 	
-	static func dequeueSupplementaryViewOfKind(
-		_ elementKind: String,
+	static func dequeueSupplementaryView(
+		ofKind elementKind: String,
 		for indexPath: IndexPath,
 		in collectionView: UICollectionView ) -> Self {
 		
