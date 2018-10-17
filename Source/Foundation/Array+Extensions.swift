@@ -6,6 +6,15 @@
 //
 import Foundation
 
+public extension Collection {
+
+	/// A Boolean value indicating whether the collection is not empty.
+	///
+	/// Convenience method, returning `!isEmpty`.
+	public var isNotEmpty: Bool { return !isEmpty }
+}
+
+
 public extension Array {
 
 	/**
@@ -29,7 +38,6 @@ public extension Array {
 		}
 	}
 }
-
 
 public extension Array {
 
