@@ -46,6 +46,8 @@
 		AA3ED3122142777900D65DDD /* EventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3ED3112142777900D65DDD /* EventTests.swift */; };
 		AA3ED314214278F600D65DDD /* Array+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3ED313214278F600D65DDD /* Array+Async.swift */; };
 		AA3ED315214278F600D65DDD /* Array+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3ED313214278F600D65DDD /* Array+Async.swift */; };
+		AA41682E218789D8000CD098 /* UIControl+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA41682D218789D8000CD098 /* UIControl+Extensions.swift */; };
+		AA41683221879F33000CD098 /* UIControl+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA41682D218789D8000CD098 /* UIControl+Extensions.swift */; };
 		AA7EC73F2142677300386C7E /* Numbers+Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7EC73E2142677300386C7E /* Numbers+Extensions-Tests.swift */; };
 		AA7EC7402142677700386C7E /* Numbers+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBD1FB87BCC00E3CC35 /* Numbers+Extensions.swift */; };
 		AAD08DE420076FF50075B57E /* UIExtensions_tvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -123,6 +125,7 @@
 		AA3ED30D2142774A00D65DDD /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		AA3ED3112142777900D65DDD /* EventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTests.swift; sourceTree = "<group>"; };
 		AA3ED313214278F600D65DDD /* Array+Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Async.swift"; sourceTree = "<group>"; };
+		AA41682D218789D8000CD098 /* UIControl+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Extensions.swift"; sourceTree = "<group>"; };
 		AA7EC73E2142677300386C7E /* Numbers+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Numbers+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AAD08DE020076FF40075B57E /* UIExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIExtensions_tvOS.h; sourceTree = "<group>"; };
@@ -218,6 +221,7 @@
 				AA014FC01FB87BCC00E3CC35 /* UILabel+Extensions.swift */,
 				D73FC32D2059632C00F239D0 /* UIStackView+Extensions.swift */,
 				D73FC32E2059632C00F239D0 /* UIStoryboard+Extensions.swift */,
+				AA41682D218789D8000CD098 /* UIControl+Extensions.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -428,6 +432,7 @@
 				AA014FD01FB87BCC00E3CC35 /* NSAttributedString+Extensions.swift in Sources */,
 				AA014FCF1FB87BCC00E3CC35 /* UINavigationController+Blocks.swift in Sources */,
 				AA014FD61FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift in Sources */,
+				AA41682E218789D8000CD098 /* UIControl+Extensions.swift in Sources */,
 				AA014FD11FB87BCC00E3CC35 /* UIView+Constraints.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -482,6 +487,7 @@
 				AAD08DF6200770160075B57E /* NSAttributedString+Extensions.swift in Sources */,
 				AAD08DF5200770160075B57E /* UINavigationController+Blocks.swift in Sources */,
 				AAD08DFC200770160075B57E /* UICollectionReusableView+Register.swift in Sources */,
+				AA41683221879F33000CD098 /* UIControl+Extensions.swift in Sources */,
 				AAD08DF7200770160075B57E /* UIView+Constraints.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
