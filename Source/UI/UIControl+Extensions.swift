@@ -3,7 +3,7 @@
 //  UIExtensions
 //
 //  Created by Vladimir on 29/10/2018.
-//  Copyright © 2018 Vladimir Kazantsev. All rights reserved.
+//  Copyright © 2018. All rights reserved.
 //
 
 import UIKit
