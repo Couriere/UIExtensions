@@ -34,6 +34,18 @@ public extension CGRect {
 		get { return CGPoint( x: midX, y: midY ) }
 		set { origin = CGPoint( x: newValue.x - width / 2, y: newValue.y - height / 2 ) }
 	}
+
+	/// Top-Left corner point.
+	var topLeft: CGPoint { return CGPoint( x: minX, y: minY ) }
+
+	/// Top-Right corner point.
+	var topRight: CGPoint { return CGPoint( x: maxX, y: minY ) }
+
+	/// Bottom-Left corner point.
+	var bottomLeft: CGPoint { return CGPoint( x: minX, y: maxY ) }
+
+	/// Bottom-Right corner point.
+	var bottomRight: CGPoint { return CGPoint( x: maxX, y: maxY ) }
 }
 
 public extension CGSize {
