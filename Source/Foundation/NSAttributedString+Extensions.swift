@@ -51,6 +51,13 @@ public extension NSAttributedString {
 		return mutable
 	}
 	
+	/// Returns a copy of an attributed string with `baselineOffset` attributes set.
+	public func settingBaselineOffset( _ offset: CGFloat ) -> NSAttributedString {
+		let mutable = self.mutable()
+		mutable.addAttribute( .baselineOffset, value: offset, range: wholeRange )
+		return mutable
+	}
+
 	/// Returns a copy of an attributed string with `striketrough style and color` attributes set.
 	public func settingStrikethroughStyle( _ style: NSUnderlineStyle, color: UIColor? = nil ) -> NSAttributedString {
 		let mutable = self.mutable()
@@ -64,7 +71,8 @@ public extension NSAttributedString {
 		mutable.addAttributes( [ .underlineStyle: style.rawValue, .underlineColor: color as Any ], range: wholeRange )
 		return mutable
 	}
-	
+
+
 	/// Returns a copy of an attributed string with `paragraphStyle` attribute set.
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
 	public func settingParagraphStyle( _ paragraphStyle: NSParagraphStyle ) -> NSAttributedString {
@@ -167,7 +175,14 @@ public extension NSMutableAttributedString {
 		return self
 	}
 	
-	/// Sets new `strikethrough style and color` attributes 		.
+	/// Sets new `baselineOffset` attribute over the whole string.
+	@discardableResult
+	public func baselineOffset( _ offset: CGFloat ) -> Self {
+		self.addAttribute( .baselineOffset, value: offset, range: wholeRange )
+		return self
+	}
+
+	/// Sets new `strikethrough style and color` attributes over the whole string.
 	@discardableResult
 	public func strikethroughStyle( _ style: NSUnderlineStyle, color: UIColor? = nil ) -> Self {
 		self.addAttributes( [ .strikethroughStyle: style.rawValue, .strikethroughColor: color as Any ], range: wholeRange )
@@ -180,7 +195,8 @@ public extension NSMutableAttributedString {
 		self.addAttributes( [ .underlineStyle: style.rawValue, .underlineColor: color as Any ], range: wholeRange )
 		return self
 	}
-	
+
+
 	/// Sets `paragraphStyle` attribute set over the whole string.
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
 	@discardableResult
@@ -307,7 +323,12 @@ public extension String {
 		let result = NSMutableAttributedString( string: self, attributes: [ .kern: kern ] )
 		return result
 	}
-	
+
+	public func withBaselineOffset( _ offset: CGFloat ) -> NSMutableAttributedString {
+		let result = NSMutableAttributedString( string: self, attributes: [ .baselineOffset: offset ] )
+		return result
+	}
+
 	public func withStrikethroughStyle( _ style: NSUnderlineStyle, color: UIColor? = nil ) -> NSMutableAttributedString {
 		let result =
 			NSMutableAttributedString( string: self,
