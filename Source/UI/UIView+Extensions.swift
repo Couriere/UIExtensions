@@ -9,6 +9,20 @@ import UIKit
 
 public extension UIView {
 
+	/// Returns current first responder view that's contained in this view's subtree.
+	/// Returns `nil` otherwise.
+	public var firstResponder: UIView? {
+
+		if isFirstResponder { return self }
+
+		for view in subviews {
+			if let firstResponder = view.firstResponder { return firstResponder }
+		}
+
+		return nil
+	}
+
+
 	/// Adds views to the end of the receiver’s list of subviews.
 	public func addSubviews( _ views: [ UIView ] ) {
 		views.forEach { addSubview( $0 ) }
