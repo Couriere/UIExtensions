@@ -8,6 +8,20 @@
 import UIKit
 import CoreGraphics
 
+public extension CGPoint {
+
+	/// Returns distance between self and provided point.
+	func distance( to point: CGPoint ) -> CGFloat {
+
+		let c1 = x - point.x
+		let c2 = y - point.y
+		let distance = sqrt( c1 * c1 + c2 * c2  )
+
+		return distance
+	}
+}
+
+
 public extension CGRect {
 
 	static func *= ( rect: inout CGRect, multiplier: CGFloat ) {
