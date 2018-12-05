@@ -49,6 +49,7 @@
 		AA3ED315214278F600D65DDD /* Array+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3ED313214278F600D65DDD /* Array+Async.swift */; };
 		AA41682E218789D8000CD098 /* UIControl+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA41682D218789D8000CD098 /* UIControl+Extensions.swift */; };
 		AA41683221879F33000CD098 /* UIControl+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA41682D218789D8000CD098 /* UIControl+Extensions.swift */; };
+		AA52241221B7B14F007737A7 /* UITabBarController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA52241121B7B14F007737A7 /* UITabBarController+Extensions.swift */; };
 		AA7EC73F2142677300386C7E /* Numbers+Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7EC73E2142677300386C7E /* Numbers+Extensions-Tests.swift */; };
 		AA7EC7402142677700386C7E /* Numbers+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBD1FB87BCC00E3CC35 /* Numbers+Extensions.swift */; };
 		AAA6D1B42195BB6F00BE985E /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */; };
@@ -130,6 +131,7 @@
 		AA3ED3112142777900D65DDD /* EventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTests.swift; sourceTree = "<group>"; };
 		AA3ED313214278F600D65DDD /* Array+Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Async.swift"; sourceTree = "<group>"; };
 		AA41682D218789D8000CD098 /* UIControl+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Extensions.swift"; sourceTree = "<group>"; };
+		AA52241121B7B14F007737A7 /* UITabBarController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITabBarController+Extensions.swift"; sourceTree = "<group>"; };
 		AA7EC73E2142677300386C7E /* Numbers+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Numbers+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
 		AAD08DE020076FF40075B57E /* UIExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -229,6 +231,7 @@
 				D73FC32E2059632C00F239D0 /* UIStoryboard+Extensions.swift */,
 				AA41682D218789D8000CD098 /* UIControl+Extensions.swift */,
 				AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */,
+				AA52241121B7B14F007737A7 /* UITabBarController+Extensions.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -413,6 +416,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA0ACE3120AB883500DFD66B /* UILayoutGuide+Constraints.swift in Sources */,
+				AA52241221B7B14F007737A7 /* UITabBarController+Extensions.swift in Sources */,
 				AA014FCB1FB87BCC00E3CC35 /* NSData+Extensions.swift in Sources */,
 				AA014FD21FB87BCC00E3CC35 /* GDC+Extensions.swift in Sources */,
 				AA3ED3082142713F00D65DDD /* Optional+Extensions.swift in Sources */,
