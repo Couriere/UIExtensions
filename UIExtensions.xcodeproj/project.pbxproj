@@ -10,7 +10,7 @@
 		AA014F9A1FB87A0500E3CC35 /* UIExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA014F901FB87A0500E3CC35 /* UIExtensions.framework */; };
 		AA014FC21FB87BCC00E3CC35 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAB1FB87BCC00E3CC35 /* Array+Extensions.swift */; };
 		AA014FC31FB87BCC00E3CC35 /* NSURL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAC1FB87BCC00E3CC35 /* NSURL+Extensions.swift */; };
-		AA014FC41FB87BCC00E3CC35 /* NSDate+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAD1FB87BCC00E3CC35 /* NSDate+Extensions.swift */; };
+		AA014FC41FB87BCC00E3CC35 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAD1FB87BCC00E3CC35 /* Date+Extensions.swift */; };
 		AA014FC51FB87BCC00E3CC35 /* UIColor+Inits.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAE1FB87BCC00E3CC35 /* UIColor+Inits.swift */; };
 		AA014FC61FB87BCC00E3CC35 /* Protocol+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAF1FB87BCC00E3CC35 /* Protocol+Extensions.swift */; };
 		AA014FC71FB87BCC00E3CC35 /* UIAlertController+Blocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB01FB87BCC00E3CC35 /* UIAlertController+Blocks.swift */; };
@@ -59,7 +59,7 @@
 		AAD08DE420076FF50075B57E /* UIExtensions_tvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AAD08DE8200770160075B57E /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAB1FB87BCC00E3CC35 /* Array+Extensions.swift */; };
 		AAD08DE9200770160075B57E /* NSURL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAC1FB87BCC00E3CC35 /* NSURL+Extensions.swift */; };
-		AAD08DEA200770160075B57E /* NSDate+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAD1FB87BCC00E3CC35 /* NSDate+Extensions.swift */; };
+		AAD08DEA200770160075B57E /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAD1FB87BCC00E3CC35 /* Date+Extensions.swift */; };
 		AAD08DEB200770160075B57E /* UIColor+Inits.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAE1FB87BCC00E3CC35 /* UIColor+Inits.swift */; };
 		AAD08DEC200770160075B57E /* Protocol+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAF1FB87BCC00E3CC35 /* Protocol+Extensions.swift */; };
 		AAD08DED200770160075B57E /* UIAlertController+Blocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB01FB87BCC00E3CC35 /* UIAlertController+Blocks.swift */; };
@@ -103,7 +103,7 @@
 		AA014FA01FB87A0500E3CC35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA014FAB1FB87BCC00E3CC35 /* Array+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		AA014FAC1FB87BCC00E3CC35 /* NSURL+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+Extensions.swift"; sourceTree = "<group>"; };
-		AA014FAD1FB87BCC00E3CC35 /* NSDate+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Extensions.swift"; sourceTree = "<group>"; };
+		AA014FAD1FB87BCC00E3CC35 /* Date+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		AA014FAE1FB87BCC00E3CC35 /* UIColor+Inits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Inits.swift"; sourceTree = "<group>"; };
 		AA014FAF1FB87BCC00E3CC35 /* Protocol+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Protocol+Extensions.swift"; sourceTree = "<group>"; };
 		AA014FB01FB87BCC00E3CC35 /* UIAlertController+Blocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Blocks.swift"; sourceTree = "<group>"; };
@@ -246,7 +246,7 @@
 				AA014FAB1FB87BCC00E3CC35 /* Array+Extensions.swift */,
 				AA3ED313214278F600D65DDD /* Array+Async.swift */,
 				AA014FAC1FB87BCC00E3CC35 /* NSURL+Extensions.swift */,
-				AA014FAD1FB87BCC00E3CC35 /* NSDate+Extensions.swift */,
+				AA014FAD1FB87BCC00E3CC35 /* Date+Extensions.swift */,
 				AA014FAF1FB87BCC00E3CC35 /* Protocol+Extensions.swift */,
 				AA3ED3072142713F00D65DDD /* Optional+Extensions.swift */,
 				AA014FB11FB87BCC00E3CC35 /* CoreGraphics+Extensions.swift */,
@@ -428,7 +428,7 @@
 				AA014FD71FB87BCC00E3CC35 /* UILabel+Extensions.swift in Sources */,
 				AA014FC81FB87BCC00E3CC35 /* CoreGraphics+Extensions.swift in Sources */,
 				AA014FD41FB87BCC00E3CC35 /* Numbers+Extensions.swift in Sources */,
-				AA014FC41FB87BCC00E3CC35 /* NSDate+Extensions.swift in Sources */,
+				AA014FC41FB87BCC00E3CC35 /* Date+Extensions.swift in Sources */,
 				D73FC32F2059632D00F239D0 /* UIStackView+Extensions.swift in Sources */,
 				AA014FCD1FB87BCC00E3CC35 /* UIImage+Extensions.swift in Sources */,
 				AA3ED30E2142774A00D65DDD /* Event.swift in Sources */,
@@ -486,7 +486,7 @@
 				AAD08DFD200770160075B57E /* UILabel+Extensions.swift in Sources */,
 				AAD08DEE200770160075B57E /* CoreGraphics+Extensions.swift in Sources */,
 				AAD08DFA200770160075B57E /* Numbers+Extensions.swift in Sources */,
-				AAD08DEA200770160075B57E /* NSDate+Extensions.swift in Sources */,
+				AAD08DEA200770160075B57E /* Date+Extensions.swift in Sources */,
 				D73FC3302059632D00F239D0 /* UIStackView+Extensions.swift in Sources */,
 				AAD08DF3200770160075B57E /* UIImage+Extensions.swift in Sources */,
 				AA3ED30F2142774A00D65DDD /* Event.swift in Sources */,

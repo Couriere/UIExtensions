@@ -67,6 +67,49 @@ public extension Date {
 	}
 }
 
+public extension Date {
+
+	/// Returns `true` if the date is within today, as defined by the calendar and calendar's locale.
+	///
+	/// - returns: `true` if the date is within today.
+	public var isToday: Bool {
+		return Calendar.current.isDateInToday( self )
+	}
+
+	/// Returns `true` if the date is within tomorrow, as defined by the calendar and calendar's locale.
+	///
+	/// - returns: `true` if the date is within tomorrow.
+	public var isTomorrow: Bool {
+		return Calendar.current.isDateInTomorrow( self )
+	}
+
+	/// Returns `true` if the date is within yesterday, as defined by the calendar and calendar's locale.
+	///
+	/// - returns: `true` if the date is within yesterday.
+	public var isYesterday: Bool {
+		return Calendar.current.isDateInYesterday( self )
+	}
+
+	/// Returns `true` if the date is within a weekend period, as defined by the calendar and calendar's locale.
+	///
+	/// - returns: `true` if the date is within a weekend.
+	public var isDateInWeekend: Bool {
+		return Calendar.current.isDateInWeekend( self )
+	}
+
+
+	/// Compares the given date and self down to the given component,
+	/// reporting them equal if they are the same in the given component and all larger components.
+	///
+	/// - parameter date: A date to compare.
+	/// - parameter component: A granularity to compare. For example, pass `.hour` to check if two dates are in the same hour.
+	/// - returns: `true` if `date1` and `date2` are in the same day.
+	public func isEqualToDate( _ date: Date, toGranularity component: Calendar.Component ) -> Bool {
+		return Calendar.current.isDate( self, equalTo: date, toGranularity: component )
+	}
+}
+
+
 /// Convenience time properties.
 /// Usage: Date() + 2.days + 1.hour
 public extension Int {
