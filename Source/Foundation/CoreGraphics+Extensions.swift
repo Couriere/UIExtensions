@@ -64,8 +64,8 @@ public extension CGRect {
 
 public extension CGSize {
 
-	/// Returns whether a size has zero width or height, or is an invalid size.
-	var isEmpty: Bool { return width > 0 && height > 0 }
+	/// Returns whether a size has zero or negative width or height, or is an invalid size.
+	var isEmpty: Bool { return !( width > 0 && height > 0 ) }
 }
 
 
