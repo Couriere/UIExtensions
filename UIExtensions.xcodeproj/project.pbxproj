@@ -52,6 +52,9 @@
 		AA52241221B7B14F007737A7 /* UITabBarController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA52241121B7B14F007737A7 /* UITabBarController+Extensions.swift */; };
 		AA7EC73F2142677300386C7E /* Numbers+Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7EC73E2142677300386C7E /* Numbers+Extensions-Tests.swift */; };
 		AA7EC7402142677700386C7E /* Numbers+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBD1FB87BCC00E3CC35 /* Numbers+Extensions.swift */; };
+		AA9F562C2215A225006FC149 /* Dictionary+Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9F562B2215A225006FC149 /* Dictionary+Extensions-Tests.swift */; };
+		AA9F562D2215A22A006FC149 /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBE1FB87BCC00E3CC35 /* Dictionary+Extensions.swift */; };
+		AA9F562E2215A449006FC149 /* Optional+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3ED3072142713F00D65DDD /* Optional+Extensions.swift */; };
 		AAA55FC7220C442E003DCEDA /* CoreGraphics+Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA55FC6220C442E003DCEDA /* CoreGraphics+Extensions-Tests.swift */; };
 		AAA55FC8220C44B2003DCEDA /* CoreGraphics+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB11FB87BCC00E3CC35 /* CoreGraphics+Extensions.swift */; };
 		AAA6D1B42195BB6F00BE985E /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */; };
@@ -135,6 +138,7 @@
 		AA41682D218789D8000CD098 /* UIControl+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Extensions.swift"; sourceTree = "<group>"; };
 		AA52241121B7B14F007737A7 /* UITabBarController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITabBarController+Extensions.swift"; sourceTree = "<group>"; };
 		AA7EC73E2142677300386C7E /* Numbers+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Numbers+Extensions-Tests.swift"; sourceTree = "<group>"; };
+		AA9F562B2215A225006FC149 /* Dictionary+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AAA55FC6220C442E003DCEDA /* CoreGraphics+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreGraphics+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
 		AAD08DE020076FF40075B57E /* UIExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -200,6 +204,7 @@
 				AAF98E0B214173890059F792 /* String+Extensions-Tests.swift */,
 				AA7EC73E2142677300386C7E /* Numbers+Extensions-Tests.swift */,
 				AAA55FC6220C442E003DCEDA /* CoreGraphics+Extensions-Tests.swift */,
+				AA9F562B2215A225006FC149 /* Dictionary+Extensions-Tests.swift */,
 				AA3ED3112142777900D65DDD /* EventTests.swift */,
 				AA014FA01FB87A0500E3CC35 /* Info.plist */,
 			);
@@ -465,11 +470,14 @@
 				AA3ED3122142777900D65DDD /* EventTests.swift in Sources */,
 				AAA55FC7220C442E003DCEDA /* CoreGraphics+Extensions-Tests.swift in Sources */,
 				AA0ACE3020AB882F00DFD66B /* UILayoutGuide+Constraints.swift in Sources */,
+				AA9F562D2215A22A006FC149 /* Dictionary+Extensions.swift in Sources */,
 				AAA55FC8220C44B2003DCEDA /* CoreGraphics+Extensions.swift in Sources */,
 				AA0ACE3320AB89E900DFD66B /* Protocol+Extensions.swift in Sources */,
 				AA7EC73F2142677300386C7E /* Numbers+Extensions-Tests.swift in Sources */,
 				AAF98E0D214175040059F792 /* String+Extensions.swift in Sources */,
 				AA0ACE2E20AB6CAB00DFD66B /* UIView+Constraints.swift in Sources */,
+				AA9F562E2215A449006FC149 /* Optional+Extensions.swift in Sources */,
+				AA9F562C2215A225006FC149 /* Dictionary+Extensions-Tests.swift in Sources */,
 				AA0ACE2D20AB6BFB00DFD66B /* UIView+Constraints-Tests.swift in Sources */,
 				AAF98E0C214173890059F792 /* String+Extensions-Tests.swift in Sources */,
 			);

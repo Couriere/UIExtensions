@@ -9,34 +9,23 @@ import UIKit
 
 public extension Dictionary {
 
-	init(_ elements: [Element]){
-		self.init()
-		for (k, v) in elements {
-			self[k] = v
-		}
+	func map<T, U>( _ transform: (Key, Value) -> (T, U) ) -> [T : U] {
+		return Dictionary<T, U>( uniqueKeysWithValues: self.map( transform ))
 	}
-	
-	func map<U>( _ transform: ( Value ) throws -> U ) throws -> [Key : U] {
-		return Dictionary<Key, U>( try self.map { key, value in ( key, try transform( value )) } )
+
+	mutating func addEntriesFromDictionary( _ dict: [ Key: Value ] ) {
+		self.merge( dict ) { $1 }
 	}
-	
-	func map<T, U>(_ transform: (Key, Value) throws -> (T, U)) throws -> [T : U] {
-		return Dictionary<T, U>( try self.map( transform ))
+
+	static func + ( lhs: Dictionary<Key,Value>, rhs: Dictionary<Key,Value> ) -> Dictionary<Key,Value> {
+		return lhs.merging( rhs ) { $1 }
 	}
-	
-	mutating func addEntriesFromDictionary<KeyType,ValueType>( _ dict: [KeyType: ValueType] ) {
-		for ( key, value ) in dict {
-			updateValue( value as! Value, forKey: key as! Key )
-		}
+
+	static func += ( lhs: inout Dictionary<Key,Value>, rhs: Dictionary<Key,Value> ) {
+		lhs.merge( rhs ) { $1 }
 	}
-	
-	subscript (key: Key, defaultValue: Value ) -> Value {
-		if let value = self[ key ] {
-			return value
-		} else {
-			return defaultValue
-		}
-	}
+
+
 	func valueForKey<T>( _ key: Key, defaultValue: T ) -> T {
 		if let value = self[ key ] as? T {
 			return value
@@ -63,8 +52,27 @@ public extension Dictionary where Value: OptionalType {
 	}
 }
 
-public func + <K,V>( left: Dictionary<K,V>, right: Dictionary<K,V> ) -> Dictionary<K,V> {
-	var map = left
-	map.addEntriesFromDictionary( right )
-	return map
+/// Deprecated
+public extension Dictionary {
+	@available( swift, deprecated: 4.0, obsoleted: 5.0, message: "Use Dictionary( uniqueKeysWithValues: ) instead" )
+	init(_ elements: [Element]){
+		self.init()
+		for (k, v) in elements {
+			self[k] = v
+		}
+	}
+
+	@available( swift, deprecated: 4.0, obsoleted: 5.0, message: "Use Dictionary.mapValues() instead." )
+	func map<U>( _ transform: ( Value ) throws -> U ) throws -> [Key : U] {
+		return Dictionary<Key, U>( try self.map { key, value in ( key, try transform( value )) } )
+	}
+
+	@available( swift, deprecated: 4.0, obsoleted: 5.0, message: "Use `Dictionary[ key, default: value ] instead" )
+	subscript (key: Key, defaultValue: Value ) -> Value {
+		if let value = self[ key ] {
+			return value
+		} else {
+			return defaultValue
+		}
+	}
 }
