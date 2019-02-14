@@ -56,7 +56,7 @@ public extension UIImage {
 	//////
 	/// Apply `color` to all non-transparent pixels in image.
 	//////
-	func applyTintColor( _ color: UIColor ) -> UIImage? {
+	func applyTintColor( _ color: UIColor ) -> UIImage {
 
 		let image = withRenderingMode( .alwaysTemplate )
 
@@ -64,6 +64,6 @@ public extension UIImage {
 		defer { UIGraphicsEndImageContext() }
 		color.set()
 		image.draw( in: CGRect( origin: .zero, size: size ))
-		return UIGraphicsGetImageFromCurrentImageContext()
+		return UIGraphicsGetImageFromCurrentImageContext() ?? self
 	}
 }
