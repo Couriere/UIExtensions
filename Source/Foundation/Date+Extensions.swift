@@ -61,6 +61,12 @@ public extension Date {
 		
 		return calendar.date( from: dateComponents )!
 	}
+
+	/// Returns time interval since this date start of the day.
+	var timeIntervalSinceStartOfTheDay: TimeInterval {
+		return self.timeIntervalSince( Calendar.current.startOfDay( for: self ) )
+	}
+
 	
 	static let gregorianRUCalendar = Calendar( identifier: .gregorian ).with {
 		$0.locale = Locale( identifier: "ru_RU" )
