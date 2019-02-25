@@ -52,6 +52,8 @@
 		AA52241221B7B14F007737A7 /* UITabBarController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA52241121B7B14F007737A7 /* UITabBarController+Extensions.swift */; };
 		AA7EC73F2142677300386C7E /* Numbers+Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7EC73E2142677300386C7E /* Numbers+Extensions-Tests.swift */; };
 		AA7EC7402142677700386C7E /* Numbers+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBD1FB87BCC00E3CC35 /* Numbers+Extensions.swift */; };
+		AA855E272223EA4600718AB8 /* Collections+Conversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA855E262223EA4600718AB8 /* Collections+Conversions.swift */; };
+		AA855E282223ECFD00718AB8 /* Collections+Conversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA855E262223EA4600718AB8 /* Collections+Conversions.swift */; };
 		AA9F562C2215A225006FC149 /* Dictionary+Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9F562B2215A225006FC149 /* Dictionary+Extensions-Tests.swift */; };
 		AA9F562D2215A22A006FC149 /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBE1FB87BCC00E3CC35 /* Dictionary+Extensions.swift */; };
 		AA9F562E2215A449006FC149 /* Optional+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3ED3072142713F00D65DDD /* Optional+Extensions.swift */; };
@@ -138,6 +140,7 @@
 		AA41682D218789D8000CD098 /* UIControl+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Extensions.swift"; sourceTree = "<group>"; };
 		AA52241121B7B14F007737A7 /* UITabBarController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITabBarController+Extensions.swift"; sourceTree = "<group>"; };
 		AA7EC73E2142677300386C7E /* Numbers+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Numbers+Extensions-Tests.swift"; sourceTree = "<group>"; };
+		AA855E262223EA4600718AB8 /* Collections+Conversions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collections+Conversions.swift"; sourceTree = "<group>"; };
 		AA9F562B2215A225006FC149 /* Dictionary+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AAA55FC6220C442E003DCEDA /* CoreGraphics+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreGraphics+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
@@ -262,6 +265,7 @@
 				AA014FBB1FB87BCC00E3CC35 /* GDC+Extensions.swift */,
 				AA014FBD1FB87BCC00E3CC35 /* Numbers+Extensions.swift */,
 				AA014FBE1FB87BCC00E3CC35 /* Dictionary+Extensions.swift */,
+				AA855E262223EA4600718AB8 /* Collections+Conversions.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -443,6 +447,7 @@
 				AA014FCE1FB87BCC00E3CC35 /* UIDevice+Extensions.swift in Sources */,
 				AA014FCA1FB87BCC00E3CC35 /* String+Extensions.swift in Sources */,
 				AA014FC51FB87BCC00E3CC35 /* UIColor+Inits.swift in Sources */,
+				AA855E272223EA4600718AB8 /* Collections+Conversions.swift in Sources */,
 				AA014FC31FB87BCC00E3CC35 /* NSURL+Extensions.swift in Sources */,
 				AA014FC91FB87BCC00E3CC35 /* UIView+Extensions.swift in Sources */,
 				AA014FCC1FB87BCC00E3CC35 /* NSTimer+Blocks.swift in Sources */,
@@ -508,6 +513,7 @@
 				AAD08DEF200770160075B57E /* UIView+Extensions.swift in Sources */,
 				AAD08DF2200770160075B57E /* NSTimer+Blocks.swift in Sources */,
 				AA3ED315214278F600D65DDD /* Array+Async.swift in Sources */,
+				AA855E282223ECFD00718AB8 /* Collections+Conversions.swift in Sources */,
 				AAD08DE8200770160075B57E /* Array+Extensions.swift in Sources */,
 				D73FC3322059632D00F239D0 /* UIStoryboard+Extensions.swift in Sources */,
 				AAA6D1B52195BB6F00BE985E /* UIGestureRecognizer+Extensions.swift in Sources */,
