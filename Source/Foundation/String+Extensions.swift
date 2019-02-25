@@ -9,6 +9,11 @@ import Foundation
 
 public extension String {
 
+	/// Returns range from start to end of the string.
+	public var wholeRange: Range<String.Index> {
+		return startIndex..<endIndex
+	}
+
 	/// Returns a new string in which the characters in a specified range of the receiver are replaced by a given string.
 	/// - parameter range: A range of characters in the receiver.
 	/// - parameter replacement: The string with which to replace the characters in range.
@@ -21,8 +26,7 @@ public extension String {
 	/// Returns new string by removing all non-digit symbols from receiver.
 	public var digitsOnly: String {
 		get {
-			let range = startIndex..<endIndex
-			return replacingOccurrences( of: "[^0-9]", with: "", options: .regularExpression, range: range )
+			return replacingOccurrences( of: "[^0-9]", with: "", options: .regularExpression, range: wholeRange )
 		}
 	}
 
