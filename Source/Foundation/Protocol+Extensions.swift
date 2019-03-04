@@ -128,7 +128,7 @@ extension Sequence {
 	/// Calls the given closure on each element in the sequence in the same order as a for-in loop.
 	/// - parameter body: A closure that takes an element of the sequence as a parameter.
 	/// - returns: Self.
-	public func pefrorm( _ body: (Element) throws -> Void ) rethrows -> Self {
+	public func perform( _ body: ( Element ) throws -> Void ) rethrows -> Self {
 		try self.forEach( body )
 		return self
 	}
