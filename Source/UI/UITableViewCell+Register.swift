@@ -32,7 +32,7 @@ import UIKit
 
 public extension UITableViewCell {
 	
-	class var identifier: String { return NSStringFromClass( self ).components( separatedBy: "." ).last! }
+	@objc class var identifier: String { return NSStringFromClass( self ).components( separatedBy: "." ).last! }
 	
 	static func registerClass( in tableView: UITableView ) {
 		tableView.register( self, forCellReuseIdentifier: identifier )
