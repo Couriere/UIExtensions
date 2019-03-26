@@ -52,7 +52,7 @@ class NumbersExtensionsTests: XCTestCase {
 
 	func testFormatTimeInterval() {
 
-		let t1: TimeInterval = 60*60*3 + 60*3 + 4
+		let t1: TimeInterval = 3.hours + 3.minutes + 4.seconds
 		XCTAssertEqual( t1.formatted, "03:03:04" )
 
 		let t2: TimeInterval = 60*60*102

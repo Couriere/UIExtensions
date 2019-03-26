@@ -11,7 +11,7 @@ public extension UIView {
 
 	/// Returns current first responder view that's contained in this view's subtree.
 	/// Returns `nil` otherwise.
-	public var firstResponder: UIView? {
+	var firstResponder: UIView? {
 
 		if isFirstResponder { return self }
 
@@ -24,12 +24,12 @@ public extension UIView {
 
 
 	/// Adds views to the end of the receiver’s list of subviews.
-	public func addSubviews( _ views: [ UIView ] ) {
+	func addSubviews( _ views: [ UIView ] ) {
 		views.forEach { addSubview( $0 ) }
 	}
 
 	/// Removes all subviews from the receiver.
-	public func removeAllSubviews() {
+	func removeAllSubviews() {
 		subviews.forEach { $0.removeFromSuperview() }
 	}
 }

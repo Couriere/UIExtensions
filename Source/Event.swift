@@ -121,7 +121,7 @@ open class Event<T> {
 }
 
 public extension Event where T == Void {
-	public func raise() {
+	func raise() {
 		raise( () )
 	}
 }

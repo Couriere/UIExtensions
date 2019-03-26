@@ -16,7 +16,7 @@ public extension UIView {
 	/// Достаточно часто требуется для того, чтобы фокус переходил на объект,
 	/// расположенный не непосредственно над или под текущим объектом с фокусом.
 	@discardableResult
-	public func setHorizontalFocusGuide( superview: UIView? = nil, insets: UIEdgeInsets = .zero ) -> UIFocusGuide {
+	func setHorizontalFocusGuide( superview: UIView? = nil, insets: UIEdgeInsets = .zero ) -> UIFocusGuide {
 		return UIFocusGuide().then {
 			( superview ?? self.superview )?.addLayoutGuide( $0 )
 			$0.constrainToSuperviewHorizontallyAndVertically( to: self, insets: insets )

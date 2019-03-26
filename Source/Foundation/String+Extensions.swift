@@ -10,7 +10,7 @@ import Foundation
 public extension String {
 
 	/// Returns range from start to end of the string.
-	public var wholeRange: Range<String.Index> {
+	var wholeRange: Range<String.Index> {
 		return startIndex..<endIndex
 	}
 
@@ -18,20 +18,20 @@ public extension String {
 	/// - parameter range: A range of characters in the receiver.
 	/// - parameter replacement: The string with which to replace the characters in range.
 	/// - returns: A new string in which the characters in range of the receiver are replaced by replacement.
-	public func replacingCharacters<T: StringProtocol>( in range: NSRange, with replacement: T ) -> String {
+	func replacingCharacters<T: StringProtocol>( in range: NSRange, with replacement: T ) -> String {
 		guard let range = Range( range, in: self ) else { fatalError( "range out of bounds" ) }
 		return self.replacingCharacters( in: range, with: replacement )
 	}
 
 	/// Returns new string by removing all non-digit symbols from receiver.
-	public var digitsOnly: String {
+	var digitsOnly: String {
 		get {
 			return replacingOccurrences( of: "[^0-9]", with: "", options: .regularExpression, range: wholeRange )
 		}
 	}
 
 	/// Returns `true` if receiver holds correct email address.
-	public var isValidEmail: Bool {
+	var isValidEmail: Bool {
 		let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
 		return NSPredicate( format: "SELF MATCHES %@", emailRegex ).evaluate( with: self )
 	}

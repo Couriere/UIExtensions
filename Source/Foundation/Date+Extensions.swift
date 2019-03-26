@@ -78,28 +78,28 @@ public extension Date {
 	/// Returns `true` if the date is within today, as defined by the calendar and calendar's locale.
 	///
 	/// - returns: `true` if the date is within today.
-	public var isToday: Bool {
+	var isToday: Bool {
 		return Calendar.current.isDateInToday( self )
 	}
 
 	/// Returns `true` if the date is within tomorrow, as defined by the calendar and calendar's locale.
 	///
 	/// - returns: `true` if the date is within tomorrow.
-	public var isTomorrow: Bool {
+	var isTomorrow: Bool {
 		return Calendar.current.isDateInTomorrow( self )
 	}
 
 	/// Returns `true` if the date is within yesterday, as defined by the calendar and calendar's locale.
 	///
 	/// - returns: `true` if the date is within yesterday.
-	public var isYesterday: Bool {
+	var isYesterday: Bool {
 		return Calendar.current.isDateInYesterday( self )
 	}
 
 	/// Returns `true` if the date is within a weekend period, as defined by the calendar and calendar's locale.
 	///
 	/// - returns: `true` if the date is within a weekend.
-	public var isDateInWeekend: Bool {
+	var isDateInWeekend: Bool {
 		return Calendar.current.isDateInWeekend( self )
 	}
 
@@ -110,7 +110,7 @@ public extension Date {
 	/// - parameter date: A date to compare.
 	/// - parameter component: A granularity to compare. For example, pass `.hour` to check if two dates are in the same hour.
 	/// - returns: `true` if `date1` and `date2` are in the same day.
-	public func isEqualToDate( _ date: Date, toGranularity component: Calendar.Component ) -> Bool {
+	func isEqualToDate( _ date: Date, toGranularity component: Calendar.Component ) -> Bool {
 		return Calendar.current.isDate( self, equalTo: date, toGranularity: component )
 	}
 }
@@ -120,30 +120,30 @@ public extension Date {
 /// Usage: Date() + 2.days + 1.hour
 public extension Int {
 
-	public var second: TimeInterval { return TimeInterval( self ) }
-	public var seconds: TimeInterval { return TimeInterval( self ) }
+	var second: TimeInterval { return TimeInterval( self ) }
+	var seconds: TimeInterval { return TimeInterval( self ) }
 
-	public var minute: TimeInterval { return TimeInterval( self * 60 ) }
-	public var minutes: TimeInterval { return TimeInterval( self * 60 ) }
+	var minute: TimeInterval { return TimeInterval( self * 60 ) }
+	var minutes: TimeInterval { return TimeInterval( self * 60 ) }
 	
-	public var hour: TimeInterval { return TimeInterval( self * 60 * 60 ) }
-	public var hours: TimeInterval { return TimeInterval( self * 60 * 60 ) }
+	var hour: TimeInterval { return TimeInterval( self * 60 * 60 ) }
+	var hours: TimeInterval { return TimeInterval( self * 60 * 60 ) }
 	
-	public var day: TimeInterval { return TimeInterval( self * 24 * 60 * 60 ) }
-	public var days: TimeInterval { return TimeInterval( self * 24 * 60 * 60 ) }
+	var day: TimeInterval { return TimeInterval( self * 24 * 60 * 60 ) }
+	var days: TimeInterval { return TimeInterval( self * 24 * 60 * 60 ) }
 }
 
 public extension TimeInterval {
 	
-	public var second: TimeInterval { return self }
-	public var seconds: TimeInterval { return self }
+	var second: TimeInterval { return self }
+	var seconds: TimeInterval { return self }
 
-	public var minute: TimeInterval { return self * 60 }
-	public var minutes: TimeInterval { return self * 60 }
+	var minute: TimeInterval { return self * 60 }
+	var minutes: TimeInterval { return self * 60 }
 	
-	public var hour: TimeInterval { return self * 60 * 60 }
-	public var hours: TimeInterval { return self * 60 * 60 }
+	var hour: TimeInterval { return self * 60 * 60 }
+	var hours: TimeInterval { return self * 60 * 60 }
 	
-	public var day: TimeInterval { return self * 24 * 60 * 60 }
-	public var days: TimeInterval { return self * 24 * 60 * 60 }
+	var day: TimeInterval { return self * 24 * 60 * 60 }
+	var days: TimeInterval { return self * 24 * 60 * 60 }
 }

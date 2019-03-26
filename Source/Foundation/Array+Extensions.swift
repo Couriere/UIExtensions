@@ -21,7 +21,7 @@ public extension Array {
 	let array = Array( emptyOptional ) // => []
 	```
 	*/
-	public init( _ element: Element? ) {
+	init( _ element: Element? ) {
 		if let element = element {
 			self = [ element ]
 		} else {
@@ -40,13 +40,13 @@ public extension Array {
 	[ 10, 20 ].appending( 30 ) => [ 10, 20, 30 ]
 	```
 	*/
-	public static func +( array: Array, element: Element ) -> Array {
+	static func +( array: Array, element: Element ) -> Array {
 		var mutableArray = array
 		mutableArray.append( element )
 		return mutableArray
 	}
 
-	public func appending( _ element: Element ) -> Array<Element> {
+	func appending( _ element: Element ) -> Array<Element> {
 		var mutableArray = self
 		mutableArray.append( element )
 		return mutableArray
@@ -65,7 +65,7 @@ public extension Array {
 	[ 10, 20 ] + emptyOptional => [ 10, 20 ]
 	```
 	*/
-	public static func +( array: Array, element: Element?) -> Array {
+	static func +( array: Array, element: Element?) -> Array {
 		if let element = element { return array + [ element ] }
 		return array
 	}
@@ -79,7 +79,7 @@ public extension Array {
 	print( array ) // => [ 10, 20, 30 ]
 	```
 	*/
-	public static func +=( array: inout Array, element: Element ) {
+	static func +=( array: inout Array, element: Element ) {
 		array.append( element )
 	}
 
@@ -99,7 +99,7 @@ public extension Array {
 	print( array ) // => [ 10, 20, 30 ]
 	```
 	*/
-	public static func +=( array: inout Array, element: Element? ) {
+	static func +=( array: inout Array, element: Element? ) {
 		if let element = element { array.append( element ) }
 	}
 }

@@ -12,7 +12,7 @@ public extension UITabBarController {
 
 	/// Shows/hides tab bar in UITabBarController.
 	/// Correctly changes safe area zone in subviews.
-	public var isTabBarHidden: Bool {
+	var isTabBarHidden: Bool {
 		get { return !tabBar.frame.intersects( view.frame ) }
 		set {
 			guard isTabBarHidden != newValue else { return }

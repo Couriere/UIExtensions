@@ -30,6 +30,7 @@
 		AA014FD51FB87BCC00E3CC35 /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBE1FB87BCC00E3CC35 /* Dictionary+Extensions.swift */; };
 		AA014FD61FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBF1FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift */; };
 		AA014FD71FB87BCC00E3CC35 /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FC01FB87BCC00E3CC35 /* UILabel+Extensions.swift */; };
+		AA053C8F224A126D005705BE /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAD1FB87BCC00E3CC35 /* Date+Extensions.swift */; };
 		AA053C91224A13E9005705BE /* Decoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA053C90224A13E9005705BE /* Decoder+Extensions.swift */; };
 		AA0ACE2D20AB6BFB00DFD66B /* UIView+Constraints-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0ACE2C20AB6BFB00DFD66B /* UIView+Constraints-Tests.swift */; };
 		AA0ACE2E20AB6CAB00DFD66B /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBA1FB87BCC00E3CC35 /* UIView+Constraints.swift */; };
@@ -483,6 +484,7 @@
 				AAA55FC8220C44B2003DCEDA /* CoreGraphics+Extensions.swift in Sources */,
 				AA0ACE3320AB89E900DFD66B /* Protocol+Extensions.swift in Sources */,
 				AA7EC73F2142677300386C7E /* Numbers+Extensions-Tests.swift in Sources */,
+				AA053C8F224A126D005705BE /* Date+Extensions.swift in Sources */,
 				AAF98E0D214175040059F792 /* String+Extensions.swift in Sources */,
 				AA0ACE2E20AB6CAB00DFD66B /* UIView+Constraints.swift in Sources */,
 				AA9F562E2215A449006FC149 /* Optional+Extensions.swift in Sources */,
