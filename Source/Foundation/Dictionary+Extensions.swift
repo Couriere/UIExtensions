@@ -9,8 +9,8 @@ import UIKit
 
 public extension Dictionary {
 
-	func map<T, U>( _ transform: (Key, Value) -> (T, U) ) -> [T : U] {
-		return Dictionary<T, U>( uniqueKeysWithValues: self.map( transform ))
+	func map<T, U>( _ transform: (Key, Value) throws -> (T, U) ) rethrows -> [T : U] {
+		return Dictionary<T, U>( uniqueKeysWithValues: try self.map( transform ))
 	}
 
 	mutating func addEntriesFromDictionary( _ dict: [ Key: Value ] ) {
