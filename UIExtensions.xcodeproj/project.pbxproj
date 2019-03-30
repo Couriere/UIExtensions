@@ -63,6 +63,7 @@
 		AAA55FC8220C44B2003DCEDA /* CoreGraphics+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB11FB87BCC00E3CC35 /* CoreGraphics+Extensions.swift */; };
 		AAA6D1B42195BB6F00BE985E /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */; };
 		AAA6D1B52195BB6F00BE985E /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */; };
+		AAD08A1D22501DE50063694B /* UIBarButtonItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD08A1C22501DE50063694B /* UIBarButtonItem+Extensions.swift */; };
 		AAD08DE420076FF50075B57E /* UIExtensions_tvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AAD08DE8200770160075B57E /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAB1FB87BCC00E3CC35 /* Array+Extensions.swift */; };
 		AAD08DE9200770160075B57E /* NSURL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAC1FB87BCC00E3CC35 /* NSURL+Extensions.swift */; };
@@ -147,6 +148,7 @@
 		AA9F562B2215A225006FC149 /* Dictionary+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AAA55FC6220C442E003DCEDA /* CoreGraphics+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreGraphics+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
+		AAD08A1C22501DE50063694B /* UIBarButtonItem+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Extensions.swift"; sourceTree = "<group>"; };
 		AAD08DE020076FF40075B57E /* UIExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIExtensions_tvOS.h; sourceTree = "<group>"; };
 		AAD08DE320076FF50075B57E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				D73FC32D2059632C00F239D0 /* UIStackView+Extensions.swift */,
 				D73FC32E2059632C00F239D0 /* UIStoryboard+Extensions.swift */,
 				AA41682D218789D8000CD098 /* UIControl+Extensions.swift */,
+				AAD08A1C22501DE50063694B /* UIBarButtonItem+Extensions.swift */,
 				AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */,
 				AA52241121B7B14F007737A7 /* UITabBarController+Extensions.swift */,
 			);
@@ -440,6 +443,7 @@
 				AA2B8FFE21AFDA0A00DA8E27 /* UIViewController+Extensions.swift in Sources */,
 				AA014FD71FB87BCC00E3CC35 /* UILabel+Extensions.swift in Sources */,
 				AA014FC81FB87BCC00E3CC35 /* CoreGraphics+Extensions.swift in Sources */,
+				AAD08A1D22501DE50063694B /* UIBarButtonItem+Extensions.swift in Sources */,
 				AA014FD41FB87BCC00E3CC35 /* Numbers+Extensions.swift in Sources */,
 				AA014FC41FB87BCC00E3CC35 /* Date+Extensions.swift in Sources */,
 				D73FC32F2059632D00F239D0 /* UIStackView+Extensions.swift in Sources */,
