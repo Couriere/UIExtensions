@@ -78,6 +78,11 @@ public extension UIEdgeInsets {
 	init( horizontal: CGFloat = 0, vertical: CGFloat = 0 ) {
 		self.init( top: vertical, left: horizontal, bottom: vertical, right: horizontal )
 	}
+
+	/// Inverts all insets.
+	var inverted: UIEdgeInsets {
+		return UIEdgeInsets( top: -top, left: -left, bottom: -bottom, right: -right )
+	}
 }
 
 public extension Int {
