@@ -13,6 +13,17 @@ public func +( left: NSAttributedString, right: NSAttributedString ) -> NSAttrib
 	return mutable
 }
 
+public extension NSAttributedString {
+
+	/// Converts HTML string to NSAttributed string.
+	convenience init( htmlString: String ) throws {
+
+		try self.init( data: Data( htmlString.utf8 ),
+					   options: [ .documentType : NSAttributedString.DocumentType.html,
+								  .characterEncoding: String.Encoding.utf8.rawValue ],
+					   documentAttributes: nil )
+	}
+}
 
 public extension NSAttributedString {
 	

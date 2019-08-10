@@ -35,8 +35,18 @@ public extension String {
 		let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
 		return NSPredicate( format: "SELF MATCHES %@", emailRegex ).evaluate( with: self )
 	}
-}
 
+
+	/// Returns string with stripped HTML tags.
+	func strippingHTMLTags() -> String {
+		let range = NSRange( self.startIndex..<self.endIndex, in: self )
+		return String.regex.stringByReplacingMatches( in: self,
+													  options: [],
+													  range: range,
+													  withTemplate: "" )
+	}
+	private static let regex = try! NSRegularExpression( pattern: "<[^>]*>", options: [] )
+}
 
 
 /**
