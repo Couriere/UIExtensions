@@ -144,7 +144,7 @@
 		AA0ACE2F20AB882F00DFD66B /* UILayoutGuide+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILayoutGuide+Constraints.swift"; sourceTree = "<group>"; };
 		AA0C342122FF102A00074B72 /* DefaultsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultsTests.swift; sourceTree = "<group>"; };
 		AA0C342322FF109300074B72 /* Defaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
-		AA0C342822FF181100074B72 /* package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = package.swift; sourceTree = "<group>"; };
+		AA0C342822FF181100074B72 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		AA2B8FFD21AFDA0A00DA8E27 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		AA37BB9A20DBA55700AF07F7 /* Array+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AA3ED3072142713F00D65DDD /* Optional+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Extensions.swift"; sourceTree = "<group>"; };
@@ -197,7 +197,7 @@
 		AA014F861FB87A0400E3CC35 = {
 			isa = PBXGroup;
 			children = (
-				AA0C342822FF181100074B72 /* package.swift */,
+				AA0C342822FF181100074B72 /* Package.swift */,
 				AA014FAA1FB87BCC00E3CC35 /* Sources */,
 				AA014F9D1FB87A0500E3CC35 /* UIExtensionsTests */,
 				AA014FC11FB87BCC00E3CC35 /* Info.plist */,
