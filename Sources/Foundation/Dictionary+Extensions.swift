@@ -62,11 +62,6 @@ public extension Dictionary {
 		}
 	}
 
-	@available( swift, deprecated: 4.0, obsoleted: 5.0, message: "Use Dictionary.mapValues() instead." )
-	func map<U>( _ transform: ( Value ) throws -> U ) throws -> [Key : U] {
-		return Dictionary<Key, U>( try self.map { key, value in ( key, try transform( value )) } )
-	}
-
 	@available( swift, deprecated: 4.0, obsoleted: 5.0, message: "Use `Dictionary[ key, default: value ] instead" )
 	subscript (key: Key, defaultValue: Value ) -> Value {
 		if let value = self[ key ] {
