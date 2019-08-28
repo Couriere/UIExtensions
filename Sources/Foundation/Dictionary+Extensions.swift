@@ -42,6 +42,9 @@ public extension Dictionary where Value: OptionalType {
 	/// All keys with `nil` values are dropped.
 	var sanitized: [ Key: Value.Wrapped ] {
 
+		#if swift(>=5.1)
+		return compactMapValues { $0 } as! [ Key : Value.Wrapped ]
+		#else
 		var sanitizedDictionary: [ Key: Value.Wrapped ] = [:]
 
 		self.forEach {
@@ -49,6 +52,7 @@ public extension Dictionary where Value: OptionalType {
 		}
 
 		return sanitizedDictionary
+		#endif
 	}
 }
 
