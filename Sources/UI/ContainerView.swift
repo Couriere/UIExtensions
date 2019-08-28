@@ -16,7 +16,7 @@ open class ContainerView: UIView {
 	public struct Options: OptionSet {
 		public let rawValue: Int
 
-		public init( rawValue: Self.RawValue ) {
+		public init( rawValue: ContainerView.Options.RawValue ) {
 			self.rawValue = rawValue
 		}
 

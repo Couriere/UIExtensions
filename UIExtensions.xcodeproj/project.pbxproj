@@ -71,7 +71,6 @@
 		AAA6D1B42195BB6F00BE985E /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */; };
 		AAA6D1B52195BB6F00BE985E /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */; };
 		AAD08A1D22501DE50063694B /* UIBarButtonItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD08A1C22501DE50063694B /* UIBarButtonItem+Extensions.swift */; };
-		AAD08DE420076FF50075B57E /* UIExtensions_tvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AAD08DE8200770160075B57E /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAB1FB87BCC00E3CC35 /* Array+Extensions.swift */; };
 		AAD08DE9200770160075B57E /* NSURL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAC1FB87BCC00E3CC35 /* NSURL+Extensions.swift */; };
 		AAD08DEA200770160075B57E /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FAD1FB87BCC00E3CC35 /* Date+Extensions.swift */; };
@@ -161,8 +160,6 @@
 		AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
 		AAD08A1C22501DE50063694B /* UIBarButtonItem+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Extensions.swift"; sourceTree = "<group>"; };
 		AAD08DE020076FF40075B57E /* UIExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIExtensions_tvOS.h; sourceTree = "<group>"; };
-		AAD08DE320076FF50075B57E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AAF98E0B214173890059F792 /* String+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		D73FC32D2059632C00F239D0 /* UIStackView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extensions.swift"; sourceTree = "<group>"; };
 		D73FC32E2059632C00F239D0 /* UIStoryboard+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Extensions.swift"; sourceTree = "<group>"; };
@@ -201,7 +198,6 @@
 				AA014FAA1FB87BCC00E3CC35 /* Sources */,
 				AA014F9D1FB87A0500E3CC35 /* UIExtensionsTests */,
 				AA014FC11FB87BCC00E3CC35 /* Info.plist */,
-				AAD08DE120076FF50075B57E /* UIExtensions tvOS */,
 				AA014F911FB87A0500E3CC35 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -292,15 +288,6 @@
 			path = Foundation;
 			sourceTree = "<group>";
 		};
-		AAD08DE120076FF50075B57E /* UIExtensions tvOS */ = {
-			isa = PBXGroup;
-			children = (
-				AAD08DE220076FF50075B57E /* UIExtensions_tvOS.h */,
-				AAD08DE320076FF50075B57E /* Info.plist */,
-			);
-			path = "UIExtensions tvOS";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -315,7 +302,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AAD08DE420076FF50075B57E /* UIExtensions_tvOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -766,7 +752,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "UIExtensions tvOS/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.couriere.uiextensions;
@@ -789,7 +775,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "UIExtensions tvOS/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.couriere.uiextensions;
