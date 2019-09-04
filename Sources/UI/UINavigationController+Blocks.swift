@@ -93,7 +93,8 @@ public extension UINavigationController {
 							 completion: @escaping () -> Void ) {
 
 		pushViewController( viewController, animated: animated )
-		setCompletionHandler( completion, animated: animated )
+		// Push of very first controller executes without aimation. So we need to force completion call.
+		setCompletionHandler( completion, animated: animated && viewControllers.count > 1 )
 	}
 
 	/// Pops the top view controller from the navigation stack and updates the display.
