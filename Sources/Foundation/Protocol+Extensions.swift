@@ -27,7 +27,7 @@ import CoreGraphics
 public protocol Then {}
 
 extension Then where Self: Any {
-	
+
 	/// Makes it available to set properties with closures just after initializing.
 	///
 	///     let frame = CGRect().with {
@@ -39,11 +39,10 @@ extension Then where Self: Any {
 		block(&copy)
 		return copy
 	}
-	
 }
 
 extension Then where Self: AnyObject {
-	
+
 	/// Makes it available to set properties with closures just after initializing.
 	///
 	///     let label = UILabel().then {
@@ -55,7 +54,7 @@ extension Then where Self: AnyObject {
 		block(self)
 		return self
 	}
-	
+
 	/// Makes it available to execute something with closures.
 	///
 	///     UserDefaults.standard.do {
@@ -66,11 +65,10 @@ extension Then where Self: AnyObject {
 	public func `do`(_ block: (Self) -> Void) {
 		block(self)
 	}
-	
 }
 
 extension Then where Self: UIView {
-	
+
 	/// Makes it available to set properties with closures just after initializing.
 	/// By defaut turns off `translatesAutoresizingMaskIntoConstraints` property.
 	///
@@ -80,7 +78,7 @@ extension Then where Self: UIView {
 	///       $0.text = "Hello, World!"
 	///     }
 	@discardableResult public func then( useAutolayout: Bool = true, _ block: (Self) -> Void ) -> Self {
-		self.translatesAutoresizingMaskIntoConstraints = !useAutolayout
+		translatesAutoresizingMaskIntoConstraints = !useAutolayout
 		block(self)
 		return self
 	}
@@ -98,10 +96,10 @@ extension CGVector: Then {}
 /// Following methods execute blocks when Bool value is either `true` or `false`
 /// and can be chained.
 ///
-///		let bool = false
-///		bool
-///			.then { print( "This will not be executed" ) }
-///			.else { print( "This line will be printed" ) }
+/// 		let bool = false
+/// 		bool
+/// 			.then { print( "This will not be executed" ) }
+/// 			.else { print( "This line will be printed" ) }
 ///
 public extension Bool {
 
@@ -129,7 +127,7 @@ extension Sequence {
 	/// - parameter body: A closure that takes an element of the sequence as a parameter.
 	/// - returns: Self.
 	public func perform( _ body: ( Element ) throws -> Void ) rethrows -> Self {
-		try self.forEach( body )
+		try forEach( body )
 		return self
 	}
 }
@@ -141,6 +139,7 @@ public extension Equatable {
 	func isIn( _ collection: [ Self ] ) -> Bool {
 		return collection.contains( self )
 	}
+
 	/// Returns `true` is self is contained in variadic collection.
 	func isIn( _ sequence: Self... ) -> Bool {
 		return sequence.contains( self )

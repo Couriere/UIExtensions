@@ -20,7 +20,7 @@ class ArrayExtensionsTests: XCTestCase {
 		XCTAssertEqual( Array( optionalEmptyIntVar ), [] )
 	}
 
-    func testPlusOperator() {
+	func testPlusOperator() {
 		let array: [ Int ] = [ 10, 20, 30 ]
 
 		let intVar = 40

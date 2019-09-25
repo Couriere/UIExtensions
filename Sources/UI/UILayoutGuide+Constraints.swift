@@ -7,9 +7,9 @@
 
 import UIKit
 
-@available ( iOS 10, tvOS 10, * )
+@available( iOS 10, tvOS 10, * )
 public extension UIView {
-	
+
 	/// Создаёт направляющую для фокуса, добавляет её в окно `superview` текущего объекта,
 	/// и цепляет направляющую к краям этого окна по горизонтали,
 	/// и по границам текущего объекта по вертикали.
@@ -42,24 +42,24 @@ public extension UILayoutGuide {
 
 /// Debug helper extension to visualize UILayoutGuide on screen.
 public extension UILayoutGuide {
-	
+
 	/// Reveals position of layout guide on screen by inserting
 	/// view with specific background color at guides position.
 	func reveal( color: UIColor = UIColor.red.withAlphaComponent( 0.2 )) {
-		
+
 		guard owningView != nil else {
 			print( "Attempt to reveal layout guide without owner view." )
 			return
 		}
-		
+
 		LayoutGuideRevealView.reveal( with: self, color: color )
 	}
-	
+
 	class LayoutGuideRevealView: UIView {
 		static func reveal( with layoutGuide: UILayoutGuide, color: UIColor ) {
 			if let revealView =
 				LayoutGuideRevealView( layoutGuide: layoutGuide, color: color ) {
-				
+
 				objc_setAssociatedObject(
 					layoutGuide,
 					&LayoutGuideRevealView.AssociatedObjectHandle,
@@ -67,29 +67,29 @@ public extension UILayoutGuide {
 					objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC )
 			}
 		}
-		
+
 		private init?( layoutGuide: UILayoutGuide, color: UIColor ) {
-			
+
 			guard let owningView = layoutGuide.owningView else { return nil }
-			
+
 			if let existingView = objc_getAssociatedObject( layoutGuide, &LayoutGuideRevealView.AssociatedObjectHandle ) as? UIView {
 				existingView.removeFromSuperview()
 			}
-			
+
 			super.init( frame: .zero )
-			
+
 			translatesAutoresizingMaskIntoConstraints = false
 			isUserInteractionEnabled = false
 			backgroundColor = color
 			owningView.addSubview( self )
 			layoutGuide.equalSizeWithView( self )
 			layoutGuide.centerWithView( self )
-			
-			observer = layoutGuide.observe( \.owningView ) { [unowned self] guide, change in
+
+			observer = layoutGuide.observe(\.owningView ) { [unowned self] guide, change in
 				print( change )
-				
+
 				guard guide.owningView != self.superview else { return }
-				
+
 				// Владеющий этим окном `UILayoutGuide` сменил
 				// своё окно. Значит нам надо удалиться.
 				// Если `UILayoutGuide` нужно показать своё
@@ -102,13 +102,14 @@ public extension UILayoutGuide {
 					objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC )
 			}
 		}
-		required public init?(coder aDecoder: NSCoder) {
+
+		public required init?(coder _: NSCoder) {
 			fatalError("init(coder:) has not been implemented")
 		}
-		
+
 		private var observer: NSKeyValueObservation!
-		static private var AssociatedObjectHandle: UInt8 = 0
+		private static var AssociatedObjectHandle: UInt8 = 0
 	}
-	
+
 	static var t: NSKeyValueObservation?
 }

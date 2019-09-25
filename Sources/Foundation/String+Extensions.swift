@@ -11,7 +11,7 @@ public extension String {
 
 	/// Returns range from start to end of the string.
 	var wholeRange: Range<String.Index> {
-		return startIndex..<endIndex
+		return startIndex ..< endIndex
 	}
 
 	/// Returns a new string in which the characters in a specified range of the receiver are replaced by a given string.
@@ -20,14 +20,12 @@ public extension String {
 	/// - returns: A new string in which the characters in range of the receiver are replaced by replacement.
 	func replacingCharacters<T: StringProtocol>( in range: NSRange, with replacement: T ) -> String {
 		guard let range = Range( range, in: self ) else { fatalError( "range out of bounds" ) }
-		return self.replacingCharacters( in: range, with: replacement )
+		return replacingCharacters( in: range, with: replacement )
 	}
 
 	/// Returns new string by removing all non-digit symbols from receiver.
 	var digitsOnly: String {
-		get {
-			return replacingOccurrences( of: "[^0-9]", with: "", options: .regularExpression, range: wholeRange )
-		}
+		return replacingOccurrences( of: "[^0-9]", with: "", options: .regularExpression, range: wholeRange )
 	}
 
 	/// Returns `true` if receiver holds correct email address.
@@ -39,39 +37,41 @@ public extension String {
 
 	/// Returns string with stripped HTML tags.
 	func strippingHTMLTags() -> String {
-		let range = NSRange( self.startIndex..<self.endIndex, in: self )
+		let range = NSRange( startIndex ..< endIndex, in: self )
 		return String.regex.stringByReplacingMatches( in: self,
-													  options: [],
-													  range: range,
-													  withTemplate: "" )
+		                                              options: [],
+		                                              range: range,
+		                                              withTemplate: "" )
 	}
+
 	private static let regex = try! NSRegularExpression( pattern: "<[^>]*>", options: [] )
 }
 
 
 /**
-	Russian language only methods.
-*/
+ Russian language only methods.
+ */
 
 /**
-Возвращает корректную форму существительного для числительного
+ Возвращает корректную форму существительного для числительного
 
-- parameter wordForms: Возможные формы слова.
+ - parameter wordForms: Возможные формы слова.
 
-- returns: Правильная форма слова из вариантов.
+ - returns: Правильная форма слова из вариантов.
 
-wordForms - массив из трёх вариантов существительного. Например:
-( "Стол", "Стола", "Столов" )
-*/
+ wordForms - массив из трёх вариантов существительного. Например:
+ ( "Стол", "Стола", "Столов" )
+ */
 
-public func pluralString( forNumber number: Int, fromWordForms: ( String, String, String ) ) -> String	{
-	
+public func pluralString( forNumber number: Int, fromWordForms: ( String, String, String ) ) -> String {
+
 	let correctForm: String
-	
+
 	let absNumber = abs( number )
 	if ( absNumber % 100 ) > 10 && ( absNumber % 100 ) < 20 {
 		correctForm = fromWordForms.2
-	} else {
+	}
+	else {
 		switch absNumber % 10 {
 		case 1:
 			correctForm = fromWordForms.0
@@ -81,24 +81,24 @@ public func pluralString( forNumber number: Int, fromWordForms: ( String, String
 			correctForm = fromWordForms.2
 		}
 	}
-	
+
 	return correctForm
 }
 
 public extension String {
-	
+
 	/**
-	Возвращает корректную форму существительного для числительного
-	из слова с добавлением стандартных окончаний [а], [ов]
-	
-	- parameter word:	Исходное слово
-	
-	- returns: Правильную форму исходного слова для указанного числительного
-	
-	word - слово для нормализации. Например:
-	Стол -> [ "Стол", "Стола", "Столов" ]
-	*/
-	
+	 Возвращает корректную форму существительного для числительного
+	 из слова с добавлением стандартных окончаний [а], [ов]
+
+	 - parameter word:	Исходное слово
+
+	 - returns: Правильную форму исходного слова для указанного числительного
+
+	 word - слово для нормализации. Например:
+	 Стол -> [ "Стол", "Стола", "Столов" ]
+	 */
+
 	func plural( forNumber number: Int ) -> String {
 		let wordForms = ( self, self + "а", self + "ов" )
 		return pluralString( forNumber: number, fromWordForms: wordForms )

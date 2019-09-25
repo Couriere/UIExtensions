@@ -17,11 +17,12 @@ public extension UnkeyedDecodingContainer {
 	mutating func compactDecode<T: Decodable>() -> [ T ] {
 
 		var result: [ T ] = []
-		while !self.isAtEnd {
+		while !isAtEnd {
 			if let value = try? self.decode( T.self ) {
 				result.append( value )
-			} else {
-				_ = try? self.decode( DecoderDummyEmptyValue.self )
+			}
+			else {
+				_ = try? decode( DecoderDummyEmptyValue.self )
 			}
 		}
 		return result

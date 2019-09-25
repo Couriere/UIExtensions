@@ -12,16 +12,16 @@ public extension Optional {
 
 	/// Executes given block with unwrapped value of optional as parameter when said optional is not `nil`.
 	///
-	///		let nonNilOptional: Int? = 1
-	///		nonNilOptional.then { print( $0 ) }  => Prints `1`
-	///		let nilOptional: Int? = nil
-	///		nilOptional.then { print( $0 ) }  => Nothing happens
+	/// 		let nonNilOptional: Int? = 1
+	/// 		nonNilOptional.then { print( $0 ) }  => Prints `1`
+	/// 		let nilOptional: Int? = nil
+	/// 		nilOptional.then { print( $0 ) }  => Nothing happens
 	///
 	@discardableResult
 	func then<T>( _ block: ( Wrapped ) throws -> T ) rethrows -> T? {
 		switch self {
 		case .none: return nil
-		case .some( let value ): return try block( value )
+		case let .some( value ): return try block( value )
 		}
 	}
 }
@@ -31,15 +31,15 @@ public extension Optional {
 /// Following methods execute blocks when Bool? value is either `true`, `false` or `nil`.
 /// Calls can be chained.
 ///
-///		let bool: Bool? = true
-///		bool
-///			.else { print( "This will not be executed" ) }
-///			.then { print( "This line will be printed" ) }
+/// 		let bool: Bool? = true
+/// 		bool
+/// 			.else { print( "This will not be executed" ) }
+/// 			.then { print( "This line will be printed" ) }
 ///
-///		let nilBool: Bool? = nil
-///		nilBool
-///			.then { print( "This will not be executed" ) }
-///			.else { print( "This line will be printed" ) }
+/// 		let nilBool: Bool? = nil
+/// 		nilBool
+/// 			.then { print( "This will not be executed" ) }
+/// 			.else { print( "This line will be printed" ) }
 ///
 public extension Optional where Wrapped == Bool {
 
@@ -47,7 +47,7 @@ public extension Optional where Wrapped == Bool {
 	/// Can be chained.
 	@discardableResult
 	func then( completion: () -> Void ) -> Bool? {
-		if case .some( let value ) = self { value.then( completion: completion ) }
+		if case let .some( value ) = self { value.then( completion: completion ) }
 		return self
 	}
 

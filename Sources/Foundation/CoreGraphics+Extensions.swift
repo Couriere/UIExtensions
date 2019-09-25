@@ -15,7 +15,7 @@ public extension CGPoint {
 
 		let c1 = x - point.x
 		let c2 = y - point.y
-		let distance = sqrt( c1 * c1 + c2 * c2  )
+		let distance = sqrt( c1 * c1 + c2 * c2 )
 
 		return distance
 	}
@@ -26,9 +26,9 @@ public extension CGRect {
 
 	static func *= ( rect: inout CGRect, multiplier: CGFloat ) {
 		rect = CGRect( x: rect.origin.x * multiplier,
-					   y: rect.origin.y * multiplier,
-					   width: rect.size.width * multiplier,
-					   height: rect.size.height * multiplier )
+		               y: rect.origin.y * multiplier,
+		               width: rect.size.width * multiplier,
+		               height: rect.size.height * multiplier )
 	}
 }
 
@@ -70,7 +70,7 @@ public extension CGSize {
 
 
 public extension UIEdgeInsets {
-	
+
 	init( constantInset inset: CGFloat ) {
 		self.init( top: inset, left: inset, bottom: inset, right: inset )
 	}

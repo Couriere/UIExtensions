@@ -1,0 +1,19 @@
+--swiftversion 5.1
+
+--allman false
+--indent tabs
+--elseposition next-line
+--wraparguments preserve
+--wrapcollections before-first
+
+--disable andOperator
+--disable anyObjectProtocol
+--disable blankLinesAtStartOfScope
+--disable consecutiveBlankLines
+--disable sortedImports
+--disable spaceInsideBrackets
+--disable spaceInsideParens
+--disable wrapArguments
+
+
+

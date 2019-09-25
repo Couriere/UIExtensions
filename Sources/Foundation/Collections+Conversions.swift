@@ -19,7 +19,7 @@ public extension Collection {
 
 
 public extension Collection {
-	var array: Array<Element> { return Array( self ) }
+	var array: [Element] { return Array( self ) }
 }
 
 public extension Collection where Element: Hashable {

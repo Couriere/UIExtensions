@@ -38,20 +38,21 @@ open class ContainerView: UIView {
 
 		NSLayoutConstraint.activate( [
 			containedView.leftAnchor.constraint( to: self.leftAnchor,
-												 greaterRelation: options.contains( .flexibleLeft ),
-												 constant: insets.left ),
+			                                     greaterRelation: options.contains( .flexibleLeft ),
+			                                     constant: insets.left ),
 			self.rightAnchor.constraint( to: containedView.rightAnchor,
-										 greaterRelation: options.contains( .flexibleRight ),
-										 constant: insets.right ),
+			                             greaterRelation: options.contains( .flexibleRight ),
+			                             constant: insets.right ),
 			containedView.topAnchor.constraint( to: self.topAnchor,
-												greaterRelation: options.contains( .flexibleTop ),
-												constant: insets.top ),
+			                                    greaterRelation: options.contains( .flexibleTop ),
+			                                    constant: insets.top ),
 			self.bottomAnchor.constraint( to: containedView.bottomAnchor,
-										  greaterRelation: options.contains( .flexibleBottom ),
-										  constant: insets.bottom ),
-			])
+			                              greaterRelation: options.contains( .flexibleBottom ),
+			                              constant: insets.bottom ),
+		])
 	}
-	public required init?(coder aDecoder: NSCoder) {
+
+	public required init?(coder _: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 }
@@ -61,12 +62,13 @@ private extension NSLayoutAnchor {
 
 	@discardableResult
 	@objc func constraint( to anchor: NSLayoutAnchor<AnchorType>,
-						   greaterRelation: Bool, constant: CGFloat ) -> NSLayoutConstraint {
+	                       greaterRelation: Bool, constant: CGFloat ) -> NSLayoutConstraint {
 
 		if greaterRelation {
-			return self.constraint( greaterThanOrEqualTo: anchor, constant: constant )
-		} else {
-			return self.constraint( equalTo: anchor, constant: constant )
+			return constraint( greaterThanOrEqualTo: anchor, constant: constant )
+		}
+		else {
+			return constraint( equalTo: anchor, constant: constant )
 		}
 	}
 }

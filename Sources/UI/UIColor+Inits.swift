@@ -27,14 +27,15 @@ public extension UIColor {
 		let items = hex.components( separatedBy: UIColor.invertedHexCharactersSet )
 		guard let hexString = items.first( where: { $0.count >= 6 } ) else { return nil }
 
-		let colorString = hexString[ ..<hexString.index( hexString.startIndex, offsetBy: 6 ) ]
+		let colorString = hexString[..<hexString.index( hexString.startIndex, offsetBy: 6 ) ]
 
 		let scanner = Scanner( string: String( colorString ))
 		var hexNum: UInt32 = 0
 
-		guard scanner.scanHexInt32( &hexNum ) else { return nil }
+		guard scanner.scanHexInt32(&hexNum ) else { return nil }
 		self.init( int: hexNum, alpha: alpha )
 	}
+
 	private static let invertedHexCharactersSet = CharacterSet( charactersIn: "0123456789abcdefABCDEF" ).inverted
 
 
@@ -64,7 +65,7 @@ public extension UIColor {
 	var contrastColor: UIColor {
 		var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
 
-		getRed( &red, green: &green, blue: &blue, alpha: &alpha )
+		getRed(&red, green: &green, blue: &blue, alpha: &alpha )
 		let lightness = ( red + green + blue ) / 3
 		return lightness > 0.5 ? .black : .white
 	}

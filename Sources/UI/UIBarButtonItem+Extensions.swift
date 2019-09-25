@@ -21,8 +21,8 @@ public extension UIBarButtonItem {
 	/// - parameter handler: The closure that will be executed when action specified in
 	/// `controlEvents` is triggered.
 	convenience init( title: String?,
-					  style: UIBarButtonItem.Style = .plain,
-					  handler: @escaping () -> Void ) {
+	                  style: UIBarButtonItem.Style = .plain,
+	                  handler: @escaping () -> Void ) {
 
 		self.init( title: title, style: style, target: nil, action: nil )
 
@@ -30,14 +30,14 @@ public extension UIBarButtonItem {
 		target = wrapper
 		action = #selector( HandlerWrapper.invoke )
 		objc_setAssociatedObject( self,
-								  "[\( Int.random( in: 1...Int.max ) )]",
-			wrapper,
-			.OBJC_ASSOCIATION_RETAIN )
+		                          "[\( Int.random( in: 1 ... Int.max ) )]",
+		                          wrapper,
+		                          .OBJC_ASSOCIATION_RETAIN )
 	}
 
 	convenience init( image: UIImage,
-					  style: UIBarButtonItem.Style = .plain,
-					  handler: @escaping () -> Void ) {
+	                  style: UIBarButtonItem.Style = .plain,
+	                  handler: @escaping () -> Void ) {
 
 		self.init( image: image, style: style, target: nil, action: nil )
 
@@ -45,16 +45,16 @@ public extension UIBarButtonItem {
 		target = wrapper
 		action = #selector( HandlerWrapper.invoke )
 		objc_setAssociatedObject( self,
-								  "[\( Int.random( in: 1...Int.max ) )]",
-			wrapper,
-			.OBJC_ASSOCIATION_RETAIN )
+		                          "[\( Int.random( in: 1 ... Int.max ) )]",
+		                          wrapper,
+		                          .OBJC_ASSOCIATION_RETAIN )
 	}
 
 	/// Wrapper class used to store closure.
 	private final class HandlerWrapper: NSObject {
 		private let handler: () -> Void
-		init ( _ handler: @escaping () -> Void ) { self.handler = handler }
-		@objc fileprivate func invoke () { handler() }
+		init( _ handler: @escaping () -> Void ) { self.handler = handler }
+		@objc fileprivate func invoke() { handler() }
 	}
 }
 

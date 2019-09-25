@@ -22,18 +22,18 @@ extension UIGestureRecognizer {
 		self.init( target: wrapper, action: #selector( HandlerWrapper.invoke ))
 		wrapper.recognizer = self as? T
 		objc_setAssociatedObject( target ?? self,
-								  &UIGestureRecognizer.AssociatedObjectHandle,
-								  wrapper,
-								  .OBJC_ASSOCIATION_RETAIN )
+		                          &UIGestureRecognizer.AssociatedObjectHandle,
+		                          wrapper,
+		                          .OBJC_ASSOCIATION_RETAIN )
 	}
 
 	/// Wrapper class used to store closure.
 	private final class HandlerWrapper<T: UIGestureRecognizer> {
 		let handler: ( T ) -> Void
 		weak var recognizer: T?
-		init ( _ handler: @escaping ( T ) -> Void ) { self.handler = handler }
-		@objc func invoke() { recognizer.then { handler( $0 ) }}
+		init( _ handler: @escaping ( T ) -> Void ) { self.handler = handler }
+		@objc func invoke() { recognizer.then { handler( $0 ) } }
 	}
 
-	static private var AssociatedObjectHandle: UInt8 = 0
+	private static var AssociatedObjectHandle: UInt8 = 0
 }

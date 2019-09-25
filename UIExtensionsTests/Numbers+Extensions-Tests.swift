@@ -55,10 +55,10 @@ class NumbersExtensionsTests: XCTestCase {
 		let t1: TimeInterval = 3.hours + 3.minutes + 4.seconds
 		XCTAssertEqual( t1.formatted, "03:03:04" )
 
-		let t2: TimeInterval = 60*60*102
+		let t2: TimeInterval = 60 * 60 * 102
 		XCTAssertEqual( t2.formatted, "102:00:00" )
 
-		let t3: TimeInterval = 60*5 + 3
+		let t3: TimeInterval = 60 * 5 + 3
 		XCTAssertEqual( t3.formatted, "00:05:03" )
 
 		let t4: TimeInterval = 6

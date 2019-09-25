@@ -20,8 +20,8 @@ public extension UIImage {
 		UIRectFill( rect )
 
 		self.init( cgImage: UIGraphicsGetImageFromCurrentImageContext()!.cgImage!,
-				   scale: UIScreen.main.scale,
-				   orientation: .up )
+		           scale: UIScreen.main.scale,
+		           orientation: .up )
 	}
 }
 
@@ -43,10 +43,11 @@ public extension UIImage {
 			return UIGraphicsImageRenderer( size: scaledSize, format: format )
 				.image { context in
 					draw( in: context.format.bounds )
-			}
-		} else {
+				}
+		}
+		else {
 
-			UIGraphicsBeginImageContextWithOptions( scaledSize, false, self.scale )
+			UIGraphicsBeginImageContextWithOptions( scaledSize, false, scale )
 			defer { UIGraphicsEndImageContext() }
 			draw( in: CGRect( origin: .zero, size: scaledSize ))
 			return UIGraphicsGetImageFromCurrentImageContext() ?? self

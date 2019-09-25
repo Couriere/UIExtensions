@@ -18,42 +18,42 @@ public protocol Disposable: class {
 
 
 /**
-An event provides a mechanism for raising notifications, together with some
-associated data. Multiple function handlers can be added, with each being invoked,
-with the event data, when the event is raised.
+ An event provides a mechanism for raising notifications, together with some
+ associated data. Multiple function handlers can be added, with each being invoked,
+ with the event data, when the event is raised.
 
-```
-func someFunction() {
+ ```
+ func someFunction() {
 
-	// create an event
-	let event = Event<(String, String)>()
+ // create an event
+ let event = Event<(String, String)>()
 
-	// add a handler
-	let handler = event.addHandler(self, ViewController.handleEvent)
+ // add a handler
+ let handler = event.addHandler(self, ViewController.handleEvent)
 
-	// raise the event
-	event.raise("Colin", "Eberhardt")
+ // raise the event
+ event.raise("Colin", "Eberhardt")
 
-	// remove the handler
-	handler.dispose()
-}
+ // remove the handler
+ handler.dispose()
+ }
 
-func handleEvent(data: (String, String)) {
-	println("Hello \(data.0), \(data.1)")
-}
-```
-*/
+ func handleEvent(data: (String, String)) {
+ println("Hello \(data.0), \(data.1)")
+ }
+ ```
+ */
 open class Event<T> {
-	
+
 	public init() {}
-	
+
 	/// Количество обработчиков, подписанных на изменения события.
 	open var handlersCount: Int { return handlers.count }
-	
-	/// Блок, вызываемый при добавлении/удалении обработчиков.
-	open var watchersChangeHandler: (( Event, _ newHandlers: [ Invocable ] ) -> Void )? = nil
 
-	
+	/// Блок, вызываемый при добавлении/удалении обработчиков.
+	open var watchersChangeHandler: (( Event, _ newHandlers: [ Invocable ] ) -> Void )?
+
+
 	/// Сигналит событие.
 	/// - parameter data: Данные, которые будут переданы обработчику.
 	/// Будут вызваны все обработчики, назначенные данному событию.
@@ -66,16 +66,17 @@ open class Event<T> {
 	/// - parameter onHandlers: Обработчики, которым будут переданы данные. Если `nil`,
 	/// то будут вызваны все обработчики, назначенные данному событию.
 	open func raise( _ data: T, onHandlers: [ Invocable ]? ) {
-		
+
 		for handler in onHandlers ?? handlers {
 			if let queue = handler.queue {
 				queue.async { handler.invoke( data ) }
-			} else {
+			}
+			else {
 				handler.invoke( data )
 			}
 		}
 	}
-	
+
 	/// Регистрирует метод как обработчика события.
 	/// Пример:
 	/// - parameter target: Объект, чей метод будет вызван в качестве обработчика события.
@@ -90,7 +91,7 @@ open class Event<T> {
 		return wrapper
 	}
 
-	
+
 	/// Регистрирует метод как обработчика события.
 	/// Пример:
 	/// - parameter target: Объект, являющийся владельцем блока `closure`.
@@ -108,12 +109,12 @@ open class Event<T> {
 		handlers.append( wrapper )
 		return wrapper
 	}
-	
+
 	fileprivate var handlers: [ Invocable ] = [] {
 		didSet {
 			/// Находим добавленных наблюдателей. Удалённые нам не нужны.
 			let addedHandlers = handlers.filter { newHandler in
-				return !oldValue.contains { return $0 === newHandler }
+				!oldValue.contains { return $0 === newHandler }
 			}
 			watchersChangeHandler?( self, addedHandlers )
 		}
@@ -126,7 +127,7 @@ public extension Event where T == Void {
 	}
 }
 
-// MARK:- Private
+// MARK: - Private
 
 // A protocol for a type that can be invoked
 public protocol Invocable: class {
@@ -134,35 +135,36 @@ public protocol Invocable: class {
 	var queue: DispatchQueue? { get }
 }
 
-private class EventHandlerWrapper<T: AnyObject, U> : Invocable, Disposable {
-	
+private class EventHandlerWrapper<T: AnyObject, U>: Invocable, Disposable {
+
 	init( target: T?, queue: DispatchQueue?, handler: HandlerType<T, U>, event: Event<U> ) {
 		self.target = target
 		self.queue = queue
-		self.handlerMethod = handler
+		handlerMethod = handler
 		self.event = event
 	}
-	
+
 	func invoke( _ data: Any ) {
 		if let targetSelf = target {
 			switch handlerMethod {
-			case .method( let handler ):
+			case let .method( handler ):
 				handler( targetSelf )( data as! U )
-			case .closure( let handler ):
+			case let .closure( handler ):
 				handler( data as! U )
 			}
-		} else {
-			self.dispose()
+		}
+		else {
+			dispose()
 		}
 	}
-	
+
 	func dispose() {
 //		assert( event.handlers.filter { $0 === self }.first != nil )
 		if let event = event {
 			event.handlers = event.handlers.filter { $0 !== self }
 		}
 	}
-	
+
 	let queue: DispatchQueue?
 
 	private weak var target: T?

@@ -9,19 +9,19 @@ import UIKit
 
 public extension Dictionary {
 
-	func map<T, U>( _ transform: (Key, Value) throws -> (T, U) ) rethrows -> [T : U] {
-		return Dictionary<T, U>( uniqueKeysWithValues: try self.map( transform ))
+	func map<T, U>( _ transform: (Key, Value) throws -> (T, U) ) rethrows -> [T: U] {
+		return [T: U]( uniqueKeysWithValues: try map( transform ))
 	}
 
 	mutating func addEntriesFromDictionary( _ dict: [ Key: Value ] ) {
-		self.merge( dict ) { $1 }
+		merge( dict ) { $1 }
 	}
 
-	static func + ( lhs: Dictionary<Key,Value>, rhs: Dictionary<Key,Value> ) -> Dictionary<Key,Value> {
+	static func + ( lhs: [Key: Value], rhs: [Key: Value] ) -> [Key: Value] {
 		return lhs.merging( rhs ) { $1 }
 	}
 
-	static func += ( lhs: inout Dictionary<Key,Value>, rhs: Dictionary<Key,Value> ) {
+	static func += ( lhs: inout [Key: Value], rhs: [Key: Value] ) {
 		lhs.merge( rhs ) { $1 }
 	}
 
@@ -29,7 +29,8 @@ public extension Dictionary {
 	func valueForKey<T>( _ key: Key, defaultValue: T ) -> T {
 		if let value = self[ key ] as? T {
 			return value
-		} else {
+		}
+		else {
 			return defaultValue
 		}
 	}
@@ -43,15 +44,15 @@ public extension Dictionary where Value: OptionalType {
 	var sanitized: [ Key: Value.Wrapped ] {
 
 		#if swift(>=5.1)
-		return compactMapValues { $0 } as! [ Key : Value.Wrapped ]
+			return compactMapValues { $0 } as! [ Key: Value.Wrapped ]
 		#else
-		var sanitizedDictionary: [ Key: Value.Wrapped ] = [:]
+			var sanitizedDictionary: [ Key: Value.Wrapped ] = [:]
 
-		self.forEach {
-			if let value = $0.value.value { sanitizedDictionary[ $0.key ] = value }
-		}
+			forEach {
+				if let value = $0.value.value { sanitizedDictionary[ $0.key ] = value }
+			}
 
-		return sanitizedDictionary
+			return sanitizedDictionary
 		#endif
 	}
 }
@@ -59,7 +60,7 @@ public extension Dictionary where Value: OptionalType {
 /// Deprecated
 public extension Dictionary {
 	@available( swift, deprecated: 4.0, obsoleted: 5.0, message: "Use Dictionary( uniqueKeysWithValues: ) instead" )
-	init(_ elements: [Element]){
+	init(_ elements: [Element]) {
 		self.init()
 		for (k, v) in elements {
 			self[k] = v
@@ -67,10 +68,11 @@ public extension Dictionary {
 	}
 
 	@available( swift, deprecated: 4.0, obsoleted: 5.0, message: "Use `Dictionary[ key, default: value ] instead" )
-	subscript (key: Key, defaultValue: Value ) -> Value {
+	subscript(key: Key, defaultValue: Value ) -> Value {
 		if let value = self[ key ] {
 			return value
-		} else {
+		}
+		else {
 			return defaultValue
 		}
 	}
