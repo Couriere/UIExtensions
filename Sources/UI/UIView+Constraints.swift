@@ -37,7 +37,7 @@ public extension UIView {
 
 	func removeOutsideConstraints() {
 		if let superview = self.superview {
-			let viewZIndex = superview.subviews.index( of: self )
+			let viewZIndex = superview.subviews.firstIndex( of: self )
 			removeFromSuperview()
 			superview.insertSubview( self, at: viewZIndex ?? superview.subviews.count )
 		}

@@ -146,13 +146,13 @@ public extension Array {
 public extension Array where Element: Equatable {
 
 	mutating func remove( _ element: Element ) {
-		if let index = self.index( of: element ) {
+		if let index = self.firstIndex( of: element ) {
 			remove( at: index )
 		}
 	}
 
 	mutating func appendIfNotExist( _ newElement: Element ) {
-		if index( of: newElement ) == nil {
+		if self.firstIndex( of: newElement ) == nil {
 			append( newElement )
 		}
 	}

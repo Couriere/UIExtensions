@@ -44,7 +44,7 @@ public extension UIAlertController {
 		let alert = UIAlertController( title: title, message: message, preferredStyle: .alert )
 
 		let actionHandler = { ( action: UIAlertAction ) -> Void in
-			handler?( alert, alert.actions.index( of: action ) ?? -1 )
+			handler?( alert, alert.actions.firstIndex( of: action ) ?? -1 )
 		}
 
 		alert.addAction( UIAlertAction( title: cancelButtonTitle, style: .cancel, handler: actionHandler ))
