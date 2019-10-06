@@ -63,6 +63,68 @@ public extension String {
 }
 
 
+
+/// Calculating Hashes.
+import CommonCrypto
+
+public extension String {
+
+	/// Calculates MD5 hash of the receiver and returns it as hex string.
+	var md5: String {
+		calculateHash( hashFunction: CC_MD5, digestLength: CC_MD5_DIGEST_LENGTH )
+	}
+
+	/// Calculates SHA1 hash of the receiver and returns it as hex string.
+	var sha1: String {
+		calculateHash( hashFunction: CC_SHA1, digestLength: CC_SHA1_DIGEST_LENGTH )
+	}
+
+	/// Calculates SHA256 hash of the receiver and returns it as hex string.
+	var sha256: String {
+		calculateHash( hashFunction: CC_SHA256, digestLength: CC_SHA256_DIGEST_LENGTH )
+	}
+
+	/// Calculates SHA512 hash of the receiver and returns it as hex string.
+	var sha512: String {
+		calculateHash( hashFunction: CC_SHA512, digestLength: CC_SHA512_DIGEST_LENGTH )
+	}
+
+
+
+	@inline(__always) private func calculateHash(
+		hashFunction: ( UnsafeRawPointer?, CC_LONG, UnsafeMutablePointer<UInt8>? ) -> UnsafeMutablePointer<UInt8>?,
+		digestLength: Int32
+	) -> String {
+
+		func itoh( _ value: UInt8 ) -> UInt8 {
+			return ( value > 9 ) ? String.charA + value - 10 : String.char0 + value
+		}
+
+		let data = Data( self.utf8 )
+		return data.withUnsafeBytes { ( bytes: UnsafeRawBufferPointer ) -> String in
+
+			let count = Int( digestLength )
+			var hash = [UInt8]( repeating: 0, count: count )
+			_ = hashFunction( bytes.baseAddress, CC_LONG( data.count ), &hash )
+
+			let hexLen = count * 2
+			let hexData = UnsafeMutablePointer<UInt8>.allocate( capacity: hexLen )
+
+			for i in 0 ..< count {
+				hexData[ i * 2 ] = itoh( ( hash[ i ] >> 4 ) & 0xF )
+				hexData[ i * 2 + 1 ] = itoh( hash[ i ] & 0xF )
+			}
+
+			return String( bytesNoCopy: hexData, length: hexLen, encoding: .utf8, freeWhenDone: true ) ?? ""
+		}
+	}
+
+	private static let charA = UInt8( UnicodeScalar( "a" ).value )
+	private static let char0 = UInt8( UnicodeScalar( "0" ).value )
+}
+
+
+
 /**
  Russian language only methods.
  */
