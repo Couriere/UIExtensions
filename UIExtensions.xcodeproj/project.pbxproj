@@ -95,6 +95,7 @@
 		AAD08DFB200770160075B57E /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBE1FB87BCC00E3CC35 /* Dictionary+Extensions.swift */; };
 		AAD08DFC200770160075B57E /* UICollectionReusableView+Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBF1FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift */; };
 		AAD08DFD200770160075B57E /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FC01FB87BCC00E3CC35 /* UILabel+Extensions.swift */; };
+		AAE32A7A234DFBD700AEEB16 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B8FFD21AFDA0A00DA8E27 /* UIViewController+Extensions.swift */; };
 		AAF98E0C214173890059F792 /* String+Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF98E0B214173890059F792 /* String+Extensions-Tests.swift */; };
 		AAF98E0D214175040059F792 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB31FB87BCC00E3CC35 /* String+Extensions.swift */; };
 		D73FC32F2059632D00F239D0 /* UIStackView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73FC32D2059632C00F239D0 /* UIStackView+Extensions.swift */; };
@@ -237,8 +238,7 @@
 			children = (
 				AA3ED30C2142767900D65DDD /* Foundation */,
 				AA3ED30A2142766500D65DDD /* UI */,
-				AA3ED30D2142774A00D65DDD /* Event.swift */,
-				AA0C342322FF109300074B72 /* Defaults.swift */,
+				AA861029234E0ECE00ED0DAB /* Classes */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -246,6 +246,7 @@
 		AA3ED30A2142766500D65DDD /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				AAE32A7B234DFC0600AEEB16 /* iOS */,
 				AA014FAE1FB87BCC00E3CC35 /* UIColor+Inits.swift */,
 				AA014FB01FB87BCC00E3CC35 /* UIAlertController+Blocks.swift */,
 				AA014FB21FB87BCC00E3CC35 /* UIView+Extensions.swift */,
@@ -261,9 +262,7 @@
 				D73FC32D2059632C00F239D0 /* UIStackView+Extensions.swift */,
 				D73FC32E2059632C00F239D0 /* UIStoryboard+Extensions.swift */,
 				AA41682D218789D8000CD098 /* UIControl+Extensions.swift */,
-				AAD08A1C22501DE50063694B /* UIBarButtonItem+Extensions.swift */,
 				AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */,
-				AA52241121B7B14F007737A7 /* UITabBarController+Extensions.swift */,
 				AAA1C0C022FF35D100C04F35 /* ContainerView.swift */,
 			);
 			path = UI;
@@ -290,6 +289,24 @@
 				AA053C90224A13E9005705BE /* Decoder+Extensions.swift */,
 			);
 			path = Foundation;
+			sourceTree = "<group>";
+		};
+		AA861029234E0ECE00ED0DAB /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				AA3ED30D2142774A00D65DDD /* Event.swift */,
+				AA0C342322FF109300074B72 /* Defaults.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		AAE32A7B234DFC0600AEEB16 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				AAD08A1C22501DE50063694B /* UIBarButtonItem+Extensions.swift */,
+				AA52241121B7B14F007737A7 /* UITabBarController+Extensions.swift */,
+			);
+			path = iOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -388,6 +405,7 @@
 					};
 					AAD08DDF20076FF40075B57E = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 1110;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -530,6 +548,7 @@
 				AAD08DED200770160075B57E /* UIAlertController+Blocks.swift in Sources */,
 				AAD08DF4200770160075B57E /* UIDevice+Extensions.swift in Sources */,
 				AAD08DF0200770160075B57E /* String+Extensions.swift in Sources */,
+				AAE32A7A234DFBD700AEEB16 /* UIViewController+Extensions.swift in Sources */,
 				AAD08DEB200770160075B57E /* UIColor+Inits.swift in Sources */,
 				AAD08DE9200770160075B57E /* URL+Extensions.swift in Sources */,
 				AAD08DEF200770160075B57E /* UIView+Extensions.swift in Sources */,
@@ -765,7 +784,7 @@
 				PRODUCT_NAME = UIExtensions;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
@@ -788,7 +807,7 @@
 				PRODUCT_NAME = UIExtensions;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
