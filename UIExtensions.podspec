@@ -3,7 +3,7 @@ Pod::Spec.new do |spec|
 
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   spec.name         = "UIExtensions"
-  spec.version      = "1.1.0"
+  spec.version      = "1.1.1"
   spec.summary      = "Convenience extensions to UIKit and Foundation classes."
 
   spec.homepage     = "https://github.com/Couriere/UIExtensions"
@@ -19,7 +19,7 @@ Pod::Spec.new do |spec|
   spec.tvos.deployment_target = "10.0"
 
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-  spec.source       = { :git => "https://github.com/Couriere/UIExtensions.git", :tag => "1.1.0" }
+  spec.source       = { :git => "https://github.com/Couriere/UIExtensions.git", :tag => spec.version }
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   spec.source_files  = "Sources/{Classes,Foundation,UI}/*.swift"

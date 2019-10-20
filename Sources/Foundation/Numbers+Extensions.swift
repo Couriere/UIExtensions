@@ -123,3 +123,11 @@ public extension Int {
 
 	var rub: String { return "\( self )₽" }
 }
+
+extension Comparable {
+
+	/// Checks that Comparable is in range ( ..< ) of lowerBound and upperBound.
+	func isBetween( _ lowerBound: Self, and upperBound: Self ) -> Bool {
+		return self >= lowerBound && self < upperBound
+	}
+}

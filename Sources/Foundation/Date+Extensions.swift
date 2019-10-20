@@ -24,57 +24,100 @@ import UIKit
 
 extension Calendar: Then {}
 
+public enum Weekday: Int {
+	case sunday = 1
+	case monday = 2
+	case tuesday = 3
+	case wednesday = 4
+	case thursday = 5
+	case friday = 6
+	case saturday = 7
+}
+
 public extension Date {
-	// ..<
-	func isBetweenDate( _ firstDate: Date, andDate secondDate: Date ) -> Bool {
-		let startResult = firstDate.compare( self )
-		return ( startResult == .orderedSame || startResult == .orderedAscending ) && compare( secondDate ) == .orderedAscending
-	}
 
-	var timestamp: UInt64 { return UInt64( timeIntervalSince1970 * 1000 ) }
+	var timestamp: Int64 { return Int64( timeIntervalSince1970 * 1000 ) }
 
-	init( timestamp: UInt64 ) {
+	init( timestamp: Int64 ) {
 		self.init( timeIntervalSince1970: TimeInterval( timestamp ) / 1000 )
-	}
-
-	func dateByAddingMonths( _ months: Int ) -> Date {
-		let calendar = Calendar.current
-		return calendar.date( byAdding: .month, value: months, to: self )!
 	}
 
 	static var thisYear: Int {
 		let calendar = Calendar.current
-		return calendar.dateComponents( [ .year ], from: Date() ).year!
+		return calendar.component( .year, from: Date() )
 	}
 
+	/// Adds number of months to the date.
+	func addingMonths( _ months: Int ) -> Date {
+		let calendar = Calendar.current
+		return calendar.date( byAdding: .month, value: months, to: self )!
+	}
+
+	/// Adds number of years to the date.
+	func addingYears( _ years: Int ) -> Date {
+		let calendar = Calendar.current
+		return calendar.date( byAdding: .year, value: years, to: self )!
+	}
+
+
 	/// Returns same date with time set to a start of specified hour.
-	func startOfHour( _ hour: Int ) -> Date {
+	func startOfHour( _ hour: Int, timeZone: TimeZone? = nil ) -> Date {
+
+		var calendar = Calendar.current
+		if let timeZone = timeZone { calendar.timeZone = timeZone }
 
 		let components: Set<Calendar.Component> = [ .year, .month, .day, .hour, .minute, .second, .weekday ]
-		var dateComponents = Date.gregorianRUCalendar.dateComponents( components, from: self )
+		var dateComponents = calendar.dateComponents( components, from: self )
 
-		dateComponents.hour = hour
+		dateComponents.hour = min( 23, max( 0, hour ))
 		dateComponents.minute = 0
 		dateComponents.second = 0
 
-		return Date.gregorianRUCalendar.date( from: dateComponents )!
+		return calendar.date( from: dateComponents )!
 	}
 
 	/// Returns start of the day, same date with time 00:00:00.
 	/// - parameter timeZone: Use this time zone. If `nil` use system time zone.
 	func startOfDay( _ timeZone: TimeZone? = nil ) -> Date {
 
-		var calendar = Calendar( identifier: .gregorian )
+		var calendar = Calendar.current
 		if let timeZone = timeZone { calendar.timeZone = timeZone }
 
-		let components: Set<Calendar.Component> = [ .year, .month, .day, .hour, .minute, .second, .weekday ]
-		var dateComponents = calendar.dateComponents( components, from: self )
+		return calendar.startOfDay( for: self )
+	}
 
-		dateComponents.hour = 0
-		dateComponents.minute = 0
-		dateComponents.second = 0
+	/// Returns start of the month date.
+	/// - parameter timeZone: Use this time zone. If `nil` use system time zone.
+	func startOfMonth( _ timeZone: TimeZone? = nil ) -> Date {
 
-		return calendar.date( from: dateComponents )!
+		var calendar = Calendar.current
+		if let timeZone = timeZone { calendar.timeZone = timeZone }
+
+		let components = DateComponents( day: 1, hour: 0, minute: 0, second: 0, nanosecond: 0 )
+		return calendar.nextDate( after: self,
+								  matching: components,
+								  matchingPolicy: .nextTime,
+								  direction: .backward )!
+	}
+
+	/// Returns start of the year.
+	/// - parameter timeZone: Use this time zone. If `nil` use system time zone.
+	func startOfYear( _ timeZone: TimeZone? = nil ) -> Date {
+
+		var calendar = Calendar.current
+		if let timeZone = timeZone { calendar.timeZone = timeZone }
+
+		let components = DateComponents( month: 1, day: 1, hour: 0, minute: 0, second: 0, nanosecond: 0 )
+		return calendar.nextDate( after: self,
+								  matching: components,
+								  matchingPolicy: .nextTimePreservingSmallerComponents,
+								  direction: .backward )!
+	}
+
+
+	/// Returns weekday of the date.
+	var weekday: Weekday {
+		Weekday( rawValue: Calendar.current.component( .weekday, from: self ) ) ?? .sunday
 	}
 
 	/// Returns time interval since this date start of the day.
@@ -82,6 +125,10 @@ public extension Date {
 		return timeIntervalSince( Calendar.current.startOfDay( for: self ) )
 	}
 
+	/// Returns number of days in month of the date.
+	var numberOfDaysInMonth: Int {
+		return Calendar.current.range( of: .day, in: .month, for: self )?.count ?? 0
+	}
 
 	static let gregorianRUCalendar = Calendar( identifier: .gregorian ).with {
 		$0.locale = Locale( identifier: "ru_RU" )
@@ -161,4 +208,21 @@ public extension TimeInterval {
 
 	var day: TimeInterval { return self * 24 * 60 * 60 }
 	var days: TimeInterval { return self * 24 * 60 * 60 }
+}
+
+
+/// Deprecations.
+public extension Date {
+
+	// ..<
+	@available( swift, deprecated: 4.2, message: "Use isBetween(_: and: )" )
+	func isBetweenDate( _ firstDate: Date, andDate secondDate: Date ) -> Bool {
+		let startResult = firstDate.compare( self )
+		return ( startResult == .orderedSame || startResult == .orderedAscending ) && compare( secondDate ) == .orderedAscending
+	}
+
+	@available( swift, deprecated: 4.2, message: "Use Date.addingMonths(_:)" )
+	func dateByAddingMonths( _ months: Int ) -> Date {
+		return addingMonths( months )
+	}
 }
