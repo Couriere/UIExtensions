@@ -96,6 +96,9 @@
 		AAD08DFB200770160075B57E /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBE1FB87BCC00E3CC35 /* Dictionary+Extensions.swift */; };
 		AAD08DFC200770160075B57E /* UICollectionReusableView+Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FBF1FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift */; };
 		AAD08DFD200770160075B57E /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FC01FB87BCC00E3CC35 /* UILabel+Extensions.swift */; };
+		AAE08843235FC07F00BEBAB1 /* UserDefaults+PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE08842235FC07F00BEBAB1 /* UserDefaults+PropertyWrapper.swift */; };
+		AAE08844235FC15800BEBAB1 /* UserDefaults+PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE08842235FC07F00BEBAB1 /* UserDefaults+PropertyWrapper.swift */; };
+		AAE08846235FC17700BEBAB1 /* UserDefaults+PropertyWrapper-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE08845235FC17700BEBAB1 /* UserDefaults+PropertyWrapper-Tests.swift */; };
 		AAE32A7A234DFBD700AEEB16 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B8FFD21AFDA0A00DA8E27 /* UIViewController+Extensions.swift */; };
 		AAF98E0C214173890059F792 /* String+Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF98E0B214173890059F792 /* String+Extensions-Tests.swift */; };
 		AAF98E0D214175040059F792 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FB31FB87BCC00E3CC35 /* String+Extensions.swift */; };
@@ -166,6 +169,8 @@
 		AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
 		AAD08A1C22501DE50063694B /* UIBarButtonItem+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Extensions.swift"; sourceTree = "<group>"; };
 		AAD08DE020076FF40075B57E /* UIExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAE08842235FC07F00BEBAB1 /* UserDefaults+PropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+PropertyWrapper.swift"; sourceTree = "<group>"; };
+		AAE08845235FC17700BEBAB1 /* UserDefaults+PropertyWrapper-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+PropertyWrapper-Tests.swift"; sourceTree = "<group>"; };
 		AAF98E0B214173890059F792 /* String+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		D73FC32D2059632C00F239D0 /* UIStackView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extensions.swift"; sourceTree = "<group>"; };
 		D73FC32E2059632C00F239D0 /* UIStoryboard+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Extensions.swift"; sourceTree = "<group>"; };
@@ -231,6 +236,7 @@
 				AA9F562B2215A225006FC149 /* Dictionary+Extensions-Tests.swift */,
 				AA3ED3112142777900D65DDD /* EventTests.swift */,
 				AA0C342122FF102A00074B72 /* DefaultsTests.swift */,
+				AAE08845235FC17700BEBAB1 /* UserDefaults+PropertyWrapper-Tests.swift */,
 				AA014FA01FB87A0500E3CC35 /* Info.plist */,
 			);
 			path = UIExtensionsTests;
@@ -290,6 +296,7 @@
 				AA014FBE1FB87BCC00E3CC35 /* Dictionary+Extensions.swift */,
 				AA855E262223EA4600718AB8 /* Collections+Conversions.swift */,
 				AA053C90224A13E9005705BE /* Decoder+Extensions.swift */,
+				AAE08842235FC07F00BEBAB1 /* UserDefaults+PropertyWrapper.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -481,6 +488,7 @@
 				AA014FC61FB87BCC00E3CC35 /* Protocol+Extensions.swift in Sources */,
 				AA014FD51FB87BCC00E3CC35 /* Dictionary+Extensions.swift in Sources */,
 				AA014FC71FB87BCC00E3CC35 /* UIAlertController+Blocks.swift in Sources */,
+				AAE08843235FC07F00BEBAB1 /* UserDefaults+PropertyWrapper.swift in Sources */,
 				AA014FCE1FB87BCC00E3CC35 /* UIDevice+Extensions.swift in Sources */,
 				AA014FCA1FB87BCC00E3CC35 /* String+Extensions.swift in Sources */,
 				AA014FC51FB87BCC00E3CC35 /* UIColor+Inits.swift in Sources */,
@@ -518,11 +526,13 @@
 				AAA55FC8220C44B2003DCEDA /* CoreGraphics+Extensions.swift in Sources */,
 				AA3685C7234A0DA20070C26A /* Data+Extensions-Tests.swift in Sources */,
 				AA0ACE3320AB89E900DFD66B /* Protocol+Extensions.swift in Sources */,
+				AAE08846235FC17700BEBAB1 /* UserDefaults+PropertyWrapper-Tests.swift in Sources */,
 				AA0C342222FF102A00074B72 /* DefaultsTests.swift in Sources */,
 				AA7EC73F2142677300386C7E /* Numbers+Extensions-Tests.swift in Sources */,
 				AA053C8F224A126D005705BE /* Date+Extensions.swift in Sources */,
 				AAF98E0D214175040059F792 /* String+Extensions.swift in Sources */,
 				AA0ACE2E20AB6CAB00DFD66B /* UIView+Constraints.swift in Sources */,
+				AAE08844235FC15800BEBAB1 /* UserDefaults+PropertyWrapper.swift in Sources */,
 				AA9F562E2215A449006FC149 /* Optional+Extensions.swift in Sources */,
 				AA9F562C2215A225006FC149 /* Dictionary+Extensions-Tests.swift in Sources */,
 				AA0C342622FF10DB00074B72 /* Defaults.swift in Sources */,
