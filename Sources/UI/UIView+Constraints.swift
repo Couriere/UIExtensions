@@ -379,6 +379,46 @@ public extension LayoutGuideProtocol {
 }
 
 
+public extension LayoutGuideProtocol {
+
+	@discardableResult
+	func pin( _ attribute: NSLayoutConstraint.Attribute,
+			  to view: LayoutGuideProtocol? = nil,
+			  relatedBy: NSLayoutConstraint.Relation = .equal,
+			  multiplier: CGFloat = 1,
+			  constant: CGFloat = 0,
+			  priority: UILayoutPriority = .required ) -> NSLayoutConstraint {
+
+		let constraint = NSLayoutConstraint( item: self, attribute: attribute, relatedBy: relatedBy,
+											 toItem: view ?? owningView!, attribute: attribute,
+											 multiplier: multiplier, constant: constant )
+		constraint.priority = priority
+		constraint.isActive = true
+		return constraint
+	}
+
+
+	@discardableResult
+	func stack( after view: LayoutGuideProtocol,
+				direction: NSLayoutConstraint.Axis,
+				relatedBy: NSLayoutConstraint.Relation = .equal,
+				multiplier: CGFloat = 1,
+				constant: CGFloat = 0,
+				priority: UILayoutPriority = .required ) -> NSLayoutConstraint {
+
+		let constraint = NSLayoutConstraint( item: self,
+											 attribute: direction == .horizontal ? .leading : .top,
+											 relatedBy: relatedBy,
+											 toItem: view,
+											 attribute: direction == .horizontal ? .trailing : .bottom,
+											 multiplier: multiplier, constant: constant )
+		constraint.priority = priority
+		constraint.isActive = true
+		return constraint
+	}
+}
+
+
 
 public protocol LayoutGuideProtocol {
 
