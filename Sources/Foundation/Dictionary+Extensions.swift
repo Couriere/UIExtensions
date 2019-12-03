@@ -56,19 +56,9 @@ public extension Dictionary where Value: OptionalType {
 	/// Transforms dictionary with optional values to
 	/// dictionary with values of the same but not optional type.
 	/// All keys with `nil` values are dropped.
+	/// - note: You should probably use `compactMapValues` instead
 	var sanitized: [ Key: Value.Wrapped ] {
-
-		#if swift(>=5.1)
-			return compactMapValues { $0 } as! [ Key: Value.Wrapped ]
-		#else
-			var sanitizedDictionary: [ Key: Value.Wrapped ] = [:]
-
-			forEach {
-				if let value = $0.value.value { sanitizedDictionary[ $0.key ] = value }
-			}
-
-			return sanitizedDictionary
-		#endif
+		return filter { $0.value.value != nil }.mapValues { $0.value! }
 	}
 }
 

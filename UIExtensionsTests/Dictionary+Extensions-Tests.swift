@@ -48,4 +48,58 @@ class Dictionary_Extensions_Tests: XCTestCase {
 		testDictionary += dictionary2
 		XCTAssertEqual( testDictionary, result1Plus2 )
 	}
+
+	func testStringSanitizer() {
+
+		let testDictionary1: [ String: String? ] = [ "One" : "One",
+													 "Two" : "Two",
+													 "Three" : nil,
+													 "Four" : "Four",
+													 "Five" : nil ]
+
+		XCTAssert( testDictionary1.sanitized == [ "One" : "One",
+												 "Two" : "Two",
+												 "Four" : "Four" ] )
+
+		let testDictionary2: [ String: String? ] = [ "One" : "One",
+													 "Two" : "Two",
+													 "Three" : "Three" ]
+
+		XCTAssert( testDictionary2.sanitized == [ "One" : "One",
+												 "Two" : "Two",
+												 "Three" : "Three" ] )
+
+		let testDictionary3: [ String: String? ] = [ "One" : nil ]
+
+		XCTAssert( testDictionary3.sanitized.isEmpty )
+	}
+
+	func testIntSanitizer() {
+
+		let testDictionary1: [ Int: Int? ] = [ 1 : 1, 2 : nil, 3 : 3, 4 : 4, 5 : nil ]
+		XCTAssert( testDictionary1.sanitized == [ 1 : 1, 3 : 3, 4 : 4 ] )
+
+		let testDictionary2: [ Int: Int? ] = [:]
+		XCTAssert( testDictionary2.sanitized.isEmpty )
+
+		let testDictionary3: [ Int: Int? ] = [ 100 : nil ]
+		XCTAssert( testDictionary3.sanitized.isEmpty )
+	}
+
+	func testAnySanitizer() {
+
+		let testDictionary1: [ Int: Any? ] = [ 1 : 1, 2 : nil, 3 : "Three", 4 : 30.5, 5 : nil ]
+		let sanitized = testDictionary1.sanitized
+		XCTAssert( ( sanitized[ 1 ] as? Int ) == 1 )
+		XCTAssert( !sanitized.keys.contains( 2 ) )
+		XCTAssert( ( sanitized[ 3 ] as? String ) == "Three" )
+		XCTAssert( ( sanitized[ 4 ] as? Double ) == 30.5 )
+		XCTAssert( !sanitized.keys.contains( 5 ) )
+
+		let testDictionary2: [ Int: Any? ] = [:]
+		XCTAssert( testDictionary2.sanitized.isEmpty )
+
+		let testDictionary3: [ Int: Any? ] = [ 100 : nil ]
+		XCTAssert( testDictionary3.sanitized.isEmpty )
+	}
 }
