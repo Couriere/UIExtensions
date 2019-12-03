@@ -160,6 +160,7 @@
 		AA3ED313214278F600D65DDD /* Array+Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Async.swift"; sourceTree = "<group>"; };
 		AA41682D218789D8000CD098 /* UIControl+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Extensions.swift"; sourceTree = "<group>"; };
 		AA52241121B7B14F007737A7 /* UITabBarController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITabBarController+Extensions.swift"; sourceTree = "<group>"; };
+		AA6BDB3023965838003194A5 /* UIExtensions.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = UIExtensions.podspec; sourceTree = "<group>"; };
 		AA79C256235B17E400EA1726 /* Date+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AA7EC73E2142677300386C7E /* Numbers+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Numbers+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AA855E262223EA4600718AB8 /* Collections+Conversions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collections+Conversions.swift"; sourceTree = "<group>"; };
@@ -205,6 +206,7 @@
 		AA014F861FB87A0400E3CC35 = {
 			isa = PBXGroup;
 			children = (
+				AA6BDB3023965838003194A5 /* UIExtensions.podspec */,
 				AA0C342822FF181100074B72 /* Package.swift */,
 				AA014FAA1FB87BCC00E3CC35 /* Sources */,
 				AA014F9D1FB87A0500E3CC35 /* UIExtensionsTests */,
