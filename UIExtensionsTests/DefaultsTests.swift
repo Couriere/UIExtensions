@@ -22,6 +22,7 @@
 
 import XCTest
 
+#if swift(<5.1)
 class DefaultsTests: XCTestCase {
 
 	var defaults = UserDefaults()
@@ -143,3 +144,4 @@ class DefaultsTests: XCTestCase {
 		                       encoding: .utf8 ) == string )
 	}
 }
+#endif

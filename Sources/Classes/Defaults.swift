@@ -23,7 +23,7 @@
 import UIKit
 
 
-
+@available( swift, deprecated: 5.1, message: "User @UserDefault property wrapper instead." )
 public final class DefaultsKey<T> {
 
 	public let key: String
