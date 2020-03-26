@@ -87,15 +87,19 @@ public extension NSAttributedString {
 
 	/// Returns a copy of an attributed string with `striketrough style and color` attributes set.
 	func settingStrikethroughStyle( _ style: NSUnderlineStyle, color: UIColor? = nil ) -> NSAttributedString {
+		let attributes: [ NSAttributedString.Key: Any? ] = [ .strikethroughStyle: style.rawValue,
+															 .strikethroughColor: color ]
 		let mutable = self.mutable()
-		mutable.addAttributes( [ .strikethroughStyle: style.rawValue, .strikethroughColor: color as Any ], range: wholeRange )
+		mutable.addAttributes( attributes.sanitized, range: wholeRange )
 		return mutable
 	}
 
 	/// Returns a copy of an attributed string with `underline style and color` attributes set.
 	func settingUnderlineStyle( _ style: NSUnderlineStyle, color: UIColor? = nil ) -> NSAttributedString {
+		let attributes: [ NSAttributedString.Key: Any? ] = [ .underlineStyle: style.rawValue,
+															 .underlineColor: color ]
 		let mutable = self.mutable()
-		mutable.addAttributes( [ .underlineStyle: style.rawValue, .underlineColor: color as Any ], range: wholeRange )
+		mutable.addAttributes( attributes.sanitized, range: wholeRange )
 		return mutable
 	}
 
@@ -212,14 +216,18 @@ public extension NSMutableAttributedString {
 	/// Sets new `strikethrough style and color` attributes over the whole string.
 	@discardableResult
 	func strikethroughStyle( _ style: NSUnderlineStyle, color: UIColor? = nil ) -> Self {
-		addAttributes( [ .strikethroughStyle: style.rawValue, .strikethroughColor: color as Any ], range: wholeRange )
+		let attributes: [ NSAttributedString.Key: Any? ] = [ .strikethroughStyle: style.rawValue,
+															 .strikethroughColor: color ]
+		addAttributes( attributes.sanitized, range: wholeRange )
 		return self
 	}
 
 	/// Sets new `underline style and color` attributes over the whole string.
 	@discardableResult
 	func underlineStyle( _ style: NSUnderlineStyle, color: UIColor? = nil ) -> Self {
-		addAttributes( [ .underlineStyle: style.rawValue, .underlineColor: color as Any ], range: wholeRange )
+		let attributes: [ NSAttributedString.Key: Any? ] = [ .underlineStyle: style.rawValue,
+															 .underlineColor: color ]
+		addAttributes( attributes.sanitized, range: wholeRange )
 		return self
 	}
 
@@ -357,16 +365,17 @@ public extension String {
 	}
 
 	func withStrikethroughStyle( _ style: NSUnderlineStyle, color: UIColor? = nil ) -> NSMutableAttributedString {
-		let result =
-			NSMutableAttributedString( string: self,
-			                           attributes: [ .strikethroughStyle: style.rawValue, .strikethroughColor: color as Any ] )
+		let attributes: [ NSAttributedString.Key: Any? ] = [ .strikethroughStyle: style.rawValue,
+															 .strikethroughStyle: color ]
+		let result = NSMutableAttributedString( string: self, attributes: attributes.sanitized )
 		return result
 	}
 
 	func withUnderlineStyle( _ style: NSUnderlineStyle, color: UIColor? = nil ) -> NSMutableAttributedString {
+		let attributes: [ NSAttributedString.Key: Any? ] = [ .underlineStyle: style.rawValue,
+															 .underlineColor: color ]
 		let result =
-			NSMutableAttributedString( string: self,
-			                           attributes: [ .underlineStyle: style.rawValue, .underlineColor: color as Any ] )
+			NSMutableAttributedString( string: self, attributes: attributes.sanitized )
 		return result
 	}
 
