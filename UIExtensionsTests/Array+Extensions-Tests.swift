@@ -117,4 +117,35 @@ class ArrayExtensionsTests: XCTestCase {
 		let emptyArray: [ Int ] = []
 		XCTAssertEqual( emptyArray.chunk( 1 ), [] )
 	}
+
+	func testFirstIndexPath() {
+		let array = [ [ 10, 20 ], [ 30, 40, 45 ], [], [ 50, 60, 10, 70 ] ]
+
+		XCTAssertEqual( array.firstIndexPath( of: 20 ), IndexPath( row: 1, section: 0 ) )
+		XCTAssertEqual( array.firstIndexPath( of: 30 ), IndexPath( row: 0, section: 1 ) )
+		XCTAssertEqual( array.firstIndexPath( of: 10 ), IndexPath( row: 0, section: 0 ) )
+		XCTAssertEqual( array.firstIndexPath( of: 70 ), IndexPath( row: 3, section: 3 ) )
+		XCTAssertNil( array.firstIndexPath( of: 0 ) )
+	}
+
+
+	func testFirstIdentifiableIndexPath() {
+		struct I: Identifiable, ExpressibleByStringLiteral {
+			let id: String
+
+			init( stringLiteral: String ) {
+				id = stringLiteral
+			}
+		}
+
+		let array: [[ I ]] = [ [ "10", "20" ], [ "30", "40", "45" ], [], [ "50", "60", "10", "70" ] ]
+
+		if #available(iOS 13, *) {
+			XCTAssertEqual( array.firstIndexPath( of: "20" ), IndexPath( row: 1, section: 0 ) )
+			XCTAssertEqual( array.firstIndexPath( of: "30" ), IndexPath( row: 0, section: 1 ) )
+			XCTAssertEqual( array.firstIndexPath( of: "10" ), IndexPath( row: 0, section: 0 ) )
+			XCTAssertEqual( array.firstIndexPath( of: "70" ), IndexPath( row: 3, section: 3 ) )
+			XCTAssertNil( array.firstIndexPath( of: "0" ) )
+		}
+	}
 }

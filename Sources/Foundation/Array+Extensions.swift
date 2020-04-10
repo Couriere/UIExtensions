@@ -159,6 +159,39 @@ public extension Array where Element: Equatable {
 }
 
 
+public extension Array where Element : Collection, Element.Element : Equatable, Element.Index == Int {
+
+	/// Search for an equatable element in two dimensional array.
+	/// - parameter value: element to search.
+	/// - returns: IndexPath of first element equal to parameter or nil if no such element found.
+	func firstIndexPath( of value: Element.Element ) -> IndexPath? {
+		for ( section, row ) in self.enumerated() {
+			if let rowIndex = row.firstIndex( of: value ) {
+				return IndexPath( row: rowIndex, section: section )
+			}
+		}
+		return nil
+	}
+}
+
+@available( iOS 13, tvOS 13, * )
+public extension Array where Element : Collection, Element.Element : Identifiable, Element.Index == Int {
+
+	/// Search for an identifiable element in two dimensional array.
+	/// - parameter value: element to search.
+	/// - returns: IndexPath of first element with the same id as parameter
+	/// or nil if no such element found.
+	func firstIndexPath( of value: Element.Element ) -> IndexPath? {
+		for ( section, row ) in self.enumerated() {
+			if let rowIndex = row.firstIndex( where: { $0.id == value.id } ) {
+				return IndexPath( row: rowIndex, section: section )
+			}
+		}
+		return nil
+	}
+}
+
+
 public extension Set {
 	mutating func toggle( _ member: Element ) {
 		if contains( member ) { remove(member) } else { insert(member) }
