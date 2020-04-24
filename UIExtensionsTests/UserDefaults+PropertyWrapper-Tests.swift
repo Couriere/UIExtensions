@@ -37,6 +37,12 @@ class UserDefaults_PropertyWrapper: XCTestCase {
 	@UserDefault( "existingValueStore", defaultValue: nil ) var existingValueStore: URL?
 	@UserDefault( "existingLegacyValueStore", defaultValue: 0 ) var existingLegacyValueStore: Int
 
+	@UserDefault( "updatedFromiOS12URLValue", defaultValue: nil ) var updatedFromiOS12URLValue: URL?
+	@UserDefault( "updatedFromiOS12ArrayValue", defaultValue: [] ) var updatedFromiOS12ArrayValue: [ Int ]
+	@UserDefault( "updatedFromiOS12DictionaryValue", defaultValue: [:] ) var updatedFromiOS12DictionaryValue: [ String : Int ]
+	@UserDefault( "updatedFromiOS12SetValue", defaultValue: [] ) var updatedFromiOS12SetValue: Set<String>
+
+
 	static let nonStandardSuite = UserDefaults( suiteName: "NonStandardSuite" )!
 	@UserDefault( "nonStandardSuiteValue",
 				  defaultValue: nil,
@@ -53,9 +59,11 @@ class UserDefaults_PropertyWrapper: XCTestCase {
 		defaults.removeObject( forKey: "optionalArrayStore" )
 		defaults.removeObject( forKey: "structStore" )
 		defaults.removeObject( forKey: "optionalStructStore" )
-
-		defaults.set( try! JSONEncoder().encode( testURL ), forKey: "existingValueStore" )
-		defaults.set( 100, forKey: "existingLegacyValueStore" )
+		defaults.removeObject( forKey: "existingValueStore" )
+		defaults.removeObject( forKey: "updatingFromiOS12Value" )
+		defaults.removeObject( forKey: "updatedFromiOS12ArrayValue" )
+		defaults.removeObject( forKey: "updatedFromiOS12DictionaryValue" )
+		defaults.removeObject( forKey: "updatedFromiOS12SetValue" )
 
 		UserDefaults_PropertyWrapper.nonStandardSuite.removeObject( forKey: "nonStandardSuiteValue" )
 	}
@@ -135,14 +143,46 @@ class UserDefaults_PropertyWrapper: XCTestCase {
 		nonStandardSuiteValue = testData
 		XCTAssertEqual( nonStandardSuiteValue, testData )
 
-		XCTAssertEqual( UserDefaults_PropertyWrapper.nonStandardSuite.object( forKey: "nonStandardSuiteValue" ) as? Data,
-						try? JSONEncoder().encode( testData ))
 		XCTAssertNil( UserDefaults.standard.value( forKey: "nonStandardSuiteValue" ) )
 	}
 
-	func testExistingValue() {
+	func testExistingAndLegacyValue() {
+
+		let defaults = UserDefaults.standard
+
+		if #available( iOS 13, tvOS 13, watchOS 6, * ) {
+			defaults.set( try! JSONEncoder().encode( testURL ), forKey: "existingValueStore" )
+		} else {
+			defaults.set( try! JSONEncoder().encode( [ testURL ] ), forKey: "existingValueStore" )
+		}
+
+		defaults.set( 100, forKey: "existingLegacyValueStore" )
+
 		XCTAssertEqual( existingValueStore, testURL )
 		XCTAssertEqual( existingLegacyValueStore, 100 )
+	}
+
+	// Checking that value will be read correctly after update from iOS 12 and earlier
+	// to iOS 13 and later.
+	func testUpgradeValue() {
+
+		if #available( iOS 13, tvOS 13, watchOS 6, * ) {
+
+			UserDefaults.standard.set( try! JSONEncoder().encode( [ testURL ] ), forKey: "updatedFromiOS12URLValue" )
+			XCTAssertEqual( updatedFromiOS12URLValue, testURL )
+
+			let array = [ 1, -2, 30 ]
+			UserDefaults.standard.set( try! JSONEncoder().encode( [ array ] ), forKey: "updatedFromiOS12ArrayValue" )
+			XCTAssertEqual( updatedFromiOS12ArrayValue, array )
+
+			let dictionary = [ "key1" : 1, "key2" : -2, "key3" : 30 ]
+			UserDefaults.standard.set( try! JSONEncoder().encode( [ dictionary ] ), forKey: "updatedFromiOS12DictionaryValue" )
+			XCTAssertEqual( updatedFromiOS12DictionaryValue, dictionary )
+
+			let set = Set<String>( [ "first", "second", "something" ] )
+			UserDefaults.standard.set( try! JSONEncoder().encode( [ set ] ), forKey: "updatedFromiOS12SetValue" )
+			XCTAssertEqual( updatedFromiOS12SetValue, set )
+		}
 	}
 }
 #endif

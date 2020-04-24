@@ -52,26 +52,46 @@ public struct UserDefault<T: Codable> {
 	/// UserDefaults suite used to store values. Defaults to `UserDefaults.standard`.
 	private let suite: UserDefaults
 
-	public init( _ key: String, defaultValue: T, suite: UserDefaults = .standard ) {
+	public init( _ key: String, defaultValue: T, suite: UserDefaults? = nil ) {
 		self.key = key
 		self.defaultValue = defaultValue
-		self.suite = suite
+		self.suite = suite ?? .standard
 	}
 
 	public var wrappedValue: T {
 		get {
 			guard let rawData = suite.object( forKey: key ) else { return defaultValue }
 
-			if let data = rawData as? Data,
-				let value = try? _userDefaults_decoder.decode( T.self, from: data ) {
-				return value
+			if let data = rawData as? Data {
+
+				// On iOS 13 and later, just decoding value.
+				if #available( iOS 13, tvOS 13, watchOS 6, * ),
+					let value = try? _userDefaults_decoder.decode( T.self, from: data ) {
+					return value
+				}
+				else {
+					// On iOS 12 and earlier or if decoding failed,
+					// attempting to decode proxy array value.
+					if let proxyValue = try? _userDefaults_decoder.decode( [ T ].self, from: data ),
+						let value = proxyValue.first {
+						return value
+					}
+				}
 			}
 
 			return rawData as? T ?? defaultValue
 		}
 		set {
-			let data = try! _userDefaults_encoder.encode( newValue )
-			suite.set( data, forKey: key )
+			// On iOS 12 and earlier trying to encode simple values (Int, String, etc.) results
+			// in fatal error `Top-level Optional<Int> encoded as number JSON fragment.`.
+			if #available( iOS 13, tvOS 13, watchOS 6, * ) {
+				let data = try! _userDefaults_encoder.encode( newValue )
+				suite.set( data, forKey: key )
+			} else {
+				// On iOS 12 and earlier encasing new value in array.
+				let data = try! _userDefaults_encoder.encode( [ newValue ] )
+				suite.set( data, forKey: key )
+			}
 		}
 	}
 }
