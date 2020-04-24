@@ -24,6 +24,15 @@ import UIKit
 
 public extension UIDevice {
 
+#if os( iOS )
+	@available( iOS 11.0, * )
+	var freeSpace: Int64 {
+		let url = URL( fileURLWithPath: NSHomeDirectory() )
+		let spaceValues = try? url.resourceValues( forKeys: [ .volumeAvailableCapacityForImportantUsageKey] )
+		return spaceValues?.volumeAvailableCapacityForImportantUsage ?? 0
+	}
+#endif
+
 	var modelString: String {
 		var systemInfo = utsname()
 		uname(&systemInfo )

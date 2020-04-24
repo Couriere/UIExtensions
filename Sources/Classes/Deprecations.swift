@@ -20,7 +20,59 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import Foundation
 import UIKit
+
+public extension Date {
+
+	// ..<
+	@available( swift, deprecated: 4.2, message: "Use isBetween(_: and: )" )
+	func isBetweenDate( _ firstDate: Date, andDate secondDate: Date ) -> Bool {
+		let startResult = firstDate.compare( self )
+		return ( startResult == .orderedSame || startResult == .orderedAscending ) && compare( secondDate ) == .orderedAscending
+	}
+
+	@available( swift, deprecated: 4.2, message: "Use Date.addingMonths(_:)" )
+	func dateByAddingMonths( _ months: Int ) -> Date {
+		return addingMonths( months )
+	}
+}
+
+public extension Dictionary {
+	
+	@available( swift, deprecated: 4.0, obsoleted: 5.0, message: "Use Dictionary( uniqueKeysWithValues: ) instead" )
+	init(_ elements: [Element]) {
+		self.init()
+		for (k, v) in elements {
+			self[k] = v
+		}
+	}
+
+	@available( swift, deprecated: 4.0, obsoleted: 5.0, message: "Use `Dictionary[ key, default: value ] instead" )
+	subscript(key: Key, defaultValue: Value ) -> Value {
+		if let value = self[ key ] {
+			return value
+		}
+		else {
+			return defaultValue
+		}
+	}
+}
+
+public extension URL {
+
+#if os( iOS )
+	@available( iOS, deprecated: 11.0, message: "Use UIDevice.current.freeSpace instead" )
+	var freeSpace: Int64? {
+		if #available( iOS 11, * ) {
+			return UIDevice.current.freeSpace
+		}
+		let systemAttributes = try? FileManager.default.attributesOfFileSystem( forPath: path )
+		let freeSpace = ( systemAttributes?[ FileAttributeKey.systemFreeSize ] as? NSNumber )?.int64Value
+		return freeSpace
+	}
+#endif
+}
 
 
 @available( swift, deprecated: 5.1, message: "User @UserDefault property wrapper instead." )

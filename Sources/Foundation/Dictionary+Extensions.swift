@@ -61,24 +61,3 @@ public extension Dictionary where Value: OptionalType {
 		return filter { $0.value.value != nil }.mapValues { $0.value! }
 	}
 }
-
-/// Deprecated
-public extension Dictionary {
-	@available( swift, deprecated: 4.0, obsoleted: 5.0, message: "Use Dictionary( uniqueKeysWithValues: ) instead" )
-	init(_ elements: [Element]) {
-		self.init()
-		for (k, v) in elements {
-			self[k] = v
-		}
-	}
-
-	@available( swift, deprecated: 4.0, obsoleted: 5.0, message: "Use `Dictionary[ key, default: value ] instead" )
-	subscript(key: Key, defaultValue: Value ) -> Value {
-		if let value = self[ key ] {
-			return value
-		}
-		else {
-			return defaultValue
-		}
-	}
-}

@@ -30,12 +30,6 @@ public extension URL {
 		return components?.url
 	}
 
-	var freeSpace: Int64? {
-		let systemAttributes = try? FileManager.default.attributesOfFileSystem( forPath: path )
-		let freeSpace = ( systemAttributes?[ FileAttributeKey.systemFreeSize ] as? NSNumber )?.int64Value
-		return freeSpace
-	}
-
 	#if os(iOS) || os(tvOS)
 
 		// MARK: - System paths

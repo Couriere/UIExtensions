@@ -209,20 +209,3 @@ public extension TimeInterval {
 	var day: TimeInterval { return self * 24 * 60 * 60 }
 	var days: TimeInterval { return self * 24 * 60 * 60 }
 }
-
-
-/// Deprecations.
-public extension Date {
-
-	// ..<
-	@available( swift, deprecated: 4.2, message: "Use isBetween(_: and: )" )
-	func isBetweenDate( _ firstDate: Date, andDate secondDate: Date ) -> Bool {
-		let startResult = firstDate.compare( self )
-		return ( startResult == .orderedSame || startResult == .orderedAscending ) && compare( secondDate ) == .orderedAscending
-	}
-
-	@available( swift, deprecated: 4.2, message: "Use Date.addingMonths(_:)" )
-	func dateByAddingMonths( _ months: Int ) -> Date {
-		return addingMonths( months )
-	}
-}
