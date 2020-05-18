@@ -28,16 +28,35 @@ public extension UILabel {
 	/// Transition is noop if new text is equal to old one.
 	/// - parameters text: Text to set on receiver with crossfade effect.
 	/// - parameters duration: Duration of crossfade effect.
-	func crossfadeTo( text: String?, duration: TimeInterval = 0.2 ) {
-		if text != self.text {
-			let animation = CATransition().then {
-				$0.timingFunction = CAMediaTimingFunction( name: .easeInEaseOut )
-				$0.type = CATransitionType.fade
-				$0.duration = duration
-			}
-			layer.add( animation, forKey: CATransitionType.fade.rawValue )
-			self.text = text
+	func crossfadeTo( text: String, duration: TimeInterval = 0.2 ) {
+
+		guard text != self.text else { return }
+
+		let animation = CATransition().then {
+			$0.timingFunction = CAMediaTimingFunction( name: .easeInEaseOut )
+			$0.type = CATransitionType.fade
+			$0.duration = duration
 		}
+		layer.add( animation, forKey: CATransitionType.fade.rawValue )
+		self.text = text
+	}
+
+
+	/// Changes UILabel text with crossfade effect.
+	/// Transition is noop if new text is equal to old one.
+	/// - parameters text: Text to set on receiver with crossfade effect.
+	/// - parameters duration: Duration of crossfade effect.
+	func crossfadeTo( text: NSAttributedString, duration: TimeInterval = 0.2 ) {
+
+		guard text != self.attributedText else { return }
+
+		let animation = CATransition().then {
+			$0.timingFunction = CAMediaTimingFunction( name: .easeInEaseOut )
+			$0.type = CATransitionType.fade
+			$0.duration = duration
+		}
+		layer.add( animation, forKey: CATransitionType.fade.rawValue )
+		self.attributedText = text
 	}
 }
 
