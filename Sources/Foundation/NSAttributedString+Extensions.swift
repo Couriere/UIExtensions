@@ -339,6 +339,9 @@ public extension NSMutableAttributedString {
 
 public extension String {
 
+	/// Returns attributed string with no attributes.
+	var attributed: NSAttributedString { NSAttributedString( string: self ) }
+
 	func withAttributes( _ attributes: [ NSAttributedString.Key: AnyObject ] ) -> NSMutableAttributedString {
 		let result = NSMutableAttributedString( string: self, attributes: attributes )
 		return result
