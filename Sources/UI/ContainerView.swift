@@ -64,6 +64,15 @@ open class ContainerView: UIView {
 			                              greaterRelation: options.contains( .flexibleBottom ),
 			                              constant: insets.bottom ),
 		])
+
+		// When both `.flexibleLeft`/`.flexibleRight` or both `.flexibleTop`/`.flexibleBottom`,
+		// options are selected, we have to add `centerX` or `centerY` constraint respectively.
+		if options.contains( .flexibleLeft ) && options.contains( .flexibleRight ) {
+			containedView.centerXAnchor.constraint( equalTo: centerXAnchor ).isActive = true
+		}
+		if options.contains( .flexibleTop ) && options.contains( .flexibleBottom ) {
+			containedView.centerYAnchor.constraint( equalTo: centerYAnchor ).isActive = true
+		}
 	}
 
 	public required init?(coder _: NSCoder) {
