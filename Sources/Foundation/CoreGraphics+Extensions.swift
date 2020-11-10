@@ -50,13 +50,9 @@ public extension CGRect {
 
 public extension CGRect {
 
-	init( square side: CGFloat ) {
-		self.init( x: 0, y: 0, width: side, height: side )
-	}
-
-	init( square side: Int ) {
-		self.init( x: 0, y: 0, width: side, height: side )
-	}
+	init( square side: CGFloat ) { self.init( x: 0, y: 0, width: side, height: side ) }
+	init( square side: Double ) { self.init( x: 0, y: 0, width: side, height: side ) }
+	init( square side: Int ) { self.init( x: 0, y: 0, width: side, height: side ) }
 
 	/// Center of rect property.
 	var center: CGPoint {
@@ -79,6 +75,10 @@ public extension CGRect {
 
 public extension CGSize {
 
+	init( side: CGFloat ) { self.init( width: side, height: side ) }
+	init( side: Double ) { self.init( width: side, height: side ) }
+	init( side: Int ) { self.init( width: side, height: side ) }
+
 	/// Returns whether a size has zero or negative width or height, or is an invalid size.
 	var isEmpty: Bool { return !( width > 0 && height > 0 ) }
 }
@@ -92,6 +92,10 @@ public extension UIEdgeInsets {
 
 	init( horizontal: CGFloat = 0, vertical: CGFloat = 0 ) {
 		self.init( top: vertical, left: horizontal, bottom: vertical, right: horizontal )
+	}
+
+	init( top: CGFloat? = nil, left: CGFloat? = nil, bottom: CGFloat? = nil, right: CGFloat? = nil ) {
+		self.init( top: top ?? 0, left: left ?? 0, bottom: bottom ?? 0, right: right ?? 0 )
 	}
 
 	/// Inverts all insets.
