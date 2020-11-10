@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 import XCTest
+import UIExtensions
 
 class StringExtensionsTests: XCTestCase {
 

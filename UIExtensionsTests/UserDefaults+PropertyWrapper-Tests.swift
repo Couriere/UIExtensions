@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 import XCTest
+import UIExtensions
 
 #if swift(>=5.1)
 class UserDefaults_PropertyWrapper: XCTestCase {

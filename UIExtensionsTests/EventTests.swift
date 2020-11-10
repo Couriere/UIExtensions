@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 import XCTest
+import UIExtensions
 
 enum TestEnum {
 	case test1

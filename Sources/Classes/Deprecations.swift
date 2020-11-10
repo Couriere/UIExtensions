@@ -136,3 +136,97 @@ public final class DefaultsKey<T> {
 		do { return try archive( value ) } catch { return nil }
 	}
 }
+
+
+public extension String {
+
+	@available( swift, deprecated: 5.3, renamed: "attributes" )
+	@inlinable
+	func withAttributes( _ attributes: [ NSAttributedString.Key: AnyObject ] ) -> NSMutableAttributedString {
+		self.attributes( attributes )
+	}
+
+	@available( swift, deprecated: 5.3, renamed: "color" )
+	@inlinable
+	func withColor( _ color: UIColor ) -> NSMutableAttributedString {
+		self.color( color )
+	}
+
+	@available( swift, deprecated: 5.3, renamed: "font" )
+	@inlinable
+	func withFont( _ font: UIFont ) -> NSMutableAttributedString {
+		self.font( font )
+	}
+
+	@available( swift, deprecated: 5.3, renamed: "kern" )
+	@inlinable
+	func withKern( _ kern: CGFloat ) -> NSMutableAttributedString {
+		self.kern( kern )
+	}
+
+	@available( swift, deprecated: 5.3, renamed: "baselineOffset" )
+	@inlinable
+	func withBaselineOffset( _ offset: CGFloat ) -> NSMutableAttributedString {
+		self.baselineOffset( offset )
+	}
+
+	@available( swift, deprecated: 5.3, renamed: "strikethroughStyle" )
+	@inlinable
+	func withStrikethroughStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSMutableAttributedString {
+		self.strikethroughStyle( style, color: color )
+	}
+
+	@available( swift, deprecated: 5.3, renamed: "underlineStyle" )
+	@inlinable
+	func withUnderlineStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSMutableAttributedString {
+		self.underlineStyle( style, color: color )
+	}
+
+	@available( swift, deprecated: 5.3, renamed: "paragraphStyle" )
+	@inlinable
+	func withParagraphStyle( _ paragraphStyle: NSParagraphStyle ) -> NSMutableAttributedString {
+		self.paragraphStyle( paragraphStyle )
+	}
+
+	@available( swift, deprecated: 5.3, renamed: "lineSpacing" )
+	@inlinable
+	func withLineSpacing( _ lineSpacing: CGFloat ) -> NSMutableAttributedString {
+		self.lineSpacing( lineSpacing )
+	}
+
+	@available( swift, deprecated: 5.3, renamed: "lineHeightMultiple" )
+	@inlinable
+	func withLineHeightMultiple( _ multiple: CGFloat ) -> NSMutableAttributedString {
+		self.lineHeightMultiple( multiple )
+	}
+
+	@available( swift, deprecated: 5.3, renamed: "minimumLineHeight" )
+	@inlinable
+	func withMinimumLineHeight( _ minimumLineHeight: CGFloat ) -> NSMutableAttributedString {
+		self.minimumLineHeight( minimumLineHeight )
+	}
+
+	@available( swift, deprecated: 5.3, renamed: "alignment" )
+	@inlinable
+	func withAlignment( _ alignment: NSTextAlignment ) -> NSMutableAttributedString {
+		self.alignment( alignment )
+	}
+
+	@available( swift, deprecated: 5.3, renamed: "lineBreakMode" )
+	@inlinable
+	func withLineBreakMode( _ lineBreakMode: NSLineBreakMode ) -> NSMutableAttributedString {
+		self.lineBreakMode( lineBreakMode )
+	}
+
+	/// Creates attributed string and inserts image in it at specified location.
+	/// - parameter image: Image to insert in string.
+	/// - parameter location: Location in string to insert. If `nil`, image will be appended to the string.
+	/// - parameter verticalOffset: Offset in points, will be applied to image position.
+	@available( swift, deprecated: 5.3, renamed: "image" )
+	@inlinable
+	func withImage( _ image: UIImage,
+					atLocation location: Int? = nil,
+					verticalOffset: CGFloat = 0 ) -> NSMutableAttributedString {
+		self.image( image )
+	}
+}
