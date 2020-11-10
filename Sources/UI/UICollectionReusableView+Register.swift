@@ -44,7 +44,7 @@ import UIKit
 
 public extension UICollectionReusableView {
 
-	class var identifier: String { return NSStringFromClass( self ).components( separatedBy: "." ).last! }
+	@objc class var identifier: String { String( describing: self ) }
 
 	static func registerSupplementaryClass( in collection: UICollectionView, forKind: String ) {
 		collection.register( self, forSupplementaryViewOfKind: forKind, withReuseIdentifier: identifier )

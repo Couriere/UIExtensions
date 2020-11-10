@@ -47,7 +47,7 @@ import UIKit
 
 public extension UITableViewCell {
 
-	@objc class var identifier: String { return NSStringFromClass( self ).components( separatedBy: "." ).last! }
+	@objc class var identifier: String { String( describing: self ) }
 
 	static func registerClass( in tableView: UITableView ) {
 		tableView.register( self, forCellReuseIdentifier: identifier )
@@ -100,7 +100,7 @@ public extension UITableViewCell {
 
 public extension UITableViewHeaderFooterView {
 
-	class var identifier: String { return NSStringFromClass( self ).components( separatedBy: "." ).last! }
+	@objc class var identifier: String { String( describing: self ) }
 
 	static func registerClass( in tableView: UITableView ) {
 		tableView.register( self, forHeaderFooterViewReuseIdentifier: identifier )

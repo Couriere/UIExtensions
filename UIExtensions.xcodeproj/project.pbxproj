@@ -41,6 +41,7 @@
 		AA0C342222FF102A00074B72 /* DefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0C342122FF102A00074B72 /* DefaultsTests.swift */; };
 		AA17E5A324546BAC00BD0254 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA17E5A224546BAC00BD0254 /* UICollectionView+Extensions.swift */; };
 		AA17E5A424546BB000BD0254 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA17E5A224546BAC00BD0254 /* UICollectionView+Extensions.swift */; };
+		AA186446255AF21600E4D84B /* Cells+Identifiers-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA186445255AF21600E4D84B /* Cells+Identifiers-Tests.swift */; };
 		AA18665A22AA7EFC009CFA2A /* Decoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA053C90224A13E9005705BE /* Decoder+Extensions.swift */; };
 		AA233500247326280011A0ED /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2334FF247326280011A0ED /* UITextField+Extensions.swift */; };
 		AA2335012473262E0011A0ED /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2334FF247326280011A0ED /* UITextField+Extensions.swift */; };
@@ -153,6 +154,7 @@
 		AA0C342122FF102A00074B72 /* DefaultsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultsTests.swift; sourceTree = "<group>"; };
 		AA0C342822FF181100074B72 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		AA17E5A224546BAC00BD0254 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
+		AA186445255AF21600E4D84B /* Cells+Identifiers-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cells+Identifiers-Tests.swift"; sourceTree = "<group>"; };
 		AA2334FF247326280011A0ED /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		AA2B8FFD21AFDA0A00DA8E27 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		AA3685C6234A0DA20070C26A /* Data+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions-Tests.swift"; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 				AA3685C6234A0DA20070C26A /* Data+Extensions-Tests.swift */,
 				AA79C256235B17E400EA1726 /* Date+Extensions-Tests.swift */,
 				AA7EC73E2142677300386C7E /* Numbers+Extensions-Tests.swift */,
+				AA186445255AF21600E4D84B /* Cells+Identifiers-Tests.swift */,
 				AAA55FC6220C442E003DCEDA /* CoreGraphics+Extensions-Tests.swift */,
 				AA9F562B2215A225006FC149 /* Dictionary+Extensions-Tests.swift */,
 				AA3ED3112142777900D65DDD /* EventTests.swift */,
@@ -546,6 +549,7 @@
 				AA9F562E2215A449006FC149 /* Optional+Extensions.swift in Sources */,
 				AA9F562C2215A225006FC149 /* Dictionary+Extensions-Tests.swift in Sources */,
 				AA3685C8234A0DB90070C26A /* Data+Extensions.swift in Sources */,
+				AA186446255AF21600E4D84B /* Cells+Identifiers-Tests.swift in Sources */,
 				AA0ACE2D20AB6BFB00DFD66B /* UIView+Constraints-Tests.swift in Sources */,
 				AAF98E0C214173890059F792 /* String+Extensions-Tests.swift in Sources */,
 			);
