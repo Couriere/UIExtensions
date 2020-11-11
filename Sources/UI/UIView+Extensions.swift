@@ -52,20 +52,16 @@ public extension UIView {
 public extension UIView {
 
 	/**
-	 Loads view from xib in memory.
+	Load view from xib file.
 
-	 - parameter xib:    Name of the xib. Default to type name.
-	 - returns: Instance of ofType class, loaded from xib
-	 */
-	class func makeFromXib( named xibName: String? = nil ) -> Self? {
+	- parameter xibName:  	Name of the xib. Defaults to type name.
+	- parameter bundle:		Bundle containing xib file.
+	- returns: Instance of ofType class, loaded from xib
+	*/
+	class func makeFromXib( named xibName: String? = nil, bundle: Bundle? = nil ) -> Self? {
 
-		guard let xibFile = xibName ??
-			NSStringFromClass( self ).components( separatedBy: "." ).last
-		else {
-			return nil
-		}
-
-		let nib = UINib( nibName: xibFile, bundle: nil )
+		let xibFileName = xibName ?? String( describing: self )
+		let nib = UINib( nibName: xibFileName, bundle: bundle ?? Bundle( for: self ) )
 		let views = nib.instantiate( withOwner: nil, options: nil ) as [ AnyObject ]
 
 		guard let selfObject = views.first( where: { type( of: $0 ) == self } )
