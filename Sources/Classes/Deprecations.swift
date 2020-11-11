@@ -49,8 +49,8 @@ public extension Dictionary {
 	}
 
 	@available( swift, deprecated: 4.0, obsoleted: 5.0, message: "Use `Dictionary[ key, default: value ] instead" )
-	subscript(key: Key, defaultValue: Value ) -> Value {
-		if let value = self[ key ] {
+	func valueForKey<T>( _ key: Key, defaultValue: T ) -> T {
+		if let value = self[ key ] as? T {
 			return value
 		}
 		else {
@@ -64,12 +64,7 @@ public extension URL {
 #if os( iOS )
 	@available( iOS, deprecated: 11.0, message: "Use UIDevice.current.freeSpace instead" )
 	var freeSpace: Int64? {
-		if #available( iOS 11, * ) {
-			return UIDevice.current.freeSpace
-		}
-		let systemAttributes = try? FileManager.default.attributesOfFileSystem( forPath: path )
-		let freeSpace = ( systemAttributes?[ FileAttributeKey.systemFreeSize ] as? NSNumber )?.int64Value
-		return freeSpace
+		return UIDevice.current.freeSpace
 	}
 #endif
 }
@@ -140,79 +135,79 @@ public final class DefaultsKey<T> {
 
 public extension String {
 
-	@available( swift, deprecated: 5.3, renamed: "attributes" )
+	@available( *, deprecated, renamed: "attributes" )
 	@inlinable
 	func withAttributes( _ attributes: [ NSAttributedString.Key: AnyObject ] ) -> NSMutableAttributedString {
 		self.attributes( attributes )
 	}
 
-	@available( swift, deprecated: 5.3, renamed: "color" )
+	@available( *, deprecated, renamed: "color" )
 	@inlinable
 	func withColor( _ color: UIColor ) -> NSMutableAttributedString {
 		self.color( color )
 	}
 
-	@available( swift, deprecated: 5.3, renamed: "font" )
+	@available( *, deprecated, renamed: "font" )
 	@inlinable
 	func withFont( _ font: UIFont ) -> NSMutableAttributedString {
 		self.font( font )
 	}
 
-	@available( swift, deprecated: 5.3, renamed: "kern" )
+	@available( *, deprecated, renamed: "kern" )
 	@inlinable
 	func withKern( _ kern: CGFloat ) -> NSMutableAttributedString {
 		self.kern( kern )
 	}
 
-	@available( swift, deprecated: 5.3, renamed: "baselineOffset" )
+	@available( *, deprecated, renamed: "baselineOffset" )
 	@inlinable
 	func withBaselineOffset( _ offset: CGFloat ) -> NSMutableAttributedString {
 		self.baselineOffset( offset )
 	}
 
-	@available( swift, deprecated: 5.3, renamed: "strikethroughStyle" )
+	@available( *, deprecated, renamed: "strikethroughStyle" )
 	@inlinable
 	func withStrikethroughStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSMutableAttributedString {
 		self.strikethroughStyle( style, color: color )
 	}
 
-	@available( swift, deprecated: 5.3, renamed: "underlineStyle" )
+	@available( *, deprecated, renamed: "underlineStyle" )
 	@inlinable
 	func withUnderlineStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSMutableAttributedString {
 		self.underlineStyle( style, color: color )
 	}
 
-	@available( swift, deprecated: 5.3, renamed: "paragraphStyle" )
+	@available( *, deprecated, renamed: "paragraphStyle" )
 	@inlinable
 	func withParagraphStyle( _ paragraphStyle: NSParagraphStyle ) -> NSMutableAttributedString {
 		self.paragraphStyle( paragraphStyle )
 	}
 
-	@available( swift, deprecated: 5.3, renamed: "lineSpacing" )
+	@available( *, deprecated, renamed: "lineSpacing" )
 	@inlinable
 	func withLineSpacing( _ lineSpacing: CGFloat ) -> NSMutableAttributedString {
 		self.lineSpacing( lineSpacing )
 	}
 
-	@available( swift, deprecated: 5.3, renamed: "lineHeightMultiple" )
+	@available( *, deprecated, renamed: "lineHeightMultiple" )
 	@inlinable
 	func withLineHeightMultiple( _ multiple: CGFloat ) -> NSMutableAttributedString {
 		self.lineHeightMultiple( multiple )
 	}
 
-	@available( swift, deprecated: 5.3, renamed: "minimumLineHeight" )
+	@available( *, deprecated, renamed: "minimumLineHeight" )
 	@inlinable
 	func withMinimumLineHeight( _ minimumLineHeight: CGFloat ) -> NSMutableAttributedString {
 		self.minimumLineHeight( minimumLineHeight )
 	}
 
-	@available( swift, deprecated: 5.3, renamed: "alignment" )
+	@available( *, deprecated, renamed: "alignment" )
 	@inlinable
 	func withAlignment( _ alignment: NSTextAlignment ) -> NSMutableAttributedString {
 		self.alignment( alignment )
 	}
 
-	@available( swift, deprecated: 5.3, renamed: "lineBreakMode" )
+	@available( *, deprecated, renamed: "lineBreakMode" )
 	@inlinable
 	func withLineBreakMode( _ lineBreakMode: NSLineBreakMode ) -> NSMutableAttributedString {
 		self.lineBreakMode( lineBreakMode )
@@ -222,11 +217,180 @@ public extension String {
 	/// - parameter image: Image to insert in string.
 	/// - parameter location: Location in string to insert. If `nil`, image will be appended to the string.
 	/// - parameter verticalOffset: Offset in points, will be applied to image position.
-	@available( swift, deprecated: 5.3, renamed: "image" )
+	@available( *, deprecated, renamed: "image" )
 	@inlinable
 	func withImage( _ image: UIImage,
 					atLocation location: Int? = nil,
 					verticalOffset: CGFloat = 0 ) -> NSMutableAttributedString {
 		self.image( image )
+	}
+}
+
+public extension NSAttributedString {
+	/// Returns a copy of an attributed string with `text color` attribute set.
+	@available( *, deprecated, renamed: "color" )
+	func settingColor( _ color: UIColor ) -> NSAttributedString {
+		self.mutable().color( color )
+	}
+
+	/// Returns a copy of an attributed string with `text font` attribute set.
+	@available( *, deprecated, renamed: "font" )
+	func settingFont( _ font: UIFont ) -> NSAttributedString {
+		self.mutable().font( font )
+	}
+
+	/// Returns a copy of an attributed string with `kern` attribute set.
+	@available( *, deprecated, renamed: "kern" )
+	func settingKern( _ kern: CGFloat ) -> NSAttributedString {
+		self.mutable().kern( kern )
+	}
+
+	/// Returns a copy of an attributed string with `baselineOffset` attributes set.
+	@available( *, deprecated, renamed: "baselineOffset" )
+	func settingBaselineOffset( _ offset: CGFloat ) -> NSAttributedString {
+		self.mutable().baselineOffset( offset )
+	}
+
+	/// Returns a copy of an attributed string with `striketrough style and color` attributes set.
+	@available( *, deprecated, renamed: "strikethroughStyle" )
+	func settingStrikethroughStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSAttributedString {
+		self.mutable().strikethroughStyle( style, color: color )
+	}
+
+	/// Returns a copy of an attributed string with `underline style and color` attributes set.
+	@available( *, deprecated, renamed: "underlineStyle" )
+	func settingUnderlineStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSAttributedString {
+		self.mutable().underlineStyle( style, color: color )
+	}
+
+
+	/// Returns a copy of an attributed string with `paragraphStyle` attribute set.
+	/// - note: All existing paragraph styles attributes in string will be overwritten.
+	@available( *, deprecated, renamed: "paragraphStyle" )
+	func settingParagraphStyle( _ paragraphStyle: NSParagraphStyle ) -> NSAttributedString {
+		self.mutable().paragraphStyle( paragraphStyle )
+	}
+
+	/// Returns a copy of an attributed string with `lineSpacing` property of
+	/// `paragraphStyle` attribute set.
+	/// - note: Searches source string for the first `paragraphStyle` attribute,
+	/// change its `lineSpacing` property and set `paragraphStyle` over the whole string.
+	/// If no existing `paragraphStyle` attribute found, creates a new one.
+	/// - note: All existing paragraph styles attributes in string will be overwritten.
+	@available( *, deprecated, renamed: "lineSpacing" )
+	func settingLineSpacing( _ lineSpacing: CGFloat ) -> NSAttributedString {
+		self.mutable().lineSpacing( lineSpacing )
+	}
+
+	/// Returns a copy of an attributed string with `paragraphSpacing` property of
+	/// `paragraphStyle` attribute set.
+	/// - note: Searches source string for the first `paragraphStyle` attribute,
+	/// change its `paragraphSpacing` property and set `paragraphStyle` over the whole string.
+	/// If no existing `paragraphStyle` attribute found, creates a new one.
+	/// - note: All existing paragraph styles attributes in string will be overwritten.
+	@available( *, deprecated, renamed: "paragraphSpacing" )
+	func settingParagraphSpacing( _ paragraphSpacing: CGFloat ) -> NSAttributedString {
+		self.mutable().paragraphSpacing( paragraphSpacing )
+	}
+
+	/// Returns a copy of an attributed string with `lineHeightMultiple` property of
+	/// `paragraphStyle` attribute set.
+	/// - note: Searches source string for the first `paragraphStyle` attribute,
+	/// change its `lineHeightMultiple` property and set `paragraphStyle` over the whole string.
+	/// If no existing `paragraphStyle` attribute found, creates a new one.
+	/// - note: All existing paragraph styles attributes in string will be overwritten.
+	@available( *, deprecated, renamed: "lineHeightMultiple" )
+	func settingLineHeightMultiple( _ multiple: CGFloat ) -> NSAttributedString {
+		self.mutable().lineHeightMultiple( multiple )
+	}
+
+	/// Returns a copy of an attributed string with `minimumLineHeight` property of
+	/// `paragraphStyle` attribute set.
+	/// - note: Searches source string for the first `paragraphStyle` attribute,
+	/// change its `minimumLineHeight` property and set `paragraphStyle` over the whole string.
+	/// If no existing `paragraphStyle` attribute found, creates a new one.
+	/// - note: All existing paragraph styles attributes in string will be overwritten.
+	@available( *, deprecated, renamed: "minimumLineHeight" )
+	func settingMinimumLineHeight( _ minimumLineHeight: CGFloat ) -> NSAttributedString {
+		self.mutable().minimumLineHeight( minimumLineHeight )
+	}
+
+	/// Returns a copy of an attributed string with `alignment` property of
+	/// `paragraphStyle` attribute set.
+	/// - note: Searches source string for the first `paragraphStyle` attribute,
+	/// change its `alignment` property and set `paragraphStyle` over the whole string.
+	/// If no existing `paragraphStyle` attribute found, creates a new one.
+	/// - note: All existing paragraph styles attributes in string will be overwritten.
+	@available( *, deprecated, renamed: "alignment" )
+	func settingAlignment( _ alignment: NSTextAlignment ) -> NSAttributedString {
+		self.mutable().alignment( alignment )
+	}
+
+	/// Returns a copy of an attributed string with `lineBreakMode` property of
+	/// `paragraphStyle` attribute set.
+	/// - note: Searches source string for the first `paragraphStyle` attribute,
+	/// change its `lineBreakMode` property and set `paragraphStyle` over the whole string.
+	/// If no existing `paragraphStyle` attribute found, creates a new one.
+	/// - note: All existing paragraph styles attributes in string will be overwritten.
+	@available( *, deprecated, renamed: "lineBreakMode" )
+	func settingLineBreakMode( _ lineBreakMode: NSLineBreakMode ) -> NSAttributedString {
+		self.mutable().lineBreakMode( lineBreakMode )
+	}
+}
+
+
+public extension UIViewController {
+
+	/// Returns distance from top to safe area. If running on iOS versions prior to 11,
+	/// uses `topLayoutGuide` length instead.
+
+	@available( iOS, deprecated: 11.0, message: "Use view.safeAreaInsets.top instead", renamed: "view.safeAreaInsets.top" )
+	@available( tvOS, deprecated: 11.0, message: "Use view.safeAreaInsets.top instead", renamed: "view.safeAreaInsets.top" )
+	var topSafeAreaInset: CGFloat {
+		return view.safeAreaInsets.top
+	}
+
+	/// Returns distance from bottom to safe area. If running on iOS versions prior to 11,
+	/// uses `bottomLayoutGuide` length instead.
+	@available( iOS, deprecated: 11.0, message: "Use view.safeAreaInsets.bottom instead", renamed: "view.safeAreaInsets.bottom" )
+	@available( tvOS, deprecated: 11.0, message: "Use view.safeAreaInsets.bottom instead", renamed: "view.safeAreaInsets.bottom" )
+	var bottomSafeAreaInset: CGFloat {
+		return view.safeAreaInsets.bottom
+	}
+}
+
+public extension UIView {
+	@available( *, deprecated, renamed: "systemLayoutSizeFitting(width:)" )
+	func systemLayoutSizeFittingSize( _ targetSize: CGSize, constrainedToWidth width: CGFloat ) -> CGSize {
+		let constraint = constrainTo( width: width )
+		let size = systemLayoutSizeFitting( targetSize )
+		constraint.isActive = false
+		return size
+	}
+}
+
+public extension LayoutGuideProtocol {
+	
+
+	@available( iOS, deprecated: 11.0, message: "Use pin( .top, to: safeAreaLayoutGuide ) instead" )
+	@available( tvOS, deprecated: 11.0, message: "Use pin( .top, to: safeAreaLayoutGuide ) instead" )
+	@discardableResult
+	func constrainToTopLayoutGuide( inset: CGFloat = 0 ) -> NSLayoutConstraint {
+
+		let topGuide = owningView!.safeAreaLayoutGuide
+		let constraint = topAnchor.constraint( equalTo: topGuide.topAnchor, constant: inset )
+		constraint.isActive = true
+		return constraint
+	}
+
+	@available( iOS, deprecated: 11.0, message: "Use pin( .bottom, to: safeAreaLayoutGuide ) instead" )
+	@available( tvOS, deprecated: 11.0, message: "Use pin( .bottom, to: safeAreaLayoutGuide ) instead" )
+	@discardableResult
+	func constrainToBottomLayoutGuide( inset: CGFloat = 0 ) -> NSLayoutConstraint {
+
+		let bottomGuide = owningView!.safeAreaLayoutGuide
+		let constraint = bottomGuide.bottomAnchor.constraint( equalTo: bottomAnchor, constant: inset )
+		constraint.isActive = true
+		return constraint
 	}
 }

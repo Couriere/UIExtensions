@@ -48,17 +48,28 @@ public extension UIView {
 		removeOutsideConstraints()
 		removeConstraints( constraints )
 	}
-
-	// MARK: - Calculating autolayout view size
-
-	func systemLayoutSizeFittingSize( _ targetSize: CGSize, constrainedToWidth width: CGFloat ) -> CGSize {
-		let constraint = constrainTo( width: width )
-		let size = systemLayoutSizeFitting( targetSize )
-		constraint.isActive = false
-		return size
-	}
 }
 
+
+public extension CGSize {
+	static let compressed = UIView.layoutFittingCompressedSize
+	static let expanded = UIView.layoutFittingExpandedSize
+}
+
+public extension UIView {
+	// MARK: - Calculating autolayout view size
+
+	/// Returns the size of the view based on its constraints and the specified width.
+	/// - note: Resulting width is always equal to `width` parameter.
+	/// Resulting height is rouded up to closest whole number.
+	func systemLayoutSizeFitting( width: CGFloat ) -> CGSize {
+
+		let size = systemLayoutSizeFitting( CGSize( width: width, height: 0 ),
+											withHorizontalFittingPriority: .required,
+											verticalFittingPriority: .fittingSizeLevel )
+		return CGSize( width: width, height: size.height.rounded( .up ))
+	}
+}
 
 public extension LayoutGuideProtocol {
 
@@ -103,7 +114,6 @@ public extension LayoutGuideProtocol {
 		return constraints
 	}
 
-	@available( iOS 11, tvOS 11, * )
 	@discardableResult
 	func constrainVerticallyToSuperviewSafeAreaGuides( inset: CGFloat = 0 ) -> [ NSLayoutConstraint ] {
 
@@ -132,7 +142,6 @@ public extension LayoutGuideProtocol {
 		return constraints
 	}
 
-	@available( iOS 11, tvOS 11, * )
 	@discardableResult
 	func constrainToSuperviewSafeAreaGuides( insets: UIEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
 
@@ -149,12 +158,12 @@ public extension LayoutGuideProtocol {
 	}
 
 	/// Constrains views leading, trailing and bottom to corresponding superview sides
-	/// and top of the view to either safe area top on `iOS 11+` or top layout guide.
+	/// and top of the view to safe area top.
 	@discardableResult
 	func constrainToSuperviewTopLayoutGuides( insets: UIEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
 
 		let constraints = [
-			constrainToTopLayoutGuide( inset: insets.top ),
+			topAnchor.constraint( equalTo: owningView!.safeAreaLayoutGuide.topAnchor, constant: insets.top ),
 			leadingAnchor.constraint( equalTo: owningView!.leadingAnchor, constant: insets.left ),
 			owningView!.bottomAnchor.constraint( equalTo: bottomAnchor, constant: insets.bottom ),
 			owningView!.trailingAnchor.constraint( equalTo: trailingAnchor, constant: insets.right ),
@@ -163,41 +172,6 @@ public extension LayoutGuideProtocol {
 		NSLayoutConstraint.activate( constraints )
 		return constraints
 	}
-
-	/// Constrains views top to either safe area top of superview on `iOS 11+`
-	/// or its top layout guide.
-	@discardableResult
-	func constrainToTopLayoutGuide( inset: CGFloat = 0 ) -> NSLayoutConstraint {
-
-		let constraint: NSLayoutConstraint
-		if #available( iOS 11, tvOS 11, * ) {
-			let topGuide = owningView!.safeAreaLayoutGuide
-			constraint = topAnchor.constraint( equalTo: topGuide.topAnchor, constant: inset )
-		}
-		else {
-			let topGuide = parentViewController!.topLayoutGuide
-			constraint = topAnchor.constraint( equalTo: topGuide.bottomAnchor, constant: inset )
-		}
-		constraint.isActive = true
-		return constraint
-	}
-
-	@discardableResult
-	func constrainToBottomLayoutGuide( inset: CGFloat = 0 ) -> NSLayoutConstraint {
-
-		let constraint: NSLayoutConstraint
-		if #available( iOS 11, tvOS 11, * ) {
-			let bottomGuide = owningView!.safeAreaLayoutGuide
-			constraint = bottomGuide.bottomAnchor.constraint( equalTo: bottomAnchor, constant: inset )
-		}
-		else {
-			let bottomGuide = parentViewController!.bottomLayoutGuide
-			constraint = bottomGuide.topAnchor.constraint( equalTo: bottomAnchor, constant: inset )
-		}
-		constraint.isActive = true
-		return constraint
-	}
-
 
 
 	// MARK: - Centering
@@ -381,6 +355,14 @@ public extension LayoutGuideProtocol {
 
 public extension LayoutGuideProtocol {
 
+	/// Pins supplied attribute of the view to the same attribute of its superview or
+	/// provided view.
+	/// - parameter attribute: an attribute to use in constraint.
+	/// - parameter view: View or LayoutGuide to constrain receiver. If `nil`, `superview` is used.
+	/// - parameter relatedBy: The relationship between the left side of the constraint and the right side of the constraint.
+	/// - parameter multiplier: The constraint multiplier.
+	/// - parameter constant: The constant added to the multiplied attribute value.
+	/// - parameter priority: The priority of the constraint.
 	@discardableResult
 	func pin( _ attribute: NSLayoutConstraint.Attribute,
 			  to view: LayoutGuideProtocol? = nil,

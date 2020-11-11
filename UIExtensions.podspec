@@ -3,7 +3,7 @@ Pod::Spec.new do |spec|
 
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   spec.name         = "UIExtensions"
-  spec.version      = "1.3.0"
+  spec.version      = "1.4.0"
   spec.summary      = "Convenience extensions to UIKit and Foundation classes."
 
   spec.homepage     = "https://github.com/Couriere/UIExtensions"
@@ -15,8 +15,8 @@ Pod::Spec.new do |spec|
   spec.author       = { "Vladimir Kazantsev" => "8406740@gmail.com" }
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   spec.swift_version = '5.0'
-  spec.ios.deployment_target = "9.0"
-  spec.tvos.deployment_target = "10.0"
+  spec.ios.deployment_target = "11.0"
+  spec.tvos.deployment_target = "11.0"
 
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   spec.source       = { :git => "https://github.com/Couriere/UIExtensions.git", :tag => spec.version }
@@ -28,8 +28,5 @@ Pod::Spec.new do |spec|
 
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   spec.framework  = "UIKit"
-
-  # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-  # spec.dependency "JSONKit", "~> 1.4"
 
 end

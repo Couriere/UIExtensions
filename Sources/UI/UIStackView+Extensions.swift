@@ -29,6 +29,11 @@ public extension UIStackView {
 		views.forEach { addArrangedSubview( $0 ) }
 	}
 
+	/// Adds views to the end of the arrangedSubviews array.
+	func addArrangedSubviews( _ views: UIView... ) {
+		views.forEach { addArrangedSubview( $0 ) }
+	}
+
 	/// Removes provided views from the stack’s array of arranged subviews.
 	///
 	/// This method removes provided views from the stack’s arrangedSubviews array.

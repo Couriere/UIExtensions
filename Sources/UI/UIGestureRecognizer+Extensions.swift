@@ -22,7 +22,7 @@
 
 import UIKit
 
-extension UIGestureRecognizer {
+public extension UIGestureRecognizer {
 
 	/// Initializes an allocated gesture-recognizer object with a target and an handler closure.
 	/// - parameter target: The object that holds reference to closure.

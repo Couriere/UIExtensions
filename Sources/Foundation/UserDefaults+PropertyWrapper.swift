@@ -41,24 +41,24 @@ import Foundation
 /// _However_, to support seamless upgrade, if there is value in UserDefaults,
 /// stored by standard means, it will be correctly read.
 @propertyWrapper
-public struct UserDefault<T: Codable> {
+public struct UserDefault<Value: Codable> {
 
 	/// Key used to store values in UserDefaults.
 	private let key: String
 
 	/// Default value. Will be returned if value with `key` is not defined in UserDefaults.
-	private let defaultValue: T
+	private let defaultValue: Value
 
 	/// UserDefaults suite used to store values. Defaults to `UserDefaults.standard`.
 	private let suite: UserDefaults
 
-	public init( _ key: String, defaultValue: T, suite: UserDefaults? = nil ) {
+	public init( _ key: String, defaultValue: Value, suite: UserDefaults? = nil ) {
 		self.key = key
 		self.defaultValue = defaultValue
 		self.suite = suite ?? .standard
 	}
 
-	public var wrappedValue: T {
+	public var wrappedValue: Value {
 		get {
 			guard let rawData = suite.object( forKey: key ) else { return defaultValue }
 
@@ -66,20 +66,20 @@ public struct UserDefault<T: Codable> {
 
 				// On iOS 13 and later, just decoding value.
 				if #available( iOS 13, tvOS 13, watchOS 6, * ),
-					let value = try? _userDefaults_decoder.decode( T.self, from: data ) {
+					let value = try? _userDefaults_decoder.decode( Value.self, from: data ) {
 					return value
 				}
 				else {
 					// On iOS 12 and earlier or if decoding failed,
 					// attempting to decode proxy array value.
-					if let proxyValue = try? _userDefaults_decoder.decode( [ T ].self, from: data ),
+					if let proxyValue = try? _userDefaults_decoder.decode( [ Value ].self, from: data ),
 						let value = proxyValue.first {
 						return value
 					}
 				}
 			}
 
-			return rawData as? T ?? defaultValue
+			return rawData as? Value ?? defaultValue
 		}
 		set {
 			// On iOS 12 and earlier trying to encode simple values (Int, String, etc.) results

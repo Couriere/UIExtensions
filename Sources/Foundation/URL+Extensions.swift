@@ -24,7 +24,7 @@ import Foundation
 
 public extension URL {
 
-	var URLByDeletingQuery: URL? {
+	var urlByDeletingQuery: URL? {
 		var components = URLComponents( url: self, resolvingAgainstBaseURL: false )
 		components?.query = nil
 		return components?.url

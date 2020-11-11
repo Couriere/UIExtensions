@@ -43,7 +43,8 @@
 		AA18665A22AA7EFC009CFA2A /* Decoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA053C90224A13E9005705BE /* Decoder+Extensions.swift */; };
 		AA233500247326280011A0ED /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2334FF247326280011A0ED /* UITextField+Extensions.swift */; };
 		AA2335012473262E0011A0ED /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2334FF247326280011A0ED /* UITextField+Extensions.swift */; };
-		AA2B8FFE21AFDA0A00DA8E27 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B8FFD21AFDA0A00DA8E27 /* UIViewController+Extensions.swift */; };
+		AA2F1258255C16A100858360 /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2F1257255C16A100858360 /* SeparatorView.swift */; };
+		AA2F1259255C16A100858360 /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2F1257255C16A100858360 /* SeparatorView.swift */; };
 		AA3685C7234A0DA20070C26A /* Data+Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3685C6234A0DA20070C26A /* Data+Extensions-Tests.swift */; };
 		AA37BB9B20DBA55700AF07F7 /* Array+Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA37BB9A20DBA55700AF07F7 /* Array+Extensions-Tests.swift */; };
 		AA3ED3082142713F00D65DDD /* Optional+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3ED3072142713F00D65DDD /* Optional+Extensions.swift */; };
@@ -92,7 +93,6 @@
 		AAD08DFD200770160075B57E /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA014FC01FB87BCC00E3CC35 /* UILabel+Extensions.swift */; };
 		AAE08843235FC07F00BEBAB1 /* UserDefaults+PropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE08842235FC07F00BEBAB1 /* UserDefaults+PropertyWrapper.swift */; };
 		AAE08846235FC17700BEBAB1 /* UserDefaults+PropertyWrapper-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE08845235FC17700BEBAB1 /* UserDefaults+PropertyWrapper-Tests.swift */; };
-		AAE32A7A234DFBD700AEEB16 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B8FFD21AFDA0A00DA8E27 /* UIViewController+Extensions.swift */; };
 		AAF98E0C214173890059F792 /* String+Extensions-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF98E0B214173890059F792 /* String+Extensions-Tests.swift */; };
 		D73FC32F2059632D00F239D0 /* UIStackView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73FC32D2059632C00F239D0 /* UIStackView+Extensions.swift */; };
 		D73FC3302059632D00F239D0 /* UIStackView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73FC32D2059632C00F239D0 /* UIStackView+Extensions.swift */; };
@@ -145,7 +145,7 @@
 		AA17E5A224546BAC00BD0254 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
 		AA186445255AF21600E4D84B /* Cells+Identifiers-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cells+Identifiers-Tests.swift"; sourceTree = "<group>"; };
 		AA2334FF247326280011A0ED /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
-		AA2B8FFD21AFDA0A00DA8E27 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		AA2F1257255C16A100858360 /* SeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorView.swift; sourceTree = "<group>"; };
 		AA3685C6234A0DA20070C26A /* Data+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AA37BB9A20DBA55700AF07F7 /* Array+Extensions-Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions-Tests.swift"; sourceTree = "<group>"; };
 		AA3ED3072142713F00D65DDD /* Optional+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Extensions.swift"; sourceTree = "<group>"; };
@@ -257,11 +257,10 @@
 				AA014FAE1FB87BCC00E3CC35 /* UIColor+Inits.swift */,
 				AA014FB01FB87BCC00E3CC35 /* UIAlertController+Blocks.swift */,
 				AA014FB21FB87BCC00E3CC35 /* UIView+Extensions.swift */,
+				AA014FBA1FB87BCC00E3CC35 /* UIView+Constraints.swift */,
 				AA014FB61FB87BCC00E3CC35 /* UIImage+Extensions.swift */,
 				AA014FB71FB87BCC00E3CC35 /* UIDevice+Extensions.swift */,
-				AA2B8FFD21AFDA0A00DA8E27 /* UIViewController+Extensions.swift */,
 				AA014FB81FB87BCC00E3CC35 /* UINavigationController+Blocks.swift */,
-				AA014FBA1FB87BCC00E3CC35 /* UIView+Constraints.swift */,
 				AA0ACE2F20AB882F00DFD66B /* UILayoutGuide+Constraints.swift */,
 				AA014FBC1FB87BCC00E3CC35 /* UITableViewCell+Register.swift */,
 				AA014FBF1FB87BCC00E3CC35 /* UICollectionReusableView+Register.swift */,
@@ -273,6 +272,7 @@
 				AA41682D218789D8000CD098 /* UIControl+Extensions.swift */,
 				AAA6D1B32195BB6E00BE985E /* UIGestureRecognizer+Extensions.swift */,
 				AAA1C0C022FF35D100C04F35 /* ContainerView.swift */,
+				AA2F1257255C16A100858360 /* SeparatorView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -474,7 +474,6 @@
 				AA014FCB1FB87BCC00E3CC35 /* Data+Extensions.swift in Sources */,
 				AA014FD21FB87BCC00E3CC35 /* GDC+Extensions.swift in Sources */,
 				AA3ED3082142713F00D65DDD /* Optional+Extensions.swift in Sources */,
-				AA2B8FFE21AFDA0A00DA8E27 /* UIViewController+Extensions.swift in Sources */,
 				AA014FD71FB87BCC00E3CC35 /* UILabel+Extensions.swift in Sources */,
 				AA014FC81FB87BCC00E3CC35 /* CoreGraphics+Extensions.swift in Sources */,
 				AAD08A1D22501DE50063694B /* UIBarButtonItem+Extensions.swift in Sources */,
@@ -497,6 +496,7 @@
 				AA014FC31FB87BCC00E3CC35 /* URL+Extensions.swift in Sources */,
 				AA014FC91FB87BCC00E3CC35 /* UIView+Extensions.swift in Sources */,
 				AA014FCC1FB87BCC00E3CC35 /* Timer+Blocks.swift in Sources */,
+				AA2F1258255C16A100858360 /* SeparatorView.swift in Sources */,
 				AA3ED314214278F600D65DDD /* Array+Async.swift in Sources */,
 				AA014FC21FB87BCC00E3CC35 /* Array+Extensions.swift in Sources */,
 				D73FC3312059632D00F239D0 /* UIStoryboard+Extensions.swift in Sources */,
@@ -553,8 +553,8 @@
 				AAD08DED200770160075B57E /* UIAlertController+Blocks.swift in Sources */,
 				AAD08DF4200770160075B57E /* UIDevice+Extensions.swift in Sources */,
 				AAD08DF0200770160075B57E /* String+Extensions.swift in Sources */,
-				AAE32A7A234DFBD700AEEB16 /* UIViewController+Extensions.swift in Sources */,
 				AA186454255B30E400E4D84B /* UserDefaults+PropertyWrapper.swift in Sources */,
+				AA2F1259255C16A100858360 /* SeparatorView.swift in Sources */,
 				AAD08DEB200770160075B57E /* UIColor+Inits.swift in Sources */,
 				AAD08DE9200770160075B57E /* URL+Extensions.swift in Sources */,
 				AAD08DEF200770160075B57E /* UIView+Extensions.swift in Sources */,
@@ -717,7 +717,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.couriere.uiextensions;
 				PRODUCT_NAME = UIExtensions;
@@ -738,7 +738,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.couriere.uiextensions;
 				PRODUCT_NAME = UIExtensions;
@@ -754,7 +754,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = UIExtensionsTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = couriere.UIExtensionsTests;
@@ -772,7 +772,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = UIExtensionsTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = couriere.UIExtensionsTests;
@@ -803,7 +803,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
 			};
 			name = Debug;
 		};
@@ -826,7 +826,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 10.0;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
 			};
 			name = Release;
 		};

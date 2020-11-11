@@ -29,15 +29,8 @@ public extension UILabel {
 	/// - parameters text: Text to set on receiver with crossfade effect.
 	/// - parameters duration: Duration of crossfade effect.
 	func crossfadeTo( text: String, duration: TimeInterval = 0.2 ) {
-
 		guard text != self.text else { return }
-
-		let animation = CATransition().then {
-			$0.timingFunction = CAMediaTimingFunction( name: .easeInEaseOut )
-			$0.type = CATransitionType.fade
-			$0.duration = duration
-		}
-		layer.add( animation, forKey: CATransitionType.fade.rawValue )
+		applyFadeAnimation( duration: duration )
 		self.text = text
 	}
 
@@ -47,16 +40,18 @@ public extension UILabel {
 	/// - parameters text: Text to set on receiver with crossfade effect.
 	/// - parameters duration: Duration of crossfade effect.
 	func crossfadeTo( text: NSAttributedString, duration: TimeInterval = 0.2 ) {
-
 		guard text != self.attributedText else { return }
+		applyFadeAnimation( duration: duration )
+		self.attributedText = text
+	}
 
+	private func applyFadeAnimation( duration: TimeInterval ) {
 		let animation = CATransition().then {
 			$0.timingFunction = CAMediaTimingFunction( name: .easeInEaseOut )
 			$0.type = CATransitionType.fade
 			$0.duration = duration
 		}
 		layer.add( animation, forKey: CATransitionType.fade.rawValue )
-		self.attributedText = text
 	}
 }
 

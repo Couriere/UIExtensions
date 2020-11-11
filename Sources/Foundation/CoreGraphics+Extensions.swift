@@ -50,9 +50,22 @@ public extension CGRect {
 
 public extension CGRect {
 
-	init( square side: CGFloat ) { self.init( x: 0, y: 0, width: side, height: side ) }
-	init( square side: Double ) { self.init( x: 0, y: 0, width: side, height: side ) }
-	init( square side: Int ) { self.init( x: 0, y: 0, width: side, height: side ) }
+	init( square side: CGFloat ) {
+		self.init( x: 0, y: 0, width: side, height: side )
+	}
+
+	init( square side: Double ) {
+		self.init( x: 0, y: 0, width: side, height: side )
+	}
+
+	init( square side: Int ) {
+		self.init( x: 0, y: 0, width: side, height: side )
+	}
+
+	/// Create CGRect with `.zero` origin point and supplied size.
+	init( size: CGSize ) {
+		self.init( origin: .zero, size: size )
+	}
 
 	/// Center of rect property.
 	var center: CGPoint {

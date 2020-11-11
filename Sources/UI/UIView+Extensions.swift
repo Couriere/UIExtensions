@@ -43,6 +43,11 @@ public extension UIView {
 		views.forEach { addSubview( $0 ) }
 	}
 
+	/// Adds views to the end of the receiver’s list of subviews.
+	func addSubviews( _ views: UIView... ) {
+		views.forEach { addSubview( $0 ) }
+	}
+
 	/// Removes all subviews from the receiver.
 	func removeAllSubviews() {
 		subviews.forEach { $0.removeFromSuperview() }

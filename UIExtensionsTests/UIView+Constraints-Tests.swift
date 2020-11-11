@@ -138,8 +138,6 @@ class UIView_Constraints_Tests: XCTestCase {
 
 	func testConstrainVerticallyToSuperviewSafeArea() {
 
-		guard #available( iOS 11, tvOS 11, * ) else { return }
-
 		child.constrainVerticallyToSuperviewSafeAreaGuides()
 
 		XCTAssert( parent.constraints.count > 2 )
@@ -199,8 +197,6 @@ class UIView_Constraints_Tests: XCTestCase {
 
 	func testConstrainToSuperviewSafeArea() {
 
-		guard #available( iOS 11, tvOS 11, * ) else { return }
-
 		child.constrainToSuperviewSafeAreaGuides( insets: UIEdgeInsets( top: 40, left: 30, bottom: 20, right: 10 ))
 
 		XCTAssert( parent.constraints.count > 4 )
@@ -213,89 +209,6 @@ class UIView_Constraints_Tests: XCTestCase {
 		assertConstraint( parent.constraints[ 3 ],
 		                  parent.safeAreaLayoutGuide.trailingAnchor, child.trailingAnchor, 10, 1, .required )
 	}
-
-	// MARK: - Top/bottom layout guide/safe area layout guide
-
-	func testConstrainToTopLayoutGuide() {
-
-		// To test topLayoutGuide constraint (on iOS 10 or earlier) we need controller.
-		let controller = UIViewController()
-		controller.view.addSubview( child )
-
-		child.constrainToTopLayoutGuide()
-
-		if #available( iOS 11, tvOS 11, * ) {
-			assertConstraint( controller.view.constraints[ 0 ],
-			                  child.topAnchor, controller.view.safeAreaLayoutGuide.topAnchor, 0, 1, .required )
-		}
-		else {
-			let constraints = controller.view.constraints.filter { type( of: $0 ) == NSLayoutConstraint.self }
-			XCTAssert( constraints.count == 1 )
-			assertConstraint( constraints[ 0 ],
-			                  child.topAnchor, controller.topLayoutGuide.bottomAnchor, 0, 1, .required )
-		}
-	}
-
-	func testConstrainToTopLayoutGuideWithInset() {
-
-		// To test topLayoutGuide constraint (on iOS 10 or earlier) we need controller.
-		let controller = UIViewController()
-		controller.view.addSubview( child )
-
-		child.constrainToTopLayoutGuide( inset: 11 )
-
-		if #available( iOS 11, tvOS 11, * ) {
-			assertConstraint( controller.view.constraints[ 0 ],
-			                  child.topAnchor, controller.view.safeAreaLayoutGuide.topAnchor, 11, 1, .required )
-		}
-		else {
-			let constraints = controller.view.constraints.filter { type( of: $0 ) == NSLayoutConstraint.self }
-			XCTAssert( constraints.count == 1 )
-			assertConstraint( constraints[ 0 ],
-			                  child.topAnchor, controller.topLayoutGuide.bottomAnchor, 11, 1, .required )
-		}
-	}
-
-	func testConstrainToBottomLayoutGuide() {
-
-		// To test bottomLayoutGuide constraint (on iOS 10 or earlier) we need controller.
-		let controller = UIViewController()
-		controller.view.addSubview( child )
-
-		child.constrainToBottomLayoutGuide()
-
-		if #available( iOS 11, tvOS 11, * ) {
-			assertConstraint( controller.view.constraints[ 0 ],
-			                  controller.view.safeAreaLayoutGuide.bottomAnchor, child.bottomAnchor, 0, 1, .required )
-		}
-		else {
-			let constraints = controller.view.constraints.filter { type( of: $0 ) == NSLayoutConstraint.self }
-			XCTAssert( constraints.count == 1 )
-			assertConstraint( constraints[ 0 ],
-			                  controller.bottomLayoutGuide.topAnchor, child.bottomAnchor, 0, 1, .required )
-		}
-	}
-
-	func testConstrainToBottomLayoutGuideWithInset() {
-
-		// To test bottomLayoutGuide constraint (on iOS 10 or earlier) we need controller.
-		let controller = UIViewController()
-		controller.view.addSubview( child )
-
-		child.constrainToBottomLayoutGuide( inset: 13 )
-
-		if #available( iOS 11, tvOS 11, * ) {
-			assertConstraint( controller.view.constraints[ 0 ],
-			                  controller.view.safeAreaLayoutGuide.bottomAnchor, child.bottomAnchor, 13, 1, .required )
-		}
-		else {
-			let constraints = controller.view.constraints.filter { type( of: $0 ) == NSLayoutConstraint.self }
-			XCTAssert( constraints.count == 1 )
-			assertConstraint( constraints[ 0 ],
-			                  controller.bottomLayoutGuide.topAnchor, child.bottomAnchor, 13, 1, .required )
-		}
-	}
-
 
 	// MARK: - Arbitrary format constraints
 

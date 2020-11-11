@@ -39,15 +39,12 @@ public extension Dictionary {
 	static func += ( lhs: inout [Key: Value], rhs: [Key: Value] ) {
 		lhs.merge( rhs ) { $1 }
 	}
+}
 
-
-	func valueForKey<T>( _ key: Key, defaultValue: T ) -> T {
-		if let value = self[ key ] as? T {
-			return value
-		}
-		else {
-			return defaultValue
-		}
+public extension Dictionary {
+	
+	@inlinable subscript<T>( key: Key, default defaultValue: @autoclosure () -> T ) -> T {
+		self[ key ] as? T ?? defaultValue()
 	}
 }
 
@@ -56,8 +53,7 @@ public extension Dictionary where Value: OptionalType {
 	/// Transforms dictionary with optional values to
 	/// dictionary with values of the same but not optional type.
 	/// All keys with `nil` values are dropped.
-	/// - note: You should probably use `compactMapValues` instead
 	var sanitized: [ Key: Value.Wrapped ] {
-		return filter { $0.value.value != nil }.mapValues { $0.value! }
+		compactMapValues { $0.value }
 	}
 }

@@ -125,6 +125,4 @@ public extension UILayoutGuide {
 		private var observer: NSKeyValueObservation!
 		private static var AssociatedObjectHandle: UInt8 = 0
 	}
-
-	static var t: NSKeyValueObservation?
 }

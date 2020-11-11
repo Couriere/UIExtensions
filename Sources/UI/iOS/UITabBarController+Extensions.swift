@@ -35,8 +35,7 @@ public extension UITabBarController {
 			let endFrame = tabBar.frame.offsetBy( dx: 0, dy: offsetY )
 
 			// Update safe area insets for the current view controller.
-			if #available( iOS 11, * ),
-				let childController = viewControllers?[ selectedIndex ] {
+			if let childController = viewControllers?[ selectedIndex ] {
 
 				var newInsets = childController.additionalSafeAreaInsets
 				newInsets.bottom += -offsetY

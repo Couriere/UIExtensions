@@ -24,22 +24,42 @@ import UIKit
 
 public extension UIViewController {
 
-	// If something fails here, it almost certanly a fatal error for application.
-	// So we will return actual value or fail instead of returning optional.
-
 	class func instantiate( from storyboard: UIStoryboard, storyboardId: String? = nil ) -> Self {
 
-		let id = storyboardId ?? NSStringFromClass( self ).components( separatedBy: "." ).last!
+		let id = storyboardId ?? String( describing: self )
 
-		let result = storyboard.instantiateViewController( withIdentifier: id )
-		return helperConvertObject( result, type: self )
+		if #available( iOS 13, tvOS 13, * ) {
+			return storyboard.instantiateViewController( identifier: id )
+		}
+		else {
+			let result = storyboard.instantiateViewController( withIdentifier: id )
+			return helperConvertObject( result, type: self )
+		}
 	}
 
 	class func instantiateAsInitialViewController( in storyboard: UIStoryboard ) -> Self {
-		let result = storyboard.instantiateInitialViewController()!
-		return helperConvertObject( result, type: self )
+		if #available( iOS 13, tvOS 13, * ) {
+			return storyboard.instantiateInitialViewController()!
+		}
+		else {
+			let result = storyboard.instantiateInitialViewController()!
+			return helperConvertObject( result, type: self )
+		}
 	}
 
+	@available( iOS 13, tvOS 13, * )
+	class func instantiate( from storyboard: UIStoryboard, storyboardId: String? = nil, creator: @escaping (NSCoder) -> Self? ) -> Self {
+		let id = storyboardId ?? String( describing: self )
+		return storyboard.instantiateViewController( identifier: id, creator: creator )
+	}
+
+	@available( iOS 13, tvOS 13, * )
+	class func instantiateAsInitialViewController( from storyboard: UIStoryboard, creator: @escaping (NSCoder) -> Self? ) -> Self {
+		return storyboard.instantiateInitialViewController( creator: creator )!
+	}
+
+	@available( iOS, deprecated: 13 )
+	@available( tvOS, deprecated: 13 )
 	private class func helperConvertObject<T>( _ object: AnyObject, type _: T.Type ) -> T {
 		return object as! T
 	}
