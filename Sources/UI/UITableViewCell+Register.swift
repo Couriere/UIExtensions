@@ -53,8 +53,8 @@ public extension UITableViewCell {
 		tableView.register( self, forCellReuseIdentifier: identifier )
 	}
 
-	static func registerXib( in tableView: UITableView, xibName: String? = nil ) {
-		let nib = UINib( nibName: xibName ?? identifier, bundle: nil )
+	static func registerXib( in tableView: UITableView, xibName: String? = nil, bundle: Bundle? = nil ) {
+		let nib = UINib( nibName: xibName ?? identifier, bundle: bundle ?? Bundle( for: self ) )
 		tableView.register( nib, forCellReuseIdentifier: identifier )
 	}
 
@@ -106,8 +106,8 @@ public extension UITableViewHeaderFooterView {
 		tableView.register( self, forHeaderFooterViewReuseIdentifier: identifier )
 	}
 
-	static func registerXib( in tableView: UITableView, xibName: String? = nil ) {
-		let nib = UINib( nibName: xibName ?? identifier, bundle: nil )
+	static func registerXib( in tableView: UITableView, xibName: String? = nil, bundle: Bundle? = nil ) {
+		let nib = UINib( nibName: xibName ?? identifier, bundle: bundle ?? Bundle( for: self ) )
 		tableView.register( nib, forHeaderFooterViewReuseIdentifier: identifier )
 	}
 

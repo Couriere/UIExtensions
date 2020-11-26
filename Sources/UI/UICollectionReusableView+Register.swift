@@ -50,8 +50,13 @@ public extension UICollectionReusableView {
 		collection.register( self, forSupplementaryViewOfKind: forKind, withReuseIdentifier: identifier )
 	}
 
-	static func registerSupplementaryXib( in collection: UICollectionView, forKind: String, xibName: String? = nil ) {
-		let nib = UINib( nibName: xibName ?? identifier, bundle: nil )
+	static func registerSupplementaryXib(
+		in collection: UICollectionView,
+		forKind: String,
+		xibName: String? = nil,
+		bundle: Bundle? = nil
+	) {
+		let nib = UINib( nibName: xibName ?? identifier, bundle: bundle ?? Bundle( for: self ) )
 		collection.register( nib, forSupplementaryViewOfKind: forKind, withReuseIdentifier: identifier )
 	}
 
@@ -96,8 +101,8 @@ public extension UICollectionViewCell {
 		collection.register( self, forCellWithReuseIdentifier: identifier )
 	}
 
-	static func registerXib( in collection: UICollectionView, xibName: String? = nil ) {
-		let nib = UINib( nibName: xibName ?? identifier, bundle: nil )
+	static func registerXib( in collection: UICollectionView, xibName: String? = nil, bundle: Bundle? = nil ) {
+		let nib = UINib( nibName: xibName ?? identifier, bundle: bundle ?? Bundle( for: self ) )
 		collection.register( nib, forCellWithReuseIdentifier: identifier )
 	}
 
