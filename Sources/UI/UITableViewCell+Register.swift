@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 /// 	Helper extension for register/dequeue cells in `UITableView`
@@ -122,3 +123,4 @@ public extension UITableViewHeaderFooterView {
 		return cell as! T
 	}
 }
+#endif

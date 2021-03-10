@@ -20,13 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(AppKit)
+import AppKit
+#else
 import UIKit
+#endif
 
-public extension UIView {
+public extension XTView {
 
+	#if canImport(UIKit)
 	/// Returns current first responder view that's contained in this view's subtree.
 	/// Returns `nil` otherwise.
-	var firstResponder: UIView? {
+	var firstResponder: XTView? {
 
 		if isFirstResponder { return self }
 
@@ -36,15 +41,15 @@ public extension UIView {
 
 		return nil
 	}
-
+	#endif
 
 	/// Adds views to the end of the receiver’s list of subviews.
-	func addSubviews( _ views: [ UIView ] ) {
+	func addSubviews( _ views: [ XTView ] ) {
 		views.forEach { addSubview( $0 ) }
 	}
 
 	/// Adds views to the end of the receiver’s list of subviews.
-	func addSubviews( _ views: UIView... ) {
+	func addSubviews( _ views: XTView... ) {
 		views.forEach { addSubview( $0 ) }
 	}
 
@@ -54,7 +59,7 @@ public extension UIView {
 	}
 }
 
-public extension UIView {
+public extension XTView {
 
 	/**
 	Load view from xib file.
@@ -66,16 +71,14 @@ public extension UIView {
 	class func makeFromXib( named xibName: String? = nil, bundle: Bundle? = nil ) -> Self? {
 
 		let xibFileName = xibName ?? String( describing: self )
+		var views: NSArray?
+		#if canImport(AppKit)
+		let nib = NSNib( nibNamed: xibFileName, bundle: bundle ?? Bundle( for: self ) )
+		nib?.instantiate( withOwner: nil, topLevelObjects: &views )
+		#else
 		let nib = UINib( nibName: xibFileName, bundle: bundle ?? Bundle( for: self ) )
-		let views = nib.instantiate( withOwner: nil, options: nil ) as [ AnyObject ]
-
-		guard let selfObject = views.first( where: { type( of: $0 ) == self } )
-		else { return nil }
-
-		return helperConvertObject( selfObject, type: self )
-	}
-
-	private class func helperConvertObject<T>( _ object: AnyObject, type _: T.Type ) -> T? {
-		return object as? T
+		views = nib.instantiate( withOwner: nil, options: nil ) as NSArray
+		#endif
+		return views?.compactMap( { $0 as? Self } ).first
 	}
 }

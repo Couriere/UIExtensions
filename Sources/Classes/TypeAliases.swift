@@ -20,33 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(UIKit)
+#if canImport(AppKit)
+import AppKit
+public typealias XTView = NSView
+public typealias XTLayoutGuide = NSLayoutGuide
+public typealias XTLayoutPriority = NSLayoutConstraint.Priority
+public typealias XTOrientation = NSUserInterfaceLayoutOrientation
+public typealias XTEdgeInsets = NSEdgeInsets
+public typealias XTColor = NSColor
+public typealias XTFont = NSFont
+public typealias XTImage = NSImage
+#else
 import UIKit
-
-public extension UITabBarController {
-
-	/// Shows/hides tab bar in UITabBarController.
-	/// Correctly changes safe area zone in subviews.
-	var isTabBarHidden: Bool {
-		get { return !tabBar.frame.intersects( view.frame ) }
-		set {
-			guard isTabBarHidden != newValue else { return }
-
-			let offsetY = newValue ? tabBar.frame.height : -tabBar.frame.height
-			let endFrame = tabBar.frame.offsetBy( dx: 0, dy: offsetY )
-
-			// Update safe area insets for the current view controller.
-			if let childController = viewControllers?[ selectedIndex ] {
-
-				var newInsets = childController.additionalSafeAreaInsets
-				newInsets.bottom += -offsetY
-
-				childController.additionalSafeAreaInsets = newInsets
-				childController.view.setNeedsLayout()
-			}
-
-			tabBar.frame = endFrame
-		}
-	}
-}
+public typealias XTView = UIView
+public typealias XTLayoutGuide = UILayoutGuide
+public typealias XTLayoutPriority = UILayoutPriority
+public typealias XTOrientation = NSLayoutConstraint.Axis
+public typealias XTEdgeInsets = UIEdgeInsets
+public typealias XTColor = UIColor
+public typealias XTFont = UIFont
+public typealias XTImage = UIImage
 #endif

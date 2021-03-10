@@ -20,8 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import UIKit
 import CoreGraphics
+
+#if canImport(AppKit)
+import AppKit
+#else
+import UIKit
+#endif
 
 public protocol Then {}
 
@@ -66,7 +71,7 @@ extension Then where Self: AnyObject {
 	}
 }
 
-extension Then where Self: UIView {
+extension Then where Self: XTView {
 
 	/// Makes it available to set properties with closures just after initializing.
 	/// By defaut turns off `translatesAutoresizingMaskIntoConstraints` property.

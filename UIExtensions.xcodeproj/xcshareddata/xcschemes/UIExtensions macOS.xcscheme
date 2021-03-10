@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0940"
+   LastUpgradeVersion = "1240"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AA014F8F1FB87A0500E3CC35"
-               BuildableName = "UIExtensions.framework"
-               BlueprintName = "UIExtensions iOS"
+               BlueprintIdentifier = "AA791A2A25F8E5AD00B98A9A"
+               BuildableName = "UIExtensions_macOS.framework"
+               BlueprintName = "UIExtensions macOS"
                ReferencedContainer = "container:UIExtensions.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -26,32 +26,12 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      codeCoverageEnabled = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AA014F8F1FB87A0500E3CC35"
-            BuildableName = "UIExtensions.framework"
-            BlueprintName = "UIExtensions iOS"
-            ReferencedContainer = "container:UIExtensions.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AA014F981FB87A0500E3CC35"
-               BuildableName = "UIExtensionsTests.xctest"
-               BlueprintName = "UIExtensionsTests"
-               ReferencedContainer = "container:UIExtensions.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -60,15 +40,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AA014F8F1FB87A0500E3CC35"
-            BuildableName = "UIExtensions.framework"
-            BlueprintName = "UIExtensions iOS"
-            ReferencedContainer = "container:UIExtensions.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -79,9 +50,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AA014F8F1FB87A0500E3CC35"
-            BuildableName = "UIExtensions.framework"
-            BlueprintName = "UIExtensions iOS"
+            BlueprintIdentifier = "AA791A2A25F8E5AD00B98A9A"
+            BuildableName = "UIExtensions_macOS.framework"
+            BlueprintName = "UIExtensions macOS"
             ReferencedContainer = "container:UIExtensions.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

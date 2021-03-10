@@ -20,26 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(AppKit)
+import AppKit
+#else
 import UIKit
+#endif
 
-extension UILayoutGuide: LayoutGuideProtocol {}
-extension UIView: LayoutGuideProtocol {
-	public var owningView: UIView? { return superview }
+extension XTLayoutGuide: LayoutGuideProtocol {}
+extension XTView: LayoutGuideProtocol {
+	public var owningView: XTView? { return superview }
 }
 
 public extension Int {
 
-	/// Returns UILayoutPriority value with the receiver's priority.
-	var layoutPriority: UILayoutPriority { return UILayoutPriority( Float( self )) }
+	/// Returns XTLayoutPriority value with the receiver's priority.
+	var layoutPriority: XTLayoutPriority { return XTLayoutPriority( Float( self )) }
 }
 
-public extension UIView {
+public extension XTView {
 
 	func removeOutsideConstraints() {
 		if let superview = self.superview {
 			let viewZIndex = superview.subviews.firstIndex( of: self )
 			removeFromSuperview()
+			#if canImport(AppKit)
+			superview.subviews.insert( self, at: viewZIndex ?? superview.subviews.count )
+			#else
 			superview.insertSubview( self, at: viewZIndex ?? superview.subviews.count )
+			#endif
 		}
 	}
 
@@ -51,12 +59,13 @@ public extension UIView {
 }
 
 
+#if canImport(UIKit)
 public extension CGSize {
-	static let compressed = UIView.layoutFittingCompressedSize
-	static let expanded = UIView.layoutFittingExpandedSize
+	static let compressed = XTView.layoutFittingCompressedSize
+	static let expanded = XTView.layoutFittingExpandedSize
 }
 
-public extension UIView {
+public extension XTView {
 	// MARK: - Calculating autolayout view size
 
 	/// Returns the size of the view based on its constraints and the specified width.
@@ -64,6 +73,7 @@ public extension UIView {
 	/// Resulting height is rouded up to closest whole number.
 	func systemLayoutSizeFitting( width: CGFloat ) -> CGSize {
 
+		
 		let size = systemLayoutSizeFitting( CGSize( width: width, height: 0 ),
 											withHorizontalFittingPriority: .required,
 											verticalFittingPriority: .fittingSizeLevel )
@@ -84,12 +94,24 @@ public extension LayoutGuideProtocol {
 
 		return parent as? UIViewController
 	}
+}
+#endif
 
+public extension LayoutGuideProtocol {
+
+	private func getSecondItem( _ constrainToMargins: Bool ) -> LayoutGuideProtocol {
+		#if canImport(AppKit)
+		if #available( macOS 11, * ) { return constrainToMargins ? owningView!.layoutMarginsGuide : owningView! }
+		else { return owningView! }
+		#else
+		return constrainToMargins ? owningView!.layoutMarginsGuide : owningView!
+		#endif
+	}
 
 	@discardableResult
 	func constrainHorizontallyToSuperview( inset: CGFloat = 0, constrainToMargins: Bool = false ) -> [ NSLayoutConstraint ] {
 
-		let secondItem: LayoutGuideProtocol = constrainToMargins ? owningView!.layoutMarginsGuide : owningView!
+		let secondItem = getSecondItem( constrainToMargins )
 
 		let constraints = [
 			leadingAnchor.constraint( equalTo: secondItem.leadingAnchor, constant: inset ),
@@ -103,7 +125,7 @@ public extension LayoutGuideProtocol {
 	@discardableResult
 	func constrainVerticallyToSuperview( inset: CGFloat = 0, constrainToMargins: Bool = false ) -> [ NSLayoutConstraint ] {
 
-		let secondItem: LayoutGuideProtocol = constrainToMargins ? owningView!.layoutMarginsGuide : owningView!
+		let secondItem = getSecondItem( constrainToMargins )
 
 		let constraints = [
 			topAnchor.constraint( equalTo: secondItem.topAnchor, constant: inset ),
@@ -114,6 +136,7 @@ public extension LayoutGuideProtocol {
 		return constraints
 	}
 
+	@available( iOS 11, tvOS 11, OSX 11, * )
 	@discardableResult
 	func constrainVerticallyToSuperviewSafeAreaGuides( inset: CGFloat = 0 ) -> [ NSLayoutConstraint ] {
 
@@ -126,10 +149,11 @@ public extension LayoutGuideProtocol {
 		return constraints
 	}
 
+	@available( iOS 11, tvOS 11, OSX 11, * )
 	@discardableResult
-	func constrainToSuperview( insets: UIEdgeInsets = .zero, constrainToMargins: Bool = false ) -> [ NSLayoutConstraint ] {
+	func constrainToSuperview( insets: XTEdgeInsets = .zero, constrainToMargins: Bool = false ) -> [ NSLayoutConstraint ] {
 
-		let secondItem: LayoutGuideProtocol = constrainToMargins ? owningView!.layoutMarginsGuide : owningView!
+		let secondItem = getSecondItem( constrainToMargins )
 
 		let constraints = [
 			topAnchor.constraint( equalTo: secondItem.topAnchor, constant: insets.top ),
@@ -142,8 +166,9 @@ public extension LayoutGuideProtocol {
 		return constraints
 	}
 
+	@available( iOS 11, tvOS 11, OSX 11, * )
 	@discardableResult
-	func constrainToSuperviewSafeAreaGuides( insets: UIEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
+	func constrainToSuperviewSafeAreaGuides( insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
 
 		let safeAreaGuide = owningView!.safeAreaLayoutGuide
 		let constraints = [
@@ -159,8 +184,9 @@ public extension LayoutGuideProtocol {
 
 	/// Constrains views leading, trailing and bottom to corresponding superview sides
 	/// and top of the view to safe area top.
+	@available( iOS 11, tvOS 11, OSX 11, * )
 	@discardableResult
-	func constrainToSuperviewTopLayoutGuides( insets: UIEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
+	func constrainToSuperviewTopLayoutGuides( insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
 
 		let constraints = [
 			topAnchor.constraint( equalTo: owningView!.safeAreaLayoutGuide.topAnchor, constant: insets.top ),
@@ -177,7 +203,7 @@ public extension LayoutGuideProtocol {
 	// MARK: - Centering
 
 	@discardableResult
-	func centerInSuperview( priority: UILayoutPriority = .required ) -> [ NSLayoutConstraint ] {
+	func centerInSuperview( priority: XTLayoutPriority = .required ) -> [ NSLayoutConstraint ] {
 		return [
 			centerHorizontallyInSuperview( priority: priority ),
 			centerVerticallyInSuperview( priority: priority ),
@@ -185,7 +211,7 @@ public extension LayoutGuideProtocol {
 	}
 
 	@discardableResult
-	func centerWithView( _ view: LayoutGuideProtocol, priority: UILayoutPriority = .required ) -> [ NSLayoutConstraint ] {
+	func centerWithView( _ view: LayoutGuideProtocol, priority: XTLayoutPriority = .required ) -> [ NSLayoutConstraint ] {
 		return [
 			centerHorizontallyWithView( view, priority: priority ),
 			centerVerticallyWithView( view, priority: priority ),
@@ -197,12 +223,12 @@ public extension LayoutGuideProtocol {
 
 
 	@discardableResult
-	func centerHorizontallyInSuperview( _ constant: CGFloat = 0, priority: UILayoutPriority = .required ) -> NSLayoutConstraint {
+	func centerHorizontallyInSuperview( _ constant: CGFloat = 0, priority: XTLayoutPriority = .required ) -> NSLayoutConstraint {
 		return centerHorizontallyWithView( owningView!, constant: constant, priority: priority )
 	}
 
 	@discardableResult
-	func centerHorizontallyWithView( _ view: LayoutGuideProtocol, constant: CGFloat = 0, priority: UILayoutPriority = .required ) -> NSLayoutConstraint {
+	func centerHorizontallyWithView( _ view: LayoutGuideProtocol, constant: CGFloat = 0, priority: XTLayoutPriority = .required ) -> NSLayoutConstraint {
 
 		let constraint = centerXAnchor.constraint( equalTo: view.centerXAnchor, constant: constant )
 		constraint.priority = priority
@@ -212,11 +238,11 @@ public extension LayoutGuideProtocol {
 
 	// MARK: - Vertical center
 
-	@discardableResult func centerVerticallyInSuperview( _ constant: CGFloat = 0, priority: UILayoutPriority = .required ) -> NSLayoutConstraint {
+	@discardableResult func centerVerticallyInSuperview( _ constant: CGFloat = 0, priority: XTLayoutPriority = .required ) -> NSLayoutConstraint {
 		return centerVerticallyWithView( owningView!, constant: constant, priority: priority )
 	}
 
-	@discardableResult func centerVerticallyWithView( _ view: LayoutGuideProtocol, constant: CGFloat = 0, priority: UILayoutPriority = .required ) -> NSLayoutConstraint {
+	@discardableResult func centerVerticallyWithView( _ view: LayoutGuideProtocol, constant: CGFloat = 0, priority: XTLayoutPriority = .required ) -> NSLayoutConstraint {
 
 		let constraint = centerYAnchor.constraint( equalTo: view.centerYAnchor, constant: constant )
 		constraint.priority = priority
@@ -242,7 +268,7 @@ public extension LayoutGuideProtocol {
 	                               relation: NSLayoutConstraint.Relation = .equal,
 	                               constant: CGFloat = 0,
 	                               multiplier: CGFloat = 1,
-	                               priority: UILayoutPriority = .required ) -> NSLayoutConstraint {
+	                               priority: XTLayoutPriority = .required ) -> NSLayoutConstraint {
 
 		let constraint = NSLayoutConstraint( item: self, attribute: attribute, relatedBy: relation,
 		                                     toItem: guide, attribute: viewAttribute ?? attribute, multiplier: multiplier, constant: constant )
@@ -252,7 +278,7 @@ public extension LayoutGuideProtocol {
 	}
 
 	@discardableResult
-	func alignVertically( to guide: LayoutGuideProtocol, insets: UIEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
+	func alignVertically( to guide: LayoutGuideProtocol, insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
 		let constraints = [
 			self.topAnchor.constraint( equalTo: guide.topAnchor, constant: insets.top ),
 			guide.bottomAnchor.constraint( equalTo: self.bottomAnchor, constant: insets.bottom ),
@@ -263,7 +289,7 @@ public extension LayoutGuideProtocol {
 	}
 
 	@discardableResult
-	func alignHorizontally( to guide: LayoutGuideProtocol, insets: UIEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
+	func alignHorizontally( to guide: LayoutGuideProtocol, insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
 		let constraints = [
 			self.leftAnchor.constraint( equalTo: guide.leftAnchor, constant: insets.left ),
 			guide.rightAnchor.constraint( equalTo: self.rightAnchor, constant: insets.right ),
@@ -274,7 +300,7 @@ public extension LayoutGuideProtocol {
 	}
 
 	@discardableResult
-	func align( to guide: LayoutGuideProtocol, insets: UIEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
+	func align( to guide: LayoutGuideProtocol, insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
 		let constraints = [
 			self.topAnchor.constraint( equalTo: guide.topAnchor, constant: insets.top ),
 			self.leftAnchor.constraint( equalTo: guide.leftAnchor, constant: insets.left ),
@@ -308,19 +334,19 @@ public extension LayoutGuideProtocol {
 		         constrainTo( height: size.height ) ]
 	}
 
-	@discardableResult func equalSizeWithView( _ view: UIView, constant: CGFloat = 0, multiplier: CGFloat = 1 ) -> [ NSLayoutConstraint ] {
+	@discardableResult func equalSizeWithView( _ view: XTView, constant: CGFloat = 0, multiplier: CGFloat = 1 ) -> [ NSLayoutConstraint ] {
 		return [ equalWidthWithView( view, constant: constant, multiplier: multiplier ),
 		         equalHeightWithView( view, constant: constant, multiplier: multiplier ) ]
 	}
 
-	@discardableResult func equalHeightWithView( _ view: UIView, constant: CGFloat = 0, multiplier: CGFloat = 1 ) -> NSLayoutConstraint {
+	@discardableResult func equalHeightWithView( _ view: XTView, constant: CGFloat = 0, multiplier: CGFloat = 1 ) -> NSLayoutConstraint {
 		let constraint = NSLayoutConstraint( item: self, attribute: .height, relatedBy: .equal,
 		                                     toItem: view, attribute: .height, multiplier: multiplier, constant: constant )
 		constraint.isActive = true
 		return constraint
 	}
 
-	@discardableResult func equalWidthWithView( _ view: UIView, constant: CGFloat = 0, multiplier: CGFloat = 1 ) -> NSLayoutConstraint {
+	@discardableResult func equalWidthWithView( _ view: XTView, constant: CGFloat = 0, multiplier: CGFloat = 1 ) -> NSLayoutConstraint {
 		let constraint = NSLayoutConstraint( item: self, attribute: .width, relatedBy: .equal,
 		                                     toItem: view, attribute: .width, multiplier: multiplier, constant: constant )
 		constraint.isActive = true
@@ -358,7 +384,7 @@ public extension LayoutGuideProtocol {
 	/// Pins supplied attribute of the view to the same attribute of its superview or
 	/// provided view.
 	/// - parameter attribute: an attribute to use in constraint.
-	/// - parameter view: View or LayoutGuide to constrain receiver. If `nil`, `superview` is used.
+	/// - parameter view: View or XTLayoutGuide to constrain receiver. If `nil`, `superview` is used.
 	/// - parameter relatedBy: The relationship between the left side of the constraint and the right side of the constraint.
 	/// - parameter multiplier: The constraint multiplier.
 	/// - parameter constant: The constant added to the multiplied attribute value.
@@ -369,7 +395,7 @@ public extension LayoutGuideProtocol {
 			  relatedBy: NSLayoutConstraint.Relation = .equal,
 			  multiplier: CGFloat = 1,
 			  constant: CGFloat = 0,
-			  priority: UILayoutPriority = .required ) -> NSLayoutConstraint {
+			  priority: XTLayoutPriority = .required ) -> NSLayoutConstraint {
 
 		let constraint = NSLayoutConstraint( item: self, attribute: attribute, relatedBy: relatedBy,
 											 toItem: view ?? owningView!, attribute: attribute,
@@ -382,11 +408,11 @@ public extension LayoutGuideProtocol {
 
 	@discardableResult
 	func stack( after view: LayoutGuideProtocol,
-				direction: NSLayoutConstraint.Axis,
+				direction: XTOrientation,
 				relatedBy: NSLayoutConstraint.Relation = .equal,
 				multiplier: CGFloat = 1,
 				constant: CGFloat = 0,
-				priority: UILayoutPriority = .required ) -> NSLayoutConstraint {
+				priority: XTLayoutPriority = .required ) -> NSLayoutConstraint {
 
 		let constraint = NSLayoutConstraint( item: self,
 											 attribute: direction == .horizontal ? .leading : .top,
@@ -404,7 +430,7 @@ public extension LayoutGuideProtocol {
 
 public protocol LayoutGuideProtocol {
 
-	var owningView: UIView? { get }
+	var owningView: XTView? { get }
 
 	var leadingAnchor: NSLayoutXAxisAnchor { get }
 	var trailingAnchor: NSLayoutXAxisAnchor { get }

@@ -27,6 +27,9 @@
 //  Copyright (c) 2015. All rights reserved.
 //
 import Foundation
+#if os(macOS)
+import AppKit
+#endif
 
 public extension Array {
 
@@ -158,7 +161,6 @@ public extension Array where Element: Equatable {
 	}
 }
 
-
 public extension Array where Element : Collection, Element.Element : Equatable, Element.Index == Int {
 
 	/// Search for an equatable element in two dimensional array.
@@ -167,14 +169,14 @@ public extension Array where Element : Collection, Element.Element : Equatable, 
 	func firstIndexPath( of value: Element.Element ) -> IndexPath? {
 		for ( section, row ) in self.enumerated() {
 			if let rowIndex = row.firstIndex( of: value ) {
-				return IndexPath( row: rowIndex, section: section )
+				return IndexPath( item: rowIndex, section: section )
 			}
 		}
 		return nil
 	}
 }
 
-@available( iOS 13, tvOS 13, * )
+@available( iOS 13, tvOS 13, macOS 10.15, * )
 public extension Array where Element : Collection, Element.Element : Identifiable, Element.Index == Int {
 
 	/// Search for an identifiable element in two dimensional array.
@@ -184,7 +186,7 @@ public extension Array where Element : Collection, Element.Element : Identifiabl
 	func firstIndexPath( of value: Element.Element ) -> IndexPath? {
 		for ( section, row ) in self.enumerated() {
 			if let rowIndex = row.firstIndex( where: { $0.id == value.id } ) {
-				return IndexPath( row: rowIndex, section: section )
+				return IndexPath( item: rowIndex, section: section )
 			}
 		}
 		return nil

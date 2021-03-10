@@ -3,7 +3,7 @@ import PackageDescription
 
 let package = Package(
 	name: "UIExtensions",
-	platforms: [ .iOS( .v11 ), .tvOS( .v11 ) ],
+	platforms: [ .iOS( .v11 ), .tvOS( .v11 ), .macOS( .v10_14 ) ],
 	products: [
 		.library( name: "UIExtensions", targets: ["UIExtensions"]),
 	],
@@ -11,7 +11,9 @@ let package = Package(
 		.target( name: "UIExtensions", dependencies: [], path: "Sources" ),
 		.testTarget(
 			name: "UIExtensionsTests",
-			dependencies: ["UIExtensions"], path: "UIExtensionsTests"),
+			dependencies: [ "UIExtensions" ],
+			path: "UIExtensionsTests"
+		),
 	],
 	swiftLanguageVersions: [ .v5 ]
 )

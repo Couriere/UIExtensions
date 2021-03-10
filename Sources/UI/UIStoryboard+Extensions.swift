@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 public extension UIViewController {
@@ -64,3 +65,4 @@ public extension UIViewController {
 		return object as! T
 	}
 }
+#endif

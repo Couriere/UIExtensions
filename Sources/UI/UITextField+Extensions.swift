@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 public extension UITextField {
@@ -31,3 +32,4 @@ public extension UITextField {
 	/// or text field's `attributedText` value otherwise.
 	var safeAttributedText: NSAttributedString { return attributedText ?? NSAttributedString() }
 }
+#endif

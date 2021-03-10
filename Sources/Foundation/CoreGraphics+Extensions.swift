@@ -20,8 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import UIKit
 import CoreGraphics
+
+#if canImport(AppKit)
+import AppKit
+#else
+import UIKit
+#endif
 
 public extension CGPoint {
 
@@ -97,7 +102,7 @@ public extension CGSize {
 }
 
 
-public extension UIEdgeInsets {
+public extension XTEdgeInsets {
 
 	init( constantInset inset: CGFloat ) {
 		self.init( top: inset, left: inset, bottom: inset, right: inset )
@@ -112,10 +117,16 @@ public extension UIEdgeInsets {
 	}
 
 	/// Inverts all insets.
-	var inverted: UIEdgeInsets {
-		return UIEdgeInsets( top: -top, left: -left, bottom: -bottom, right: -right )
+	var inverted: XTEdgeInsets {
+		return XTEdgeInsets( top: -top, left: -left, bottom: -bottom, right: -right )
 	}
 }
+
+#if canImport(AppKit)
+public extension NSEdgeInsets {
+	static let zero: NSEdgeInsets = NSEdgeInsets()
+}
+#endif
 
 public extension Int {
 

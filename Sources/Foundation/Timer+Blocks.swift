@@ -20,8 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import UIKit
-
+import Foundation
 
 /// Source:
 /// https://gist.github.com/natecook1000/b0285b518576b22c4dc8

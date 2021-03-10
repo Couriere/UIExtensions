@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
-@available( iOS 10, tvOS 10, * )
 public extension UIView {
 
 	/// Создаёт направляющую для фокуса, добавляет её в окно `superview` текущего объекта,
@@ -126,3 +126,4 @@ public extension UILayoutGuide {
 		private static var AssociatedObjectHandle: UInt8 = 0
 	}
 }
+#endif

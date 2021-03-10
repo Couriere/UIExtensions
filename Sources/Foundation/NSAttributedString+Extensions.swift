@@ -20,7 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(AppKit)
+import AppKit
+#else
 import UIKit
+#endif
 
 public extension NSAttributedString {
 
@@ -68,14 +72,26 @@ public extension NSAttributedString {
 	}
 
 	/// Returns a copy of an attributed string with `text color` attribute set.
-	@objc func color( _ color: UIColor ) -> NSAttributedString {
+	@objc func color( _ color: XTColor ) -> NSAttributedString {
 		let mutable = self.mutable().color( color )
 		return NSAttributedString( attributedString: mutable )
 	}
 
 	/// Returns a copy of an attributed string with `text font` attribute set.
-	@objc func font( _ font: UIFont ) -> NSAttributedString {
+	@objc func font( _ font: XTFont ) -> NSAttributedString {
 		let mutable = self.mutable().font( font )
+		return NSAttributedString( attributedString: mutable )
+	}
+
+	/// Returns a copy of an attributed string with `striketrough style and color` attributes set.
+	@objc func strikethroughStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> NSAttributedString {
+		let mutable = self.mutable().strikethroughStyle( style, color: color )
+		return NSAttributedString( attributedString: mutable )
+	}
+
+	/// Returns a copy of an attributed string with `underline style and color` attributes set.
+	@objc func underlineStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> NSAttributedString {
+		let mutable = self.mutable().underlineStyle( style, color: color )
 		return NSAttributedString( attributedString: mutable )
 	}
 
@@ -90,19 +106,6 @@ public extension NSAttributedString {
 		let mutable = self.mutable().baselineOffset( offset )
 		return NSAttributedString( attributedString: mutable )
 	}
-
-	/// Returns a copy of an attributed string with `striketrough style and color` attributes set.
-	@objc func strikethroughStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSAttributedString {
-		let mutable = self.mutable().strikethroughStyle( style, color: color )
-		return NSAttributedString( attributedString: mutable )
-	}
-
-	/// Returns a copy of an attributed string with `underline style and color` attributes set.
-	@objc func underlineStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSAttributedString {
-		let mutable = self.mutable().underlineStyle( style, color: color )
-		return NSAttributedString( attributedString: mutable )
-	}
-
 
 	/// Returns a copy of an attributed string with `paragraphStyle` attribute set.
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
@@ -182,14 +185,14 @@ public extension NSMutableAttributedString {
 
 	/// Sets new `text color` attribute over the whole string.
 	@discardableResult
-	override func color( _ color: UIColor ) -> Self {
+	override func color( _ color: XTColor ) -> Self {
 		addAttribute( .foregroundColor, value: color, range: wholeRange )
 		return self
 	}
 
 	/// Sets new `font` attribute over the whole string.
 	@discardableResult
-	override func font( _ font: UIFont ) -> Self {
+	override func font( _ font: XTFont ) -> Self {
 		addAttribute( .font, value: font, range: wholeRange )
 		return self
 	}
@@ -210,7 +213,7 @@ public extension NSMutableAttributedString {
 
 	/// Sets new `strikethrough style and color` attributes over the whole string.
 	@discardableResult
-	override func strikethroughStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> Self {
+	override func strikethroughStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> Self {
 		let attributes: [ NSAttributedString.Key: Any ] = [ .strikethroughStyle: style.rawValue,
 															.strikethroughColor: color ]
 		addAttributes( attributes, range: wholeRange )
@@ -219,7 +222,7 @@ public extension NSMutableAttributedString {
 
 	/// Sets new `underline style and color` attributes over the whole string.
 	@discardableResult
-	override func underlineStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> Self {
+	override func underlineStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> Self {
 		let attributes: [ NSAttributedString.Key: Any ] = [ .underlineStyle: style.rawValue,
 															.underlineColor: color ]
 		addAttributes( attributes, range: wholeRange )
@@ -318,7 +321,7 @@ public extension NSMutableAttributedString {
 	/// - parameter location: Location in string to insert. If `nil`, image will be appended to the string.
 	/// - parameter verticalOffset: Offset in points, will be applied to image position.
 	@discardableResult
-	func insertImage( _ image: UIImage, atLocation location: Int? = nil, verticalOffset: CGFloat = 0 ) -> Self {
+	func insertImage( _ image: XTImage, atLocation location: Int? = nil, verticalOffset: CGFloat = 0 ) -> Self {
 
 		let textAttachment = NSTextAttachment()
 		textAttachment.image = image
@@ -329,11 +332,11 @@ public extension NSMutableAttributedString {
 		#if os(tvOS)
 			let systemFontSize: CGFloat = 29
 		#else
-			let systemFontSize: CGFloat = UIFont.systemFontSize
+			let systemFontSize: CGFloat = XTFont.systemFontSize
 		#endif
 
-		let font: UIFont = length > 0 ?
-			attribute( .font, at: safeLocation, effectiveRange: nil ) as? UIFont ?? .systemFont( ofSize: systemFontSize ) :
+		let font: XTFont = length > 0 ?
+			attribute( .font, at: safeLocation, effectiveRange: nil ) as? XTFont ?? .systemFont( ofSize: systemFontSize ) :
 			.systemFont( ofSize: systemFontSize )
 
 		let mid = font.descender + font.capHeight
@@ -354,11 +357,11 @@ public extension String {
 		NSMutableAttributedString( string: self, attributes: attributes )
 	}
 
-	func color( _ color: UIColor ) -> NSMutableAttributedString {
+	func color( _ color: XTColor ) -> NSMutableAttributedString {
 		NSMutableAttributedString( string: self, attributes: [ .foregroundColor: color ] )
 	}
 
-	func font( _ font: UIFont ) -> NSMutableAttributedString {
+	func font( _ font: XTFont ) -> NSMutableAttributedString {
 		NSMutableAttributedString( string: self, attributes: [ .font: font ] )
 	}
 
@@ -370,13 +373,13 @@ public extension String {
 		NSMutableAttributedString( string: self, attributes: [ .baselineOffset: offset ] )
 	}
 
-	func strikethroughStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSMutableAttributedString {
+	func strikethroughStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> NSMutableAttributedString {
 		let attributes: [ NSAttributedString.Key: Any ] = [ .strikethroughStyle: style.rawValue,
 															.strikethroughStyle: color ]
 		return NSMutableAttributedString( string: self, attributes: attributes )
 	}
 
-	func underlineStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSMutableAttributedString {
+	func underlineStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> NSMutableAttributedString {
 		let attributes: [ NSAttributedString.Key: Any ] = [ .underlineStyle: style.rawValue,
 															.underlineColor: color ]
 		return NSMutableAttributedString( string: self, attributes: attributes )
@@ -426,7 +429,7 @@ public extension String {
 	/// - parameter image: Image to insert in string.
 	/// - parameter location: Location in string to insert. If `nil`, image will be appended to the string.
 	/// - parameter verticalOffset: Offset in points, will be applied to image position.
-	func image( _ image: UIImage,
+	func image( _ image: XTImage,
 				atLocation location: Int? = nil,
 				verticalOffset: CGFloat = 0 ) -> NSMutableAttributedString {
 		NSMutableAttributedString( string: self )
