@@ -88,9 +88,9 @@ public extension CGRect {
 
 public extension CGSize {
 
-	init( side: CGFloat ) { self.init( width: side, height: side ) }
-	init( side: Double ) { self.init( width: side, height: side ) }
-	init( side: Int ) { self.init( width: side, height: side ) }
+	init( square side: CGFloat ) { self.init( width: side, height: side ) }
+	init( square side: Double ) { self.init( width: side, height: side ) }
+	init( square side: Int ) { self.init( width: side, height: side ) }
 
 	/// Returns whether a size has zero or negative width or height, or is an invalid size.
 	var isEmpty: Bool { return !( width > 0 && height > 0 ) }

@@ -29,6 +29,11 @@ public extension String {
 		return startIndex ..< endIndex
 	}
 
+	/// Returns NSRnge from start to end of the string.
+	var nsRange: NSRange {
+		return NSRange( wholeRange, in: self )
+	}
+
 	/// Returns a new string in which the characters in a specified range of the receiver are replaced by a given string.
 	/// - parameter range: A range of characters in the receiver.
 	/// - parameter replacement: The string with which to replace the characters in range.
@@ -38,10 +43,31 @@ public extension String {
 		return replacingCharacters( in: range, with: replacement )
 	}
 
+	/// Accesses a contiguous subrange of the collection’s elements.
+	/// - parameter range: A range of the collection’s indices.
+	/// The bounds of the range must be valid indices of the collection.
+	subscript( range: NSRange ) -> Substring {
+		let laneRange = Range( range, in: self )!
+		return self[ laneRange.lowerBound..<laneRange.upperBound ]
+	}
+
 	/// Returns new string by removing all non-digit symbols from receiver.
 	var digitsOnly: String {
 		return replacingOccurrences( of: "[^0-9]", with: "", options: .regularExpression, range: wholeRange )
 	}
+
+	/// Replaces all spaces in string to non-breaking spaces.
+	var nonBreakingSpaces: String {
+		self.replacingOccurrences( of: " ", with: "\u{a0}" )
+	}
+
+	/// Returns a new string made by removing from both ends of the String
+	/// whitespace and newline characters.
+	var trimmed: String {
+		return self.trimmingCharacters( in: CharacterSet.newlines.union(CharacterSet.whitespaces) )
+	}
+
+
 
 	/// Returns `true` if receiver holds correct email address.
 	var isValidEmail: Bool {
