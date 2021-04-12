@@ -23,6 +23,16 @@
 #if canImport(UIKit)
 import UIKit
 
+extension UILabel {
+
+	///  Initialize UILabel and setting it's attributedText property with parameter.
+	/// - parameters attributedText: Text to set after initialization.
+	convenience init( _ attributedText: NSAttributedString ) {
+		self.init( frame: .zero )
+		self.attributedText = attributedText
+	}
+}
+
 public extension UILabel {
 
 	/// Changes UILabel text with crossfade effect.

@@ -61,15 +61,23 @@ public extension UIImage {
 	//////
 	/// Apply `color` to all non-transparent pixels in image.
 	//////
-	func applyTintColor( _ color: UIColor ) -> UIImage {
+	@available( iOS, deprecated: 13, renamed: "withTintColor"  )
+	@available( tvOS, deprecated: 13, renamed: "withTintColor" )
+	func applyTintColor( _ color: UIColor, renderingMode: UIImage.RenderingMode = .automatic ) -> UIImage {
 
-		let image = withRenderingMode( .alwaysTemplate )
+		if #available(iOS 13, tvOS 13, *) {
+			return self.withTintColor( color, renderingMode: renderingMode )
+		} else {
 
-		return UIGraphicsImageRenderer( size: size, format: .preferred() )
-			.image { context in
-				color.set()
-				image.draw( in: CGRect( origin: .zero, size: size ))
-			}
+			let image = withRenderingMode( .alwaysTemplate )
+
+			return UIGraphicsImageRenderer( size: size, format: .preferred() )
+				.image { context in
+					color.set()
+					image.draw( in: CGRect( origin: .zero, size: size ))
+				}
+				.withRenderingMode( renderingMode )
+		}
 	}
 }
 #endif
