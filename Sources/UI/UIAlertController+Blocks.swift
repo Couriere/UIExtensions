@@ -27,42 +27,48 @@ public typealias UIAlertControllerHandler = ( _ alertController: UIAlertControll
 
 public extension UIAlertController {
 
-	class func showAlertControllerWithTitle( _ title: String?, message: String?, buttonTitles: [ String ]? = nil, parentController: UIViewController? = nil, handler: UIAlertControllerHandler? = nil ) {
-		dispatch_main_thread_sync {
-			let alert = UIAlertController.alertControllerWithTitle( title, message: message, buttonTitles: buttonTitles, handler: handler )
-			if let parentController = parentController {
-				parentController.present( alert, animated: true, completion: nil )
-			}
-			else {
-				UIViewController.topPresentedViewController?.present( alert, animated: true, completion: nil )
-			}
-		}
-	}
-
-	class func alertControllerWithTitle( _ title: String?, message: String?, buttonTitles: [ String ]?, handler: UIAlertControllerHandler? ) -> UIAlertController {
+	convenience init(
+		title: String?,
+		message: String?,
+		buttonTitles: [ String ]?,
+		handler: UIAlertControllerHandler?
+	) {
 		let cancelButtonTitle = buttonTitles != nil ? buttonTitles![ 0 ] : "OK"
 
-		let alert = UIAlertController( title: title, message: message, preferredStyle: .alert )
+		self.init( title: title, message: message, preferredStyle: .alert )
 
 		let actionHandler = { ( action: UIAlertAction ) -> Void in
-			handler?( alert, alert.actions.firstIndex( of: action ) ?? -1 )
+			handler?( self, self.actions.firstIndex( of: action ) ?? -1 )
 		}
 
-		alert.addAction( UIAlertAction( title: cancelButtonTitle, style: .cancel, handler: actionHandler ))
+		self.addAction( UIAlertAction( title: cancelButtonTitle, style: .cancel, handler: actionHandler ))
 
 		if let buttons = buttonTitles {
 			for buttonTitle in buttons[ 1 ..< buttons.count ] {
-				alert.addAction( UIAlertAction( title: buttonTitle, style: .default, handler: actionHandler ) )
+				self.addAction( UIAlertAction( title: buttonTitle, style: .default, handler: actionHandler ) )
 			}
 		}
-
-		return alert
 	}
 }
 
+
 public extension UIViewController {
-	func showUIAlertControllerWithTitle( _ title: String?, message: String?, buttonTitles: [ String ]? = nil, handler: UIAlertControllerHandler? = nil ) {
-		UIAlertController.showAlertControllerWithTitle( title, message: message, buttonTitles: buttonTitles, parentController: self, handler: handler )
+
+	func showUIAlertControllerWithTitle(
+		_ title: String?,
+		message: String?,
+		buttonTitles: [ String ]? = nil,
+		handler: UIAlertControllerHandler? = nil
+	) {
+		dispatch_main_thread_sync {
+			let alert = UIAlertController(
+				title: title,
+				message: message,
+				buttonTitles: buttonTitles,
+				handler: handler
+			)
+			self.present( alert, animated: true, completion: nil )
+		}
 	}
 }
 #endif

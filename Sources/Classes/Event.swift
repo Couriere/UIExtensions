@@ -23,7 +23,7 @@
 import Foundation
 
 /// An object that has some tear-down logic
-public protocol Disposable: class {
+public protocol Disposable: AnyObject {
 	func dispose()
 }
 
@@ -141,7 +141,7 @@ public extension Event where T == Void {
 // MARK: - Private
 
 // A protocol for a type that can be invoked
-public protocol Invocable: class {
+public protocol Invocable: AnyObject {
 	func invoke( _ data: Any )
 	var queue: DispatchQueue? { get }
 }

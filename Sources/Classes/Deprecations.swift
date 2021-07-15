@@ -395,4 +395,49 @@ public extension LayoutGuideProtocol {
 		return constraint
 	}
 }
+
+public extension UIAlertController {
+
+	#if swift(<5.5)
+	@available( swift, deprecated: 5.0, message: "Use UIViewController.showUIAlertControllerWithTitle" )
+	class func showAlertControllerWithTitle(
+		_ title: String?,
+		message: String?,
+		buttonTitles: [ String ]? = nil,
+		parentController: UIViewController? = nil,
+		handler: UIAlertControllerHandler? = nil
+	) {
+		dispatch_main_thread_sync {
+			let alert = UIAlertController( title: title, message: message, buttonTitles: buttonTitles, handler: handler )
+			if let parentController = parentController {
+				parentController.present( alert, animated: true, completion: nil )
+			}
+			else {
+				UIViewController.topPresentedViewController?.present( alert, animated: true, completion: nil )
+			}
+		}
+	}
+	#else
+	@available( *, unavailable, message: "Use UIViewController.showUIAlertControllerWithTitle" )
+	class func showAlertControllerWithTitle(
+		_ title: String?,
+		message: String?,
+		buttonTitles: [ String ]? = nil,
+		parentController: UIViewController? = nil,
+		handler: UIAlertControllerHandler? = nil
+	) {
+	}
+	#endif
+
+
+	@available( swift, deprecated: 5.5, message: "Use UIAlertController( title: message: buttonTitles: handler: )" )
+	class func alertControllerWith(
+		title: String?,
+		message: String?,
+		buttonTitles: [ String ]?,
+		handler: UIAlertControllerHandler?
+	) -> UIAlertController {
+		return UIAlertController( title: title, message: message, buttonTitles: buttonTitles, handler: handler )
+	}
+}
 #endif
