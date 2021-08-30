@@ -86,4 +86,65 @@ public extension UIColor {
 		return lightness > 0.5 ? .black : .white
 	}
 }
+
+public extension UIColor {
+
+	/// Returns an alpha value of the receiver.
+	var alpha: CGFloat {
+		var alpha: CGFloat = 1
+		self.getWhite( nil, alpha: &alpha )
+		return alpha
+	}
+}
+
+
+public extension UIColor {
+
+	/// Returns white color with specified alpha value.
+	static func white( _ alpha: CGFloat ) -> UIColor {
+		UIColor( white: 1, alpha: alpha )
+	}
+
+	/// Returns black color with specified alpha value.
+	static func black( _ alpha: CGFloat ) -> UIColor {
+		UIColor( white: 0, alpha: alpha )
+	}
+
+	/// Returns gray color with specified shade.
+	static func gray( _ white: CGFloat, _ alpha: CGFloat = 1 ) -> UIColor {
+		UIColor( white: white, alpha: alpha )
+	}
+
+	/// Returns gray color with specified shade.
+	static func iGray( _ white: Int, _ alpha: CGFloat = 1 ) -> UIColor {
+		UIColor( white: CGFloat( white ) / 255 , alpha: alpha )
+	}
+}
+
+import SwiftUI
+
+@available( iOS 13, * )
+public extension Color {
+
+	/// Returns white color with specified alpha value.
+	static func white( _ alpha: Double ) -> Color {
+		Color( white: 1, opacity: alpha )
+	}
+
+	/// Returns black color with specified alpha value.
+	static func black( _ alpha: Double ) -> Color {
+		Color( white: 0, opacity: alpha )
+	}
+
+	/// Returns gray color with specified shade.
+	static func gray( _ white: Double, _ alpha: Double = 1 ) -> Color {
+		Color( white: white, opacity: alpha )
+	}
+
+	/// Returns gray color with specified shade.
+	static func iGray( _ white: Int, _ alpha: Double = 1 ) -> Color {
+		Color( white: Double( white ) / 255 , opacity: alpha )
+	}
+}
+
 #endif

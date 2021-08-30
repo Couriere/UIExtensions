@@ -30,6 +30,7 @@ extension UILabel {
 	convenience init( _ attributedText: NSAttributedString ) {
 		self.init( frame: .zero )
 		self.attributedText = attributedText
+		self.numberOfLines = 0
 	}
 }
 
