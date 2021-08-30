@@ -65,7 +65,7 @@ public extension NSAttributedString {
 	var wholeRange: NSRange { return NSMakeRange( 0, length ) }
 
 	/// Returns a copy of an attributed string with requested attributes.
-	func addingAttributes( _ attributes: [ NSAttributedString.Key: AnyObject ] ) -> NSAttributedString {
+	func addingAttributes( _ attributes: [ NSAttributedString.Key: Any ] ) -> NSAttributedString {
 		let mutable = self.mutable()
 		mutable.addAttributes( attributes, range: wholeRange )
 		return NSAttributedString( attributedString: mutable )
@@ -353,7 +353,7 @@ public extension String {
 	/// Returns attributed string with no attributes.
 	var attributed: NSAttributedString { NSAttributedString( string: self ) }
 
-	func attributes( _ attributes: [ NSAttributedString.Key: AnyObject ] ) -> NSMutableAttributedString {
+	func attributes( _ attributes: [ NSAttributedString.Key: Any ] ) -> NSMutableAttributedString {
 		NSMutableAttributedString( string: self, attributes: attributes )
 	}
 
