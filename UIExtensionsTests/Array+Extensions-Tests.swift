@@ -126,6 +126,12 @@ class ArrayExtensionsTests: XCTestCase {
 		XCTAssertEqual( array.firstIndexPath( of: 10 ), IndexPath( item: 0, section: 0 ) )
 		XCTAssertEqual( array.firstIndexPath( of: 70 ), IndexPath( item: 3, section: 3 ) )
 		XCTAssertNil( array.firstIndexPath( of: 0 ) )
+
+		XCTAssertEqual( array.firstIndexPath( where: { $0 == 20 } ), IndexPath( item: 1, section: 0 ) )
+		XCTAssertEqual( array.firstIndexPath( where: { $0 == 30 } ), IndexPath( item: 0, section: 1 ) )
+		XCTAssertEqual( array.firstIndexPath( where: { $0 == 10 } ), IndexPath( item: 0, section: 0 ) )
+		XCTAssertEqual( array.firstIndexPath( where: { $0 == 70 } ), IndexPath( item: 3, section: 3 ) )
+		XCTAssertNil( array.firstIndexPath( where: { $0 == 0 } ))
 	}
 
 
