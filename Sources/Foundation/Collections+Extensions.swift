@@ -67,7 +67,7 @@ public extension Collection where Self.Index == Int,
 								  Self.Element.Index == Int {
 
 	subscript( _ indexPath: IndexPath ) -> Element.Element {
-		return self[ indexPath.section ][ indexPath.row ]
+		return self[ indexPath.section ][ indexPath.item ]
 	}
 }
 
@@ -78,7 +78,7 @@ public extension Collection where Self.Index == Int,
 								  Self.Indices.Bound == Int {
 
 	subscript( safe indexPath: IndexPath ) -> Element.Element? {
-		return self[ safe: indexPath.section ]?[ indexPath.row ]
+		return self[ safe: indexPath.section ]?[ indexPath.item ]
 	}
 }
 
