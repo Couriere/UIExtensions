@@ -23,9 +23,9 @@
 #if canImport(UIKit)
 import UIKit
 
-extension UICollectionView {
+public extension UICollectionView {
 
-	public var collectionViewFlowLayout: UICollectionViewFlowLayout {
+	var collectionViewFlowLayout: UICollectionViewFlowLayout {
 		return collectionViewLayout as! UICollectionViewFlowLayout
 	}
 }

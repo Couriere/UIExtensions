@@ -30,7 +30,7 @@ import UIKit
 
 public protocol Then {}
 
-extension Then where Self: Any {
+public extension Then where Self: Any {
 
 	/// Makes it available to set properties with closures just after initializing.
 	///
@@ -38,14 +38,14 @@ extension Then where Self: Any {
 	///       $0.origin.x = 10
 	///       $0.size.width = 100
 	///     }
-	@discardableResult public func with(_ block: (inout Self) -> Void) -> Self {
+	@discardableResult func with(_ block: (inout Self) -> Void) -> Self {
 		var copy = self
 		block(&copy)
 		return copy
 	}
 }
 
-extension Then where Self: AnyObject {
+public extension Then where Self: AnyObject {
 
 	/// Makes it available to set properties with closures just after initializing.
 	///
@@ -54,7 +54,7 @@ extension Then where Self: AnyObject {
 	///       $0.textColor = UIColor.blackColor()
 	///       $0.text = "Hello, World!"
 	///     }
-	@discardableResult public func then( _ block: (Self) -> Void ) -> Self {
+	@discardableResult func then( _ block: (Self) -> Void ) -> Self {
 		block(self)
 		return self
 	}
@@ -66,12 +66,12 @@ extension Then where Self: AnyObject {
 	///       $0.set("devxoul@gmail.com", forKey: "email")
 	///       $0.synchronize()
 	///     }
-	public func `do`(_ block: (Self) -> Void) {
+	func `do`(_ block: (Self) -> Void) {
 		block(self)
 	}
 }
 
-extension Then where Self: XTView {
+public extension Then where Self: XTView {
 
 	/// Makes it available to set properties with closures just after initializing.
 	/// By defaut turns off `translatesAutoresizingMaskIntoConstraints` property.
@@ -81,7 +81,7 @@ extension Then where Self: XTView {
 	///       $0.textColor = UIColor.blackColor()
 	///       $0.text = "Hello, World!"
 	///     }
-	@discardableResult public func then( useAutolayout: Bool = true, _ block: (Self) -> Void ) -> Self {
+	@discardableResult func then( useAutolayout: Bool = true, _ block: (Self) -> Void ) -> Self {
 		translatesAutoresizingMaskIntoConstraints = !useAutolayout
 		block(self)
 		return self
@@ -89,6 +89,11 @@ extension Then where Self: XTView {
 }
 
 extension NSObject: Then {}
+
+extension JSONDecoder: Then {}
+extension JSONEncoder: Then {}
+extension PropertyListDecoder: Then {}
+extension PropertyListEncoder: Then {}
 
 extension CGPoint: Then {}
 extension CGRect: Then {}
@@ -125,12 +130,12 @@ public extension Bool {
 }
 
 
-extension Sequence {
+public extension Sequence {
 
 	/// Calls the given closure on each element in the sequence in the same order as a for-in loop.
 	/// - parameter body: A closure that takes an element of the sequence as a parameter.
 	/// - returns: Self.
-	public func perform( _ body: ( Element ) throws -> Void ) rethrows -> Self {
+	func perform( _ body: ( Element ) throws -> Void ) rethrows -> Self {
 		try forEach( body )
 		return self
 	}

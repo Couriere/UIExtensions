@@ -23,7 +23,7 @@
 #if canImport(UIKit)
 import UIKit
 
-extension UILabel {
+public extension UILabel {
 
 	///  Initialize UILabel and setting it's attributedText property with parameter.
 	/// - parameters attributedText: Text to set after initialization.

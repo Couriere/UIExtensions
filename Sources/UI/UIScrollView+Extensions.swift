@@ -23,7 +23,7 @@
 #if canImport(UIKit)
 import UIKit
 
-extension UIScrollView {
+public extension UIScrollView {
 
 	@discardableResult
 	func constrainContentWidthToFrame( constant: CGFloat = 0 ) -> NSLayoutConstraint {
