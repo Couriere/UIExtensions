@@ -20,12 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-//
-//  Array+Extensions.swift
-//
-//  Created by Vladimir Kazantsev on 02.02.15.
-//  Copyright (c) 2015. All rights reserved.
-//
 import Foundation
 #if os(macOS)
 import AppKit
