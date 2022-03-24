@@ -85,6 +85,13 @@ public extension String {
 		                                              withTemplate: "" )
 	}
 
+	
+	init( _ staticString: StaticString ) {
+		self = staticString.withUTF8Buffer {
+			String( decoding: $0, as: UTF8.self )
+		}
+	}
+
 	private static let regex = try! NSRegularExpression( pattern: "<[^>]*>", options: [] )
 }
 

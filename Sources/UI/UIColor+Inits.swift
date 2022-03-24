@@ -48,8 +48,8 @@ public extension UIColor {
 		let scanner = Scanner( string: String( colorString ))
 		var hexNum: UInt32 = 0
 
-		guard scanner.scanHexInt32(&hexNum ) else { return nil }
-		self.init( int: hexNum, alpha: alpha )
+		guard scanner.scanHexInt32( &hexNum ) else { return nil }
+		self.init( hexNum, alpha: alpha )
 	}
 
 	private static let invertedHexCharactersSet = CharacterSet( charactersIn: "0123456789abcdefABCDEF" ).inverted
@@ -63,14 +63,19 @@ public extension UIColor {
 		self.init( intRed: randomRed, green: randomGreen, blue: randomBlue, alpha: alpha )
 	}
 
-
-	convenience init( int: UInt32, alpha: CGFloat = 1 ) {
-
+	convenience init( _ int: UInt32, alpha: CGFloat = 1 ) {
 		let red = Int( ( int >> 16 ) & 0xFF )
 		let green = Int( ( int >> 8 ) & 0xFF )
 		let blue = Int( int & 0xFF )
 
 		self.init( intRed: red, green: green, blue: blue, alpha: alpha )
+	}
+
+
+
+	@available( *, deprecated, renamed: "init(_:alpha:)" )
+	convenience init( int: UInt32, alpha: CGFloat = 1 ) {
+		self.init( int, alpha: alpha )
 	}
 }
 
@@ -110,41 +115,14 @@ public extension UIColor {
 		UIColor( white: 0, alpha: alpha )
 	}
 
-	/// Returns gray color with specified shade.
-	static func gray( _ white: CGFloat, _ alpha: CGFloat = 1 ) -> UIColor {
+	/// Returns gray color with specified shade and alpha.
+	static func gray( _ white: CGFloat, alpha: CGFloat = 1 ) -> UIColor {
 		UIColor( white: white, alpha: alpha )
 	}
 
-	/// Returns gray color with specified shade.
-	static func iGray( _ white: Int, _ alpha: CGFloat = 1 ) -> UIColor {
+	/// Returns gray color with specified shade and alpha.
+	static func iGray( _ white: Int, alpha: CGFloat = 1 ) -> UIColor {
 		UIColor( white: CGFloat( white ) / 255 , alpha: alpha )
 	}
 }
-
-import SwiftUI
-
-@available( iOS 13, * )
-public extension Color {
-
-	/// Returns white color with specified alpha value.
-	static func white( _ alpha: Double ) -> Color {
-		Color( white: 1, opacity: alpha )
-	}
-
-	/// Returns black color with specified alpha value.
-	static func black( _ alpha: Double ) -> Color {
-		Color( white: 0, opacity: alpha )
-	}
-
-	/// Returns gray color with specified shade.
-	static func gray( _ white: Double, _ alpha: Double = 1 ) -> Color {
-		Color( white: white, opacity: alpha )
-	}
-
-	/// Returns gray color with specified shade.
-	static func iGray( _ white: Int, _ alpha: Double = 1 ) -> Color {
-		Color( white: Double( white ) / 255 , opacity: alpha )
-	}
-}
-
 #endif
