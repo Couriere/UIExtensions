@@ -23,6 +23,7 @@
 import XCTest
 import UIExtensions
 
+#if canImport(UIKit)
 class PaddingContainerTests: XCTestCase {
 
 	var containedView: UIView!
@@ -100,3 +101,4 @@ class PaddingContainerTests: XCTestCase {
 		XCTAssertNil( weakContainer )
 	}
 }
+#endif
