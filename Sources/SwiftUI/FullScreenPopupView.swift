@@ -191,7 +191,10 @@ private struct _UIKitIntrospectionViewController: UIViewControllerRepresentable 
 		_ uiViewController: UIViewController,
 		context: Context
 	) {
-		DispatchQueue.main.async { handler( uiViewController.parent! ) }
+		DispatchQueue.main.async {
+			guard let parent = uiViewController.parent else { return }
+			handler( parent )
+		}
 	}
 }
 
