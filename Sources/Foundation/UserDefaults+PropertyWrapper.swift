@@ -23,79 +23,147 @@
 import Foundation
 
 #if swift(>=5.1)
+import Foundation
+import SwiftUI
+import Combine
+
 /// Property wrapper around Codable values backed by UserDefaults.
 ///
 /// Usage:
 /// ```
-/// @UserDefault( "valueVariable", defaultValue: -1 ) var valueVariable: Int
+/// @UserDefault( "valueVariable" ) var valueVariable: Int = -1
 ///
 ///	@UserDefault( "optionalValueVariable",
-///				  defaultValue: nil,
-///				  suite: nonStandardUserDefaultsSuite )
+///				  storeName: nonStandardUserDefaultsSuiteName )
 ///	var optionalValueVariable: Double?
 /// ```
-///
-/// - note: Since actual data stored in UserDefaults is encoded data, representing
-/// value, you can't simply get value back with usual `.object( forKey: )`, `.int( forKey: )` etc.
-/// -
-/// _However_, to support seamless upgrade, if there is value in UserDefaults,
-/// stored by standard means, it will be correctly read.
 @propertyWrapper
 public struct UserDefault<Value: Codable> {
 
 	/// Key used to store values in UserDefaults.
-	private let key: String
+	public let key: String
 
 	/// Default value. Will be returned if value with `key` is not defined in UserDefaults.
-	private let defaultValue: Value
+	public let defaultValue: Value
 
 	/// UserDefaults suite used to store values. Defaults to `UserDefaults.standard`.
-	private let suite: UserDefaults
+	public let store: UserDefaults
 
-	public init( _ key: String, defaultValue: Value, suite: UserDefaults? = nil ) {
+	public init( wrappedValue: Value, _ key: String, store: UserDefaults? = nil ) {
 		self.key = key
-		self.defaultValue = defaultValue
-		self.suite = suite ?? .standard
+		self.defaultValue = wrappedValue
+		self.store = store ?? .standard
+	}
+
+	public init( wrappedValue: Value, _ key: String, storeName: String? ) {
+		self.init( wrappedValue: wrappedValue, key, store: UserDefaults( suiteName: storeName ))
+	}
+	public init( wrappedValue: Value, _ key: String, suiteName: String? ) {
+		self.init( wrappedValue: wrappedValue, key, storeName: suiteName )
+	}
+
+	@available( *, deprecated, message: "Use `init(wrapped:_:storeName)`" )
+	public init( _ key: String, defaultValue: Value, suiteName: String? = nil ) {
+		self.init( wrappedValue: defaultValue, key, store: UserDefaults( suiteName: suiteName ) ?? .standard )
+	}
+
+	public func remove() {
+		store.removeObject( forKey: key )
+	}
+
+	public var exists: Bool {
+		store.value( forKey: key ) != nil
 	}
 
 	public var wrappedValue: Value {
-		get {
-			guard let rawData = suite.object( forKey: key ) else { return defaultValue }
+		get { getValue() }
+		nonmutating set { setValue( newValue ) }
+	}
 
-			if let data = rawData as? Data {
+	public var projectedValue: UserDefault<Value> {
+		return self
+	}
 
-				// On iOS 13 and later, just decoding value.
-				if #available( iOS 13, tvOS 13, watchOS 6, * ),
-					let value = try? _userDefaults_decoder.decode( Value.self, from: data ) {
+
+	// MARK: - Internals
+
+	private func getValue() -> Value {
+		guard let rawData = store.object( forKey: key ) else { return defaultValue }
+
+		if let data = rawData as? Data {
+			// On iOS 13 and later, just decoding value.
+			if #available( iOS 13, tvOS 13, watchOS 6, * ),
+			   let value = try? _userDefaults_decoder.decode( Value.self, from: data ) {
+				return value
+			}
+			else {
+				// On iOS 12 and earlier or if decoding failed,
+				// attempting to decode proxy array value.
+				if let proxyValue = try? _userDefaults_decoder.decode( [ Value ].self, from: data ),
+				   let value = proxyValue.first {
 					return value
 				}
-				else {
-					// On iOS 12 and earlier or if decoding failed,
-					// attempting to decode proxy array value.
-					if let proxyValue = try? _userDefaults_decoder.decode( [ Value ].self, from: data ),
-						let value = proxyValue.first {
-						return value
-					}
-				}
 			}
-
-			return rawData as? Value ?? defaultValue
 		}
-		set {
+
+		return rawData as? Value ?? defaultValue
+	}
+
+	private func setValue( _ newValue: Value ) {
+		if newValue is __PropertyList {
+			store.set( newValue, forKey: key )
+		} else {
 			// On iOS 12 and earlier trying to encode simple values (Int, String, etc.) results
 			// in fatal error `Top-level Optional<Int> encoded as number JSON fragment.`.
-			if #available( iOS 13, tvOS 13, watchOS 6, * ) {
+			if #available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *) {
 				let data = try! _userDefaults_encoder.encode( newValue )
-				suite.set( data, forKey: key )
+				store.set( data, forKey: key )
 			} else {
 				// On iOS 12 and earlier encasing new value in array.
 				let data = try! _userDefaults_encoder.encode( [ newValue ] )
-				suite.set( data, forKey: key )
+				store.set( data, forKey: key )
 			}
 		}
 	}
 }
 
+extension UserDefault where Value : ExpressibleByNilLiteral {
+
+	public init(_ key: String, store: UserDefaults? = nil) where Value: Codable {
+		self.init( wrappedValue: nil, key, store: store )
+	}
+	public init(_ key: String, storeName: String? ) where Value: Codable {
+		self.init( wrappedValue: nil, key, storeName: storeName )
+	}
+}
+
 private let _userDefaults_encoder = JSONEncoder()
 private let _userDefaults_decoder = JSONDecoder()
+
+
+private protocol __PropertyList {}
+extension Bool: __PropertyList { }
+extension Date: __PropertyList { }
+extension String: __PropertyList { }
+extension URL: __PropertyList { }
+
+extension Int: __PropertyList { }
+extension Int8: __PropertyList { }
+extension Int16: __PropertyList { }
+extension Int32: __PropertyList { }
+extension Int64: __PropertyList { }
+extension UInt: __PropertyList { }
+extension UInt8: __PropertyList { }
+extension UInt16: __PropertyList { }
+extension UInt32: __PropertyList { }
+extension UInt64: __PropertyList { }
+extension Float: __PropertyList { }
+extension Double: __PropertyList { }
+
+extension CGPoint: __PropertyList { }
+extension CGVector: __PropertyList { }
+extension CGSize: __PropertyList { }
+extension CGRect: __PropertyList { }
+extension CGAffineTransform: __PropertyList { }
+
 #endif

@@ -22,32 +22,35 @@
 
 import XCTest
 import UIExtensions
+import Combine
 
 #if swift(>=5.1)
 class UserDefaults_PropertyWrapper: XCTestCase {
 
-	@UserDefault( "valueStore", defaultValue: -1 ) var valueStore: Int
-	@UserDefault( "optionalValueStore", defaultValue: nil ) var optionalValueStore: Double?
+	@UserDefault( "valueStore" ) var valueStore: Int = -1
+	@UserDefault( "optionalValueStore" ) var optionalValueStore: Double?
 
-	@UserDefault( "arrayStore", defaultValue: [] ) var arrayStore: [ CGFloat ]
-	@UserDefault( "optionalArrayStore", defaultValue: nil ) var optionalArrayStore: [ CGPoint ]?
+	@UserDefault( "arrayStore" ) var arrayStore: [ CGFloat ] = []
+	@UserDefault( "optionalArrayStore" ) var optionalArrayStore: [ CGPoint ]?
 
-	@UserDefault( "structStore", defaultValue: .default ) var structStore: Test
-	@UserDefault( "optionalStructStore", defaultValue: nil ) var optionalStructStore: Test?
+	@UserDefault( "dataStore" ) var dataStore: Data = Data()
+	@UserDefault( "optionalDataStore" ) var optionalDataStore: Data?
 
-	@UserDefault( "existingValueStore", defaultValue: nil ) var existingValueStore: URL?
-	@UserDefault( "existingLegacyValueStore", defaultValue: 0 ) var existingLegacyValueStore: Int
+	@UserDefault( "structStore" ) var structStore: Test = .default
+	@UserDefault( "optionalStructStore" ) var optionalStructStore: Test?
 
-	@UserDefault( "updatedFromiOS12URLValue", defaultValue: nil ) var updatedFromiOS12URLValue: URL?
-	@UserDefault( "updatedFromiOS12ArrayValue", defaultValue: [] ) var updatedFromiOS12ArrayValue: [ Int ]
-	@UserDefault( "updatedFromiOS12DictionaryValue", defaultValue: [:] ) var updatedFromiOS12DictionaryValue: [ String : Int ]
-	@UserDefault( "updatedFromiOS12SetValue", defaultValue: [] ) var updatedFromiOS12SetValue: Set<String>
+	@UserDefault( "existingValueStore" ) var existingValueStore: URL?
+	@UserDefault( "existingLegacyValueStore" ) var existingLegacyValueStore: Int = 0
+
+	@UserDefault( "updatedFromiOS12URLValue" ) var updatedFromiOS12URLValue: URL?
+	@UserDefault( "updatedFromiOS12ArrayValue" ) var updatedFromiOS12ArrayValue: [ Int ] = []
+	@UserDefault( "updatedFromiOS12DictionaryValue" ) var updatedFromiOS12DictionaryValue: [ String : Int ] = [:]
+	@UserDefault( "updatedFromiOS12SetValue" ) var updatedFromiOS12SetValue: Set<String> = []
 
 
 	static let nonStandardSuite = UserDefaults( suiteName: "NonStandardSuite" )!
 	@UserDefault( "nonStandardSuiteValue",
-				  defaultValue: nil,
-				  suite: UserDefaults_PropertyWrapper.nonStandardSuite )
+				  store: UserDefaults_PropertyWrapper.nonStandardSuite )
 	var nonStandardSuiteValue: Data?
 
 	let testURL = URL( string: "https://www.apple.com" )!
@@ -56,6 +59,8 @@ class UserDefaults_PropertyWrapper: XCTestCase {
 		let defaults = UserDefaults.standard
 		defaults.removeObject( forKey: "valueStore" )
 		defaults.removeObject( forKey: "optionalValueStore" )
+		defaults.removeObject( forKey: "dataStore" )
+		defaults.removeObject( forKey: "optionalDataStore" )
 		defaults.removeObject( forKey: "arrayStore" )
 		defaults.removeObject( forKey: "optionalArrayStore" )
 		defaults.removeObject( forKey: "structStore" )
@@ -80,6 +85,20 @@ class UserDefaults_PropertyWrapper: XCTestCase {
 		XCTAssertEqual( optionalValueStore, 1.1 )
 		optionalValueStore = nil
 		XCTAssertEqual( optionalValueStore, nil )
+	}
+
+	func testData() {
+		XCTAssertEqual( dataStore, Data() )
+		let data = "Test string".data( using: .utf8 )!
+		dataStore = data
+		XCTAssertEqual( dataStore, data )
+
+		XCTAssertEqual( optionalDataStore, nil )
+		let optionalData = "Test string".data( using: .utf8 )
+		optionalDataStore = optionalData
+		XCTAssertEqual( optionalDataStore, optionalData )
+		optionalDataStore = nil
+		XCTAssertEqual( optionalDataStore, nil )
 	}
 
 	func testAray() {
@@ -147,6 +166,35 @@ class UserDefaults_PropertyWrapper: XCTestCase {
 		XCTAssertNil( UserDefaults.standard.value( forKey: "nonStandardSuiteValue" ) )
 	}
 
+//  Saving for ios 12 drop future.
+//	func testChangeObservation() {
+//
+//		if #available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *) {
+//			let intBinding = $valueStore.binding
+//			XCTAssertEqual( intBinding.wrappedValue, -1 )
+//			valueStore = 1
+//			XCTAssertEqual( intBinding.wrappedValue, 1 )
+//			intBinding.wrappedValue = 2
+//			XCTAssertEqual( intBinding.wrappedValue, 2 )
+//			XCTAssertEqual( valueStore, 2 )
+//
+//			let firstExpectation = XCTestExpectation( description: "First value published" )
+//			let secondExpectation = XCTestExpectation( description: "Second value published" )
+//			let cancellable = $valueStore.publisher
+//				.sink { value in
+//					switch value {
+//					case 2: firstExpectation.fulfill()
+//					case 5: secondExpectation.fulfill()
+//					default: XCTFail( "Unexpected value received" )
+//					}
+//				}
+//			valueStore = 5
+//			wait( for: [firstExpectation, secondExpectation], timeout: 1, enforceOrder: true )
+//			cancellable.cancel()
+//		}
+//	}
+
+
 	func testExistingAndLegacyValue() {
 
 		let defaults = UserDefaults.standard
@@ -184,6 +232,15 @@ class UserDefaults_PropertyWrapper: XCTestCase {
 			UserDefaults.standard.set( try! JSONEncoder().encode( [ set ] ), forKey: "updatedFromiOS12SetValue" )
 			XCTAssertEqual( updatedFromiOS12SetValue, set )
 		}
+	}
+
+	func testRemove() {
+		valueStore = 10
+		XCTAssertEqual( valueStore, 10 )
+		XCTAssertTrue( $valueStore.exists )
+		$valueStore.remove()
+		XCTAssertNil( UserDefaults.standard.object( forKey: $valueStore.key ))
+		XCTAssertFalse( $valueStore.exists )
 	}
 }
 #endif
