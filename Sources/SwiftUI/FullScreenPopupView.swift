@@ -24,7 +24,7 @@ import SwiftUI
 import Combine
 
 #if canImport(UIKit)
-@available(iOS 13.0, tvOS 13.0, *)
+@available(iOS 14.0, tvOS 14.0, *)
 public extension View {
 
 	/// Presents a modal view that covers as much of the screen as
@@ -87,7 +87,7 @@ public extension View {
 	}
 }
 
-@available(iOS 13.0, tvOS 13.0, *)
+@available(iOS 14.0, tvOS 14.0, *)
 private struct FullScreenView<Item: Identifiable, ParentContent: View, PopupView: View>: View {
 
 	@Binding var isPresented: Bool
@@ -105,11 +105,12 @@ private struct FullScreenView<Item: Identifiable, ParentContent: View, PopupView
 	var body: some View {
 		parentContent
 			._underlyingViewController { underlyingViewController = $0 }
-			.onReceive( Just( ( isPresented, item )), perform: presentOrDismissFullScreenCover )
+			.onChange( of: isPresented ) { _ in presentOrDismissFullScreenCover() }
+			.onChange(of: item?.id ) { _ in presentOrDismissFullScreenCover() }
 	}
 }
 
-@available(iOS 13.0, tvOS 13.0, *)
+@available(iOS 14.0, tvOS 14.0, *)
 private extension FullScreenView {
 
 	final class WrappedHostingController<V: View>: UIHostingController<V>, UIAdaptivePresentationControllerDelegate {
@@ -137,11 +138,11 @@ private extension FullScreenView {
 	}
 
 	/// Показывает или скрывает окно на весь экран.
-	private func presentOrDismissFullScreenCover( _ isPresented: Bool, _ item: Item? ) {
+	private func presentOrDismissFullScreenCover() {
 
 		let userDismissHandler = {
-			self.isPresented = false
-			self.item = nil
+			isPresented = false
+			item = nil
 			onDismiss?()
 		}
 
@@ -157,13 +158,13 @@ private extension FullScreenView {
 
 		case let ( true, .some( parameter ), .some ):
 			underlyingViewController?.dismiss( animated: true ) {
-					let overlay = WrappedHostingController( rootView: content( parameter ),
-															onDismiss: userDismissHandler )
-					overlay.modalTransitionStyle = transitionStyle
-					overlay.modalPresentationStyle = presentationStyle
-					overlay.view.backgroundColor = .clear
+				let overlay = WrappedHostingController( rootView: content( parameter ),
+														onDismiss: userDismissHandler )
+				overlay.modalTransitionStyle = transitionStyle
+				overlay.modalPresentationStyle = presentationStyle
+				overlay.view.backgroundColor = .clear
 
-					underlyingViewController?.present( overlay, animated: true )
+				underlyingViewController?.present( overlay, animated: true )
 			}
 
 		case ( false, _, .some ):
@@ -178,7 +179,7 @@ private extension FullScreenView {
 }
 
 
-@available(iOS 13.0, tvOS 13.0, *)
+@available(iOS 14.0, tvOS 14.0, *)
 private struct _UIKitIntrospectionViewController: UIViewControllerRepresentable {
 
 	let handler: ( UIViewController ) -> Void
@@ -198,7 +199,7 @@ private struct _UIKitIntrospectionViewController: UIViewControllerRepresentable 
 	}
 }
 
-@available(iOS 13.0, tvOS 13.0, *)
+@available(iOS 14.0, tvOS 14.0, *)
 private extension View {
 
 	func _underlyingViewController(
@@ -210,24 +211,24 @@ private extension View {
 	}
 }
 
-@available(iOS 13, tvOS 13, *)
+@available(iOS 14.0, tvOS 14.0, *)
 private struct __DummyIdentifiable: Identifiable { public let id = 0 }
 
 
-@available(iOS 13, tvOS 13, *)
+@available(iOS 14.0, tvOS 14.0, *)
 struct FullScreenPopup_Previews: PreviewProvider {
 
 	@State private static var isPresented: Bool = false
 
-    static var previews: some View {
+	static var previews: some View {
 		Button( "Show Custom PopUp View" ) {
 			isPresented.toggle()
 		}
-			.fullScreenCover(
-				isPresented: $isPresented,
-				content: { popupView }
-			)
-    }
+		.fullScreenCover(
+			isPresented: $isPresented,
+			content: { popupView }
+		)
+	}
 
 	static var popupView: some View {
 
