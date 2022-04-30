@@ -68,6 +68,13 @@ public extension String {
 	}
 
 
+	subscript( safe index: Int ) -> Character? {
+		guard index < count else { return nil }
+
+		let index = self.index( startIndex, offsetBy: index )
+		return self[ index ]
+	}
+
 
 	/// Returns `true` if receiver holds correct email address.
 	var isValidEmail: Bool {
@@ -94,6 +101,12 @@ public extension String {
 
 	private static let regex = try! NSRegularExpression( pattern: "<[^>]*>", options: [] )
 }
+
+
+public extension Character {
+	var string: String { String( self ) }
+}
+
 
 
 
@@ -155,7 +168,6 @@ public extension String {
 	private static let charA = UInt8( UnicodeScalar( "a" ).value )
 	private static let char0 = UInt8( UnicodeScalar( "0" ).value )
 }
-
 
 
 /**

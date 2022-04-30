@@ -140,3 +140,14 @@ public extension Set {
 		if contains( member ) { remove(member) } else { insert(member) }
 	}
 }
+
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+public extension CollectionDifference.Change {
+	var element: ChangeElement {
+		switch self {
+		case .insert( _, let element, _ ): return element
+		case .remove( _, let element, _ ): return element
+		}
+	}
+}

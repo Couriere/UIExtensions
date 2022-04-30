@@ -131,3 +131,19 @@ public extension Comparable {
 		return self >= lowerBound && self < upperBound
 	}
 }
+
+
+public extension UnsignedInteger {
+	static func seconds( _ timeInterval: TimeInterval ) -> UInt64 {
+		return UInt64( timeInterval * 1_000_000_000 )
+	}
+	static func seconds<I: UnsignedInteger>( _ seconds: I ) -> UInt64 {
+		return UInt64( seconds ) * 1_000_000_000
+	}
+	static func miliseconds<I: UnsignedInteger>( _ miliseconds: I ) -> UInt64 {
+		return UInt64( miliseconds ) * 1_000_000
+	}
+	static func microseconds<I: UnsignedInteger>( _ microseconds: I ) -> UInt64 {
+		return UInt64( microseconds ) * 1_000
+	}
+}

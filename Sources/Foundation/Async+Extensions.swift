@@ -1,4 +1,4 @@
-// MIT License
+/// MIT License
 //
 // Copyright (c) 2015-present Vladimir Kazantsev
 //
@@ -22,22 +22,18 @@
 
 import Foundation
 
-public extension Result {
-
-	/// Returns `true` if self is .success.
-	var isSuccess: Bool { switch self { case .success: return true; default: return false }}
-	/// Returns value of .success or nil.
-	var value: Success? { switch self { case .success( let value ): return value; default: return nil }}
-
-	/// Returns `true` if self is .failure.
-	var isError: Bool { return !isSuccess }
-	/// Returns value of .failure or nil.
-	var error: Failure? { switch self { case .failure( let error ): return error; default: return nil }}
-}
-
-
-public extension Error {
-	func map<Transform>( _ transform: ( Error ) -> Transform ) -> Transform {
-		transform( self )
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+public extension Task where Success == Never, Failure == Never {
+	static func sleep( seconds: TimeInterval ) async throws {
+		try await sleep( nanoseconds: UInt64.seconds( seconds ))
+	}
+	static func sleep<I: UnsignedInteger>( seconds: I ) async throws {
+		try await sleep( nanoseconds: UInt64.seconds( seconds ))
+	}
+	static func sleep<I: UnsignedInteger>( miliseconds: I ) async throws {
+		try await sleep( nanoseconds: UInt64.miliseconds( miliseconds ))
+	}
+	static func sleep<I: UnsignedInteger>( microseconds: I ) async throws {
+		try await sleep( nanoseconds: UInt64.microseconds( microseconds ))
 	}
 }

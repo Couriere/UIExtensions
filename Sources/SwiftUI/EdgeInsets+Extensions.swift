@@ -20,24 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import SwiftUI
 
-public extension Result {
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+public extension EdgeInsets {
 
-	/// Returns `true` if self is .success.
-	var isSuccess: Bool { switch self { case .success: return true; default: return false }}
-	/// Returns value of .success or nil.
-	var value: Success? { switch self { case .success( let value ): return value; default: return nil }}
+	init( _ inset: CGFloat ) {
+		self.init( top: inset, leading: inset, bottom: inset, trailing: inset )
+	}
 
-	/// Returns `true` if self is .failure.
-	var isError: Bool { return !isSuccess }
-	/// Returns value of .failure or nil.
-	var error: Failure? { switch self { case .failure( let error ): return error; default: return nil }}
-}
+	init( horizontal: CGFloat = 0, vertical: CGFloat = 0 ) {
+		self.init( top: vertical, leading: horizontal, bottom: vertical, trailing: horizontal )
+	}
 
+	init( top: CGFloat? = nil, leading: CGFloat? = nil,
+		  bottom: CGFloat? = nil, trailing: CGFloat? = nil ) {
+		self.init( top: top ?? 0, leading: leading ?? 0,
+				   bottom: bottom ?? 0, trailing: trailing ?? 0 )
+	}
 
-public extension Error {
-	func map<Transform>( _ transform: ( Error ) -> Transform ) -> Transform {
-		transform( self )
+	/// Inverts all insets.
+	var inverted: EdgeInsets {
+		return EdgeInsets( top: -top, leading: -leading, bottom: -bottom, trailing: -trailing )
 	}
 }
