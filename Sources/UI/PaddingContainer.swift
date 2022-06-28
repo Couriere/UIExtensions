@@ -89,7 +89,9 @@ open class PaddingContainer: UIView {
 	fileprivate init( containedView: UIView ) {
 
 		super.init( frame: .zero )
+
 		translatesAutoresizingMaskIntoConstraints = false
+		containedView.translatesAutoresizingMaskIntoConstraints = false
 
 		addSubview( containedView )
 		let constraints = [
