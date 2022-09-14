@@ -83,18 +83,6 @@ public extension NSAttributedString {
 		return NSAttributedString( attributedString: mutable )
 	}
 
-	/// Returns a copy of an attributed string with `striketrough style and color` attributes set.
-	@objc func strikethroughStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> NSAttributedString {
-		let mutable = self.mutable().strikethroughStyle( style, color: color )
-		return NSAttributedString( attributedString: mutable )
-	}
-
-	/// Returns a copy of an attributed string with `underline style and color` attributes set.
-	@objc func underlineStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> NSAttributedString {
-		let mutable = self.mutable().underlineStyle( style, color: color )
-		return NSAttributedString( attributedString: mutable )
-	}
-
 	/// Returns a copy of an attributed string with `kern` attribute set.
 	@objc func kern( _ kern: CGFloat ) -> NSAttributedString {
 		let mutable = self.mutable().kern( kern )
@@ -104,6 +92,18 @@ public extension NSAttributedString {
 	/// Returns a copy of an attributed string with `baselineOffset` attributes set.
 	@objc func baselineOffset( _ offset: CGFloat ) -> NSAttributedString {
 		let mutable = self.mutable().baselineOffset( offset )
+		return NSAttributedString( attributedString: mutable )
+	}
+
+	/// Returns a copy of an attributed string with `striketrough style and color` attributes set.
+	@objc func strikethroughStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> NSAttributedString {
+		let mutable = self.mutable().strikethroughStyle( style, color: color )
+		return NSAttributedString( attributedString: mutable )
+	}
+
+	/// Returns a copy of an attributed string with `underline style and color` attributes set.
+	@objc func underlineStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> NSAttributedString {
+		let mutable = self.mutable().underlineStyle( style, color: color )
 		return NSAttributedString( attributedString: mutable )
 	}
 
@@ -190,35 +190,30 @@ public extension NSAttributedString {
 public extension NSMutableAttributedString {
 
 	/// Sets new `text color` attribute over the whole string.
-	@discardableResult
 	override func color( _ color: XTColor ) -> Self {
 		addAttribute( .foregroundColor, value: color, range: wholeRange )
 		return self
 	}
 
 	/// Sets new `font` attribute over the whole string.
-	@discardableResult
 	override func font( _ font: XTFont ) -> Self {
 		addAttribute( .font, value: font, range: wholeRange )
 		return self
 	}
 
 	/// Sets new `kern` attribute over the whole string.
-	@discardableResult
 	override func kern( _ kern: CGFloat ) -> Self {
 		addAttribute( .kern, value: kern, range: wholeRange )
 		return self
 	}
 
 	/// Sets new `baselineOffset` attribute over the whole string.
-	@discardableResult
 	override func baselineOffset( _ offset: CGFloat ) -> Self {
 		addAttribute( .baselineOffset, value: offset, range: wholeRange )
 		return self
 	}
 
 	/// Sets new `strikethrough style and color` attributes over the whole string.
-	@discardableResult
 	override func strikethroughStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> Self {
 		let attributes: [ NSAttributedString.Key: Any ] = [ .strikethroughStyle: style.rawValue,
 															.strikethroughColor: color ]
@@ -227,7 +222,6 @@ public extension NSMutableAttributedString {
 	}
 
 	/// Sets new `underline style and color` attributes over the whole string.
-	@discardableResult
 	override func underlineStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> Self {
 		let attributes: [ NSAttributedString.Key: Any ] = [ .underlineStyle: style.rawValue,
 															.underlineColor: color ]
@@ -236,7 +230,6 @@ public extension NSMutableAttributedString {
 	}
 
 	/// Sets `.link` attribute over the whole string.
-	@discardableResult
 	override func link( _ link: URL ) -> Self {
 		addAttribute( .link, value: link, range: wholeRange )
 		return self
@@ -245,7 +238,6 @@ public extension NSMutableAttributedString {
 
 	/// Sets `paragraphStyle` attribute set over the whole string.
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
-	@discardableResult
 	override func paragraphStyle( _ paragraphStyle: NSParagraphStyle ) -> Self {
 		addAttribute( .paragraphStyle, value: paragraphStyle, range: wholeRange )
 		return self
@@ -256,7 +248,6 @@ public extension NSMutableAttributedString {
 	/// change its `lineSpacing` property and set `paragraphStyle` over the whole string.
 	/// If no existing `paragraphStyle` attribute found, creates a new one.
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
-	@discardableResult
 	override func lineSpacing( _ lineSpacing: CGFloat ) -> Self {
 		let paragraph = paragraphStyle
 		paragraph.lineSpacing = lineSpacing
@@ -269,7 +260,6 @@ public extension NSMutableAttributedString {
 	/// change its `lineSpacing` property and set `paragraphStyle` over the whole string.
 	/// If no existing `paragraphStyle` attribute found, creates a new one.
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
-	@discardableResult
 	override func paragraphSpacing( _ paragraphSpacing: CGFloat ) -> Self {
 		let paragraph = paragraphStyle
 		paragraph.paragraphSpacing = paragraphSpacing
@@ -282,7 +272,6 @@ public extension NSMutableAttributedString {
 	/// change its `lineHeightMultiple` property and set `paragraphStyle` over the whole string.
 	/// If no existing `paragraphStyle` attribute found, creates a new one.
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
-	@discardableResult
 	override func lineHeightMultiple( _ multiple: CGFloat ) -> Self {
 		let paragraph = paragraphStyle
 		paragraph.lineHeightMultiple = multiple
@@ -295,7 +284,6 @@ public extension NSMutableAttributedString {
 	/// change its `minimumLineHeight` property and set `paragraphStyle` over the whole string.
 	/// If no existing `paragraphStyle` attribute found, creates a new one.
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
-	@discardableResult
 	override func minimumLineHeight( _ minimumLineHeight: CGFloat ) -> Self {
 		let paragraph = paragraphStyle
 		paragraph.minimumLineHeight = minimumLineHeight
@@ -308,7 +296,6 @@ public extension NSMutableAttributedString {
 	/// change its `alignment` property and set `paragraphStyle` over the whole string.
 	/// If no existing `paragraphStyle` attribute found, creates a new one.
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
-	@discardableResult
 	override func alignment( _ alignment: NSTextAlignment ) -> Self {
 		let paragraph = paragraphStyle
 		paragraph.alignment = alignment
@@ -321,7 +308,6 @@ public extension NSMutableAttributedString {
 	/// change its `lineBreakMode` property and set `paragraphStyle` over the whole string.
 	/// If no existing `paragraphStyle` attribute found, creates a new one.
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
-	@discardableResult
 	override func lineBreakMode( _ lineBreakMode: NSLineBreakMode ) -> Self {
 		let paragraph = paragraphStyle
 		paragraph.lineBreakMode = lineBreakMode
@@ -333,7 +319,6 @@ public extension NSMutableAttributedString {
 	/// - parameter image: Image to insert in string.
 	/// - parameter location: Location in string to insert. If `nil`, image will be appended to the string.
 	/// - parameter verticalOffset: Offset in points, will be applied to image position.
-	@discardableResult
 	func insertImage( _ image: XTImage, atLocation location: Int? = nil, verticalOffset: CGFloat = 0 ) -> Self {
 
 		let textAttachment = NSTextAttachment()
@@ -366,77 +351,77 @@ public extension String {
 	/// Returns attributed string with no attributes.
 	var attributed: NSAttributedString { NSAttributedString( string: self ) }
 
-	func attributes( _ attributes: [ NSAttributedString.Key: Any ] ) -> NSMutableAttributedString {
-		NSMutableAttributedString( string: self, attributes: attributes )
+	func attributes( _ attributes: [ NSAttributedString.Key: Any ] ) -> NSAttributedString {
+		NSAttributedString( string: self, attributes: attributes )
 	}
 
-	func color( _ color: XTColor ) -> NSMutableAttributedString {
-		NSMutableAttributedString( string: self, attributes: [ .foregroundColor: color ] )
+	func color( _ color: XTColor ) -> NSAttributedString {
+		NSAttributedString( string: self, attributes: [ .foregroundColor: color ] )
 	}
 
-	func font( _ font: XTFont ) -> NSMutableAttributedString {
-		NSMutableAttributedString( string: self, attributes: [ .font: font ] )
+	func font( _ font: XTFont ) -> NSAttributedString {
+		NSAttributedString( string: self, attributes: [ .font: font ] )
 	}
 
-	func kern( _ kern: CGFloat ) -> NSMutableAttributedString {
-		NSMutableAttributedString( string: self, attributes: [ .kern: kern ] )
+	func kern( _ kern: CGFloat ) -> NSAttributedString {
+		NSAttributedString( string: self, attributes: [ .kern: kern ] )
 	}
 
-	func baselineOffset( _ offset: CGFloat ) -> NSMutableAttributedString {
-		NSMutableAttributedString( string: self, attributes: [ .baselineOffset: offset ] )
+	func baselineOffset( _ offset: CGFloat ) -> NSAttributedString {
+		NSAttributedString( string: self, attributes: [ .baselineOffset: offset ] )
 	}
 
-	func strikethroughStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> NSMutableAttributedString {
+	func strikethroughStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> NSAttributedString {
 		let attributes: [ NSAttributedString.Key: Any ] = [ .strikethroughStyle: style.rawValue,
 															.strikethroughStyle: color ]
-		return NSMutableAttributedString( string: self, attributes: attributes )
+		return NSAttributedString( string: self, attributes: attributes )
 	}
 
-	func underlineStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> NSMutableAttributedString {
+	func underlineStyle( _ style: NSUnderlineStyle, color: XTColor = .black ) -> NSAttributedString {
 		let attributes: [ NSAttributedString.Key: Any ] = [ .underlineStyle: style.rawValue,
 															.underlineColor: color ]
-		return NSMutableAttributedString( string: self, attributes: attributes )
+		return NSAttributedString( string: self, attributes: attributes )
 	}
 
-	func link( _ link: URL ) -> NSMutableAttributedString {
-		NSMutableAttributedString( string: self, attributes: [ .link: link ] )
+	func link( _ link: URL ) -> NSAttributedString {
+		NSAttributedString( string: self, attributes: [ .link: link ] )
 	}
 
-	func paragraphStyle( _ paragraphStyle: NSParagraphStyle ) -> NSMutableAttributedString {
-		NSMutableAttributedString( string: self, attributes: [ .paragraphStyle: paragraphStyle ] )
+	func paragraphStyle( _ paragraphStyle: NSParagraphStyle ) -> NSAttributedString {
+		NSAttributedString( string: self, attributes: [ .paragraphStyle: paragraphStyle ] )
 	}
 
-	func lineSpacing( _ lineSpacing: CGFloat ) -> NSMutableAttributedString {
+	func lineSpacing( _ lineSpacing: CGFloat ) -> NSAttributedString {
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.lineSpacing = lineSpacing
 		return paragraphStyle( paragraph )
 	}
 
-	func paragraphSpacing( _ paragraphSpacing: CGFloat ) -> NSMutableAttributedString {
+	func paragraphSpacing( _ paragraphSpacing: CGFloat ) -> NSAttributedString {
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.paragraphSpacing = paragraphSpacing
 		return paragraphStyle( paragraph )
 	}
 
-	func lineHeightMultiple( _ multiple: CGFloat ) -> NSMutableAttributedString {
+	func lineHeightMultiple( _ multiple: CGFloat ) -> NSAttributedString {
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.lineHeightMultiple = multiple
 		return paragraphStyle( paragraph )
 	}
 
-	func minimumLineHeight( _ minimumLineHeight: CGFloat ) -> NSMutableAttributedString {
+	func minimumLineHeight( _ minimumLineHeight: CGFloat ) -> NSAttributedString {
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.minimumLineHeight = minimumLineHeight
 		return paragraphStyle( paragraph )
 	}
 
-	func alignment( _ alignment: NSTextAlignment ) -> NSMutableAttributedString {
+	func alignment( _ alignment: NSTextAlignment ) -> NSAttributedString {
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.alignment = alignment
 		return paragraphStyle( paragraph )
 	}
 
-	func lineBreakMode( _ lineBreakMode: NSLineBreakMode ) -> NSMutableAttributedString {
+	func lineBreakMode( _ lineBreakMode: NSLineBreakMode ) -> NSAttributedString {
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.lineBreakMode = lineBreakMode
 		return paragraphStyle( paragraph )
@@ -448,7 +433,7 @@ public extension String {
 	/// - parameter verticalOffset: Offset in points, will be applied to image position.
 	func image( _ image: XTImage,
 				atLocation location: Int? = nil,
-				verticalOffset: CGFloat = 0 ) -> NSMutableAttributedString {
+				verticalOffset: CGFloat = 0 ) -> NSAttributedString {
 		NSMutableAttributedString( string: self )
 			.insertImage( image, atLocation: location, verticalOffset: verticalOffset )
 	}

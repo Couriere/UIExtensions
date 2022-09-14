@@ -138,79 +138,79 @@ public extension String {
 
 	@available( *, deprecated, renamed: "attributes" )
 	@inlinable
-	func withAttributes( _ attributes: [ NSAttributedString.Key: AnyObject ] ) -> NSMutableAttributedString {
+	func withAttributes( _ attributes: [ NSAttributedString.Key: AnyObject ] ) -> NSAttributedString {
 		self.attributes( attributes )
 	}
 
 	@available( *, deprecated, renamed: "color" )
 	@inlinable
-	func withColor( _ color: UIColor ) -> NSMutableAttributedString {
+	func withColor( _ color: UIColor ) -> NSAttributedString {
 		self.color( color )
 	}
 
 	@available( *, deprecated, renamed: "font" )
 	@inlinable
-	func withFont( _ font: UIFont ) -> NSMutableAttributedString {
+	func withFont( _ font: UIFont ) -> NSAttributedString {
 		self.font( font )
 	}
 
 	@available( *, deprecated, renamed: "kern" )
 	@inlinable
-	func withKern( _ kern: CGFloat ) -> NSMutableAttributedString {
+	func withKern( _ kern: CGFloat ) -> NSAttributedString {
 		self.kern( kern )
 	}
 
 	@available( *, deprecated, renamed: "baselineOffset" )
 	@inlinable
-	func withBaselineOffset( _ offset: CGFloat ) -> NSMutableAttributedString {
+	func withBaselineOffset( _ offset: CGFloat ) -> NSAttributedString {
 		self.baselineOffset( offset )
 	}
 
 	@available( *, deprecated, renamed: "strikethroughStyle" )
 	@inlinable
-	func withStrikethroughStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSMutableAttributedString {
+	func withStrikethroughStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSAttributedString {
 		self.strikethroughStyle( style, color: color )
 	}
 
 	@available( *, deprecated, renamed: "underlineStyle" )
 	@inlinable
-	func withUnderlineStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSMutableAttributedString {
+	func withUnderlineStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSAttributedString {
 		self.underlineStyle( style, color: color )
 	}
 
 	@available( *, deprecated, renamed: "paragraphStyle" )
 	@inlinable
-	func withParagraphStyle( _ paragraphStyle: NSParagraphStyle ) -> NSMutableAttributedString {
+	func withParagraphStyle( _ paragraphStyle: NSParagraphStyle ) -> NSAttributedString {
 		self.paragraphStyle( paragraphStyle )
 	}
 
 	@available( *, deprecated, renamed: "lineSpacing" )
 	@inlinable
-	func withLineSpacing( _ lineSpacing: CGFloat ) -> NSMutableAttributedString {
+	func withLineSpacing( _ lineSpacing: CGFloat ) -> NSAttributedString {
 		self.lineSpacing( lineSpacing )
 	}
 
 	@available( *, deprecated, renamed: "lineHeightMultiple" )
 	@inlinable
-	func withLineHeightMultiple( _ multiple: CGFloat ) -> NSMutableAttributedString {
+	func withLineHeightMultiple( _ multiple: CGFloat ) -> NSAttributedString {
 		self.lineHeightMultiple( multiple )
 	}
 
 	@available( *, deprecated, renamed: "minimumLineHeight" )
 	@inlinable
-	func withMinimumLineHeight( _ minimumLineHeight: CGFloat ) -> NSMutableAttributedString {
+	func withMinimumLineHeight( _ minimumLineHeight: CGFloat ) -> NSAttributedString {
 		self.minimumLineHeight( minimumLineHeight )
 	}
 
 	@available( *, deprecated, renamed: "alignment" )
 	@inlinable
-	func withAlignment( _ alignment: NSTextAlignment ) -> NSMutableAttributedString {
+	func withAlignment( _ alignment: NSTextAlignment ) -> NSAttributedString {
 		self.alignment( alignment )
 	}
 
 	@available( *, deprecated, renamed: "lineBreakMode" )
 	@inlinable
-	func withLineBreakMode( _ lineBreakMode: NSLineBreakMode ) -> NSMutableAttributedString {
+	func withLineBreakMode( _ lineBreakMode: NSLineBreakMode ) -> NSAttributedString {
 		self.lineBreakMode( lineBreakMode )
 	}
 
@@ -222,7 +222,7 @@ public extension String {
 	@inlinable
 	func withImage( _ image: UIImage,
 					atLocation location: Int? = nil,
-					verticalOffset: CGFloat = 0 ) -> NSMutableAttributedString {
+					verticalOffset: CGFloat = 0 ) -> NSAttributedString {
 		self.image( image )
 	}
 }
