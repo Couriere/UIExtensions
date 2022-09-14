@@ -107,6 +107,12 @@ public extension NSAttributedString {
 		return NSAttributedString( attributedString: mutable )
 	}
 
+	/// Returns a copy of an attributed string with `.link` attribute set.
+	@objc func link( _ link: URL ) -> NSAttributedString {
+		let mutable = self.mutable().link(link)
+		return NSAttributedString( attributedString: mutable )
+	}
+
 	/// Returns a copy of an attributed string with `paragraphStyle` attribute set.
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
 	@objc func paragraphStyle( _ paragraphStyle: NSParagraphStyle ) -> NSAttributedString {
@@ -226,6 +232,13 @@ public extension NSMutableAttributedString {
 		let attributes: [ NSAttributedString.Key: Any ] = [ .underlineStyle: style.rawValue,
 															.underlineColor: color ]
 		addAttributes( attributes, range: wholeRange )
+		return self
+	}
+
+	/// Sets `.link` attribute over the whole string.
+	@discardableResult
+	override func link( _ link: URL ) -> Self {
+		addAttribute( .link, value: link, range: wholeRange )
 		return self
 	}
 
@@ -383,6 +396,10 @@ public extension String {
 		let attributes: [ NSAttributedString.Key: Any ] = [ .underlineStyle: style.rawValue,
 															.underlineColor: color ]
 		return NSMutableAttributedString( string: self, attributes: attributes )
+	}
+
+	func link( _ link: URL ) -> NSMutableAttributedString {
+		NSMutableAttributedString( string: self, attributes: [ .link: link ] )
 	}
 
 	func paragraphStyle( _ paragraphStyle: NSParagraphStyle ) -> NSMutableAttributedString {
