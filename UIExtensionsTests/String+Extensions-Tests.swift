@@ -178,6 +178,33 @@ class StringExtensionsTests: XCTestCase {
 	}
 
 
+	func testCamelCaseFromSnakeCase() {
+		XCTAssertEqual( "json_123_test".snakeCaseFromCamelCase, "json123Test" )
+		XCTAssertEqual( "json_123".snakeCaseFromCamelCase, "json123" )
+		XCTAssertEqual( "this_is_an_ai_test".snakeCaseFromCamelCase, "thisIsAnAiTest" )
+		XCTAssertEqual( "this_is_a_test".snakeCaseFromCamelCase, "thisIsATest" )
+		XCTAssertEqual( "1234_this_is_a_test".snakeCaseFromCamelCase, "1234ThisIsATest" )
+		XCTAssertEqual( "this__1234".snakeCaseFromCamelCase, "this1234" )
+
+		XCTAssertEqual( "".snakeCaseFromCamelCase, "" )
+		XCTAssertEqual( "_".snakeCaseFromCamelCase, "" )
+		XCTAssertEqual( "__".snakeCaseFromCamelCase, "" )
+		XCTAssertEqual( "_test_".snakeCaseFromCamelCase, "test" )
+	}
+
+	func testSnakeCaseFromCamelCase() {
+		XCTAssertEqual( "json123".camelCaseFromSnakeCase, "json_123" )
+		XCTAssertEqual( "JSON123Test".camelCaseFromSnakeCase, "json_123_test" )
+		XCTAssertEqual( "ThisIsAnAITest".camelCaseFromSnakeCase, "this_is_an_ai_test" )
+		XCTAssertEqual( "thisIsATest".camelCaseFromSnakeCase, "this_is_a_test" )
+		XCTAssertEqual( "1234ThisIsATest".camelCaseFromSnakeCase, "1234_this_is_a_test" )
+		XCTAssertEqual( "this1234".camelCaseFromSnakeCase, "this_1234" )
+
+		XCTAssertEqual( "".camelCaseFromSnakeCase, "" )
+		XCTAssertEqual( "1".camelCaseFromSnakeCase, "1" )
+		XCTAssertEqual( "t".camelCaseFromSnakeCase, "t" )
+	}
+
 	func testPluralForm() {
 
 		let forms = ( "яйцо", "яйца", "яиц" )

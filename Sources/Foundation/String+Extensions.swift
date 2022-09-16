@@ -169,6 +169,41 @@ public extension String {
 	private static let char0 = UInt8( UnicodeScalar( "0" ).value )
 }
 
+public extension String {
+
+	var snakeCaseFromCamelCase: String {
+		let string = self.trimmingCharacters(in: String.underscoreCharacterSet)
+		guard !string.isEmpty else { return string }
+
+		let split = string.split(separator: "_")
+		return "\(split[0])\(split.dropFirst().map { $0.capitalized }.joined())"
+	}
+
+	var camelCaseFromSnakeCase: String {
+
+		String.camelCasePatterns
+			.reduce( self ) { string, regex in
+				regex.stringByReplacingMatches(
+					in: string,
+					options: [],
+					range: NSRange(location: 0, length: string.count),
+					withTemplate: "$1_$2"
+				)
+			}
+			.lowercased()
+	}
+
+
+	private static let underscoreCharacterSet = CharacterSet(arrayLiteral: "_")
+	private static let camelCasePatterns: [NSRegularExpression] = [
+		"([A-Z]+)([A-Z][a-z]|[0-9])",
+		"([a-z])([A-Z]|[0-9])",
+		"([0-9])([A-Z])",
+	]
+	.map { try! NSRegularExpression(pattern: $0, options: []) }
+}
+
+
 
 /**
  Russian language only methods.
