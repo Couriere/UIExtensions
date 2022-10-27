@@ -69,7 +69,7 @@ public struct CustomIntensityVisualEffectView: UIViewRepresentable {
 	/// - Parameters:
 	///   - blur: Blur effect style
 	///   - intensity: Custom intensity from 0.0 (no effect) to 1.0 (full effect) using linear scale
-	public init( blur: UIBlurEffect.Style = .systemThinMaterialDark, intensity: Double = 0.3 ) {
+	public init( blur: UIBlurEffect.Style = .regular, intensity: Double = 0.3 ) {
 		self.init( effect: UIBlurEffect( style: blur ), intensity: intensity )
 	}
 
@@ -84,7 +84,7 @@ public struct CustomIntensityVisualEffectView: UIViewRepresentable {
 @available(iOS 13, tvOS 13, *)
 public extension View {
 	func blurredBackground(
-		style: UIBlurEffect.Style = .systemThinMaterialDark,
+		style: UIBlurEffect.Style = .regular,
 		intensity: Double = 0.3,
 		safeAreaEdges: Edge.Set = .vertical
 	) -> some View {
