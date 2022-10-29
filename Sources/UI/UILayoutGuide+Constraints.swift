@@ -40,8 +40,6 @@ public extension UIView {
 	}
 }
 
-
-
 public extension UILayoutGuide {
 
 	/// Цепляет гайд к краям родителя по горизонтали, и по границам указанного
@@ -50,7 +48,8 @@ public extension UILayoutGuide {
 	/// текущим объектом с фокусом.
 	@discardableResult
 	func constrainToSuperviewHorizontallyAndVertically( to view: UIView, insets: UIEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
-		return alignVertically( to: view, insets: insets ) + alignHorizontally( to: owningView!, insets: insets )
+		pin( SideInsets( top: insets.top, bottom: insets.bottom ), to: self ) +
+		pin( SideInsets( leading: insets.left, trailing: insets.right ))
 	}
 }
 
@@ -98,7 +97,7 @@ public extension UILayoutGuide {
 			backgroundColor = color
 			owningView.addSubview( self )
 			layoutGuide.equalSizeWithView( self )
-			layoutGuide.centerWithView( self )
+			layoutGuide.alignCenters()
 
 			observer = layoutGuide.observe(\.owningView ) { [unowned self] guide, change in
 				print( change )

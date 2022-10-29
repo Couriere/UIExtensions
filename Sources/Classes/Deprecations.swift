@@ -371,8 +371,6 @@ public extension UIView {
 }
 
 public extension LayoutGuideProtocol {
-	
-
 	@available( iOS, deprecated: 11.0, message: "Use pin( .top, to: safeAreaLayoutGuide ) instead" )
 	@available( tvOS, deprecated: 11.0, message: "Use pin( .top, to: safeAreaLayoutGuide ) instead" )
 	@discardableResult
@@ -441,3 +439,273 @@ public extension UIAlertController {
 	}
 }
 #endif
+
+
+
+public extension LayoutGuideProtocol {
+
+	private func getSecondItem( _ constrainToMargins: Bool ) -> LayoutGuideProtocol {
+#if canImport(AppKit)
+		if #available( macOS 11, * ) { return constrainToMargins ? owningView!.layoutMarginsGuide : owningView! }
+		else { return owningView! }
+#else
+		return constrainToMargins ? owningView!.layoutMarginsGuide : owningView!
+#endif
+	}
+
+	@discardableResult
+	@available( *, deprecated, message: "Use pin( .horizontal ) instead." )
+	func constrainHorizontallyToSuperview( inset: CGFloat = 0, constrainToMargins: Bool = false ) -> [ NSLayoutConstraint ] {
+
+		let secondItem = getSecondItem( constrainToMargins )
+
+		let constraints = [
+			leadingAnchor.constraint( equalTo: secondItem.leadingAnchor, constant: inset ),
+			secondItem.trailingAnchor.constraint( equalTo: trailingAnchor, constant: inset ),
+		]
+
+		NSLayoutConstraint.activate( constraints )
+		return constraints
+	}
+
+	@discardableResult
+	@available( *, deprecated, message: "Use pin( .vertical ) instead." )
+	func constrainVerticallyToSuperview( inset: CGFloat = 0, constrainToMargins: Bool = false ) -> [ NSLayoutConstraint ] {
+
+		constrainHorizontallyToSuperview()
+
+		let secondItem = getSecondItem( constrainToMargins )
+
+		let constraints = [
+			topAnchor.constraint( equalTo: secondItem.topAnchor, constant: inset ),
+			secondItem.bottomAnchor.constraint( equalTo: bottomAnchor, constant: inset ),
+		]
+
+		NSLayoutConstraint.activate( constraints )
+		return constraints
+	}
+
+	@available( iOS 11, tvOS 11, OSX 11, * )
+	@discardableResult
+	@available( *, deprecated, message: "Use pin( .vertical, to: safeAreaLayoutGuide ) instead." )
+	func constrainVerticallyToSuperviewSafeAreaGuides( inset: CGFloat = 0 ) -> [ NSLayoutConstraint ] {
+
+		let constraints = [
+			topAnchor.constraint( equalTo: owningView!.safeAreaLayoutGuide.topAnchor, constant: inset ),
+			owningView!.safeAreaLayoutGuide.bottomAnchor.constraint( equalTo: bottomAnchor, constant: inset ),
+		]
+
+		NSLayoutConstraint.activate( constraints )
+		return constraints
+	}
+
+	@available( iOS 11, tvOS 11, OSX 11, * )
+	@discardableResult
+	@available( *, deprecated, message: "Use pin( .all ) instead." )
+	func constrainToSuperview( insets: XTEdgeInsets = .zero, constrainToMargins: Bool = false ) -> [ NSLayoutConstraint ] {
+
+		let secondItem = getSecondItem( constrainToMargins )
+
+		let constraints = [
+			topAnchor.constraint( equalTo: secondItem.topAnchor, constant: insets.top ),
+			leadingAnchor.constraint( equalTo: secondItem.leadingAnchor, constant: insets.left ),
+			secondItem.bottomAnchor.constraint( equalTo: bottomAnchor, constant: insets.bottom ),
+			secondItem.trailingAnchor.constraint( equalTo: trailingAnchor, constant: insets.right ),
+		]
+
+		NSLayoutConstraint.activate( constraints )
+		return constraints
+	}
+
+	@available( iOS 11, tvOS 11, OSX 11, * )
+	@discardableResult
+	@available( *, deprecated, message: "Use pin( .all, to: safeAreaLayoutGuide ) instead." )
+	func constrainToSuperviewSafeAreaGuides( insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
+
+		let safeAreaGuide = owningView!.safeAreaLayoutGuide
+		let constraints = [
+			topAnchor.constraint( equalTo: safeAreaGuide.topAnchor, constant: insets.top ),
+			leadingAnchor.constraint( equalTo: safeAreaGuide.leadingAnchor, constant: insets.left ),
+			safeAreaGuide.bottomAnchor.constraint( equalTo: bottomAnchor, constant: insets.bottom ),
+			safeAreaGuide.trailingAnchor.constraint( equalTo: trailingAnchor, constant: insets.right ),
+		]
+
+		NSLayoutConstraint.activate( constraints )
+		return constraints
+	}
+
+	/// Constrains views leading, trailing and bottom to corresponding superview sides
+	/// and top of the view to safe area top.
+	@available( iOS 11, tvOS 11, OSX 11, * )
+	@discardableResult
+	@available( *, deprecated )
+	func constrainToSuperviewTopLayoutGuides( insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
+
+		let constraints =
+			pin( .top( insets.top ), to: owningView!.safeAreaLayoutGuide ) +
+			pin( SideInsets( leading: insets.left, bottom: insets.bottom, trailing: insets.right))
+
+		NSLayoutConstraint.activate( constraints )
+		return constraints
+	}
+
+
+	// MARK: - Centering
+
+	@discardableResult
+	@available( *, deprecated, renamed: "alignCenters" )
+	func centerInSuperview( priority: XTLayoutPriority = .required ) -> [ NSLayoutConstraint ] {
+		alignCenters( priority: priority )
+	}
+
+	@discardableResult
+	@available( *, deprecated, message: "Use alignCenters( with:, priority: ) instead." )
+	func centerWithView(
+		_ view: LayoutGuideProtocol,
+		priority: XTLayoutPriority = .required
+	) -> [ NSLayoutConstraint ] {
+		alignCenters( with: view, priority: priority )
+	}
+
+
+	// MARK: - Horizontal center
+
+
+	@discardableResult
+	@available( *, deprecated, message: "Use alignCenters( .horizontal ) instead." )
+	func centerHorizontallyInSuperview( _ constant: CGFloat = 0, priority: XTLayoutPriority = .required ) -> NSLayoutConstraint {
+		return centerHorizontallyWithView( owningView!, constant: constant, priority: priority )
+	}
+
+	@discardableResult
+	@available( *, deprecated, message: "Use alignCenters( .horizontal, to: ) instead." )
+	func centerHorizontallyWithView( _ view: LayoutGuideProtocol, constant: CGFloat = 0, priority: XTLayoutPriority = .required ) -> NSLayoutConstraint {
+
+		let constraint = centerXAnchor.constraint( equalTo: view.centerXAnchor, constant: constant )
+		constraint.priority = priority
+		constraint.isActive = true
+		return constraint
+	}
+
+	// MARK: - Vertical center
+
+	@discardableResult
+	@available( *, deprecated, message: "Use alignCenters( .vertical ) instead." )
+	func centerVerticallyInSuperview( _ constant: CGFloat = 0, priority: XTLayoutPriority = .required ) -> NSLayoutConstraint {
+		return centerVerticallyWithView( owningView!, constant: constant, priority: priority )
+	}
+
+	@discardableResult
+	@available( *, deprecated, message: "Use alignCenters( .vertical, to: ) instead." )
+	func centerVerticallyWithView( _ view: LayoutGuideProtocol, constant: CGFloat = 0, priority: XTLayoutPriority = .required ) -> NSLayoutConstraint {
+
+		let constraint = centerYAnchor.constraint( equalTo: view.centerYAnchor, constant: constant )
+		constraint.priority = priority
+		constraint.isActive = true
+		return constraint
+	}
+
+
+	@discardableResult
+	@available( *, deprecated, message: "Use pin( .vertically ) instead." )
+	func alignVertically( to guide: LayoutGuideProtocol, insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
+		let constraints = [
+			self.topAnchor.constraint( equalTo: guide.topAnchor, constant: insets.top ),
+			guide.bottomAnchor.constraint( equalTo: self.bottomAnchor, constant: insets.bottom ),
+		]
+
+		NSLayoutConstraint.activate( constraints )
+		return constraints
+	}
+
+	@discardableResult
+	@available( *, deprecated, message: "Use pin( .horizontally ) instead." )
+	func alignHorizontally( to guide: LayoutGuideProtocol, insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
+		let constraints = [
+			self.leftAnchor.constraint( equalTo: guide.leftAnchor, constant: insets.left ),
+			guide.rightAnchor.constraint( equalTo: self.rightAnchor, constant: insets.right ),
+		]
+
+		NSLayoutConstraint.activate( constraints )
+		return constraints
+	}
+
+	@discardableResult
+	@available( *, deprecated, message: "Use pin( .all ) instead." )
+	func align( to guide: LayoutGuideProtocol, insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
+		let constraints = [
+			self.topAnchor.constraint( equalTo: guide.topAnchor, constant: insets.top ),
+			self.leftAnchor.constraint( equalTo: guide.leftAnchor, constant: insets.left ),
+			guide.bottomAnchor.constraint( equalTo: self.bottomAnchor, constant: insets.bottom ),
+			guide.rightAnchor.constraint( equalTo: self.rightAnchor, constant: insets.right ),
+		]
+
+		NSLayoutConstraint.activate( constraints )
+		return constraints
+	}
+
+
+	// MARK: - Size constraints
+
+	@discardableResult
+	@available( *, deprecated, renamed: "pin" )
+	func constrainTo( width: CGFloat, relatedBy: NSLayoutConstraint.Relation? = nil ) -> NSLayoutConstraint {
+		let constraint = NSLayoutConstraint( item: self, attribute: .width, relatedBy: relatedBy ?? .equal,
+											 toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width )
+		constraint.isActive = true
+		return constraint
+	}
+
+	@discardableResult
+	@available( *, deprecated, renamed: "pin" )
+	func constrainTo( height: CGFloat, relatedBy: NSLayoutConstraint.Relation? = nil ) -> NSLayoutConstraint {
+		let constraint = NSLayoutConstraint( item: self, attribute: .height, relatedBy: relatedBy ?? .equal,
+											 toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height )
+		constraint.isActive = true
+		return constraint
+	}
+
+	@discardableResult
+	@available( *, deprecated, renamed: "pin" )
+	func constrainTo( size: CGSize ) -> [ NSLayoutConstraint ] {
+		return constrain(size: size)
+	}
+
+
+	// MARK: - Aspect ratio
+
+	@discardableResult
+	@available( *, deprecated, renamed: "pin" )
+	func constrainAspectRatioTo( _ multiplier: CGFloat, constant: CGFloat = 0 ) -> NSLayoutConstraint {
+		let constraint = NSLayoutConstraint( item: self, attribute: .width, relatedBy: .equal, toItem: self, attribute: .height, multiplier: multiplier, constant: constant )
+		constraint.isActive = true
+		return constraint
+	}
+
+
+	/// Pins supplied attribute of the view to the same attribute of its superview or
+	/// provided view.
+	/// - parameter attribute: an attribute to use in constraint.
+	/// - parameter view: View or XTLayoutGuide to constrain receiver. If `nil`, `superview` is used.
+	/// - parameter relatedBy: The relationship between the left side of the constraint and the right side of the constraint.
+	/// - parameter multiplier: The constraint multiplier.
+	/// - parameter constant: The constant added to the multiplied attribute value.
+	/// - parameter priority: The priority of the constraint.
+	@discardableResult
+	@available( *, deprecated, renamed: "pinAttribute" )
+	func pin(
+		_ attribute: NSLayoutConstraint.Attribute,
+		to view: LayoutGuideProtocol? = nil,
+		relatedBy: NSLayoutConstraint.Relation = .equal,
+		multiplier: CGFloat = 1,
+		constant: CGFloat,
+		priority: XTLayoutPriority = .required
+	) -> NSLayoutConstraint {
+
+		pinAttribute(
+			attribute, to: view, relatedBy: relatedBy,
+			multiplier: multiplier, constant: constant,
+			priority: priority
+		)
+	}
+}

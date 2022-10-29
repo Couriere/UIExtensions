@@ -53,14 +53,14 @@ public final class SeparatorView: UIView {
 
 		switch side {
 		case .top, .bottom:
-			pin( .left, constant: insets.left )
-			pin( .right, constant: -insets.right )
-			pin( side == .top ? .top : .bottom,
+			pinAttribute( .left, constant: insets.left )
+			pinAttribute( .right, constant: -insets.right )
+			pinAttribute( side == .top ? .top : .bottom,
 				 constant: side == .top ? insets.top : -insets.bottom )
 		case .left, .right:
-			pin( .top, constant: insets.top )
-			pin( .bottom, constant: -insets.bottom )
-			pin( side == .left ? .left : .right,
+			pinAttribute( .top, constant: insets.top )
+			pinAttribute( .bottom, constant: -insets.bottom )
+			pinAttribute( side == .left ? .left : .right,
 				 constant: side == .left ? insets.left : -insets.right )
 		}
 	}
@@ -74,8 +74,8 @@ public final class SeparatorView: UIView {
 		backgroundColor = color
 		translatesAutoresizingMaskIntoConstraints = false
 		switch axis {
-		case .horizontal: constrainTo( height: length )
-		case .vertical: constrainTo( width: length )
+		case .horizontal: constrain( height: length )
+		case .vertical: constrain( width: length )
 		@unknown default: fatalError()
 		}
 	}
