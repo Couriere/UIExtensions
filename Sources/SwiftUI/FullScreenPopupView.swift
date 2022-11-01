@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 import SwiftUI
-import Combine
 
 #if canImport(UIKit)
 @available(iOS 14.0, tvOS 14.0, *)
@@ -148,8 +147,10 @@ private extension FullScreenView {
 
 		switch ( isPresented, item, underlyingViewController?.presentedViewController ) {
 		case ( true, .some( let parameter ), nil ):
-			let overlay = WrappedHostingController( rootView: content( parameter ),
-													onDismiss: userDismissHandler )
+			let overlay = WrappedHostingController(
+				rootView: content( parameter ),
+				onDismiss: userDismissHandler
+			)
 			overlay.modalTransitionStyle = transitionStyle
 			overlay.modalPresentationStyle = presentationStyle
 			overlay.view.backgroundColor = .clear
@@ -185,16 +186,60 @@ private struct _UIKitIntrospectionViewController: UIViewControllerRepresentable 
 	let handler: ( UIViewController ) -> Void
 
 	func makeUIViewController( context: Context ) -> UIViewController {
-		return UIViewController()
+
+		let controller = UIViewController()
+		controller.view = IntrospectionView {
+			// After the introspection view is installed in UIWindow we can
+			// traverse responder chain to find first UIViewController,
+			// that we can use as the parent controller for presentation.
+			// First `.next` element will be our
+			// dummy introspection controller and we are discouraged
+			// from using it to present controllers because
+			// it may be "detached".
+			// So first responder chain element that we check
+			// will be next element after dummy controller.
+			var responder = controller.view.next?.next
+			while responder != nil {
+				if let controller = responder as? UIViewController {
+					DispatchQueue.main.async {
+						handler( controller )
+					}
+					break
+				}
+				responder = responder?.next
+			}
+		}
+
+		return controller
 	}
 
 	func updateUIViewController(
 		_ uiViewController: UIViewController,
 		context: Context
 	) {
-		DispatchQueue.main.async {
-			guard let parent = uiViewController.parent else { return }
-			handler( parent )
+	}
+
+	/// Since iOS 16 sometimes introspection UIViewControllers are not
+	/// installed in parent controller and left `detached`.
+	/// Presenting new controllers from detached controlles is
+	/// discouraged by the iOS.
+	/// To workaround this we installing introspection view and
+	/// waiting for this view is installed in UIWindow.
+	/// After that we can traverse responder chain to
+	/// find suitable UIViewController.
+	private class IntrospectionView: UIView {
+		let moveToWindowHandler: () -> Void
+		init( _ moveToWindowHandler: @escaping () -> Void ) {
+			self.moveToWindowHandler = moveToWindowHandler
+			super.init( frame: .zero )
+		}
+
+		required init?(coder: NSCoder) {
+			fatalError("init(coder:) has not been implemented")
+		}
+
+		override func didMoveToWindow() {
+			moveToWindowHandler()
 		}
 	}
 }
