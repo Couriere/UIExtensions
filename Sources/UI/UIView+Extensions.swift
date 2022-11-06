@@ -82,3 +82,11 @@ public extension XTView {
 		return views?.compactMap( { $0 as? Self } ).first
 	}
 }
+
+public extension XTView {
+
+	func disableUserInteractions() -> Self {
+		isUserInteractionEnabled = false
+		return self
+	}
+}

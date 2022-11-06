@@ -27,7 +27,11 @@ public extension UIView {
 
 	/// A view that pads this view inside the specified edge insets with
 	/// specified amount of padding.
-	func padding( _ edges: PaddingContainer.Edges = .all, _ length: Double = 16 ) -> UIView {
+	func padding(
+		_ edges: PaddingContainer.Edges = .all,
+		_ length: Double = 16,
+		forceNewContainer: Bool = false
+	) -> UIView {
 		let insets = UIEdgeInsets(
 			top: edges.contains( .top ) ? length : 0,
 			left: edges.contains( .leading ) ? length : 0,
@@ -37,14 +41,11 @@ public extension UIView {
 		return padding( insets )
 	}
 
-	/// A view that pads this view inside the specified edge insets with
-	/// specified amount of padding.
-	func padding( _ length: Double = 16 ) -> UIView {
-		padding( .all, length )
-	}
-
-	func padding( _ insets: UIEdgeInsets ) -> UIView {
-		if let paddingContainer = self as? PaddingContainer {
+	func padding(
+		_ insets: UIEdgeInsets,
+		forceNewContainer: Bool = false
+	) -> UIView {
+		if !forceNewContainer, let paddingContainer = self as? PaddingContainer {
 			paddingContainer.updateConstants( insets: insets )
 			return paddingContainer
 		} else {
@@ -92,6 +93,8 @@ open class PaddingContainer: UIView {
 
 		translatesAutoresizingMaskIntoConstraints = false
 		containedView.translatesAutoresizingMaskIntoConstraints = false
+		backgroundColor = .clear
+
 
 		addSubview( containedView )
 		let constraints = [
@@ -109,6 +112,16 @@ open class PaddingContainer: UIView {
 	}
 	public required convenience init?(coder _: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+
+	open override func hitTest(
+		_ point: CGPoint,
+		with event: UIEvent?
+	) -> UIView? {
+		guard let hitView = super.hitTest( point, with: event ) else {
+			return nil
+		}
+		return hitView == self ? nil : hitView
 	}
 }
 
