@@ -223,7 +223,20 @@ public extension String {
 	func withImage( _ image: UIImage,
 					atLocation location: Int? = nil,
 					verticalOffset: CGFloat = 0 ) -> NSAttributedString {
-		self.image( image )
+		self.image( image, at: location, verticalOffset: verticalOffset )
+	}
+
+	/// Creates attributed string and inserts image in it at specified location.
+	/// - parameter image: Image to insert in string.
+	/// - parameter location: Location in string to insert. If `nil`, image will be appended to the string.
+	/// - parameter verticalOffset: Offset in points, will be applied to image position.
+	@available( *, deprecated, renamed: "image(_:at:verticalOffset:)" )
+	func image(
+		_ image: XTImage,
+		atLocation location: Int?,
+		verticalOffset: CGFloat = 0
+	) -> NSAttributedString {
+		self.image( image, at: location, verticalOffset: verticalOffset )
 	}
 }
 
@@ -336,6 +349,17 @@ public extension NSAttributedString {
 	@available( *, deprecated, renamed: "lineBreakMode" )
 	func settingLineBreakMode( _ lineBreakMode: NSLineBreakMode ) -> NSAttributedString {
 		self.mutable().lineBreakMode( lineBreakMode )
+	}
+}
+
+public extension NSMutableAttributedString {
+	/// Inserts image in attributed string at specified location.
+	/// - parameter image: Image to insert in string.
+	/// - parameter location: Location in string to insert. If `nil`, image will be appended to the string.
+	/// - parameter verticalOffset: Offset in points, will be applied to image position.
+	@available( *, deprecated, renamed: "insertImage(_:at:verticalOffset:)" )
+	func insertImage( _ image: XTImage, atLocation location: Int?, verticalOffset: CGFloat = 0 ) -> Self {
+		insertImage(image, at: location, verticalOffset: verticalOffset)
 	}
 }
 

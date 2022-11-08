@@ -185,6 +185,21 @@ public extension NSAttributedString {
 		let mutable = self.mutable().lineBreakMode( lineBreakMode )
 		return NSAttributedString( attributedString: mutable )
 	}
+
+	/// Inserts image in attributed string at specified location.
+	/// - parameter image: Image to insert in string.
+	/// - parameter location: Location in string to insert. If `nil`, image will be appended to the string.
+	/// - parameter verticalOffset: Offset in points, will be applied to image position.
+	func image(
+		_ image: XTImage,
+		at location: Int? = nil,
+		verticalOffset: CGFloat = 0
+	) -> NSAttributedString {
+		let mutable = self.mutable()
+			.insertImage( image, at: location, verticalOffset: verticalOffset )
+		return NSAttributedString( attributedString: mutable )
+	}
+
 }
 
 public extension NSMutableAttributedString {
@@ -319,7 +334,11 @@ public extension NSMutableAttributedString {
 	/// - parameter image: Image to insert in string.
 	/// - parameter location: Location in string to insert. If `nil`, image will be appended to the string.
 	/// - parameter verticalOffset: Offset in points, will be applied to image position.
-	func insertImage( _ image: XTImage, atLocation location: Int? = nil, verticalOffset: CGFloat = 0 ) -> Self {
+	func insertImage(
+		_ image: XTImage,
+		at location: Int? = nil,
+		verticalOffset: CGFloat = 0
+	) -> Self {
 
 		let textAttachment = NSTextAttachment()
 		textAttachment.image = image
@@ -431,11 +450,13 @@ public extension String {
 	/// - parameter image: Image to insert in string.
 	/// - parameter location: Location in string to insert. If `nil`, image will be appended to the string.
 	/// - parameter verticalOffset: Offset in points, will be applied to image position.
-	func image( _ image: XTImage,
-				atLocation location: Int? = nil,
-				verticalOffset: CGFloat = 0 ) -> NSAttributedString {
+	func image(
+		_ image: XTImage,
+		at location: Int? = nil,
+		verticalOffset: CGFloat = 0
+	) -> NSAttributedString {
 		NSMutableAttributedString( string: self )
-			.insertImage( image, atLocation: location, verticalOffset: verticalOffset )
+			.insertImage( image, at: location, verticalOffset: verticalOffset )
 	}
 }
 

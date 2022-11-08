@@ -41,6 +41,13 @@ public extension UIView {
 		return padding( insets )
 	}
 
+	/// A view that pads this view inside the specified edge insets with
+	/// specified amount of padding.
+	func padding( _ length: Double = 16 ) -> UIView {
+		padding( .all, length )
+	}
+
+
 	func padding(
 		_ insets: UIEdgeInsets,
 		forceNewContainer: Bool = false
