@@ -90,3 +90,47 @@ public extension XTView {
 		return self
 	}
 }
+
+
+public extension XTView {
+
+	@objc func background(
+		color: UIColor = .white
+	) -> Self {
+
+		backgroundColor = color
+		return self
+	}
+
+	@objc func cornerRadius(
+		_ cornerRadius: Double = 0
+	) -> Self {
+
+		layer.cornerRadius = cornerRadius
+		return self
+	}
+
+	@objc func shadow(
+		color: UIColor,
+		radius: Double = 1,
+		offset: CGSize = .zero
+	) -> Self {
+
+		layer.shadowColor = color.cgColor
+		layer.shadowRadius = radius
+		layer.shadowOffset = offset
+		layer.shadowOpacity = 1
+
+		return self
+	}
+
+	@objc func border(
+		color: UIColor,
+		width: Double = (1 / UIScreen.main.scale)
+	) -> Self {
+		layer.borderColor = color.cgColor
+		layer.borderWidth = width
+
+		return self
+	}
+}
