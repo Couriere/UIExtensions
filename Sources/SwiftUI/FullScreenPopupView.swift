@@ -100,12 +100,19 @@ private struct FullScreenView<Item: Identifiable, ParentContent: View, PopupView
 	let parentContent: ParentContent
 
 	@State private var underlyingViewController: UIViewController?
+	@State private var overlay: UIViewController?
 
 	var body: some View {
 		parentContent
 			._underlyingViewController { underlyingViewController = $0 }
 			.onChange( of: isPresented ) { _ in presentOrDismissFullScreenCover() }
-			.onChange(of: item?.id ) { _ in presentOrDismissFullScreenCover() }
+			.onChange( of: item?.id ) { _ in presentOrDismissFullScreenCover() }
+
+			.onDisappear {
+				overlay?.dismiss( animated: true )
+				overlay = nil
+				underlyingViewController = nil
+			}
 	}
 }
 
@@ -136,7 +143,7 @@ private extension FullScreenView {
 		}
 	}
 
-	/// Показывает или скрывает окно на весь экран.
+	/// Presenting or dismissing overlay controller.
 	private func presentOrDismissFullScreenCover() {
 
 		let userDismissHandler = {
@@ -145,7 +152,7 @@ private extension FullScreenView {
 			onDismiss?()
 		}
 
-		switch ( isPresented, item, underlyingViewController?.presentedViewController ) {
+		switch ( isPresented, item, overlay ) {
 		case ( true, .some( let parameter ), nil ):
 			let overlay = WrappedHostingController(
 				rootView: content( parameter ),
@@ -156,9 +163,10 @@ private extension FullScreenView {
 			overlay.view.backgroundColor = .clear
 
 			underlyingViewController?.present( overlay, animated: true )
+			self.overlay = overlay
 
 		case let ( true, .some( parameter ), .some ):
-			underlyingViewController?.dismiss( animated: true ) {
+			overlay?.dismiss( animated: true ) {
 				let overlay = WrappedHostingController( rootView: content( parameter ),
 														onDismiss: userDismissHandler )
 				overlay.modalTransitionStyle = transitionStyle
@@ -166,12 +174,12 @@ private extension FullScreenView {
 				overlay.view.backgroundColor = .clear
 
 				underlyingViewController?.present( overlay, animated: true )
+				self.overlay = overlay
 			}
 
-		case ( false, _, .some ):
-			underlyingViewController?.dismiss( animated: true, completion: onDismiss )
-		case ( _, nil, .some ):
-			underlyingViewController?.dismiss( animated: true, completion: onDismiss )
+		case ( false, _, .some ), ( _, nil, .some ):
+			overlay?.dismiss( animated: true, completion: onDismiss )
+			overlay = nil
 
 		default:
 			break
