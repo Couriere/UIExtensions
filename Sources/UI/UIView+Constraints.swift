@@ -450,7 +450,14 @@ public extension LayoutGuideProtocol {
 }
 #endif
 
-
+public extension XTEdgeInsets {
+	init( _ sides: SideInsets ) {
+		self.init(
+			top: sides.top ?? 0, left: sides.leading ?? 0,
+			bottom: sides.bottom ?? 0, right: sides.trailing ?? 0
+		)
+	}
+}
 
 
 public protocol LayoutGuideProtocol {
