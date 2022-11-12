@@ -20,9 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if os(iOS)||os(tvOS)
-
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
+
+#if os(iOS)||os(tvOS)
 
 public extension Date {
 
@@ -732,4 +736,124 @@ public extension LayoutGuideProtocol {
 			priority: priority
 		)
 	}
+}
+
+
+@available( *, deprecated )
+public struct SideInsets: Hashable {
+	// Specify amount to inset of outset for each of the edges.
+	// Positive values for `inset`,
+	// negative values for `outset`.
+	public var top: Double?
+	public var leading: Double?
+	public var bottom: Double?
+	public var trailing: Double?
+
+	public init(
+		top: Double? = nil, leading: Double? = nil,
+		bottom: Double? = nil, trailing: Double? = nil
+	) {
+		self.top = top
+		self.leading = leading
+		self.bottom = bottom
+		self.trailing = trailing
+	}
+
+	public static let top = SideInsets( top: 0 )
+	public static func top( _ inset: Double ) -> SideInsets {
+		SideInsets( top: inset )
+	}
+
+	public static let leading = SideInsets( leading: 0 )
+	public static func leading( _ inset: Double ) -> SideInsets {
+		SideInsets( leading: inset )
+	}
+
+	public static let bottom = SideInsets( bottom: 0 )
+	public static func bottom( _ inset: Double ) -> SideInsets {
+		SideInsets( bottom: inset )
+	}
+
+	public static let trailing = SideInsets( trailing: 0 )
+	public static func trailing( _ inset: Double ) -> SideInsets {
+		SideInsets( trailing: inset )
+	}
+
+	public static let horizontally = SideInsets( leading: 0, trailing: 0 )
+	public static func horizontally( _ inset: Double ) -> SideInsets {
+		SideInsets( leading: inset, trailing: inset )
+	}
+	public static func horizontally( _ leading: Double, _ trailing: Double ) -> SideInsets {
+		SideInsets( leading: leading, trailing: trailing )
+	}
+
+	public static let vertically = SideInsets( top: 0, bottom: 0 )
+	public static func vertically( _ inset: Double ) -> SideInsets {
+		SideInsets( top: inset, bottom: inset )
+	}
+	public static func vertically( _ top: Double, _ bottom: Double ) -> SideInsets {
+		SideInsets( top: top, bottom: bottom )
+	}
+
+	public static let all = SideInsets( top: 0, leading: 0, bottom: 0, trailing: 0 )
+	public static func all( _ inset: Double ) -> SideInsets {
+		SideInsets( top: inset, leading: inset, bottom: inset, trailing: inset )
+	}
+	public static func all( _ horizontal: Double, _ vertical: Double ) -> SideInsets {
+		SideInsets(
+			top: vertical,
+			leading: horizontal,
+			bottom: vertical,
+			trailing: horizontal
+		)
+	}
+}
+
+public extension XTEdgeInsets {
+	@available( *, deprecated )
+	init( _ sides: SideInsets ) {
+		self.init(
+			top: sides.top ?? 0, left: sides.leading ?? 0,
+			bottom: sides.bottom ?? 0, right: sides.trailing ?? 0
+		)
+	}
+}
+
+
+extension LayoutGuideProtocol {
+	/// Constrains sender to specified sides of `view`.
+	/// If `view` is `nil`, superview of the sender is used.
+	@discardableResult
+	@available( *, deprecated, renamed: "pin(_:_:to:)" )
+	func pin(
+		_ sides: SideInsets,
+		to view: LayoutGuideProtocol? = nil
+	) -> [ NSLayoutConstraint ] {
+		let secondItem = view ?? owningView!
+		var constraints: [ NSLayoutConstraint ] = []
+
+		if let top = sides.top {
+			constraints.append(
+				topAnchor.constraint( equalTo: secondItem.topAnchor, constant: top )
+			)
+		}
+		if let leading = sides.leading {
+			constraints.append(
+				leadingAnchor.constraint( equalTo: secondItem.leadingAnchor, constant: leading )
+			)
+		}
+		if let bottom = sides.bottom {
+			constraints.append(
+				secondItem.bottomAnchor.constraint( equalTo: bottomAnchor, constant: bottom )
+			)
+		}
+		if let trailing = sides.trailing {
+			constraints.append(
+				secondItem.trailingAnchor.constraint( equalTo: trailingAnchor, constant: trailing )
+			)
+		}
+
+		return constraints.activate()
+	}
+
 }

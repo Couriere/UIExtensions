@@ -83,6 +83,9 @@ public extension XTView {
 	}
 }
 
+
+#if canImport(UIKit)
+
 public extension XTView {
 
 	func disableUserInteractions() -> Self {
@@ -134,3 +137,4 @@ public extension XTView {
 		return self
 	}
 }
+#endif

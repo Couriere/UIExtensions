@@ -28,7 +28,7 @@ public extension UIView {
 	/// A view that pads this view inside the specified edge insets with
 	/// specified amount of padding.
 	func padding(
-		_ edges: PaddingContainer.Edges = .all,
+		_ edges: Edges = .all,
 		_ length: Double = 16,
 		forceNewContainer: Bool = false
 	) -> UIView {
@@ -66,32 +66,6 @@ public extension UIView {
 /// Container that envelops supplied view with optional insets.
 open class PaddingContainer: UIView {
 
-	/// Constraint flexibility options.
-	public struct Edges: OptionSet, Hashable {
-		public let rawValue: Int
-
-		public init( rawValue: Edges.RawValue ) {
-			self.rawValue = rawValue
-		}
-
-		/// Leading edge.
-		public static let leading = Edges( rawValue: 1 << 0 )
-		/// Trailing edge.
-		public static let trailing = Edges( rawValue: 1 << 1 )
-		/// Leading and trailing edges.
-		public static let horizontal: Edges = [ .leading, .trailing ]
-
-		/// Top edge.
-		public static let top = Edges( rawValue: 1 << 2 )
-		/// Bottom edge.
-		public static let bottom = Edges( rawValue: 1 << 3 )
-		/// Top and bottom edges.
-		public static let vertical: Edges = [ .top, .bottom ]
-
-		/// All edges.
-		public static let all: Edges = [ .leading, .top, .trailing, .bottom ]
-	}
-
 	private var paddingConstraints: [ Edges : NSLayoutConstraint ]!
 
 	fileprivate init( containedView: UIView ) {
@@ -104,8 +78,8 @@ open class PaddingContainer: UIView {
 
 
 		addSubview( containedView )
-		let constraints = [
-			( Edges.leading, containedView.leadingAnchor.constraint( equalTo: self.leadingAnchor )),
+		let constraints: [ ( Edges, NSLayoutConstraint ) ] = [
+			( .leading, containedView.leadingAnchor.constraint( equalTo: self.leadingAnchor )),
 			( .trailing, self.trailingAnchor.constraint( equalTo: containedView.trailingAnchor )),
 			( .top, containedView.topAnchor.constraint( equalTo: self.topAnchor )),
 			( .bottom, self.bottomAnchor.constraint( equalTo: containedView.bottomAnchor ))

@@ -70,7 +70,7 @@ class View_Constraints_Tests: XCTestCase {
 	// MARK: - constrainHorizontallyToSuperview()
 
 	func testConstrainHorizontallyToSuperview() {
-		let constraints = child.pin( .horizontally )
+		let constraints = child.pin( .horizontal )
 
 		XCTAssert( constraints.count == 2 )
 		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,
@@ -81,7 +81,7 @@ class View_Constraints_Tests: XCTestCase {
 
 	func testConstrainHorizontallyToSuperviewWithInset() {
 
-		let constraints = child.pin( .horizontally( 10 ))
+		let constraints = child.pin( .horizontal, 10 )
 
 		XCTAssert( constraints.count == 2 )
 		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,
@@ -95,7 +95,7 @@ class View_Constraints_Tests: XCTestCase {
 
 	func testConstrainVerticallyToSuperview() {
 
-		let constraints = child.pin( .vertically )
+		let constraints = child.pin( .vertical )
 
 		XCTAssert( constraints.count == 2 )
 		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,
@@ -106,7 +106,7 @@ class View_Constraints_Tests: XCTestCase {
 
 	func testConstrainVerticallyToSuperviewWithInset() {
 
-		let constraints = child.pin( .vertically( 10 ))
+		let constraints = child.pin( .vertical, 10 )
 
 		XCTAssert( constraints.count == 2 )
 		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,
@@ -149,7 +149,8 @@ class View_Constraints_Tests: XCTestCase {
 	@available( iOS 11, tvOS 11, OSX 11, * )
 	func testConstrainToSuperviewWithInsets() {
 
-		let constraints = child.pin( SideInsets( top: 1, leading: 2, bottom: 3, trailing: 4 ))
+		let insets = XTEdgeInsets( top: 1, left: 2, bottom: 3, right: 4 )
+		let constraints = child.pin( insets )
 
 		XCTAssert( constraints.count == 4 )
 		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,
@@ -165,11 +166,12 @@ class View_Constraints_Tests: XCTestCase {
 	@available( iOS 11, tvOS 11, OSX 11, * )
 	func testConstrainToSuperviewSafeArea() {
 
-		let constraints = child
-			.pin(
-				SideInsets( top: 40, leading: 30, bottom: 20, trailing: 10 ),
-				to: parent.safeAreaLayoutGuide
-			)
+		var constraints: [ NSLayoutConstraint ] = []
+		constraints += child.pin( .top, 40, to: parent.safeAreaLayoutGuide )
+		constraints += child.pin( .leading, 30, to: parent.safeAreaLayoutGuide )
+		constraints += child.pin( .bottom, 20, to: parent.safeAreaLayoutGuide )
+		constraints += child.pin( .trailing, 10, to: parent.safeAreaLayoutGuide )
+
 
 		XCTAssert( constraints.count == 4 )
 		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,

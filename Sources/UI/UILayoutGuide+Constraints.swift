@@ -47,9 +47,14 @@ public extension UILayoutGuide {
 	/// фокус переходил на объект, расположенный не непосредственно над или под
 	/// текущим объектом с фокусом.
 	@discardableResult
-	func constrainToSuperviewHorizontallyAndVertically( to view: UIView, insets: UIEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
-		pin( SideInsets( top: insets.top, bottom: insets.bottom ), to: self ) +
-		pin( SideInsets( leading: insets.left, trailing: insets.right ))
+	func constrainToSuperviewHorizontallyAndVertically(
+		to view: UIView,
+		insets: UIEdgeInsets = .zero
+	) -> [ NSLayoutConstraint ] {
+		pin( .top, insets.top, to: view ) +
+		pin( .bottom, insets.bottom, to: view ) +
+		pin( .leading, insets.left ) +
+		pin( .trailing, insets.right )
 	}
 }
 

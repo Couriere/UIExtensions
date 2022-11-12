@@ -47,112 +47,106 @@ public struct Axes: OptionSet, Hashable {
 
 
 
-public struct SideInsets: Hashable {
-	// Specify amount to inset of outset for each of the edges.
-	// Positive values for `inset`,
-	// negative values for `outset`.
-	public var top: Double?
-	public var leading: Double?
-	public var bottom: Double?
-	public var trailing: Double?
 
-	public init(
-		top: Double? = nil, leading: Double? = nil,
-		bottom: Double? = nil, trailing: Double? = nil
-	) {
-		self.top = top
-		self.leading = leading
-		self.bottom = bottom
-		self.trailing = trailing
+/// Constraint flexibility options.
+public struct Edges: OptionSet, Hashable {
+
+	public typealias RawValue = Int8
+
+	public let rawValue: Int8
+
+	public init( rawValue: Edges.RawValue ) {
+		self.rawValue = rawValue
 	}
 
-	public static let top = SideInsets( top: 0 )
-	public static func top( _ inset: Double ) -> SideInsets {
-		SideInsets( top: inset )
-	}
+	/// Leading edge.
+	public static let leading = Edges( rawValue: 1 << 0 )
+	/// Trailing edge.
+	public static let trailing = Edges( rawValue: 1 << 1 )
+	/// Leading and trailing edges.
+	public static let horizontal: Edges = [ .leading, .trailing ]
+	/// Leading and trailing edges.
+	public static let horizontally = Edges.horizontal
 
-	public static let leading = SideInsets( leading: 0 )
-	public static func leading( _ inset: Double ) -> SideInsets {
-		SideInsets( leading: inset )
-	}
+	/// Top edge.
+	public static let top = Edges( rawValue: 1 << 2 )
+	/// Bottom edge.
+	public static let bottom = Edges( rawValue: 1 << 3 )
+	/// Top and bottom edges.
+	public static let vertical: Edges = [ .top, .bottom ]
+	/// Top and bottom edges.
+	public static let vertically = Edges.vertical
 
-	public static let bottom = SideInsets( bottom: 0 )
-	public static func bottom( _ inset: Double ) -> SideInsets {
-		SideInsets( bottom: inset )
-	}
-
-	public static let trailing = SideInsets( trailing: 0 )
-	public static func trailing( _ inset: Double ) -> SideInsets {
-		SideInsets( trailing: inset )
-	}
-
-	public static let horizontally = SideInsets( leading: 0, trailing: 0 )
-	public static func horizontally( _ inset: Double ) -> SideInsets {
-		SideInsets( leading: inset, trailing: inset )
-	}
-	public static func horizontally( _ leading: Double, _ trailing: Double ) -> SideInsets {
-		SideInsets( leading: leading, trailing: trailing )
-	}
-
-	public static let vertically = SideInsets( top: 0, bottom: 0 )
-	public static func vertically( _ inset: Double ) -> SideInsets {
-		SideInsets( top: inset, bottom: inset )
-	}
-	public static func vertically( _ top: Double, _ bottom: Double ) -> SideInsets {
-		SideInsets( top: top, bottom: bottom )
-	}
-
-	public static let all = SideInsets( top: 0, leading: 0, bottom: 0, trailing: 0 )
-	public static func all( _ inset: Double ) -> SideInsets {
-		SideInsets( top: inset, leading: inset, bottom: inset, trailing: inset )
-	}
-	public static func all( _ horizontal: Double, _ vertical: Double ) -> SideInsets {
-		SideInsets(
-			top: vertical,
-			leading: horizontal,
-			bottom: vertical,
-			trailing: horizontal
-		)
-	}
+	/// All edges.
+	public static let all: Edges = [ .leading, .top, .trailing, .bottom ]
 }
+
 
 public extension LayoutGuideProtocol {
 
-	/// Constrains sender to specified sides of `view`.
+	/// Constrains sender to the `view` with specified inset.
 	/// If `view` is `nil`, superview of the sender is used.
 	@discardableResult
 	func pin(
-		_ sides: SideInsets = .all,
+		_ inset: Double,
+		to view: LayoutGuideProtocol? = nil
+	) -> [ NSLayoutConstraint ] {
+		pin( .all, inset, to: view )
+	}
+
+	/// Constrains sender to the specified sides of `view` with specified inset.
+	/// If `view` is `nil`, superview of the sender is used.
+	@discardableResult
+	func pin(
+		_ edges: Edges = .all,
+		_ inset: Double = 0,
 		to view: LayoutGuideProtocol? = nil
 	) -> [ NSLayoutConstraint ] {
 		let secondItem = view ?? owningView!
 		var constraints: [ NSLayoutConstraint ] = []
 
-		if let top = sides.top {
+		if edges.contains( .top ) {
 			constraints.append(
-				topAnchor.constraint( equalTo: secondItem.topAnchor, constant: top )
+				topAnchor.constraint( equalTo: secondItem.topAnchor, constant: inset )
 			)
 		}
-		if let leading = sides.leading {
+		if edges.contains( .leading ) {
 			constraints.append(
-				leadingAnchor.constraint( equalTo: secondItem.leadingAnchor, constant: leading )
+				leadingAnchor.constraint( equalTo: secondItem.leadingAnchor, constant: inset )
 			)
 		}
-		if let bottom = sides.bottom {
+		if edges.contains( .bottom ) {
 			constraints.append(
-				secondItem.bottomAnchor.constraint( equalTo: bottomAnchor, constant: bottom )
+				secondItem.bottomAnchor.constraint( equalTo: bottomAnchor, constant: inset )
 			)
 		}
-		if let trailing = sides.trailing {
+		if edges.contains( .trailing ) {
 			constraints.append(
-				secondItem.trailingAnchor.constraint( equalTo: trailingAnchor, constant: trailing )
+				secondItem.trailingAnchor.constraint( equalTo: trailingAnchor, constant: inset )
 			)
 		}
 
 		return constraints.activate()
 	}
 
+	/// Constrains sender to the `view` with specified inset.
+	/// If `view` is `nil`, superview of the sender is used.
+	@discardableResult
+	func pin(
+		_ insets: XTEdgeInsets,
+		to view: LayoutGuideProtocol? = nil
+	) -> [ NSLayoutConstraint ] {
+		let view = view ?? owningView!
 
+		return [
+			topAnchor.constraint( equalTo: view.topAnchor, constant: insets.top ),
+			leadingAnchor.constraint( equalTo: view.leadingAnchor, constant: insets.left ),
+			view.bottomAnchor.constraint( equalTo: bottomAnchor, constant: insets.bottom ),
+			view.trailingAnchor.constraint( equalTo: trailingAnchor, constant: insets.right ),
+		]
+			.activate()
+	}
+	
 	// MARK: - View centers.
 
 	@discardableResult
@@ -449,16 +443,6 @@ public extension LayoutGuideProtocol {
 	}
 }
 #endif
-
-public extension XTEdgeInsets {
-	init( _ sides: SideInsets ) {
-		self.init(
-			top: sides.top ?? 0, left: sides.leading ?? 0,
-			bottom: sides.bottom ?? 0, right: sides.trailing ?? 0
-		)
-	}
-}
-
 
 public protocol LayoutGuideProtocol {
 
