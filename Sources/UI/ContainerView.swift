@@ -45,12 +45,12 @@ open class ContainerView: UIView {
 		public static let flexibleBottom = Options( rawValue: 1 << 3 )
 
 		/// Flexible horizontal constraints.
-		public static let flexibleHorizontal = [ Options.flexibleLeft, .flexibleRight ]
+		public static let flexibleHorizontal: Options = [ .flexibleLeft, .flexibleRight ]
 		/// Flexible vertical constraints.
-		public static let flexibleVertical = [ Options.flexibleTop, .flexibleBottom ]
+		public static let flexibleVertical: Options = [ .flexibleTop, .flexibleBottom ]
 
 		/// All constraints are flexible.
-		public static let flexibleAll = [ Options.flexibleLeft, .flexibleRight,
+		public static let flexibleAll: Options = [ .flexibleLeft, .flexibleRight,
 										  .flexibleTop, .flexibleBottom ]
 	}
 

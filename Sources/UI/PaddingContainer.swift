@@ -38,13 +38,16 @@ public extension UIView {
 			bottom: edges.contains( .bottom ) ? length : 0,
 			right: edges.contains( .trailing ) ? length : 0
 		)
-		return padding( insets )
+		return padding( insets, forceNewContainer: forceNewContainer )
 	}
 
 	/// A view that pads this view inside the specified edge insets with
 	/// specified amount of padding.
-	func padding( _ length: Double = 16 ) -> UIView {
-		padding( .all, length )
+	func padding(
+		_ length: Double = 16,
+		forceNewContainer: Bool = false
+	) -> UIView {
+		padding( .all, length, forceNewContainer: forceNewContainer )
 	}
 
 
