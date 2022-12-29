@@ -88,6 +88,7 @@ public extension XTView {
 
 public extension XTView {
 
+	@discardableResult
 	func disableUserInteractions() -> Self {
 		isUserInteractionEnabled = false
 		return self
@@ -97,7 +98,8 @@ public extension XTView {
 
 public extension XTView {
 
-	@objc func background(
+	@discardableResult
+	func background(
 		color: UIColor = .white
 	) -> Self {
 
@@ -105,7 +107,8 @@ public extension XTView {
 		return self
 	}
 
-	@objc func cornerRadius(
+	@discardableResult
+	func cornerRadius(
 		_ cornerRadius: Double = 0
 	) -> Self {
 
@@ -113,7 +116,8 @@ public extension XTView {
 		return self
 	}
 
-	@objc func shadow(
+	@discardableResult
+	func shadow(
 		color: UIColor,
 		radius: Double = 1,
 		offset: CGSize = .zero
@@ -127,7 +131,8 @@ public extension XTView {
 		return self
 	}
 
-	@objc func border(
+	@discardableResult
+	func border(
 		color: UIColor,
 		width: Double = (1 / UIScreen.main.scale)
 	) -> Self {
