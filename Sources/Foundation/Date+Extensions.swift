@@ -86,32 +86,54 @@ public extension Date {
 		return calendar.startOfDay( for: self )
 	}
 
-	/// Returns start of the month date.
+	/// Returns first second of the month.
 	/// - parameter timeZone: Use this time zone. If `nil` use system time zone.
 	func startOfMonth( _ timeZone: TimeZone? = nil ) -> Date {
 
 		var calendar = Calendar.current
 		if let timeZone = timeZone { calendar.timeZone = timeZone }
 
-		let components = DateComponents( day: 1, hour: 0, minute: 0, second: 0, nanosecond: 0 )
-		return calendar.nextDate( after: self,
-								  matching: components,
-								  matchingPolicy: .nextTime,
-								  direction: .backward )!
+		return calendar
+			.dateInterval( of: .month, for: self )?
+			.start ?? self
 	}
 
-	/// Returns start of the year.
+	/// Returns last second of the month.
+	/// - parameter timeZone: Use this time zone. If `nil` use system time zone.
+	func endOfMonth( _ timeZone: TimeZone? = nil ) -> Date {
+
+		var calendar = Calendar.current
+		if let timeZone = timeZone { calendar.timeZone = timeZone }
+
+		return calendar
+			.dateInterval( of: .month, for: self )?
+			.end
+			.addingTimeInterval( -1 ) ?? self
+	}
+
+	/// Returns first second of the year.
 	/// - parameter timeZone: Use this time zone. If `nil` use system time zone.
 	func startOfYear( _ timeZone: TimeZone? = nil ) -> Date {
 
 		var calendar = Calendar.current
 		if let timeZone = timeZone { calendar.timeZone = timeZone }
 
-		let components = DateComponents( month: 1, day: 1, hour: 0, minute: 0, second: 0, nanosecond: 0 )
-		return calendar.nextDate( after: self,
-								  matching: components,
-								  matchingPolicy: .nextTimePreservingSmallerComponents,
-								  direction: .backward )!
+		return calendar
+			.dateInterval( of: .year, for: self )?
+			.start ?? self
+	}
+
+	/// Returns last second of the year.
+	/// - parameter timeZone: Use this time zone. If `nil` use system time zone.
+	func endOfYear( _ timeZone: TimeZone? = nil ) -> Date {
+
+		var calendar = Calendar.current
+		if let timeZone = timeZone { calendar.timeZone = timeZone }
+
+		return calendar
+			.dateInterval( of: .year, for: self )?
+			.end
+			.addingTimeInterval( -1 ) ?? self
 	}
 
 

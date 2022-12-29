@@ -97,25 +97,43 @@ class DateExtensionsTests: XCTestCase {
 	}
 
 	func testStartOfMonth() {
-		let date1 = formatter.date( from: "2019-10-01 00:00:00" )!
-		let date2 = formatter.date( from: "2019-10-03 10:30:00" )!
+		let date1 = formatter.date( from: "2019-10-03 10:30:00" )!
+		let date2 = formatter.date( from: "2019-10-01 00:00:00" )!
 		let date3 = formatter.date( from: "2019-10-31 23:59:59" )!
-		let date4 = formatter.date( from: "2019-09-01 00:00:00" )!
 
-		XCTAssert( date1.startOfMonth() == date4 )
-		XCTAssert( date2.startOfMonth() == date1 )
-		XCTAssert( date3.startOfMonth() == date1 )
+		XCTAssert( date1.startOfMonth() == date2 )
+		XCTAssert( date2.startOfMonth() == date2 )
+		XCTAssert( date3.startOfMonth() == date2 )
+	}
+
+	func testEndOfMonth() {
+		let date1 = formatter.date( from: "2019-10-03 10:30:00" )!
+		let date2 = formatter.date( from: "2019-10-01 00:00:00" )!
+		let date3 = formatter.date( from: "2019-10-31 23:59:59" )!
+
+		XCTAssert( date1.endOfMonth() == date3 )
+		XCTAssert( date2.endOfMonth() == date3 )
+		XCTAssert( date3.endOfMonth() == date3 )
 	}
 
 	func testStartOfYear() {
 		let date1 = formatter.date( from: "2019-01-01 00:00:00" )!
 		let date2 = formatter.date( from: "2019-10-03 10:30:00" )!
 		let date3 = formatter.date( from: "2019-12-31 23:59:59" )!
-		let date4 = formatter.date( from: "2018-01-01 00:00:00" )!
 
-		XCTAssert( date1.startOfYear() == date4 )
+		XCTAssert( date1.startOfYear() == date1 )
 		XCTAssert( date2.startOfYear() == date1 )
 		XCTAssert( date3.startOfYear() == date1 )
+	}
+
+	func testEndOfYear() {
+		let date1 = formatter.date( from: "2019-01-01 00:00:00" )!
+		let date2 = formatter.date( from: "2019-10-03 10:30:00" )!
+		let date3 = formatter.date( from: "2019-12-31 23:59:59" )!
+
+		XCTAssert( date1.endOfYear() == date3 )
+		XCTAssert( date2.endOfYear() == date3 )
+		XCTAssert( date3.endOfYear() == date3 )
 	}
 
 	func testWeekday() {
