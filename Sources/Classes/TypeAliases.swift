@@ -23,6 +23,7 @@
 #if canImport(AppKit)
 import AppKit
 public typealias XTView = NSView
+public typealias XTStackView = NSStackView
 public typealias XTLayoutGuide = NSLayoutGuide
 public typealias XTLayoutPriority = NSLayoutConstraint.Priority
 public typealias XTOrientation = NSUserInterfaceLayoutOrientation
@@ -33,6 +34,7 @@ public typealias XTImage = NSImage
 #else
 import UIKit
 public typealias XTView = UIView
+public typealias XTStackView = UIStackView
 public typealias XTLayoutGuide = UILayoutGuide
 public typealias XTLayoutPriority = UILayoutPriority
 public typealias XTOrientation = NSLayoutConstraint.Axis

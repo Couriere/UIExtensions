@@ -50,13 +50,15 @@ public extension UIStackView {
 			components.flatMap { $0.arrayOfViews }
 		}
 	}
+	@available( *, deprecated, renamed: "UIViewBuilder" )
+	typealias StackViewBuilder = UIViewBuilder
 
 	convenience init(
 		axis: NSLayoutConstraint.Axis = .vertical,
 		spacing: CGFloat = 0,
 		distribution: UIStackView.Distribution = .fill,
 		alignment: UIStackView.Alignment = .fill,
-		@StackViewBuilder _ builder: () -> [ UIView ]
+		@UIViewBuilder _ builder: () -> [ UIView ]
 	) {
 		self.init()
 		self.translatesAutoresizingMaskIntoConstraints = false
@@ -68,9 +70,9 @@ public extension UIStackView {
 		addArrangedSubviews( builder )
 	}
 
-	func addArrangedSubviews( @StackViewBuilder _ builder: () -> [ UIView ] ) {
 		var customSpaces: [ UIView : CGFloat ] = [:]
 		var arrangedSubviews: [ UIView ] = []
+	func addArrangedSubviews( @UIViewBuilder _ builder: () -> [ XTView ] ) {
 		for view in builder() {
 			if let customSpacing = view as? _CustomBuilderSpacer {
 				arrangedSubviews.last.then { customSpaces[ $0 ] = customSpacing.length }
@@ -80,30 +82,6 @@ public extension UIStackView {
 		}
 		self.addArrangedSubviews( arrangedSubviews )
 		customSpaces.forEach { self.setCustomSpacing( $1, after: $0 )}
-	}
-}
-
-public protocol StackViewBuilderArgument {
-	var arrayOfViews: [ UIView ] { get }
-}
-extension UIView: StackViewBuilderArgument {
-	public var arrayOfViews: [UIView] { [ self ] }
-}
-extension Array: StackViewBuilderArgument where Element: UIView {
-	public var arrayOfViews: [UIView] { self }
-}
-
-
-private extension UIStackView {
-	final class _CustomBuilderSpacer: UIView {
-		let length: CGFloat
-		init( _ length: CGFloat ) {
-			self.length = length
-			super.init(frame: .zero)
-		}
-		required init?(coder: NSCoder) {
-			fatalError("init(coder:) has not been implemented")
-		}
 	}
 }
 #endif
