@@ -78,6 +78,11 @@ public extension TimeInterval {
 }
 
 
+public extension Bool {
+	var negate: Bool { !self }
+}
+
+
 infix operator |=: AssignmentPrecedence
 public extension Bool {
 
