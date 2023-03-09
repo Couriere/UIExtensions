@@ -382,6 +382,103 @@ public extension LayoutGuideProtocol {
 	}
 }
 
+// MARK: - Embeding and pinning views
+public extension XTView {
+
+	/// Embeds one or more views inside the current view,
+	/// either as a single view or as a stack view with the provided insets.
+	///
+	/// - parameter inset: The amount of constant inset to apply to the embedded views.
+	/// - parameter content: The block of code that generates the views
+	/// to be embedded. The block should return an array of UIView objects.
+	///
+	/// This method either embeds a single view or a stack view
+	/// with the provided insets.
+	/// - If a single view is provided, it is pinned to the edges
+	/// of the current view using the provided insets.
+	/// - If multiple views are provided, they are added to a vertical stack view,
+	/// which is then pinned to the edges of the current view
+	/// using the provided insets.
+	///
+	/// - precondition: content should return at least one view.
+	///
+	func embed(
+		_ inset: Double,
+		@UIViewBuilder _ content: () -> [ XTView ]
+	) {
+		embed( insets: XTEdgeInsets( constantInset: inset ), content )
+	}
+
+	/// Embeds one or more views inside the current view,
+	/// either as a single view or as a stack view with the provided insets.
+	///
+	/// - parameter horizontalInset: The amount of horizontal inset
+	/// to apply to the embedded views.
+	/// - parameter verticalInset: The amount of vertical inset
+	/// to apply to the embedded views.
+	/// - parameter content: The block of code that generates the views
+	/// to be embedded. The block should return an array of UIView objects.
+	///
+	/// This method either embeds a single view or a stack view
+	/// with the provided insets.
+	/// - If a single view is provided, it is pinned to the edges
+	/// of the current view using the provided insets.
+	/// - If multiple views are provided, they are added to a vertical stack view,
+	/// which is then pinned to the edges of the current view
+	/// using the provided insets.
+	///
+	/// - precondition: content should return at least one view.
+	///
+	func embed(
+		horizontalInset: Double = 0,
+		verticalInset: Double = 0,
+		@UIViewBuilder _ content: () -> [ XTView ]
+	) {
+		let insets = XTEdgeInsets(
+			horizontal: horizontalInset,
+			vertical: verticalInset
+		)
+		embed( insets: insets, content )
+	}
+
+	/// Embeds one or more views inside the current view,
+	/// either as a single view or as a stack view with the provided insets.
+	///
+	/// - parameter insets: The insets to use for pinning the views
+	/// to the edges of the current view.
+	/// - parameter content: The block of code that generates the views
+	/// to be embedded. The block should return an array of UIView objects.
+	///
+	/// This method either embeds a single view or a stack view
+	/// with the provided insets.
+	/// - If a single view is provided, it is pinned to the edges
+	/// of the current view using the provided insets.
+	/// - If multiple views are provided, they are added to a vertical stack view,
+	/// which is then pinned to the edges of the current view
+	/// using the provided insets.
+	///
+	/// - precondition: content should return at least one view.
+	///
+	func embed(
+		insets: XTEdgeInsets = .zero,
+		@UIViewBuilder _ content: () -> [ XTView ]
+	) {
+		let views = content()
+		precondition( views.isNotEmpty )
+
+		if views.count == 1 {
+			let singleView = views[ 0 ]
+			singleView.translatesAutoresizingMaskIntoConstraints = false
+			addSubview( singleView )
+			singleView.pin( insets )
+		} else {
+			let implicitStackView = XTStackView { views }
+			addSubview( implicitStackView )
+			implicitStackView.pin( insets )
+		}
+	}
+}
+
 
 public extension XTView {
 
