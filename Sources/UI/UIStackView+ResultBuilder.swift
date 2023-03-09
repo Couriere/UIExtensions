@@ -22,39 +22,18 @@
 
 #if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
-public func CustomSpacing( _ length: CGFloat ) -> UIView {
-	UIStackView._CustomBuilderSpacer( length )
-}
+public extension XTStackView {
 
-public extension UIStackView {
-
-	@resultBuilder
-	class StackViewBuilder {
-		public static func buildBlock( _ children: StackViewBuilderArgument... ) -> [ UIView ] {
-			return children.flatMap { $0.arrayOfViews }
-		}
-
-		public static func buildOptional( _ component: StackViewBuilderArgument? ) -> [ UIView ] {
-			component?.arrayOfViews ?? []
-		}
-
-		public static func buildEither( first component: StackViewBuilderArgument ) -> [ UIView ] {
-			component.arrayOfViews
-		}
-		public static func buildEither( second component: StackViewBuilderArgument ) -> [ UIView ] {
-			component.arrayOfViews
-		}
-
-		public static func buildArray( _ components: [StackViewBuilderArgument] ) -> [ UIView ] {
-			components.flatMap { $0.arrayOfViews }
-		}
-	}
 	@available( *, deprecated, renamed: "UIViewBuilder" )
 	typealias StackViewBuilder = UIViewBuilder
 
+	#if os(iOS)
 	convenience init(
-		axis: NSLayoutConstraint.Axis = .vertical,
+		_ axis: NSLayoutConstraint.Axis = .vertical,
 		spacing: CGFloat = 0,
 		distribution: UIStackView.Distribution = .fill,
 		alignment: UIStackView.Alignment = .fill,
@@ -69,10 +48,29 @@ public extension UIStackView {
 
 		addArrangedSubviews( builder )
 	}
+	#elseif os(macOS)
+	convenience init(
+		_ orientation: NSUserInterfaceLayoutOrientation = .vertical,
+		spacing: CGFloat = 0,
+		distribution: NSStackView.Distribution = .fill,
+		alignment: NSLayoutConstraint.Attribute? = nil,
+		@UIViewBuilder _ builder: () -> [ NSView ]
+	) {
+		self.init()
+		self.translatesAutoresizingMaskIntoConstraints = false
+		self.orientation = orientation
+		self.spacing = spacing
+		self.distribution = distribution
+		self.alignment = alignment ?? self.alignment
 
-		var customSpaces: [ UIView : CGFloat ] = [:]
-		var arrangedSubviews: [ UIView ] = []
+		addArrangedSubviews( builder )
+	}
+	#endif
+
+
 	func addArrangedSubviews( @UIViewBuilder _ builder: () -> [ XTView ] ) {
+		var customSpaces: [ XTView : CGFloat ] = [:]
+		var arrangedSubviews: [ XTView ] = []
 		for view in builder() {
 			if let customSpacing = view as? _CustomBuilderSpacer {
 				arrangedSubviews.last.then { customSpaces[ $0 ] = customSpacing.length }
@@ -84,4 +82,3 @@ public extension UIStackView {
 		customSpaces.forEach { self.setCustomSpacing( $1, after: $0 )}
 	}
 }
-#endif

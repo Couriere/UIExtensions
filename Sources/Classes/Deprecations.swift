@@ -855,5 +855,19 @@ extension LayoutGuideProtocol {
 
 		return constraints.activate()
 	}
-
 }
+
+#if os(iOS)
+public extension UIStackView {
+	@available( *, deprecated, message: "renamed to: init(_:spacing:distribution:alignment:_:")
+	convenience init(
+		axis: NSLayoutConstraint.Axis,
+		spacing: Double = 0,
+		distribution: UIStackView.Distribution = .fill,
+		alignment: UIStackView.Alignment = .fill,
+		@UIViewBuilder _ builder: () -> [ UIView ]
+	) {
+		self.init( axis, spacing: spacing, distribution: distribution, alignment: alignment, builder )
+	}
+}
+#endif

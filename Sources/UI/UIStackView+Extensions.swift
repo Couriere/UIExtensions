@@ -22,16 +22,19 @@
 
 #if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
-public extension UIStackView {
+public extension XTStackView {
 
 	/// Adds views to the end of the arrangedSubviews array.
-	func addArrangedSubviews( _ views: [ UIView ] ) {
+	func addArrangedSubviews( _ views: [ XTView ] ) {
 		views.forEach { addArrangedSubview( $0 ) }
 	}
 
 	/// Adds views to the end of the arrangedSubviews array.
-	func addArrangedSubviews( _ views: UIView... ) {
+	func addArrangedSubviews( _ views: XTView... ) {
 		views.forEach { addArrangedSubview( $0 ) }
 	}
 
@@ -42,8 +45,7 @@ public extension UIStackView {
 	/// However, this method does not remove provided views from the stack’s
 	/// subviews array; therefore, the views are still displayed
 	/// as part of the view hierarchy.
-	func removeArrangedSubviews( _ views: [ UIView ] ) {
+	func removeArrangedSubviews( _ views: [ XTView ] ) {
 		views.forEach { removeArrangedSubview( $0 ) }
 	}
 }
-#endif
