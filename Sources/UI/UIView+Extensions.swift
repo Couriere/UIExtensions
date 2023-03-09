@@ -61,6 +61,56 @@ public extension XTView {
 
 public extension XTView {
 
+	/// Sets the content hugging and compression resistance priorities
+	/// for the specified axes.
+	///
+	/// - parameters:
+	///   - priority: The priority to set for the content hugging and compression resistance.
+	///   - axes: The axes for which to set the priority.
+	/// - returns: The modified `UIView` instance.
+	///
+	/// This method simplifies setting both content hugging and
+	/// compression resistance priorities for both the horizontal
+	/// and vertical axes.
+	///
+	func settingContentPriority(
+		_ priority: XTLayoutPriority,
+		for axes: Axes
+	) -> Self {
+		if axes.contains( .horizontal ) {
+			setContentHuggingPriority( priority, for: .horizontal )
+			setContentCompressionResistancePriority( priority, for: .horizontal )
+		}
+		if axes.contains( .vertical ) {
+			setContentHuggingPriority( priority, for: .vertical )
+			setContentCompressionResistancePriority( priority, for: .vertical )
+		}
+
+		return self
+	}
+
+	/// Sets the content hugging and compression resistance priorities
+	/// for the specified axes.
+	///
+	/// - parameters:
+	///   - priority: The priority to set for the content hugging and compression resistance.
+	///   - axes: The axes for which to set the priority.
+	///
+	/// This method simplifies setting both content hugging and
+	/// compression resistance priorities for both the horizontal
+	/// and vertical axes.
+	///
+	func setContentPriority(
+		_ priority: XTLayoutPriority,
+		for axes: Axes
+	) {
+		_ = settingContentPriority( priority, for: axes )
+	}
+}
+
+
+public extension XTView {
+
 	/**
 	Load view from xib file.
 
@@ -86,7 +136,7 @@ public extension XTView {
 
 #if canImport(UIKit)
 
-public extension XTView {
+public extension UIView {
 
 	@discardableResult
 	func disableUserInteractions() -> Self {
@@ -96,7 +146,7 @@ public extension XTView {
 }
 
 
-public extension XTView {
+public extension UIView {
 
 	@discardableResult
 	func background(
