@@ -84,8 +84,16 @@ public struct Edges: OptionSet, Hashable {
 
 public extension LayoutGuideProtocol {
 
-	/// Constrains sender to the `view` with specified inset.
-	/// If `view` is `nil`, superview of the sender is used.
+	/// Constrains all edges of the sender view
+	/// to the specified view or parent view,
+	/// with the specified insets.
+	///
+	/// - parameter inset: The amount of inset to be applied
+	/// to the pinned edges.
+	/// - parameter view: The view to which the sender view should be pinned.
+	/// if `nil`, pins the sender view to its parent view.
+	/// - returns: An array of the newly created and activated constraints.
+	///
 	@discardableResult
 	func pin(
 		_ inset: Double,
@@ -94,8 +102,18 @@ public extension LayoutGuideProtocol {
 		pin( .all, inset, to: view )
 	}
 
-	/// Constrains sender to the specified sides of `view` with specified inset.
-	/// If `view` is `nil`, superview of the sender is used.
+	/// Constrains edges of the sender view
+	/// to the specified view or parent view,
+	/// with the specified insets.
+	///
+	/// - parameter edges: The edges of the view to be pinned.
+	///  Defaults to .all, which pins all edges of the view.
+	/// - parameter inset: The amount of inset to be applied
+	/// to the pinned edges. Defaults to 0.
+	/// - parameter view: The view to which the sender view should be pinned.
+	/// if `nil`, pins the sender view to its parent view.
+	/// - returns: An array of the newly created and activated constraints.
+	///
 	@discardableResult
 	func pin(
 		_ edges: Edges = .all,
@@ -129,8 +147,16 @@ public extension LayoutGuideProtocol {
 		return constraints.activate()
 	}
 
-	/// Constrains sender to the `view` with specified inset.
-	/// If `view` is `nil`, superview of the sender is used.
+
+	/// Constrains the edges of the sender view to the corresponding edges
+	/// of the specified view or its owning view, with the specified edge insets.
+	///
+	/// - parameter insets: The edge insets to be applied to the pinned edges
+	/// of the sender view.
+	/// - parameter view: The view to which the current view should be pinned.
+	/// If `nil`, constrains the view to its parent view.
+	/// - returns: An array of the newly created and activated constraints.
+	///
 	@discardableResult
 	func pin(
 		_ insets: XTEdgeInsets,
@@ -180,6 +206,15 @@ public extension LayoutGuideProtocol {
 
 	// MARK: - Size constraints
 
+	/// Constrains the width of the current view
+	/// to the specified value.
+	///
+	/// - parameter width: The value to be applied
+	/// to width constraints of the current view.
+	/// - parameter relatedBy: The relationship between the width
+	/// of the view and the specified width. Defaults to .equal.
+	/// - returns: The newly created width constraint.
+	///
 	@discardableResult
 	func constrain(
 		width: Double,
@@ -192,6 +227,15 @@ public extension LayoutGuideProtocol {
 		.activate()
 	}
 
+	/// Constrains the height of the current view
+	/// to the specified value.
+	///
+	/// - parameter height: The value to be applied
+	/// to height constraints of the current view.
+	/// - parameter relatedBy: The relationship between the height
+	/// of the view and the specified height. Defaults to .equal.
+	/// - returns: The newly created height constraint.
+	///
 	@discardableResult
 	func constrain(
 		height: Double,
@@ -204,6 +248,15 @@ public extension LayoutGuideProtocol {
 		.activate()
 	}
 
+	/// Constrains the size of the current view
+	/// to the specified width and height values.
+	///
+	/// - parameter size: The `CGSize` value to be applied
+	/// to the width and height constraints of the current view.
+	/// - parameter relatedBy: The relationship between the size
+	/// of the view and the specified size. Defaults to .equal.
+	/// - returns: An array of the newly created size constraints.
+	///
 	@discardableResult
 	func constrain(
 		size: CGSize,
@@ -218,6 +271,16 @@ public extension LayoutGuideProtocol {
 
 	// MARK: - Aspect ratio
 
+	/// Constrains the aspect ratio of the current view
+	/// to the specified multiplier and constant value.
+	///
+	/// - parameter multiplier: The aspect ratio multiplier value
+	/// to be applied to the current view. This value represents
+	/// the ratio of the width to the height of the view.
+	/// - parameter constant: The constant value to be added
+	/// to the aspect ratio constraint.
+	/// - returns: The newly created aspect ratio constraint object.
+	///
 	@discardableResult
 	func constrain(
 		aspectRatio multiplier: Double,
@@ -359,13 +422,33 @@ public extension LayoutGuideProtocol {
 	}
 
 
+	/// Adds a constraint to stack this view after another view,
+	/// either horizontally or vertically.
+	///
+	/// - parameters:
+	///     - view: The view that this view should stack after.
+	///     - direction: The axis along which the views should be stacked.
+	///     Defaults to `.vertical`.
+	///     - relatedBy: The relation between the layout attributes. Defaults to `.equal`.
+	///     - multiplier: The multiplier for the layout constraint. Defaults to `1`.
+	///     - constant: The constant for the layout constraint. Defaults to `0`.
+	///     - priority: The priority of the layout constraint. Defaults to `.required`.
+	///
+	/// - returns: The newly created and activated constraint.
+	///
+	/// Creates and activates a new constraint that positions
+	/// the sender view adjacent to the specified view,
+	/// either to the right of it (if the direction is horizontal)
+	/// or below it (if the direction is vertical),
+	/// with the specified multiplier, constant, and priority.
+	///
 	@discardableResult
 	func stack(
 		after view: LayoutGuideProtocol,
 		direction: XTOrientation,
 		relatedBy: NSLayoutConstraint.Relation = .equal,
-		multiplier: CGFloat = 1,
-		constant: CGFloat = 0,
+		multiplier: Double = 1,
+		constant: Double = 0,
 		priority: XTLayoutPriority = .required
 	) -> NSLayoutConstraint {
 
@@ -508,12 +591,17 @@ public extension CGSize {
 	static let expanded = XTView.layoutFittingExpandedSize
 }
 
-public extension XTView {
-	// MARK: - Calculating autolayout view size
+// MARK: - Calculating autolayout view size
+public extension UIView {
 
-	/// Returns the size of the view based on its constraints and the specified width.
+	/// Calculates the system layout size fitting for the view with a given width.
+	///
+	/// - parameter width: The desired width of the view.
+	/// - returns: The size that fits the view's contents within the given width.
+	///
 	/// - note: Resulting width is always equal to `width` parameter.
 	/// Resulting height is rouded up to closest whole number.
+	///
 	func systemLayoutSizeFitting( width: CGFloat ) -> CGSize {
 
 		let size = systemLayoutSizeFitting(
