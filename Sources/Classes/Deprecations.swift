@@ -865,9 +865,9 @@ public extension UIStackView {
 		spacing: Double = 0,
 		distribution: UIStackView.Distribution = .fill,
 		alignment: UIStackView.Alignment = .fill,
-		@UIViewBuilder _ builder: () -> [ UIView ]
+		@UIViewBuilder _ content: () -> [ UIView ]
 	) {
-		self.init( axis, spacing: spacing, distribution: distribution, alignment: alignment, builder )
+		self.init( axis, spacing: spacing, distribution: distribution, alignment: alignment, content )
 	}
 }
 #endif

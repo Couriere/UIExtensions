@@ -88,7 +88,7 @@ public extension UIButton {
 		spacing: Double = 8,
 		alignment: UIStackView.Alignment = .center,
 		dimsOnTouch: Bool = true,
-		@UIViewBuilder content: () -> [UIView]
+		@UIViewBuilder _ content: () -> [UIView]
 	) {
 		self.init( type: .custom )
 

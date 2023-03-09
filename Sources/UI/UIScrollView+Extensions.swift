@@ -25,7 +25,9 @@ import UIKit
 
 public extension UIScrollView {
 
-	/// Creates a new UIScrollView with a content view containing multiple subviews.
+	/// Creates a new UIScrollView with a content view containing subviews,
+	/// pinned to frame layout guide horizontally
+	/// and to content layout guide vertically.
 	///
 	/// - Parameters:
 	///   - showIndicators: A Boolean value that determines whether or not
@@ -70,7 +72,9 @@ public extension UIScrollView {
 	///     }
 	/// }
 	/// ```
-	convenience init( showIndicators: Bool = true, _ content: () -> [ UIView ] ) {
+	convenience init(
+		showIndicators: Bool = true,
+		@UIViewBuilder _ content: () -> [ UIView ] ) {
 
 		self.init( frame: .zero )
 

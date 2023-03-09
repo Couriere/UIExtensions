@@ -37,7 +37,7 @@ public extension XTStackView {
 		spacing: CGFloat = 0,
 		distribution: UIStackView.Distribution = .fill,
 		alignment: UIStackView.Alignment = .fill,
-		@UIViewBuilder _ builder: () -> [ UIView ]
+		@UIViewBuilder _ content: () -> [ UIView ]
 	) {
 		self.init()
 		self.translatesAutoresizingMaskIntoConstraints = false
@@ -46,7 +46,7 @@ public extension XTStackView {
 		self.distribution = distribution
 		self.alignment = alignment
 
-		addArrangedSubviews( builder )
+		addArrangedSubviews( content )
 	}
 	#elseif os(macOS)
 	convenience init(
@@ -54,7 +54,7 @@ public extension XTStackView {
 		spacing: CGFloat = 0,
 		distribution: NSStackView.Distribution = .fill,
 		alignment: NSLayoutConstraint.Attribute? = nil,
-		@UIViewBuilder _ builder: () -> [ NSView ]
+		@UIViewBuilder _ content: () -> [ NSView ]
 	) {
 		self.init()
 		self.translatesAutoresizingMaskIntoConstraints = false
@@ -63,15 +63,15 @@ public extension XTStackView {
 		self.distribution = distribution
 		self.alignment = alignment ?? self.alignment
 
-		addArrangedSubviews( builder )
+		addArrangedSubviews( content )
 	}
 	#endif
 
 
-	func addArrangedSubviews( @UIViewBuilder _ builder: () -> [ XTView ] ) {
+	func addArrangedSubviews( @UIViewBuilder _ content: () -> [ XTView ] ) {
 		var customSpaces: [ XTView : CGFloat ] = [:]
 		var arrangedSubviews: [ XTView ] = []
-		for view in builder() {
+		for view in content() {
 			if let customSpacing = view as? _CustomBuilderSpacer {
 				arrangedSubviews.last.then { customSpaces[ $0 ] = customSpacing.length }
 			} else {

@@ -24,8 +24,8 @@ import Foundation
 
 public extension Array {
 
-	init( @ArrayBuilder _ builder: () -> [ Element ] ) {
-		self.init( builder() )
+	init( @ArrayBuilder _ content: () -> [ Element ] ) {
+		self.init( content() )
 	}
 
 
