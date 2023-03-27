@@ -96,6 +96,14 @@ class StringExtensionsTests: XCTestCase {
 			"New" )
 	}
 
+	func testChunks() {
+		XCTAssertEqual( "123456789012".chunk( 4 ), ["1234", "5678", "9012"] )
+		XCTAssertEqual( "1234567".chunk( 3 ), ["123", "456", "7"] )
+		XCTAssertEqual( "12  34  ".chunk( 3 ), ["12 ", " 34", "  "] )
+		XCTAssertEqual( "543".chunk( 5 ), ["543"] )
+		XCTAssertEqual( "".chunk( 6 ), [])
+	}
+
 	func testDigitsOnly() {
 
 		XCTAssertEqual( "1s2t3r4i5n6g7".digitsOnly, "1234567" )

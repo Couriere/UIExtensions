@@ -51,6 +51,16 @@ public extension String {
 		return self[ laneRange.lowerBound..<laneRange.upperBound ]
 	}
 
+	/// Breaks up a string into an array of substrings, each containing `length` characters.
+	/// - parameter length: The length of each substring. Must be greater than zero.
+	/// - returns: An array of substrings, each containing `length` characters.
+	func chunk( _ length: Int ) -> [ String ] {
+		precondition( length > 0, "length must be greater than zero" )
+		return Array( self )
+			.chunk( length )
+			.map( String.init(_:) )
+	}
+
 	/// Returns new string by removing all non-digit symbols from receiver.
 	var digitsOnly: String {
 		return replacingOccurrences( of: "[^0-9]", with: "", options: .regularExpression, range: wholeRange )
