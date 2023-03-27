@@ -112,32 +112,50 @@ public extension Character {
 
 /// Calculating Hashes.
 import CommonCrypto
+#if canImport(CryptoKit)
+import CryptoKit
+#endif
 
 public extension String {
 
 	/// Calculates MD5 hash of the receiver and returns it as hex string.
 	var md5: String {
-		calculateHash( hashFunction: CC_MD5, digestLength: CC_MD5_DIGEST_LENGTH )
+		if #available(iOS 13.0, macOS 10.15, *) {
+			return Insecure.MD5.hash( data: Data( utf8 )).hexadecimalString
+		} else {
+			return calculateHash( hashFunction: CC_MD5, digestLength: CC_MD5_DIGEST_LENGTH )
+		}
 	}
 
 	/// Calculates SHA1 hash of the receiver and returns it as hex string.
 	var sha1: String {
-		calculateHash( hashFunction: CC_SHA1, digestLength: CC_SHA1_DIGEST_LENGTH )
+		if #available(iOS 13.0, macOS 10.15, *) {
+			return Insecure.SHA1.hash( data: Data( utf8 )).hexadecimalString
+		} else {
+			return calculateHash( hashFunction: CC_SHA1, digestLength: CC_SHA1_DIGEST_LENGTH )
+		}
 	}
 
 	/// Calculates SHA256 hash of the receiver and returns it as hex string.
 	var sha256: String {
-		calculateHash( hashFunction: CC_SHA256, digestLength: CC_SHA256_DIGEST_LENGTH )
+		if #available(iOS 13.0, macOS 10.15, *) {
+			return SHA256.hash( data: Data( utf8 )).hexadecimalString
+		} else {
+			return calculateHash( hashFunction: CC_SHA256, digestLength: CC_SHA256_DIGEST_LENGTH )
+		}
 	}
 
 	/// Calculates SHA512 hash of the receiver and returns it as hex string.
 	var sha512: String {
-		calculateHash( hashFunction: CC_SHA512, digestLength: CC_SHA512_DIGEST_LENGTH )
+		if #available(iOS 13.0, macOS 10.15, *) {
+			return SHA512.hash( data: Data( utf8 )).hexadecimalString
+		} else {
+			return calculateHash( hashFunction: CC_SHA512, digestLength: CC_SHA512_DIGEST_LENGTH )
+		}
 	}
 
 
-
-	@inline(__always) private func calculateHash(
+	private func calculateHash(
 		hashFunction: ( UnsafeRawPointer?, CC_LONG, UnsafeMutablePointer<UInt8>? ) -> UnsafeMutablePointer<UInt8>?,
 		digestLength: Int32
 	) -> String {
@@ -167,6 +185,16 @@ public extension String {
 
 	private static let charA = UInt8( UnicodeScalar( "a" ).value )
 	private static let char0 = UInt8( UnicodeScalar( "0" ).value )
+}
+
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
+public extension Digest {
+
+	/// Returns the hexadecimal string representation of the digest.
+	var hexadecimalString: String {
+		Data( self ).hexadecimalString
+	}
 }
 
 public extension String {
