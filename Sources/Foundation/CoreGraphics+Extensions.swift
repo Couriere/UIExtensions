@@ -41,23 +41,37 @@ public extension CGPoint {
 	}
 }
 
-
 public extension CGRect {
 
-	static func *= ( rect: inout CGRect, multiplier: CGFloat ) {
-		rect = CGRect( x: rect.origin.x * multiplier,
-		               y: rect.origin.y * multiplier,
-		               width: rect.size.width * multiplier,
-		               height: rect.size.height * multiplier )
+	static func *( rect: CGRect, multiplier: CGFloat ) -> CGRect {
+		CGRect(
+			x: rect.origin.x * multiplier,
+				y: rect.origin.y * multiplier,
+				width: rect.size.width * multiplier,
+				height: rect.size.height * multiplier
+		)
+	}
+
+	static func /( rect: CGRect, divider: CGFloat ) -> CGRect {
+		CGRect(
+			x: rect.origin.x / divider,
+				y: rect.origin.y / divider,
+				width: rect.size.width / divider,
+				height: rect.size.height / divider
+		)
+	}
+
+	static func *=( rect: inout CGRect, multiplier: CGFloat ) {
+		rect = rect * multiplier
+	}
+
+	static func /= ( rect: inout CGRect, divider: CGFloat ) {
+		rect = rect / divider
 	}
 }
 
 
 public extension CGRect {
-
-	init( square side: CGFloat ) {
-		self.init( x: 0, y: 0, width: side, height: side )
-	}
 
 	init( square side: Double ) {
 		self.init( x: 0, y: 0, width: side, height: side )
@@ -72,6 +86,9 @@ public extension CGRect {
 		self.init( origin: .zero, size: size )
 	}
 
+	/// Aspect ratio of the rectangle.
+	var aspectRatio: Double { width / height }
+
 	/// Center of rect property.
 	var center: CGPoint {
 		get { return CGPoint( x: midX, y: midY ) }
@@ -80,22 +97,21 @@ public extension CGRect {
 
 	/// Top-Left corner point.
 	var topLeft: CGPoint { return CGPoint( x: minX, y: minY ) }
-
 	/// Top-Right corner point.
 	var topRight: CGPoint { return CGPoint( x: maxX, y: minY ) }
-
 	/// Bottom-Left corner point.
 	var bottomLeft: CGPoint { return CGPoint( x: minX, y: maxY ) }
-
 	/// Bottom-Right corner point.
 	var bottomRight: CGPoint { return CGPoint( x: maxX, y: maxY ) }
 }
 
 public extension CGSize {
 
-	init( square side: CGFloat ) { self.init( width: side, height: side ) }
 	init( square side: Double ) { self.init( width: side, height: side ) }
 	init( square side: Int ) { self.init( width: side, height: side ) }
+
+	/// Aspect ratio of the CGSize object.
+	var aspectRatio: Double { width / height }
 
 	/// Returns whether a size has zero or negative width or height, or is an invalid size.
 	var isEmpty: Bool { return !( width > 0 && height > 0 ) }
