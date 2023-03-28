@@ -28,6 +28,12 @@ public extension Int {
 	var string: String { return String( self ) }
 }
 
+public extension String {
+	/// Attempts to convert the receiver to an Int.
+	/// - returns: The Int representation of the receiver or nil if the conversion fails.
+	var int: Int? { Int( self ) }
+}
+
 public extension Float {
 
 	/// Returns string representation of the receiver.
