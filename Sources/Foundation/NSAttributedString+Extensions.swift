@@ -411,37 +411,37 @@ public extension String {
 	}
 
 	func lineSpacing( _ lineSpacing: CGFloat ) -> NSAttributedString {
-		let paragraph = NSMutableParagraphStyle()
+		let paragraph = NSMutableParagraphStyle.standard
 		paragraph.lineSpacing = lineSpacing
 		return paragraphStyle( paragraph )
 	}
 
 	func paragraphSpacing( _ paragraphSpacing: CGFloat ) -> NSAttributedString {
-		let paragraph = NSMutableParagraphStyle()
+		let paragraph = NSMutableParagraphStyle.standard
 		paragraph.paragraphSpacing = paragraphSpacing
 		return paragraphStyle( paragraph )
 	}
 
 	func lineHeightMultiple( _ multiple: CGFloat ) -> NSAttributedString {
-		let paragraph = NSMutableParagraphStyle()
+		let paragraph = NSMutableParagraphStyle.standard
 		paragraph.lineHeightMultiple = multiple
 		return paragraphStyle( paragraph )
 	}
 
 	func minimumLineHeight( _ minimumLineHeight: CGFloat ) -> NSAttributedString {
-		let paragraph = NSMutableParagraphStyle()
+		let paragraph = NSMutableParagraphStyle.standard
 		paragraph.minimumLineHeight = minimumLineHeight
 		return paragraphStyle( paragraph )
 	}
 
 	func alignment( _ alignment: NSTextAlignment ) -> NSAttributedString {
-		let paragraph = NSMutableParagraphStyle()
+		let paragraph = NSMutableParagraphStyle.standard
 		paragraph.alignment = alignment
 		return paragraphStyle( paragraph )
 	}
 
 	func lineBreakMode( _ lineBreakMode: NSLineBreakMode ) -> NSAttributedString {
-		let paragraph = NSMutableParagraphStyle()
+		let paragraph = NSMutableParagraphStyle.standard
 		paragraph.lineBreakMode = lineBreakMode
 		return paragraphStyle( paragraph )
 	}
@@ -460,19 +460,28 @@ public extension String {
 	}
 }
 
+public extension NSMutableParagraphStyle {
 
-
+	@objc class var standard: NSMutableParagraphStyle {
+		let defaultStyle = NSMutableParagraphStyle()
+		defaultStyle.lineBreakMode = .byTruncatingTail
+		if #available(iOS 14.0, macOS 11.0, *) {
+			defaultStyle.lineBreakStrategy = .standard
+		}
+		return defaultStyle
+	}
+}
 
 private extension NSAttributedString {
 	var paragraphStyle: NSMutableParagraphStyle {
 
 		guard length > 0,
-			let currentStyle =
-			self.attribute( .paragraphStyle, at: 0, longestEffectiveRange: nil, in: wholeRange ) as? NSParagraphStyle else {
-			return NSMutableParagraphStyle()
+			  let currentStyle =
+				self.attribute( .paragraphStyle, at: 0, longestEffectiveRange: nil, in: wholeRange ) as? NSParagraphStyle
+		else {
+			return .standard
 		}
 
 		return currentStyle.mutableCopy() as! NSMutableParagraphStyle
 	}
 }
-
