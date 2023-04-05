@@ -130,7 +130,7 @@ public extension String {
 
 	/// Calculates MD5 hash of the receiver and returns it as hex string.
 	var md5: String {
-		if #available(iOS 13.0, macOS 10.15, *) {
+		if #available(iOS 13.0, macOS 10.15, tvOS 13, *) {
 			return Insecure.MD5.hash( data: Data( utf8 )).hexadecimalString
 		} else {
 			return calculateHash( hashFunction: CC_MD5, digestLength: CC_MD5_DIGEST_LENGTH )
@@ -139,7 +139,7 @@ public extension String {
 
 	/// Calculates SHA1 hash of the receiver and returns it as hex string.
 	var sha1: String {
-		if #available(iOS 13.0, macOS 10.15, *) {
+		if #available(iOS 13.0, macOS 10.15, tvOS 13, *) {
 			return Insecure.SHA1.hash( data: Data( utf8 )).hexadecimalString
 		} else {
 			return calculateHash( hashFunction: CC_SHA1, digestLength: CC_SHA1_DIGEST_LENGTH )
@@ -148,7 +148,7 @@ public extension String {
 
 	/// Calculates SHA256 hash of the receiver and returns it as hex string.
 	var sha256: String {
-		if #available(iOS 13.0, macOS 10.15, *) {
+		if #available(iOS 13.0, macOS 10.15, tvOS 13, *) {
 			return SHA256.hash( data: Data( utf8 )).hexadecimalString
 		} else {
 			return calculateHash( hashFunction: CC_SHA256, digestLength: CC_SHA256_DIGEST_LENGTH )
@@ -157,7 +157,7 @@ public extension String {
 
 	/// Calculates SHA512 hash of the receiver and returns it as hex string.
 	var sha512: String {
-		if #available(iOS 13.0, macOS 10.15, *) {
+		if #available(iOS 13.0, macOS 10.15, tvOS 13, *) {
 			return SHA512.hash( data: Data( utf8 )).hexadecimalString
 		} else {
 			return calculateHash( hashFunction: CC_SHA512, digestLength: CC_SHA512_DIGEST_LENGTH )
@@ -199,6 +199,7 @@ public extension String {
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
+@available(tvOS 13.0, *)
 public extension Digest {
 
 	/// Returns the hexadecimal string representation of the digest.

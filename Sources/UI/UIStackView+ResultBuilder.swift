@@ -31,7 +31,7 @@ public extension XTStackView {
 	@available( *, deprecated, renamed: "UIViewBuilder" )
 	typealias StackViewBuilder = UIViewBuilder
 
-	#if os(iOS)
+	#if os(iOS) || os(tvOS)
 	convenience init(
 		_ axis: NSLayoutConstraint.Axis = .vertical,
 		spacing: CGFloat = 0,
