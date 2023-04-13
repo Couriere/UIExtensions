@@ -24,21 +24,19 @@ import Foundation
 
 #if swift(>=5.1)
 import Foundation
-import SwiftUI
-import Combine
 
 /// Property wrapper around Codable values backed by UserDefaults.
 ///
 /// Usage:
 /// ```
-/// @UserDefault( "valueVariable" ) var valueVariable: Int = -1
+/// @CodableUserDefault( "valueVariable" ) var valueVariable: Int = -1
 ///
-///	@UserDefault( "optionalValueVariable",
+///	@CodableUserDefault( "optionalValueVariable",
 ///				  storeName: nonStandardUserDefaultsSuiteName )
 ///	var optionalValueVariable: Double?
 /// ```
 @propertyWrapper
-public struct UserDefault<Value: Codable> {
+public struct CodableUserDefault<Value: Codable> {
 
 	/// Key used to store values in UserDefaults.
 	public let key: String
@@ -80,7 +78,7 @@ public struct UserDefault<Value: Codable> {
 		nonmutating set { setValue( newValue ) }
 	}
 
-	public var projectedValue: UserDefault<Value> {
+	public var projectedValue: CodableUserDefault<Value> {
 		return self
 	}
 
@@ -127,7 +125,7 @@ public struct UserDefault<Value: Codable> {
 	}
 }
 
-extension UserDefault where Value : ExpressibleByNilLiteral {
+extension CodableUserDefault where Value : ExpressibleByNilLiteral {
 
 	public init(_ key: String, store: UserDefaults? = nil) where Value: Codable {
 		self.init( wrappedValue: nil, key, store: store )

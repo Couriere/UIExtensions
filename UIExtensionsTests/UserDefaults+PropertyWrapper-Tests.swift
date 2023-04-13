@@ -27,29 +27,29 @@ import Combine
 #if swift(>=5.1)
 class UserDefaults_PropertyWrapper: XCTestCase {
 
-	@UserDefault( "valueStore" ) var valueStore: Int = -1
-	@UserDefault( "optionalValueStore" ) var optionalValueStore: Double?
+	@CodableUserDefault( "valueStore" ) var valueStore: Int = -1
+	@CodableUserDefault( "optionalValueStore" ) var optionalValueStore: Double?
 
-	@UserDefault( "arrayStore" ) var arrayStore: [ CGFloat ] = []
-	@UserDefault( "optionalArrayStore" ) var optionalArrayStore: [ CGPoint ]?
+	@CodableUserDefault( "arrayStore" ) var arrayStore: [ CGFloat ] = []
+	@CodableUserDefault( "optionalArrayStore" ) var optionalArrayStore: [ CGPoint ]?
 
-	@UserDefault( "dataStore" ) var dataStore: Data = Data()
-	@UserDefault( "optionalDataStore" ) var optionalDataStore: Data?
+	@CodableUserDefault( "dataStore" ) var dataStore: Data = Data()
+	@CodableUserDefault( "optionalDataStore" ) var optionalDataStore: Data?
 
-	@UserDefault( "structStore" ) var structStore: Test = .default
-	@UserDefault( "optionalStructStore" ) var optionalStructStore: Test?
+	@CodableUserDefault( "structStore" ) var structStore: Test = .default
+	@CodableUserDefault( "optionalStructStore" ) var optionalStructStore: Test?
 
-	@UserDefault( "existingValueStore" ) var existingValueStore: URL?
-	@UserDefault( "existingLegacyValueStore" ) var existingLegacyValueStore: Int = 0
+	@CodableUserDefault( "existingValueStore" ) var existingValueStore: URL?
+	@CodableUserDefault( "existingLegacyValueStore" ) var existingLegacyValueStore: Int = 0
 
-	@UserDefault( "updatedFromiOS12URLValue" ) var updatedFromiOS12URLValue: URL?
-	@UserDefault( "updatedFromiOS12ArrayValue" ) var updatedFromiOS12ArrayValue: [ Int ] = []
-	@UserDefault( "updatedFromiOS12DictionaryValue" ) var updatedFromiOS12DictionaryValue: [ String : Int ] = [:]
-	@UserDefault( "updatedFromiOS12SetValue" ) var updatedFromiOS12SetValue: Set<String> = []
+	@CodableUserDefault( "updatedFromiOS12URLValue" ) var updatedFromiOS12URLValue: URL?
+	@CodableUserDefault( "updatedFromiOS12ArrayValue" ) var updatedFromiOS12ArrayValue: [ Int ] = []
+	@CodableUserDefault( "updatedFromiOS12DictionaryValue" ) var updatedFromiOS12DictionaryValue: [ String : Int ] = [:]
+	@CodableUserDefault( "updatedFromiOS12SetValue" ) var updatedFromiOS12SetValue: Set<String> = []
 
 
 	static let nonStandardSuite = UserDefaults( suiteName: "NonStandardSuite" )!
-	@UserDefault( "nonStandardSuiteValue",
+	@CodableUserDefault( "nonStandardSuiteValue",
 				  store: UserDefaults_PropertyWrapper.nonStandardSuite )
 	var nonStandardSuiteValue: Data?
 
