@@ -88,11 +88,11 @@ public extension UIButton {
 		spacing: Double = 8,
 		alignment: UIStackView.Alignment = .center,
 		dimsOnTouch: Bool = true,
-		@UIViewBuilder _ content: () -> [UIView]
+		@UIViewBuilder _ content: ( UIButton ) -> [UIView]
 	) {
 		self.init( type: .custom )
 
-		let contentViews = content()
+		let contentViews = content( self )
 		precondition( contentViews.isNotEmpty )
 
 		let contentView: UIView
@@ -104,7 +104,7 @@ public extension UIButton {
 				.horizontal,
 				spacing: spacing,
 				alignment: alignment,
-				content
+				{ content( self ) }
 			)
 		}
 		contentView.isUserInteractionEnabled = false
@@ -121,6 +121,44 @@ public extension UIButton {
 				}
 			}
 		}
+	}
+
+	/// Creates a custom UIButton with a set of subviews arranged
+	/// in a horizontal UIStackView.
+	///	- parameters:
+	///   - spacing: The spacing between the arranged subviews in the stack view.
+	///   - alignment: The alignment of the arranged subviews in the stack view.
+	///	  - dimsOnTouch: Whether the alpha of the button's content
+	/// should be reduced when the button is touched. Defaults to true.
+	///	  - content: A closure that returns an array of UIView objects
+	/// to be arranged in a horizontal stack view.
+	///
+	/// This method provides a convenient way to create a custom button
+	/// with a horizontal stack of subviews.
+	/// The content closure should return an array of views to be arranged
+	/// horizontally in the stack view.
+	/// If only one view is returned, it will be used directly
+	/// as the content view of the button.
+	/// If multiple views are returned, they will be arranged
+	/// in a horizontal stack view with the specified spacing and alignment.
+	///
+	/// The content view of the button is set to be user interaction disabled
+	///
+	/// If dimsOnTouch is true, the alpha of the content view will be reduced
+	/// when the button is touched to provide visual feedback.
+	///
+	convenience init(
+		spacing: Double = 8,
+		alignment: UIStackView.Alignment = .center,
+		dimsOnTouch: Bool = true,
+		@UIViewBuilder _ content: () -> [UIView]
+	) {
+		self.init(
+			spacing: spacing,
+			alignment: alignment,
+			dimsOnTouch: dimsOnTouch,
+			{ _ in content() }
+		)
 	}
 }
 #endif
