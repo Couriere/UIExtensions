@@ -191,5 +191,74 @@ public extension UIView {
 
 		return self
 	}
+
+	@discardableResult
+	func tint( _ color: UIColor ) -> Self {
+		self.tintColor = color
+		return self
+	}
+
+	@discardableResult
+	func contentMode( _ contentMode: UIView.ContentMode ) -> Self {
+		self.contentMode = contentMode
+		return self
+	}
+
+	@discardableResult
+	func hidden(_ isHidden: Bool) -> Self {
+		self.isHidden = isHidden
+		return self
+	}
+
+	@discardableResult
+	func fixedSize( _ axes: Axes = .both ) -> Self {
+		setContentPriority( .required, for: axes )
+		return self
+	}
+
+	@discardableResult
+	func frame( width: Double? = nil, height: Double? = nil ) -> Self {
+		if let width { constrain( width: width ) }
+		if let height { constrain( height: height ) }
+		return self
+	}
+
+	@discardableResult
+	func frame(
+		minWidth: Double? = nil, maxWidth: Double? = nil,
+		minHeight: Double? = nil, maxHeight: Double? = nil
+	) -> Self {
+		if let minWidth { constrain( width: minWidth, relatedBy: .greaterThanOrEqual ) }
+		if let maxWidth { constrain( width: maxWidth, relatedBy: .lessThanOrEqual ) }
+		if let minHeight { constrain( height: minHeight, relatedBy: .greaterThanOrEqual ) }
+		if let maxHeight { constrain( height: maxHeight, relatedBy: .lessThanOrEqual ) }
+		return self
+	}
+
+	@discardableResult
+	func transform( _ transform: CGAffineTransform ) -> Self {
+		self.transform = transform
+		return self
+	}
+
+	@discardableResult
+	func maximumContentSizeCategory(
+		_ category: UIContentSizeCategory?
+	) -> Self {
+		if #available(iOS 15.0, tvOS 15, *) {
+			maximumContentSizeCategory = category
+		}
+		return self
+	}
+
+	@discardableResult
+	func minimumContentSizeCategory(
+		_ category: UIContentSizeCategory?
+	) -> Self {
+		if #available(iOS 15.0, tvOS 15, *) {
+			minimumContentSizeCategory = category
+		}
+		return self
+	}
 }
 #endif
