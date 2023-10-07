@@ -298,7 +298,7 @@ public extension LayoutGuideProtocol {
 
 	@discardableResult
 	func equalSizeWithView(
-		_ view: XTView,
+		_ view: LayoutGuideProtocol,
 		constant: CGFloat = 0,
 		multiplier: CGFloat = 1
 	) -> [ NSLayoutConstraint ] {
@@ -310,7 +310,7 @@ public extension LayoutGuideProtocol {
 
 	@discardableResult
 	func equalHeightWithView(
-		_ view: XTView,
+		_ view: LayoutGuideProtocol,
 		constant: CGFloat = 0,
 		multiplier: CGFloat = 1,
 		relation: NSLayoutConstraint.Relation = .equal
@@ -324,7 +324,7 @@ public extension LayoutGuideProtocol {
 
 	@discardableResult
 	func equalWidthWithView(
-		_ view: XTView,
+		_ view: LayoutGuideProtocol,
 		constant: CGFloat = 0,
 		multiplier: CGFloat = 1,
 		relation: NSLayoutConstraint.Relation = .equal
