@@ -474,6 +474,7 @@ public extension XTView {
 	/// - parameter inset: The amount of constant inset to apply to the embedded views.
 	/// - parameter content: The block of code that generates the views
 	/// to be embedded. The block should return an array of UIView objects.
+	/// - returns: Receiver.
 	///
 	/// This method either embeds a single view or a stack view
 	/// with the provided insets.
@@ -485,11 +486,31 @@ public extension XTView {
 	///
 	/// - precondition: content should return at least one view.
 	///
+	@discardableResult
 	func embed(
 		_ inset: Double,
 		@UIViewBuilder _ content: () -> [ XTView ]
-	) {
+	) -> XTView {
 		embed( insets: XTEdgeInsets( constantInset: inset ), content )
+	}
+
+	/// Embeds one view inside the current view with the provided insets.
+	///
+	/// - parameter inset: The amount of constant inset to apply to the embedded view.
+	/// - parameter view: The view to be embedded.
+	/// - returns: Receiver.
+	///
+	/// This method either embeds a single view
+	/// with the provided insets.
+	/// The view is pinned to the edges of the current view
+	/// using the provided insets.
+	///
+	@discardableResult
+	func embed(
+		inset: Double,
+		view: XTView
+	) -> XTView {
+		embed( inset ) { view }
 	}
 
 	/// Embeds one or more views inside the current view,
@@ -501,6 +522,7 @@ public extension XTView {
 	/// to apply to the embedded views.
 	/// - parameter content: The block of code that generates the views
 	/// to be embedded. The block should return an array of UIView objects.
+	/// - returns: Receiver.
 	///
 	/// This method either embeds a single view or a stack view
 	/// with the provided insets.
@@ -512,16 +534,17 @@ public extension XTView {
 	///
 	/// - precondition: content should return at least one view.
 	///
+	@discardableResult
 	func embed(
 		horizontalInset: Double = 0,
 		verticalInset: Double = 0,
 		@UIViewBuilder _ content: () -> [ XTView ]
-	) {
+	) -> XTView {
 		let insets = XTEdgeInsets(
 			horizontal: horizontalInset,
 			vertical: verticalInset
 		)
-		embed( insets: insets, content )
+		return embed( insets: insets, content )
 	}
 
 	/// Embeds one or more views inside the current view,
@@ -531,6 +554,7 @@ public extension XTView {
 	/// to the edges of the current view.
 	/// - parameter content: The block of code that generates the views
 	/// to be embedded. The block should return an array of UIView objects.
+	/// - returns: Receiver.
 	///
 	/// This method either embeds a single view or a stack view
 	/// with the provided insets.
@@ -542,10 +566,11 @@ public extension XTView {
 	///
 	/// - precondition: content should return at least one view.
 	///
+	@discardableResult
 	func embed(
 		insets: XTEdgeInsets = .zero,
 		@UIViewBuilder _ content: () -> [ XTView ]
-	) {
+	) -> XTView {
 		let views = content()
 		precondition( views.isNotEmpty )
 
@@ -559,6 +584,28 @@ public extension XTView {
 			addSubview( implicitStackView )
 			implicitStackView.pin( insets )
 		}
+		
+		return self
+	}
+	
+	/// Embeds one view inside the current view with the provided insets.
+	///
+	/// - parameter insets: The insets to use for pinning the views
+	/// to the edges of the current view.
+	/// - parameter view: The view to be embedded.
+	/// - returns: Receiver.
+	///
+	/// This method either embeds a single view
+	/// with the provided insets.
+	/// The view is pinned to the edges of the current view
+	/// using the provided insets.
+	///
+	@discardableResult
+	func embed(
+		insets: XTEdgeInsets = .zero,
+		view: XTView
+	) -> XTView {
+		embed( insets: insets ) { view }
 	}
 }
 
