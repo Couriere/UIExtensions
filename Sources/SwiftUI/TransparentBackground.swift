@@ -97,14 +97,24 @@ public struct TransparentBackground: UIViewRepresentable {
 		self.backgroundColor = UIColor( backgroundColor )
 	}
 
-	public func makeUIView( context: Context ) -> UIView {
-		
-		let view = UIView()
-		view.isHidden = true
-		DispatchQueue.main.async {
-			view.superview?.superview?.backgroundColor = backgroundColor
+	private class _TransparentBackgroundWrapperView: UIView {
+
+		let color: UIColor
+		init( color: UIColor ) {
+			self.color = color
+			super.init( frame: .zero )
+			self.isHidden = true
 		}
-		return view
+		required init?( coder: NSCoder ) { fatalError() }
+
+		override func didMoveToWindow() {
+			super.didMoveToWindow()
+			superview?.superview?.backgroundColor = backgroundColor
+		}
+	}
+
+	public func makeUIView( context: Context ) -> UIView {
+		_TransparentBackgroundWrapperView( color: backgroundColor )
 	}
 
 	public func updateUIView( _ uiView: UIView, context: Context ) {}
