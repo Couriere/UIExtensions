@@ -58,7 +58,7 @@ public struct CustomIntensityVisualEffectView {
 extension CustomIntensityVisualEffectView: UIViewRepresentable {
 	
 	public func makeCoordinator() -> Coordinator {
-		return Coordinator()
+		return Coordinator( effect: effect )
 	}
 	
 	public func makeUIView( context: Context ) -> UIView {
@@ -76,11 +76,15 @@ public extension CustomIntensityVisualEffectView {
 	class Coordinator {
 		
 		/// The visual effects view to present.
-		public let visualEffectsView = CustomIntensityVisualEffectUIView(
-			effect: UIBlurEffect(
-				style: .regular
+		let visualEffectsView: CustomIntensityVisualEffectUIView
+
+		init( effect: UIVisualEffect ) {
+
+			/// The visual effects view to present.
+			visualEffectsView = CustomIntensityVisualEffectUIView(
+				effect: effect
 			)
-		)
+		}
 	}
 }
 
