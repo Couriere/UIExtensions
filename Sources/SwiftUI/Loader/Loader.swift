@@ -115,11 +115,13 @@ Input: Equatable, LoadingView: View, FailureView: View, Content: View {
 	private let failureView: ( Error, _ reload: @escaping () -> Void ) -> FailureView
 
 	/// ViewBuilder closure for rendering content based on loaded data.
-	private let content: (Binding<Result>) -> Content
-
+	private let content: (Binding<Result>, Bool) -> Content
 
 	/// Task tracking the loading process.
 	@State private var loadingTask: Task<Void, Never>?
+
+	/// Loading action is in progress.
+	@State private var isLoading: Bool = false
 
 	/// The result of the data loading process.
 	@State private var result: Result?
@@ -167,7 +169,7 @@ Input: Equatable, LoadingView: View, FailureView: View, Content: View {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping ( Input ) async throws -> Result,
-		@ViewBuilder content: @escaping ( Binding<Result> ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ isLoading: Bool ) -> Content
 	) {
 		self.input = input
 		self.reloadOptions = reloadOptions
@@ -187,7 +189,7 @@ extension Loader: View {
 			switch ( Binding( $result ), failure ) {
 
 			case ( .some( let binding ), _ ):
-				content( binding )
+				content( binding, isLoading )
 
 			case ( nil, .some( let failure )):
 				failureView( failure, { forcedReloadTrigger.toggle() })
@@ -217,6 +219,9 @@ extension Loader: View {
 				result = nil
 			}
 		}
+
+		isLoading = true
+		defer { isLoading = false }
 
 		do {
 			let value = try await action( input )

@@ -49,7 +49,7 @@ public extension Loader {
 	///			try await Task.sleep( for: .seconds( 1 ))
 	///			return Int.random( in: range )
 	///		},
-	///		content: { result in
+	///		content: { result, isLoading in
 	///			Text( String( result ))
 	///		}
 	///	)
@@ -61,7 +61,7 @@ public extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping ( Input ) async throws -> Result,
-		@ViewBuilder content: @escaping ( Result ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Result, _ isLoading: Bool ) -> Content
 	) {
 		self.init(
 			input: input,
@@ -69,7 +69,7 @@ public extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: action,
-			content: { binding in content( binding.wrappedValue ) }
+			content: { binding, isLoading in content( binding.wrappedValue, isLoading ) }
 		)
 	}
 
@@ -97,7 +97,7 @@ public extension Loader {
 	///			try await Task.sleep( for: .seconds( 1 ))
 	///			return Int.random( in: 100..<1000 )
 	///		},
-	///		content: { binding in
+	///		content: { binding, isLoading in
 	///			binding.wrappedValue = binding.wrappedValue * 2
 	///			Text( String( binding.wrappedValue ))
 	///		}
@@ -110,7 +110,7 @@ public extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( Binding<Result> ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ isLoading: Bool ) -> Content
 	) {
 		self.init(
 			input: input,
@@ -146,7 +146,7 @@ public extension Loader {
 	///			try await Task.sleep( for: .seconds( 1 ))
 	///			return Int.random( in: 100..<1000 )
 	///		},
-	///		content: { result in
+	///		content: { result, isLoading in
 	///			Text( String( result ))
 	///		}
 	///	)
@@ -158,7 +158,7 @@ public extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( Result ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Result, _ isLoading: Bool ) -> Content
 	) {
 		self.init(
 			input: input,
@@ -166,7 +166,7 @@ public extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: { binding in content( binding.wrappedValue ) }
+			content: { binding, isLoading in content( binding.wrappedValue, isLoading ) }
 		)
 	}
 
@@ -191,7 +191,7 @@ public extension Loader {
 	///			try await Task.sleep( for: .seconds( 1 ))
 	///			return Int.random( in: 100..<1000 )
 	///		},
-	///		content: { binding in
+	///		content: { binding, isLoading in
 	///			binding.wrappedValue = binding.wrappedValue * 2
 	///			Text( String( binding.wrappedValue ))
 	///		}
@@ -203,7 +203,7 @@ public extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( Binding<Result> ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ isLoading: Bool ) -> Content
 	) where Input == Int {
 		self.init(
 			input: 0,
@@ -236,7 +236,7 @@ public extension Loader {
 	///			try await Task.sleep( for: .seconds( 1 ))
 	///			return Int.random( in: 100..<1000 )
 	///		},
-	///		content: { result in
+	///		content: { result, isLoading in
 	///			Text( String( result ))
 	///		}
 	///	)
@@ -247,7 +247,7 @@ public extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( Result ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Result, _ isLoading: Bool ) -> Content
 	) where Input == Int {
 		self.init(
 			input: 0,
