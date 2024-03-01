@@ -23,29 +23,7 @@
 import SwiftUI
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-internal extension View {
-
-	func onChangeHelper<V>(
-		of value: V,
-		reloadTrigger: Bool,
-		initial: Bool = false,
-		perform action: @escaping ( _ newValue: V, _ onAppear: Bool ) async -> Void
-	) -> some View where V : Equatable {
-
-		return self
-			.modifier(
-				LoaderOnChangeHelperModifier(
-					value: value,
-					reloadTrigger: reloadTrigger,
-					initial: initial,
-					action: action
-				)
-			)
-	}
-}
-
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-private struct LoaderOnChangeHelperModifier<V: Equatable>: ViewModifier {
+internal struct LoaderOnChangeHelperModifier<V: Equatable & Sendable>: ViewModifier {
 
 	public let value: V
 	public let reloadTrigger: Bool
@@ -54,7 +32,7 @@ private struct LoaderOnChangeHelperModifier<V: Equatable>: ViewModifier {
 
 	@State private var task: Task<Void, Never>?
 
-	private struct ValueProxy: Equatable {
+	private struct ValueProxy: Equatable, Sendable {
 		let value: V
 		let reloadTrigger: Bool
 	}
@@ -83,5 +61,6 @@ private struct LoaderOnChangeHelperModifier<V: Equatable>: ViewModifier {
 				task?.cancel()
 				task = nil
 			}
+			.environment( \.loaderTask, TaskWrapper { _ = await task?.result } )
 	}
 }

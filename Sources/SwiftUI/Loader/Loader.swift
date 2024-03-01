@@ -117,9 +117,6 @@ Input: Equatable, LoadingView: View, FailureView: View, Content: View {
 	/// ViewBuilder closure for rendering content based on loaded data.
 	private let content: (Binding<Result>, Bool) -> Content
 
-	/// Task tracking the loading process.
-	@State private var loadingTask: Task<Void, Never>?
-
 	/// Loading action is in progress.
 	@State private var isLoading: Bool = false
 
@@ -198,15 +195,21 @@ extension Loader: View {
 				loadingView
 			}
 		}
-		.onChangeHelper(
-			of: input,
-			reloadTrigger: forcedReloadTrigger,
-			initial: result == nil || reloadOptions.contains( .reloadOnAppear ),
-			perform: performLoad
+		.modifier(
+			LoaderOnChangeHelperModifier(
+				value: input,
+				reloadTrigger: forcedReloadTrigger,
+				initial: result == nil || reloadOptions.contains( .reloadOnAppear ),
+				action: performLoad
+			)
 		)
 	}
+}
 
-	private func performLoad( input: Input, onAppear: Bool ) async {
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+private extension Loader {
+
+	func performLoad( input: Input, onAppear: Bool ) async {
 
 		failure = nil
 
