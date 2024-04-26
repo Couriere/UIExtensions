@@ -24,23 +24,30 @@ import Foundation
 
 public extension Array {
 
-	init( @ArrayBuilder _ content: () -> [ Element ] ) {
+	init( @ArrayBuilder<Element> _ content: () -> [ Element ] ) {
 		self.init( content() )
 	}
+}
 
+@resultBuilder
+public struct ArrayBuilder<Element> {
 
-	@resultBuilder
-	struct ArrayBuilder {
+	public static func buildExpression( _ expression: Element ) -> [ Element ] { [ expression ]	}
+	public static func buildExpression( _ expression: [ Element ] ) -> [ Element ] { expression }
+	public static func buildBlock( _ children: [ Element ]... ) -> [ Element ] {
+		children.flatMap { $0 }
+	}
 
-		public static func buildExpression( _ expression: Element ) -> [ Element ] { [ expression ]	}
-		public static func buildExpression( _ expression: [ Element ] ) -> [ Element ] { expression }
-		public static func buildBlock( _ children: [ Element ]... ) -> [ Element ] { children.flatMap { $0 } }
+	public static func buildOptional( _ component: [ Element ]? ) -> [ Element ] { component ?? [] }
 
-		public static func buildOptional( _ component: [ Element ]? ) -> [ Element ] { component ?? [] }
+	public static func buildEither( first component: [ Element ] ) -> [ Element ] { component }
+	public static func buildEither( second component: [ Element ] ) -> [ Element ] { component }
 
-		public static func buildEither( first component: [ Element ] ) -> [ Element ] { component }
-		public static func buildEither( second component: [ Element ] ) -> [ Element ] { component }
+	public static func buildArray( _ components: [[ Element ]] ) -> [ Element ] {
+		components.flatMap { $0 }
+	}
 
-		public static func buildArray( _ components: [ Element ] ) -> [ Element ] { components }
+	public static func buildLimitedAvailability(_ component: [Element]) -> [Element] {
+		component
 	}
 }
