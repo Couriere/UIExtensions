@@ -43,6 +43,14 @@ public struct ReloadOptions: OptionSet {
 	/// Data will NOT be cleared if a reload is called
 	/// when the ``Loader/input`` parameter's value changes.
 	public static let clearOnAppear = ReloadOptions(rawValue: 1 << 2)
+	/// This flag prevents automatic initial data loading
+	/// when a component first appears or if the data
+	/// hasn't been loaded yet.
+	/// To start loading, change the value
+	/// of the ``Loader/input`` parameter.
+	/// While the data is loading, a ``Loader/loadingView``
+	/// will be displayed.
+	public static let disableAutoLoad = ReloadOptions(rawValue: 1 << 3)
 }
 
 /// Generic loader view for handling asynchronous data loading with SwiftUI.
@@ -199,7 +207,7 @@ extension Loader: View {
 			LoaderOnChangeHelperModifier(
 				value: input,
 				reloadTrigger: forcedReloadTrigger,
-				initial: result == nil || reloadOptions.contains( .reloadOnAppear ),
+				initial: initialFlag,
 				action: performLoad
 			)
 		)
@@ -208,6 +216,16 @@ extension Loader: View {
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 private extension Loader {
+
+	var initialFlag: Bool {
+		
+		if reloadOptions.contains( .disableAutoLoad ) && result == nil {
+			return false
+		}
+		else {
+			return result == nil || reloadOptions.contains( .reloadOnAppear )
+		}
+	}
 
 	func performLoad( input: Input, onAppear: Bool ) async {
 
