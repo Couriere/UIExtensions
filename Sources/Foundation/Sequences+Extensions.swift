@@ -22,6 +22,17 @@
 
 import Foundation
 
+public extension Sequence where Element: OptionalType {
+
+	/// Returns an array of unwrapped values for each non-nil element in the
+	/// collection. Equivalent to `compactMap { $0 }`.
+	/// - Returns: An array of unwrapped values from each non-nil element.
+	@inlinable
+	func compactMap() -> [Element.Wrapped] {
+		compactMap { $0.value }
+	}
+}
+
 public extension Sequence {
 
 	/// Returns first element in the collection
@@ -35,6 +46,76 @@ public extension Sequence {
 	@inlinable
 	func first( _ keypath: KeyPath<Element, Bool> ) -> Element? {
 		self.first { $0[keyPath: keypath] }
+	}
+
+	/// Returns the first element in the collection where the value at the
+	/// specified `keypath` equals the given `value`.
+	///
+	/// - Parameters:
+	///   - keypath: A `KeyPath` to compare.
+	///   - value: The value to match against.
+	/// - Returns: The first element where `keypath` equals `value`, or `nil`
+	/// if none is found.
+	@inlinable
+	func first<T>(
+		_ keypath: KeyPath<Element, T>,
+		equal value: T
+	) -> Element? where T: Equatable{
+		first { $0[keyPath: keypath] == value }
+	}
+
+	/// Returns an array of elements where the value at the specified `keypath`
+	/// matches the given `value`.
+	/// - Parameters:
+	///   - keypath: A `KeyPath` to compare.
+	///   - value: The value to match against.
+	/// - Returns: An array of elements where the `keypath` equals `value`.
+	@inlinable
+	func filter<T>(
+		_ keypath: KeyPath<Element, T>,
+		equal value: T
+	) -> [ Element ] where T: Equatable{
+		filter { $0[keyPath: keypath] == value }
+	}
+
+	/// Returns an array of non-nil values from the specified
+	/// optional `keypath`.
+	/// Equivalent to `compactMap { $0.keypath }`.
+	///
+	/// - Parameter keypath: A `KeyPath` that evaluates to an optional value.
+	/// - Returns: An array of non-nil values from `keypath`.
+	@inlinable
+	func compactMap<T>(
+		_ keypath: KeyPath<Element, T?>
+	) -> [ T ] {
+		compactMap { $0[ keyPath: keypath ] }
+	}
+
+	/// Checks if any element in the collection has a value at the specified
+	/// `keypath` equal to the given `value`.
+	///
+	/// - Parameters:
+	///   - keypath: A `KeyPath` to compare.
+	///   - value: The value to match against.
+	/// - Returns: `true` if any element's `keypath` equals `value`, else `false`.
+	@inlinable
+	func contains<T>(
+		_ keypath: KeyPath<Element, T>,
+		equal value: T
+	) -> Bool where T: Equatable {
+		contains { $0[ keyPath: keypath ] == value }
+	}
+
+	/// Checks if any element in the collection satisfies the specified
+	/// `keypath` condition.
+	///
+	/// - Parameter keypath: A `KeyPath` that evaluates to a `Bool`.
+	/// - Returns: `true` if any element's `keypath` is `true`, else `false`.
+	@inlinable
+	func contains(
+		_ keypath: KeyPath<Element, Bool>
+	) -> Bool {
+		contains { $0[ keyPath: keypath ] }
 	}
 }
 

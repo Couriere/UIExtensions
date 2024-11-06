@@ -30,6 +30,15 @@ import UIKit
 
 public extension CGPoint {
 
+	/// Returns a new `CGPoint` offset by specified `dx` and `dy` values.
+	/// - Parameters:
+	///   - dx: The offset to apply along the x-axis. Defaults to 0.
+	///   - dy: The offset to apply along the y-axis. Defaults to 0.
+	/// - Returns: A new `CGPoint` offset by `dx` and `dy` from the original point.
+	func offset( dx: Double = 0, dy: Double = 0 ) -> CGPoint {
+		CGPoint( x: x + dx, y: y + dy )
+	}
+
 	/// Returns distance between self and provided point.
 	func distance( to point: CGPoint ) -> CGFloat {
 
@@ -41,35 +50,63 @@ public extension CGPoint {
 	}
 }
 
-public extension CGRect {
+public extension CGSize {
 
-	static func *( rect: CGRect, multiplier: CGFloat ) -> CGRect {
-		CGRect(
-			x: rect.origin.x * multiplier,
-				y: rect.origin.y * multiplier,
-				width: rect.size.width * multiplier,
-				height: rect.size.height * multiplier
-		)
-	}
+	init( square side: Double ) { self.init( width: side, height: side ) }
+	init( square side: Int ) { self.init( width: side, height: side ) }
 
-	static func /( rect: CGRect, divider: CGFloat ) -> CGRect {
-		CGRect(
-			x: rect.origin.x / divider,
-				y: rect.origin.y / divider,
-				width: rect.size.width / divider,
-				height: rect.size.height / divider
-		)
-	}
+	/// Aspect ratio of the CGSize object.
+	var aspectRatio: Double { width / height }
 
-	static func *=( rect: inout CGRect, multiplier: CGFloat ) {
-		rect = rect * multiplier
-	}
-
-	static func /= ( rect: inout CGRect, divider: CGFloat ) {
-		rect = rect / divider
-	}
+	/// Returns whether a size has zero or negative width or height, or is an invalid size.
+	var isEmpty: Bool { return !( width > 0 && height > 0 ) }
 }
 
+public extension CGSize {
+
+	/// Adds the width and height of two `CGSize` values
+	/// and returns a new `CGSize` with the combined dimensions.
+	/// - Parameters:
+	///   - lhs: The left-hand side `CGSize` to add.
+	///   - rhs: The right-hand side `CGSize` to add.
+	/// - Returns: A new `CGSize` whose width and height are the sum
+	/// of the respective widths and heights of `lhs` and `rhs`.
+	static func +( lhs: Self, rhs: Self ) -> CGSize {
+		CGSize(
+			width: lhs.width + rhs.width,
+			height: lhs.height + rhs.height
+		)
+	}
+
+	/// Multiplies the width and height of a `CGSize` by a floating-point value,
+	/// returning a new `CGSize` scaled by the specified factor.
+	/// - Parameters:
+	///   - lhs: The `CGSize` to scale.
+	///   - rhs: The floating-point scaling factor.
+	/// - Returns: A new `CGSize` with width and height scaled by `rhs`.
+	static func *<FloatingPoint>(
+		lhs: Self,
+		rhs: FloatingPoint
+	) -> CGSize where FloatingPoint: BinaryFloatingPoint {
+		CGSize(
+			width: lhs.width * Double( rhs ),
+			height: lhs.height * Double( rhs )
+		)
+	}
+
+	/// Divides the width and height of a `CGSize` by a floating-point value,
+	/// returning a new `CGSize` scaled down by the divisor.
+	/// - Parameters:
+	///   - lhs: The `CGSize` to scale.
+	///   - rhs: The floating-point divisor.
+	/// - Returns: A new `CGSize` with width and height divided by `rhs`.
+	static func /<FloatingPoint>(
+		lhs: Self,
+		rhs: FloatingPoint
+	) -> CGSize where FloatingPoint: BinaryFloatingPoint {
+		lhs * ( 1 / rhs )
+	}
+}
 
 public extension CGRect {
 
@@ -84,6 +121,28 @@ public extension CGRect {
 	/// Create CGRect with `.zero` origin point and supplied size.
 	init( size: CGSize ) {
 		self.init( origin: .zero, size: size )
+	}
+
+	/// Initializes a `CGRect` using the top-left and bottom-right corner points.
+	/// - Parameters:
+	///   - topLeft: The top-left corner point of the rectangle.
+	///   - bottomRight: The bottom-right corner point of the rectangle.
+	init( topLeft: CGPoint, bottomRight: CGPoint ) {
+		self.init(
+			origin: topLeft,
+			size: CGSize(
+				width: bottomRight.x - topLeft.x,
+				height: bottomRight.y - topLeft.y
+			)
+		)
+	}
+
+	/// Returns a new `CGRect` inset by the specified distance on all sides.
+	/// - Parameter d: The distance to inset each edge by.
+	/// - Returns: A new `CGRect` with each side inset by `d`.
+	@inlinable
+	func insetBy( _ d: Double ) -> CGRect {
+		insetBy( dx: d, dy: d )
 	}
 
 	/// Aspect ratio of the rectangle.
@@ -105,16 +164,55 @@ public extension CGRect {
 	var bottomRight: CGPoint { return CGPoint( x: maxX, y: maxY ) }
 }
 
-public extension CGSize {
+public extension CGRect {
 
-	init( square side: Double ) { self.init( width: side, height: side ) }
-	init( square side: Int ) { self.init( width: side, height: side ) }
+	/// Returns a new `CGRect` by scaling the origin and size of `rect` by
+	/// a specified multiplier.
+	/// - Parameters:
+	///   - rect: The `CGRect` to scale.
+	///   - multiplier: The factor to scale the rectangle by.
+	/// - Returns: A new `CGRect` with origin and size scaled by `multiplier`.
+	static func *( rect: CGRect, multiplier: CGFloat ) -> CGRect {
+		CGRect(
+			x: rect.origin.x * multiplier,
+			y: rect.origin.y * multiplier,
+			width: rect.size.width * multiplier,
+			height: rect.size.height * multiplier
+		)
+	}
 
-	/// Aspect ratio of the CGSize object.
-	var aspectRatio: Double { width / height }
+	/// Returns a new `CGRect` by dividing the origin and size of `rect`
+	/// by a specified divider.
+	/// - Parameters:
+	///   - rect: The `CGRect` to divide.
+	///   - divider: The factor to divide the rectangle by.
+	/// - Returns: A new `CGRect` with origin and size divided by `divider`.
+	static func /( rect: CGRect, divider: CGFloat ) -> CGRect {
+		CGRect(
+			x: rect.origin.x / divider,
+			y: rect.origin.y / divider,
+			width: rect.size.width / divider,
+			height: rect.size.height / divider
+		)
+	}
 
-	/// Returns whether a size has zero or negative width or height, or is an invalid size.
-	var isEmpty: Bool { return !( width > 0 && height > 0 ) }
+	/// Scales the origin and size of `rect` by a specified multiplier
+	/// in-place.
+	/// - Parameters:
+	///   - rect: The `CGRect` to scale.
+	///   - multiplier: The factor to scale the rectangle by.
+	static func *=( rect: inout CGRect, multiplier: CGFloat ) {
+		rect = rect * multiplier
+	}
+
+	/// Divides the origin and size of `rect` by a specified divider
+	/// in-place.
+	/// - Parameters:
+	///   - rect: The `CGRect` to divide.
+	///   - divider: The factor to divide the rectangle by.
+	static func /= ( rect: inout CGRect, divider: CGFloat ) {
+		rect = rect / divider
+	}
 }
 
 
@@ -139,6 +237,14 @@ public extension XTEdgeInsets {
 	/// Inverts all insets.
 	var inverted: XTEdgeInsets {
 		return XTEdgeInsets( top: -top, left: -left, bottom: -bottom, right: -right )
+	}
+
+	var vertical: Double {
+		top + bottom
+	}
+
+	var horizontal: Double {
+		left + right
 	}
 }
 

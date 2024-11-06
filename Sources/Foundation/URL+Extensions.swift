@@ -27,7 +27,7 @@ public extension URL {
 	/// Initializes a new URL with the provided `string`.
 	///	- parameter string: A `StaticString` representation of the URL.
 	///	- returns: A newly initialized `URL` object.
-	init( _ string: StaticString ) {
+	init( static string: StaticString ) {
 		let string = string.withUTF8Buffer {
 			String( decoding: $0, as: UTF8.self )
 		}

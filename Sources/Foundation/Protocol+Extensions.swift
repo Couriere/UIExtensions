@@ -28,83 +28,11 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Then {}
-
-public extension Then where Self: Any {
-
-	/// Makes it available to set properties with closures just after initializing.
-	///
-	///     let frame = CGRect().with {
-	///       $0.origin.x = 10
-	///       $0.size.width = 100
-	///     }
-	@discardableResult func with(_ block: (inout Self) -> Void) -> Self {
-		var copy = self
-		block(&copy)
-		return copy
-	}
+/// Automatically provides an `id` property for `Identifiable` types
+/// that conform to `Hashable`.
+public extension Identifiable where Self: Hashable {
+	var id: Self { self }
 }
-
-public extension Then where Self: AnyObject {
-
-	/// Makes it available to set properties with closures just after initializing.
-	///
-	///     let label = UILabel().then {
-	///       $0.textAlignment = .Center
-	///       $0.textColor = UIColor.blackColor()
-	///       $0.text = "Hello, World!"
-	///     }
-	@discardableResult func then( _ block: (Self) -> Void ) -> Self {
-		block(self)
-		return self
-	}
-
-	/// Makes it available to execute something with closures.
-	///
-	///     UserDefaults.standard.do {
-	///       $0.set("devxoul", forKey: "username")
-	///       $0.set("devxoul@gmail.com", forKey: "email")
-	///       $0.synchronize()
-	///     }
-	func `do`(_ block: (Self) -> Void) {
-		block(self)
-	}
-}
-
-public extension Then where Self: XTView {
-
-	/// Makes it available to set properties with closures just after initializing.
-	/// By defaut turns off `translatesAutoresizingMaskIntoConstraints` property.
-	///
-	///     let label = UILabel().then {
-	///       $0.textAlignment = .Center
-	///       $0.textColor = UIColor.blackColor()
-	///       $0.text = "Hello, World!"
-	///     }
-	@MainActor
-	@discardableResult
-	func then(
-		useAutolayout: Bool = true,
-		_ block: (Self) -> Void
-	) -> Self {
-		translatesAutoresizingMaskIntoConstraints = !useAutolayout
-		block(self)
-		return self
-	}
-}
-
-extension NSObject: Then {}
-
-extension JSONDecoder: Then {}
-extension JSONEncoder: Then {}
-extension PropertyListDecoder: Then {}
-extension PropertyListEncoder: Then {}
-
-extension CGPoint: Then {}
-extension CGRect: Then {}
-extension CGSize: Then {}
-extension CGVector: Then {}
-
 
 /// Syntax sugar for boolean variables.
 /// Following methods execute blocks when Bool value is either `true` or `false`
