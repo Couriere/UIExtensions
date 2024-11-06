@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:6.0
 import PackageDescription
 
 let package = Package(
@@ -15,5 +15,5 @@ let package = Package(
 			path: "UIExtensionsTests"
 		),
 	],
-	swiftLanguageVersions: [ .v5 ]
+	swiftLanguageModes: [ .v5, .v6 ]
 )

@@ -40,6 +40,7 @@ public extension UIView {
 	}
 }
 
+@MainActor
 public extension UILayoutGuide {
 
 	/// Цепляет гайд к краям родителя по горизонтали, и по границам указанного
@@ -104,21 +105,25 @@ public extension UILayoutGuide {
 			layoutGuide.equalSizeWithView( self )
 			layoutGuide.alignCenters()
 
-			observer = layoutGuide.observe(\.owningView ) { [unowned self] guide, change in
-				print( change )
+			observer = layoutGuide.observe( \.owningView ) { [unowned self] guide, change in
 
-				guard guide.owningView != self.superview else { return }
-
-				// Владеющий этим окном `UILayoutGuide` сменил
-				// своё окно. Значит нам надо удалиться.
-				// Если `UILayoutGuide` нужно показать своё
-				// местоположение, она должна снова вызвать `reveal`.
-				self.removeFromSuperview()
-				objc_setAssociatedObject(
-					guide,
-					&LayoutGuideRevealView.AssociatedObjectHandle,
-					nil,
-					objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC )
+				// We can assume (probably) that changes to
+				// `owningView` performed on main thread only.
+				MainActor.assumeIsolated {
+					
+					guard guide.owningView != self.superview else { return }
+					
+					// Владеющий этим окном `UILayoutGuide` сменил
+					// своё окно. Значит нам надо удалиться.
+					// Если `UILayoutGuide` нужно показать своё
+					// местоположение, она должна снова вызвать `reveal`.
+					self.removeFromSuperview()
+					objc_setAssociatedObject(
+						guide,
+						&LayoutGuideRevealView.AssociatedObjectHandle,
+						nil,
+						objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC )
+				}
 			}
 		}
 

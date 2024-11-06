@@ -152,7 +152,7 @@ public extension View {
 		of value: V,
 		initial: Bool = false,
 		priority: TaskPriority = .userInitiated,
-		perform action: @escaping (_ newValue: V) async -> Void
+		perform action: @escaping  (_ newValue: V) async -> Void
 	) -> some View where V : Equatable {
 
 		return self
@@ -168,12 +168,12 @@ public extension View {
 }
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-public struct OnChangeAsyncModifier<V>: ViewModifier where V: Equatable, V: Sendable {
+public struct OnChangeAsyncModifier<V>: ViewModifier where V: Equatable {
 
 	public let value: V
 	public let initial: Bool
 	public let priority: TaskPriority
-	public let action: ( _ oldValue: V, _ newValue: V ) async -> Void
+	public let action: ( _ oldValue: sending V, _ newValue: sending V ) async -> Void
 
 	@State private var task: Task<Void, Never>?
 
@@ -205,7 +205,7 @@ public struct OnChangeAsyncModifier<V>: ViewModifier where V: Equatable, V: Send
 					guard initial else { return }
 
 					task?.cancel()
-					task = Task( priority: priority ) {
+					task = Task( priority: priority ) { [action, value] in
 						await action( value, value )
 					}
 				}

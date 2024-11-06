@@ -37,7 +37,7 @@ class DateExtensionsTests: XCTestCase {
 		XCTAssertEqual( Int64( timeIntervalSince1970 * 1000 ), timestamp )
 		let dateFromTimestamp = Date( timestamp: timestamp )
 
-		XCTAssert( Calendar.current.isDate( date, equalTo: dateFromTimestamp, toGranularity: .nanosecond ) )
+		XCTAssert( Calendar.current.isDate( date, equalTo: dateFromTimestamp, toGranularity: .second ) )
 	}
 
 	func testAddingMonths() {

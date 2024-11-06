@@ -35,7 +35,8 @@ enum Enum {
 	class CollectionViewCell: UICollectionViewCell {}
 	class CollectionReusable: UICollectionViewCell {}
 }
-class CellIdentifiersTests: XCTestCase {
+@MainActor
+final class CellIdentifiersTests: XCTestCase {
 
 	class InnerTableViewCell: UITableViewCell {}
 	class InnerTableHeaderFooterView: UITableViewHeaderFooterView {}

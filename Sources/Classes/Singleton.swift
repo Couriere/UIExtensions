@@ -23,7 +23,7 @@
 import Foundation
 
 @propertyWrapper
-public struct Singleton<ObjectType> {
+public struct Singleton<ObjectType> where ObjectType: AnyObject, ObjectType: Sendable {
 
 	/// The underlying value referenced by the environment object.
 	public var wrappedValue: ObjectType {
@@ -45,10 +45,17 @@ public struct Singleton<ObjectType> {
 	}
 
 	public func get() -> ObjectType? {
-		_singletonStorage.first( where: { $0 is ObjectType } ) as? ObjectType
+		singletonLock.lock()
+		defer { singletonLock.unlock() }
+
+		return _singletonStorage.first( where: { $0 is ObjectType } ) as? ObjectType
 	}
 
 	public static func set( _ value: ObjectType ) {
+
+		singletonLock.lock()
+		defer { singletonLock.unlock() }
+
 		if let index = _singletonStorage.firstIndex( where: { $0 is ObjectType } ) {
 			_singletonStorage.remove( at: index )
 		}
@@ -60,4 +67,5 @@ public struct Singleton<ObjectType> {
 	}
 }
 
-private var _singletonStorage: [ Any ] = []
+private let singletonLock = NSLock()
+private nonisolated(unsafe) var _singletonStorage: [ AnyObject ] = []

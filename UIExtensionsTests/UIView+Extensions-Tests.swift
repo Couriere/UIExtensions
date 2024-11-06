@@ -23,8 +23,8 @@
 import XCTest
 import UIExtensions
 
-
-class UIView_Extensions_Tests: XCTestCase {
+@MainActor
+final class UIView_Extensions_Tests: XCTestCase {
 
 	func testAddViews() {
 

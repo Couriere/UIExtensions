@@ -76,7 +76,7 @@ internal struct RefreshableLoaderModifier: ViewModifier {
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 internal struct LoaderTaskKey: EnvironmentKey {
-	internal static let defaultValue: TaskWrapper? = nil
+	internal static var defaultValue: TaskWrapper? { nil }
 }
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
@@ -88,9 +88,9 @@ internal extension EnvironmentValues {
 }
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-internal struct TaskWrapper {
+internal struct TaskWrapper: Sendable {
 
-	let action: () async -> Void
+	let action: @Sendable () async -> Void
 
 	func callAsFunction() async {
 		await action()

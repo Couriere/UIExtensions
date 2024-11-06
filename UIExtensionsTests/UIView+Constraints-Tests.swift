@@ -23,14 +23,15 @@
 import XCTest
 import UIExtensions
 
-class View_Constraints_Tests: XCTestCase {
+@MainActor
+final class View_Constraints_Tests: XCTestCase, @unchecked Sendable {
 
 	var parent: XTView!
 	var child: XTView!
 	var siblingToChild: XTView!
 
-	override func setUp() {
-		super.setUp()
+	override func setUp() async throws {
+		try await super.setUp()
 
 		parent = XTView( frame: .zero )
 		child = XTView( frame: .zero )
@@ -44,12 +45,12 @@ class View_Constraints_Tests: XCTestCase {
 		parent.addSubview( siblingToChild )
 	}
 
-	override func tearDown() {
+	override func tearDown() async throws {
 		parent = nil
 		child = nil
 		siblingToChild = nil
 
-		super.tearDown()
+		try await super.tearDown()
 	}
 
 	private func assertConstraint( _ constraint: NSLayoutConstraint,

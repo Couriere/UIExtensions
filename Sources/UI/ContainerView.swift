@@ -28,7 +28,7 @@ import UIKit
 open class ContainerView: UIView {
 
 	/// Constraint flexibility options.
-	public struct Options: OptionSet {
+	public struct Options: OptionSet, Sendable {
 		public let rawValue: Int
 
 		public init( rawValue: ContainerView.Options.RawValue ) {

@@ -24,11 +24,13 @@ import XCTest
 import UIExtensions
 
 #if canImport(UIKit)
-class PaddingContainerTests: XCTestCase {
+@MainActor
+final class PaddingContainerTests: XCTestCase, @unchecked Sendable {
 
 	var containedView: UIView!
 
-	override func setUp() {
+	override func setUp() async throws {
+		try await super.setUp()
 		containedView = UIView()
 	}
 

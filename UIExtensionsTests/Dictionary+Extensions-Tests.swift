@@ -23,7 +23,8 @@
 import XCTest
 import UIExtensions
 
-class Dictionary_Extensions_Tests: XCTestCase {
+@MainActor
+final class Dictionary_Extensions_Tests: XCTestCase {
 
 	func testMerging() {
 

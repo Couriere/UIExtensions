@@ -26,11 +26,13 @@ import UIKit
 import AppKit
 #endif
 
+@MainActor
 public func CustomSpacing( _ length: CGFloat ) -> XTView {
 	XTStackView._CustomBuilderSpacer( length )
 }
 
 @resultBuilder
+@MainActor
 public class UIViewBuilder {
 	public static func buildBlock( _ children: UIViewBuilderArgument... ) -> [ XTView ] {
 		return children.flatMap { $0.arrayOfViews }
@@ -52,6 +54,7 @@ public class UIViewBuilder {
 	}
 }
 
+@MainActor
 public protocol UIViewBuilderArgument {
 	var arrayOfViews: [ XTView ] { get }
 }

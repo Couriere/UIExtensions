@@ -25,7 +25,8 @@ import UIExtensions
 import Combine
 
 #if swift(>=5.1)
-class UserDefaults_PropertyWrapper: XCTestCase {
+@MainActor
+final class UserDefaults_PropertyWrapper: XCTestCase, @unchecked Sendable {
 
 	@CodableUserDefault( "valueStore" ) var valueStore: Int = -1
 	@CodableUserDefault( "optionalValueStore" ) var optionalValueStore: Double?
@@ -55,7 +56,10 @@ class UserDefaults_PropertyWrapper: XCTestCase {
 
 	let testURL = URL( string: "https://www.apple.com" )!
 
-	override func setUp() {
+	override func setUp() async throws {
+
+		try await super.setUp()
+
 		let defaults = UserDefaults.standard
 		defaults.removeObject( forKey: "valueStore" )
 		defaults.removeObject( forKey: "optionalValueStore" )
@@ -198,7 +202,7 @@ class UserDefaults_PropertyWrapper: XCTestCase {
 
 		let defaults = UserDefaults.standard
 
-			defaults.set( try! JSONEncoder().encode( testURL ), forKey: "existingValueStore" )
+		defaults.set( try! JSONEncoder().encode( testURL ), forKey: "existingValueStore" )
 		defaults.set( 100, forKey: "existingLegacyValueStore" )
 
 		XCTAssertEqual( existingValueStore, testURL )

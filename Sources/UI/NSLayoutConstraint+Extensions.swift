@@ -54,6 +54,7 @@ public extension NSLayoutConstraint {
 	}
 }
 
+@MainActor
 public extension Sequence where Element == NSLayoutConstraint {
 
 	@discardableResult

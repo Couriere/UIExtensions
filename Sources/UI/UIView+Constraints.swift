@@ -31,7 +31,7 @@ extension XTView: LayoutGuideProtocol {
 	public var owningView: XTView? { return superview }
 }
 
-public struct Axes: OptionSet, Hashable {
+public struct Axes: OptionSet, Hashable, Sendable {
 
 	public let rawValue: Int
 
@@ -49,7 +49,7 @@ public struct Axes: OptionSet, Hashable {
 
 
 /// Constraint flexibility options.
-public struct Edges: OptionSet, Hashable {
+public struct Edges: OptionSet, Hashable, Sendable {
 
 	public typealias RawValue = Int8
 
@@ -633,6 +633,7 @@ public extension XTView {
 
 
 #if canImport(UIKit)
+@MainActor
 public extension CGSize {
 	static let compressed = XTView.layoutFittingCompressedSize
 	static let expanded = XTView.layoutFittingExpandedSize
@@ -676,6 +677,7 @@ public extension LayoutGuideProtocol {
 }
 #endif
 
+@MainActor
 public protocol LayoutGuideProtocol {
 
 	var owningView: XTView? { get }

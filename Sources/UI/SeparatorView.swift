@@ -84,24 +84,28 @@ public final class SeparatorView: UIView {
 		super.init( coder: aDecoder )
 	}
 
-	// For convenience, if you need one pixel height/width separator in Xib or Storyboard
-	// add UIView, assign `SeparatorView` as its class name, add position constraints
-	// and add height or width (depending on type of the separator you need ) constraint
-	// with constant value of one. After initialization this constraint will change to
-	// one pixel heght or width.
+	// For convenience, if you need one pixel height/width separator in Xib or Storyboard,
+	// add UIView, assign `SeparatorView` as its class name, add position constraints,
+	// and add height or width (depending on the type of the separator you need ) constraint
+	// with a constant value of one. After initialization, this constraint will change to
+	// one pixel height or width.
 	override public func awakeFromNib() {
 		super.awakeFromNib()
 
-		// Looking for height constraint and setting it to exactly one pixel.
-		for constraint in constraints where constraint.firstItem === self && constraint.firstAttribute == .height {
-			constraint.constant = 1 / UIScreen.main.scale
-			return
-		}
-
-		// Looking for width constraint and setting it to exactly one pixel.
-		for constraint in constraints where constraint.firstItem === self && constraint.firstAttribute == .width {
-			constraint.constant = 1 / UIScreen.main.scale
-			break
+		// It will almost certanly be called on main thread. 🤔
+		MainActor.assumeIsolated {
+			
+			// Looking for height constraint and setting it to exactly one pixel.
+			for constraint in constraints where constraint.firstItem === self && constraint.firstAttribute == .height {
+				constraint.constant = 1 / UIScreen.main.scale
+				return
+			}
+			
+			// Looking for width constraint and setting it to exactly one pixel.
+			for constraint in constraints where constraint.firstItem === self && constraint.firstAttribute == .width {
+				constraint.constant = 1 / UIScreen.main.scale
+				break
+			}
 		}
 	}
 }
