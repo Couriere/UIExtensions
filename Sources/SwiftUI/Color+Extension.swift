@@ -22,7 +22,6 @@
 
 import SwiftUI
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public extension Color {
 
 	/// Initializes and returns a color object using the specified opacity and Int RGB component values.
@@ -82,7 +81,6 @@ public extension Color {
 }
 
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public extension Color {
 
 	/// Returns white color with specified opacity value.

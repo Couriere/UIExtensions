@@ -146,12 +146,10 @@ class ArrayExtensionsTests: XCTestCase {
 
 		let array: [[ I ]] = [ [ "10", "20" ], [ "30", "40", "45" ], [], [ "50", "60", "10", "70" ] ]
 
-		if #available(iOS 13, tvOS 13, *) {
-			XCTAssertEqual( array.firstIndexPath( of: "20" ), IndexPath( item: 1, section: 0 ) )
-			XCTAssertEqual( array.firstIndexPath( of: "30" ), IndexPath( item: 0, section: 1 ) )
-			XCTAssertEqual( array.firstIndexPath( of: "10" ), IndexPath( item: 0, section: 0 ) )
-			XCTAssertEqual( array.firstIndexPath( of: "70" ), IndexPath( item: 3, section: 3 ) )
-			XCTAssertNil( array.firstIndexPath( of: "0" ) )
-		}
+		XCTAssertEqual( array.firstIndexPath( of: "20" ), IndexPath( item: 1, section: 0 ) )
+		XCTAssertEqual( array.firstIndexPath( of: "30" ), IndexPath( item: 0, section: 1 ) )
+		XCTAssertEqual( array.firstIndexPath( of: "10" ), IndexPath( item: 0, section: 0 ) )
+		XCTAssertEqual( array.firstIndexPath( of: "70" ), IndexPath( item: 3, section: 3 ) )
+		XCTAssertNil( array.firstIndexPath( of: "0" ) )
 	}
 }

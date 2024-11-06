@@ -22,7 +22,6 @@
 
 import SwiftUI
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public extension View {
 
 	/// Measures the size of the view and performs an action with the result.
@@ -109,14 +108,11 @@ public extension View {
 }
 
 /// A private preference key for measuring the size of a view.
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 private struct ViewSizePreferenceKey: PreferenceKey {
-	static var defaultValue: CGSize = .zero
+	static let defaultValue: CGSize = .zero
 	static func reduce( value: inout CGSize, nextValue: () -> CGSize ) {}
 }
 
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public extension View {
 
 	/// Measures and observes the frame of the view
@@ -180,8 +176,7 @@ public extension View {
 }
 
 /// A private preference key for measuring the frame of a view.
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 private struct ViewFramePreferenceKey: PreferenceKey {
-	static var defaultValue: CGRect = .zero
+	static let defaultValue: CGRect = .zero
 	static func reduce( value: inout CGRect, nextValue: () -> CGRect ) {}
 }

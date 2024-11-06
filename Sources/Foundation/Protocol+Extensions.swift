@@ -81,7 +81,12 @@ public extension Then where Self: XTView {
 	///       $0.textColor = UIColor.blackColor()
 	///       $0.text = "Hello, World!"
 	///     }
-	@discardableResult func then( useAutolayout: Bool = true, _ block: (Self) -> Void ) -> Self {
+	@MainActor
+	@discardableResult
+	func then(
+		useAutolayout: Bool = true,
+		_ block: (Self) -> Void
+	) -> Self {
 		translatesAutoresizingMaskIntoConstraints = !useAutolayout
 		block(self)
 		return self

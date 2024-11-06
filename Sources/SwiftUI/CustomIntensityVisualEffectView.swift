@@ -26,7 +26,7 @@ import SwiftUI
 
 /// A View that encapsulates the effect, intensity,
 /// and duration of the visual effect.
-@available(iOS 13, tvOS 13, *)
+@MainActor
 public struct CustomIntensityVisualEffectView {
 	
 	/// The visual effect to apply.
@@ -54,7 +54,6 @@ public struct CustomIntensityVisualEffectView {
 	}
 }
 
-@available(iOS 13, tvOS 13, *)
 extension CustomIntensityVisualEffectView: UIViewRepresentable {
 	
 	public func makeCoordinator() -> Coordinator {
@@ -70,11 +69,11 @@ extension CustomIntensityVisualEffectView: UIViewRepresentable {
 	}
 }
 
-@available(iOS 13, tvOS 13, *)
 public extension CustomIntensityVisualEffectView {
-	
-	class Coordinator {
-		
+
+	@MainActor
+	final class Coordinator {
+
 		/// The visual effects view to present.
 		let visualEffectsView: CustomIntensityVisualEffectUIView
 
@@ -88,7 +87,6 @@ public extension CustomIntensityVisualEffectView {
 	}
 }
 
-@available(iOS 13, tvOS 13, *)
 public extension View {
 	
 	/// Layers the blurred background behind this view.

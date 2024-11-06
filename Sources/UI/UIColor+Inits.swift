@@ -46,9 +46,9 @@ public extension UIColor {
 		let colorString = hexString[..<hexString.index( hexString.startIndex, offsetBy: 6 ) ]
 
 		let scanner = Scanner( string: String( colorString ))
-		var hexNum: UInt32 = 0
-
-		guard scanner.scanHexInt32( &hexNum ) else { return nil }
+		guard let hexNum = scanner.scanUInt64( representation: .hexadecimal ) else {
+			return nil
+		}
 		self.init( hexNum, alpha: alpha )
 	}
 
@@ -69,6 +69,9 @@ public extension UIColor {
 		let blue = Int( int & 0xFF )
 
 		self.init( intRed: red, green: green, blue: blue, alpha: alpha )
+	}
+	convenience init( _ int: UInt64, alpha: CGFloat = 1 ) {
+		self.init( UInt32( int ), alpha: alpha )
 	}
 
 

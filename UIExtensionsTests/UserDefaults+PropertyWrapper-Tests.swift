@@ -166,7 +166,6 @@ class UserDefaults_PropertyWrapper: XCTestCase {
 		XCTAssertNil( UserDefaults.standard.value( forKey: "nonStandardSuiteValue" ) )
 	}
 
-//  Saving for ios 12 drop future.
 //	func testChangeObservation() {
 //
 //		if #available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *) {
@@ -199,39 +198,11 @@ class UserDefaults_PropertyWrapper: XCTestCase {
 
 		let defaults = UserDefaults.standard
 
-		if #available( iOS 13, tvOS 13, watchOS 6, * ) {
 			defaults.set( try! JSONEncoder().encode( testURL ), forKey: "existingValueStore" )
-		} else {
-			defaults.set( try! JSONEncoder().encode( [ testURL ] ), forKey: "existingValueStore" )
-		}
-
 		defaults.set( 100, forKey: "existingLegacyValueStore" )
 
 		XCTAssertEqual( existingValueStore, testURL )
 		XCTAssertEqual( existingLegacyValueStore, 100 )
-	}
-
-	// Checking that value will be read correctly after update from iOS 12 and earlier
-	// to iOS 13 and later.
-	func testUpgradeValue() {
-
-		if #available( iOS 13, tvOS 13, watchOS 6, * ) {
-
-			UserDefaults.standard.set( try! JSONEncoder().encode( [ testURL ] ), forKey: "updatedFromiOS12URLValue" )
-			XCTAssertEqual( updatedFromiOS12URLValue, testURL )
-
-			let array = [ 1, -2, 30 ]
-			UserDefaults.standard.set( try! JSONEncoder().encode( [ array ] ), forKey: "updatedFromiOS12ArrayValue" )
-			XCTAssertEqual( updatedFromiOS12ArrayValue, array )
-
-			let dictionary = [ "key1" : 1, "key2" : -2, "key3" : 30 ]
-			UserDefaults.standard.set( try! JSONEncoder().encode( [ dictionary ] ), forKey: "updatedFromiOS12DictionaryValue" )
-			XCTAssertEqual( updatedFromiOS12DictionaryValue, dictionary )
-
-			let set = Set<String>( [ "first", "second", "something" ] )
-			UserDefaults.standard.set( try! JSONEncoder().encode( [ set ] ), forKey: "updatedFromiOS12SetValue" )
-			XCTAssertEqual( updatedFromiOS12SetValue, set )
-		}
 	}
 
 	func testRemove() {

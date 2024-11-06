@@ -122,7 +122,6 @@ public extension Collection where Self.Element: Collection,
 	}
 }
 
-@available( iOS 13, tvOS 13, macOS 10.15, * )
 public extension Collection where Self.Element: Collection,
 								  Self.Element.Element: Identifiable,
 								  Self.Element.Index == Int {

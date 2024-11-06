@@ -38,7 +38,25 @@ public func dispatch_main_thread_sync<T>( _ block: () -> T ) -> T {
 
 public extension DispatchQueue {
 
-	func asyncAfter( timeInterval: TimeInterval, block: @escaping () -> Void ) {
+	///
+	/// Submits a work item to a dispatch queue for asynchronous execution after
+	/// a specified time.
+	///
+	/// This method enforces the work item to be sendable.
+	///
+	/// - parameter: timeInterval the time after which the work item
+	/// should be executed, in seconds.
+	/// - parameter qos: the QoS at which the work item should be executed.
+	///	Defaults to `DispatchQoS.unspecified`.
+	/// - parameter flags: flags that control the execution environment of the
+	/// work item.
+	/// - parameter block: The work item to be invoked on the queue.
+	func asyncAfter(
+		timeInterval: TimeInterval,
+		qos: DispatchQoS = .unspecified,
+		flags: DispatchWorkItemFlags = [],
+		block: @escaping @Sendable () -> Void
+	) {
 		let delayTime = DispatchTime.now() + Double(Int64( timeInterval * TimeInterval( NSEC_PER_SEC ))) / Double(NSEC_PER_SEC)
 		asyncAfter( deadline: delayTime, execute: block )
 	}

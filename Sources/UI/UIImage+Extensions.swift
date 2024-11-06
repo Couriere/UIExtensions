@@ -26,6 +26,7 @@ import UIKit
 public extension UIImage {
 
 	/// Initializes and returns an image object of specified size, filled with specified color.
+	@MainActor
 	convenience init( size: CGSize = CGSize( width: 1, height: 1 ), color: UIColor ) {
 
 		let image = UIGraphicsImageRenderer( size: size, format: .preferred() )
@@ -64,20 +65,7 @@ public extension UIImage {
 	@available( iOS, deprecated: 13, renamed: "withTintColor"  )
 	@available( tvOS, deprecated: 13, renamed: "withTintColor" )
 	func applyTintColor( _ color: UIColor, renderingMode: UIImage.RenderingMode = .automatic ) -> UIImage {
-
-		if #available(iOS 13, tvOS 13, *) {
-			return self.withTintColor( color, renderingMode: renderingMode )
-		} else {
-
-			let image = withRenderingMode( .alwaysTemplate )
-
-			return UIGraphicsImageRenderer( size: size, format: .preferred() )
-				.image { context in
-					color.set()
-					image.draw( in: CGRect( origin: .zero, size: size ))
-				}
-				.withRenderingMode( renderingMode )
-		}
+		self.withTintColor( color, renderingMode: renderingMode )
 	}
 }
 #endif

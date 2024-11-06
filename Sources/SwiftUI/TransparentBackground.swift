@@ -72,7 +72,6 @@ public extension View {
 /// }
 /// ```
 ///
-@available( iOS 13.0, tvOS 13.0, *)
 public struct TransparentBackground: UIViewRepresentable {
 	
 	/// The background color to make the window transparent
