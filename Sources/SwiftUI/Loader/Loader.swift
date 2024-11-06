@@ -23,7 +23,7 @@
 import SwiftUI
 
 /// Options for controlling the behavior of data reloading in the Loader.
-public struct ReloadOptions: OptionSet {
+public struct ReloadOptions: OptionSet, Sendable {
 
 	public let rawValue: UInt
 
@@ -102,8 +102,12 @@ public struct ReloadOptions: OptionSet {
 /// }
 /// ```
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-public struct Loader<Input, Result, LoadingView, FailureView, Content> where
-Input: Equatable, LoadingView: View, FailureView: View, Content: View {
+@MainActor
+public struct Loader<Input, Result, LoadingView, FailureView, Content> where Input: Equatable,
+																			 Input: Sendable,
+																			 LoadingView: View,
+																			 FailureView: View,
+																			 Content: View {
 
 	/// The input parameter for data loading.
 	private let input: Input
@@ -112,7 +116,7 @@ Input: Equatable, LoadingView: View, FailureView: View, Content: View {
 	private let reloadOptions: ReloadOptions
 
 	/// Asynchronous function to perform data loading.
-	private let action: (Input) async throws -> Result
+	private let action: (Input) async throws -> sending Result
 
 	/// The view to display while loading.
 	private let loadingView: LoadingView
@@ -137,14 +141,14 @@ Input: Equatable, LoadingView: View, FailureView: View, Content: View {
 	/// State to force reload after loading failure.
 	@State private var forcedReloadTrigger: Bool = false
 
-	/// Initializes the Loader View with parameters.
-	///
-	///	When the `input` parameter's value changes,
-	///	the data will be reloaded based on the specified action.
+	/// Initializes the Loader View with specified parameters.
+	/// When the value of the `input` parameter changes,
+	/// the data will be reloaded based on the chosen `reloadOptions`.
 	///
 	/// - Parameters:
 	///   - input: The input parameter for data loading.
-	///   - reloadOptions: Options controlling the reloading behavior. Defaults to `[.clearOnReload, .reloadOnAppear]`.
+	///   - reloadOptions: Options controlling the reloading behavior.
+	///    Defaults to `[.clearOnReload, .reloadOnAppear]`.
 	///   - loadingView: The view to display while loading.
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - reload: Trigger to force reloading after loading error.
@@ -173,7 +177,7 @@ Input: Equatable, LoadingView: View, FailureView: View, Content: View {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping ( Input ) async throws -> Result,
+		action: @escaping ( Input ) async throws -> sending Result,
 		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ isLoading: Bool ) -> Content
 	) {
 		self.input = input
