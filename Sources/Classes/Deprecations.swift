@@ -64,17 +64,6 @@ public extension Dictionary {
 	}
 }
 
-public extension URL {
-
-#if os( iOS )
-	@available( iOS, deprecated: 11.0, message: "Use UIDevice.current.freeSpace instead" )
-	var freeSpace: Int64? {
-		return UIDevice.current.freeSpace
-	}
-#endif
-}
-
-
 @available( swift, deprecated: 5.1, message: "User @UserDefault property wrapper instead." )
 public final class DefaultsKey<T> {
 
@@ -740,7 +729,7 @@ public extension LayoutGuideProtocol {
 
 
 @available( *, deprecated )
-public struct SideInsets: Hashable {
+public struct SideInsets: Hashable, Sendable {
 	// Specify amount to inset of outset for each of the edges.
 	// Positive values for `inset`,
 	// negative values for `outset`.
@@ -871,3 +860,23 @@ public extension UIStackView {
 	}
 }
 #endif
+
+@available( *, unavailable, message: "Use AsyncStream instead")
+public extension Array {
+
+	typealias IterationResult = ( Bool ) -> Void
+	typealias AsyncIteration = ( Element, _ result: @escaping IterationResult ) -> Void
+
+	/// Аналог фильтра для массива, но каждый вызов итератора может быть асинхронным.
+	/// В результате после отработки всех итераторов вызывается обработчик завершения.
+	/// Каждому блоку итератор передаёт элемент массива и блок завершения `IterationResult` для передачи результата,
+	/// который ОБЯЗАТЕЛЬНО должен быть вызван. Только после вызова `IterationResult` для всех элементов
+	/// вызывается блок завершения самого метода `asyncFilter`.
+	func asyncFilter( asyncIsIncluded: @escaping AsyncIteration, completion: @escaping ( [ Element ] ) -> Void ) {
+	}
+}
+
+
+@available( *, unavailable, message: "Use AsyncStream or Combine instead.")
+open class Event<T> {
+}
