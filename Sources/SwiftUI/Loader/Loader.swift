@@ -105,6 +105,7 @@ public struct ReloadOptions: OptionSet, Sendable {
 @MainActor
 public struct Loader<Input, Result, LoadingView, FailureView, Content> where Input: Equatable,
 																			 Input: Sendable,
+																			 Result: Sendable,
 																			 LoadingView: View,
 																			 FailureView: View,
 																			 Content: View {
@@ -116,7 +117,7 @@ public struct Loader<Input, Result, LoadingView, FailureView, Content> where Inp
 	private let reloadOptions: ReloadOptions
 
 	/// Asynchronous function to perform data loading.
-	private let action: (Input) async throws -> sending Result
+	private let action: (Input) async throws -> Result
 
 	/// The view to display while loading.
 	private let loadingView: LoadingView
@@ -177,7 +178,7 @@ public struct Loader<Input, Result, LoadingView, FailureView, Content> where Inp
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping ( Input ) async throws -> sending Result,
+		action: @escaping ( Input ) async throws -> Result,
 		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ isLoading: Bool ) -> Content
 	) {
 		self.input = input

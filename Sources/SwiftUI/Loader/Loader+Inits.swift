@@ -60,7 +60,7 @@ public extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping ( Input ) async throws -> sending Result,
+		action: @escaping ( Input ) async throws -> Result,
 		@ViewBuilder content: @escaping ( _ result: Result, _ isLoading: Bool ) -> Content
 	) {
 		self.init(
@@ -108,7 +108,7 @@ public extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping ( Input ) async throws -> sending Result,
+		action: @escaping ( Input ) async throws -> Result,
 		@ViewBuilder content: @escaping ( _ result: Result ) -> Content
 	) {
 		self.init(
@@ -161,7 +161,7 @@ public extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> sending Result,
+		action: @escaping () async throws -> Result,
 		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ isLoading: Bool ) -> Content
 	) {
 		self.init(
@@ -210,7 +210,7 @@ public extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> sending Result,
+		action: @escaping () async throws -> Result,
 		@ViewBuilder content: @escaping ( _ result: Binding<Result> ) -> Content
 	) {
 		self.init(
@@ -263,7 +263,7 @@ public extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> sending Result,
+		action: @escaping () async throws -> Result,
 		@ViewBuilder content: @escaping ( _ result: Result, _ isLoading: Bool ) -> Content
 	) {
 		self.init(
@@ -311,7 +311,7 @@ public extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> sending Result,
+		action: @escaping () async throws -> Result,
 		@ViewBuilder content: @escaping ( _ result: Result ) -> Content
 	) {
 		self.init(
@@ -360,7 +360,7 @@ public extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> sending Result,
+		action: @escaping () async throws -> Result,
 		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ isLoading: Bool ) -> Content
 	) where Input == Int {
 		self.init(
@@ -405,7 +405,7 @@ public extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> sending Result,
+		action: @escaping () async throws -> Result,
 		@ViewBuilder content: @escaping ( _ result: Binding<Result> ) -> Content
 	) where Input == Int {
 		self.init(
@@ -453,7 +453,7 @@ public extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> sending Result,
+		action: @escaping () async throws -> Result,
 		@ViewBuilder content: @escaping ( _ result: Result, _ isLoading: Bool ) -> Content
 	) where Input == Int {
 		self.init(
@@ -498,7 +498,7 @@ public extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> sending Result,
+		action: @escaping () async throws -> Result,
 		@ViewBuilder content: @escaping ( _ result: Result ) -> Content
 	) where Input == Int {
 		self.init(
