@@ -465,7 +465,7 @@ public extension NSMutableParagraphStyle {
 	@objc class var standard: NSMutableParagraphStyle {
 		let defaultStyle = NSMutableParagraphStyle()
 		defaultStyle.lineBreakMode = .byTruncatingTail
-		if #available(iOS 14.0, macOS 11.0, tvOS 14, *) {
+		if #available(iOS 14.0, macOS 11.0, tvOS 14, watchOS 7, *) {
 			defaultStyle.lineBreakStrategy = .standard
 		}
 		return defaultStyle
