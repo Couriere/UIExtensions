@@ -24,22 +24,70 @@ import SwiftUI
 
 public extension EdgeInsets {
 
-	init( _ inset: CGFloat ) {
-		self.init( top: inset, leading: inset, bottom: inset, trailing: inset )
+	/// A static instance representing zero edge insets.
+	static let zero = EdgeInsets()
+
+	/// The total vertical inset, calculated as the sum of `top`
+	/// and `bottom`.
+	var vertical: Double {
+		top + bottom
 	}
 
-	init( horizontal: CGFloat = 0, vertical: CGFloat = 0 ) {
-		self.init( top: vertical, leading: horizontal, bottom: vertical, trailing: horizontal )
-	}
-
-	init( top: CGFloat? = nil, leading: CGFloat? = nil,
-		  bottom: CGFloat? = nil, trailing: CGFloat? = nil ) {
-		self.init( top: top ?? 0, leading: leading ?? 0,
-				   bottom: bottom ?? 0, trailing: trailing ?? 0 )
+	/// The total horizontal inset, calculated as the sum of `leading`
+	/// and `trailing`.
+	var horizontal: Double {
+		leading + trailing
 	}
 
 	/// Inverts all insets.
 	var inverted: EdgeInsets {
 		return EdgeInsets( top: -top, leading: -leading, bottom: -bottom, trailing: -trailing )
+	}
+}
+
+extension EdgeInsets {
+
+	/// Creates an `EdgeInsets` instance from a `UIEdgeInsets`.
+	/// - parameter uiEdgeInsets: The `UIEdgeInsets` to convert.
+	public init( _ uiEdgeInsets: UIEdgeInsets ) {
+
+		self.init(
+			top: uiEdgeInsets.top,
+			leading: uiEdgeInsets.left,
+			bottom: uiEdgeInsets.bottom,
+			trailing: uiEdgeInsets.right
+		)
+	}
+
+	/// Creates an `EdgeInsets` instance with all sides set to the same value.
+	/// - Parameter inset: The value to apply to all sides.
+	public init( _ inset: Double ) {
+		self.init( top: inset, leading: inset, bottom: inset, trailing: inset )
+	}
+
+	/// Creates an `EdgeInsets` instance with specified horizontal and
+	/// vertical insets.
+	/// - Parameters:
+	///   - horizontal: The inset to apply to `leading` and `trailing`.
+	///   - vertical: The inset to apply to `top` and `bottom`.
+	public init( horizontal: Double = 0, vertical: Double = 0 ) {
+		self.init( top: vertical, leading: horizontal, bottom: vertical, trailing: horizontal )
+	}
+
+	/// Creates an `EdgeInsets` instance with optional values for each side.
+	/// Missing values default to 0.
+	/// - Parameters:
+	///   - top: The inset for the top edge, or `nil` to use 0.
+	///   - leading: The inset for the leading edge, or `nil` to use 0.
+	///   - bottom: The inset for the bottom edge, or `nil` to use 0.
+	///   - trailing: The inset for the trailing edge, or `nil` to use 0.
+	public init( top: Double? = nil, leading: Double? = nil,
+		  bottom: Double? = nil, trailing: Double? = nil ) {
+		self.init(
+			top: CGFloat( top ?? 0 ),
+			leading: CGFloat( leading ?? 0 ),
+			bottom: CGFloat( bottom ?? 0 ),
+			trailing: CGFloat( trailing ?? 0 )
+		)
 	}
 }

@@ -164,3 +164,26 @@ public extension Color {
 		Color( white: Double( white ) / 255 , opacity: opacity )
 	}
 }
+
+public extension ShapeStyle where Self == Color {
+
+	/// Returns white color with specified opacity value.
+	static func white( _ opacity: Double ) -> Color {
+		Color( white: 1, opacity: opacity )
+	}
+
+	/// Returns black color with specified opacity value.
+	static func black( _ opacity: Double ) -> Color {
+		Color( white: 0, opacity: opacity )
+	}
+
+	/// Returns gray color with specified shade and opacity.
+	static func gray( _ white: Double, opacity: Double = 1 ) -> Color {
+		Color( white: white, opacity: opacity )
+	}
+
+	/// Returns gray color with specified shade and opacity.
+	static func iGray( _ white: Int, opacity: Double = 1 ) -> Color {
+		Color( white: Double( white ) / 255 , opacity: opacity )
+	}
+}

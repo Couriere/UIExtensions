@@ -25,6 +25,33 @@ import UIKit
 
 public extension UIApplication {
 
+	/// Returns the currently active `UIWindowScene`.
+	static var activeScene: UIWindowScene? {
+		UIApplication.shared
+			.connectedScenes
+			.compactMap { $0 as? UIWindowScene }
+			.first { $0.activationState.isIn( .foregroundActive, .foregroundInactive ) }
+	}
+
+	/// Returns the key window of the currently active scene.
+	@available(iOS 15.0, tvOS 15.0, *)
+	static var keyWindow: UIWindow? {
+		activeScene?.keyWindow
+	}
+
+	/// Ends editing and dismisses the keyboard for the application.
+	func endEditing() {
+		sendAction(
+			#selector( UIResponder.resignFirstResponder ),
+			to: nil,
+			from: nil,
+			for: nil
+		)
+	}
+}
+
+public extension UIApplication {
+
 	var topPresentedViewController: UIViewController? {
 		var controller = self.windows.first { $0.isKeyWindow }?.rootViewController
 		while let presentedViewController = controller?.presentedViewController {
