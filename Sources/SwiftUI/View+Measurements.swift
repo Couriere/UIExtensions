@@ -49,7 +49,11 @@ public extension View {
 						)
 				}
 			)
-			.onPreferenceChange( ViewSizePreferenceKey.self, perform: action )
+			.onPreferenceChange( ViewSizePreferenceKey.self ) { size in
+				DispatchQueue.main.async {
+					action( size )
+				}
+			}
 	}
 
 	/// Measures the size of the view and binds it to a CGSize variable.
@@ -147,7 +151,11 @@ public extension View {
 						)
 				}
 			)
-			.onPreferenceChange( ViewFramePreferenceKey.self, perform: action )
+			.onPreferenceChange( ViewFramePreferenceKey.self ) { frame in
+				DispatchQueue.main.async {
+					action( frame )
+				}
+			}
 	}
 
 	/// Measures and observes the frame of the view within a specified coordinate space
