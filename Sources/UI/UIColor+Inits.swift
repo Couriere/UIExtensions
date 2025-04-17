@@ -20,6 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import SwiftUI
+
 #if canImport(UIKit)
 import UIKit
 public typealias NativeColor = UIColor
@@ -135,16 +137,61 @@ public extension NativeColor {
 }
 
 
-public extension NativeColor {
+extension NativeColor {
 
-	/// Returns contrast color for the receiver.
-	/// - returns: Either black or white color, depending on lightness of the receiver.
-	var contrastColor: NativeColor {
+	/// Calculates the contrast color scheme based
+	/// on the luminance of the receiver.
+	///
+	/// - Returns: A `ColorScheme` value indicating whether
+	/// the contrast color should be `.light` or `.dark`.
+	public var contrastScheme: ColorScheme {
+
 		var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
 
-		getRed(&red, green: &green, blue: &blue, alpha: &alpha )
-		let lightness = ( red + green + blue ) / 3
-		return lightness > 0.5 ? .black : .white
+		#if canImport(AppKit)
+		guard let rgbColor = self.usingColorSpace(.deviceRGB) else {
+			return .light
+		}
+		rgbColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+		#else
+		self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+		#endif
+
+		let luminance = 0.299 * red + 0.587 * green + 0.114 * blue
+		return luminance > 0.5 ? .dark : .light
+	}
+
+	/// Replaces the receiver's color with a contrast
+	/// color based on its lightness.
+	///
+	/// This method allows customization of the light
+	/// and dark contrast colors. It determines whether
+	/// the receiver is light or dark using
+	/// the ``contrastScheme`` property.
+	///
+	/// - Parameters:
+	///   - light: The color to use as the contrast color
+	///   when the receiver is light.
+	///   - dark: The color to use as the contrast color
+	///   when the receiver is dark.
+	/// - Returns: The contrast color chosen based on the receiver's lightness.
+	public func replaceWithContrastColor(
+		light: NativeColor,
+		dark: NativeColor
+	) -> NativeColor {
+		contrastScheme == .light ? light : dark
+	}
+
+	/// Returns a contrast color for the receiver.
+	///
+	/// The contrast color is determined based on the
+	/// lightness of the receiver.
+	/// If the receiver is light, the contrast color will be black;
+	/// if dark, the contrast color will be white.
+	///
+	/// - Returns: Either black or white color, depending on the lightness of the receiver.
+	public var contrastColor: NativeColor {
+		replaceWithContrastColor( light: .white, dark: .black )
 	}
 }
 

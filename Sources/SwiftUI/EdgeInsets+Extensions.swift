@@ -22,6 +22,13 @@
 
 import SwiftUI
 
+#if canImport(UIKit)
+public typealias NativeEdgeInsets = UIEdgeInsets
+#elseif canImport(AppKit)
+public typealias NativeEdgeInsets = NSEdgeInsets
+#endif
+
+
 public extension EdgeInsets {
 
 	/// A static instance representing zero edge insets.
@@ -49,7 +56,7 @@ extension EdgeInsets {
 
 	/// Creates an `EdgeInsets` instance from a `UIEdgeInsets`.
 	/// - parameter uiEdgeInsets: The `UIEdgeInsets` to convert.
-	public init( _ uiEdgeInsets: UIEdgeInsets ) {
+	public init( _ uiEdgeInsets: NativeEdgeInsets ) {
 
 		self.init(
 			top: uiEdgeInsets.top,

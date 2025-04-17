@@ -85,3 +85,16 @@ func colorConvertToHex() {
 	#expect( Color( intRed: 0, green: 0, blue: 255, opacity: 0 ).hexRGBA == "#0000FF00" )
 	#expect( Color( intRed: 255, green: 0, blue: 255, opacity: 1 ).hexRGBA == "#FF00FFFF" )
 }
+
+@Test( "Contrast colors" )
+@available(iOS 15.0, tvOS 15, macOS 12, *)
+func colorContrastColors() {
+	#expect( Color.cyan.contrastScheme == .dark )
+	#expect( Color.indigo.contrastScheme == .light )
+
+	#expect( Color.cyan.replaceWithContrastColor(light: .white, dark: .red) == .red )
+	#expect( Color.indigo.replaceWithContrastColor(light: .gray, dark: .red) == .gray )
+
+	#expect( Color.cyan.contrastColor == .black )
+	#expect( Color.indigo.contrastColor == .white )
+}

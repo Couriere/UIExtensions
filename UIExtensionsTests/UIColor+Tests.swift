@@ -22,7 +22,6 @@
 
 import Testing
 import UIExtensions
-//import UIKit
 
 @Test( "Init with integers" )
 func uiColorInitsWithIntegers() {
@@ -79,4 +78,24 @@ func uiColorConvertToHex() {
 	#expect( NativeColor( intRed: 0, green: 0, blue: 128, alpha: 0.5 ).hexRGBA == "#0000807F" )
 	#expect( NativeColor( intRed: 0, green: 0, blue: 255, alpha: 0 ).hexRGBA == "#0000FF00" )
 	#expect( NativeColor( intRed: 255, green: 0, blue: 255, alpha: 1 ).hexRGBA == "#FF00FFFF" )
+}
+
+@Test( "Contrast colors" )
+@available(iOS 15.0, tvOS 15, macOS 12, *)
+func uiColorContrast() {
+	#expect( NativeColor( 0x101010 ).contrastScheme == .light )
+	#expect( NativeColor( 0x404040 ).contrastScheme == .light )
+	#expect( NativeColor( 0x808080 ).contrastScheme == .dark )
+	#expect( NativeColor( 0xC0C0C0 ).contrastScheme == .dark )
+	#expect( NativeColor( 0xF0F0F0 ).contrastScheme == .dark )
+	#expect( NativeColor( 0xA060A0 ).contrastScheme == .light )
+
+	#expect( NativeColor.cyan.contrastScheme == .dark )
+	#expect( NativeColor.systemIndigo.contrastScheme == .light )
+
+	#expect( NativeColor.cyan.replaceWithContrastColor(light: .white, dark: .red) == .red )
+	#expect( NativeColor.systemIndigo.replaceWithContrastColor(light: .gray, dark: .red) == .gray )
+
+	#expect( NativeColor.cyan.contrastColor == .black )
+	#expect( NativeColor.systemIndigo.contrastColor == .white )
 }

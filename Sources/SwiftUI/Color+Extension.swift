@@ -187,3 +187,50 @@ public extension ShapeStyle where Self == Color {
 		Color( white: Double( white ) / 255 , opacity: opacity )
 	}
 }
+
+
+@available(iOS 14.0, tvOS 14, macOS 11, *)
+extension Color {
+
+	/// Calculates the contrast color scheme based
+	/// on the luminance of the receiver.
+	///
+	/// - Returns: A `ColorScheme` value indicating whether
+	/// the contrast color should be `.light` or `.dark`.
+	public var contrastScheme: ColorScheme {
+		NativeColor( self ).contrastScheme
+	}
+
+	/// Replaces the receiver's color with a contrast
+	/// color based on its lightness.
+	///
+	/// This method allows customization of the light
+	/// and dark contrast colors. It determines whether
+	/// the receiver is light or dark using
+	/// the ``contrastScheme`` property.
+	///
+	/// - Parameters:
+	///   - light: The color to use as the contrast color
+	///   when the receiver is light.
+	///   - dark: The color to use as the contrast color
+	///   when the receiver is dark.
+	/// - Returns: The contrast color chosen based on the receiver's lightness.
+	public func replaceWithContrastColor(
+		light: Color,
+		dark: Color
+	) -> Color {
+		contrastScheme == .light ? light : dark
+	}
+
+	/// Returns a contrast color for the receiver.
+	///
+	/// The contrast color is determined based on the
+	/// lightness of the receiver.
+	/// If the receiver is light, the contrast color will be black;
+	/// if dark, the contrast color will be white.
+	///
+	/// - Returns: Either black or white color, depending on the lightness of the receiver.
+	public var contrastColor: Color {
+		contrastScheme == .light ? .white : .black
+	}
+}
