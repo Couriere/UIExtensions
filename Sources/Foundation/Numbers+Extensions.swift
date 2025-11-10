@@ -158,3 +158,8 @@ public extension UnsignedInteger {
 		return UInt64( microseconds ) * 1_000
 	}
 }
+
+extension CGFloat {
+	@inline(__always)
+	public var double: Double { Double(self) }
+}
