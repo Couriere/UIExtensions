@@ -23,7 +23,6 @@
 import SwiftUI
 
 #if canImport(UIKit)
-@available(iOS 14.0, tvOS 14.0, *)
 public extension View {
 
 	/// Presents a modal view that covers as much of the screen as
@@ -86,7 +85,6 @@ public extension View {
 	}
 }
 
-@available(iOS 14.0, tvOS 14.0, *)
 private struct FullScreenView<Item: Identifiable, ParentContent: View, PopupView: View>: View {
 
 	@Binding var isPresented: Bool
@@ -116,7 +114,6 @@ private struct FullScreenView<Item: Identifiable, ParentContent: View, PopupView
 	}
 }
 
-@available(iOS 14.0, tvOS 14.0, *)
 private extension FullScreenView {
 
 	final class WrappedHostingController<V: View>: UIHostingController<V>, UIAdaptivePresentationControllerDelegate {
@@ -187,8 +184,6 @@ private extension FullScreenView {
 	}
 }
 
-
-@available(iOS 14.0, tvOS 14.0, *)
 private struct _UIKitIntrospectionViewController: UIViewControllerRepresentable {
 
 	let handler: ( UIViewController ) -> Void
@@ -252,7 +247,6 @@ private struct _UIKitIntrospectionViewController: UIViewControllerRepresentable 
 	}
 }
 
-@available(iOS 14.0, tvOS 14.0, *)
 private extension View {
 
 	func _underlyingViewController(
@@ -264,11 +258,8 @@ private extension View {
 	}
 }
 
-@available(iOS 14.0, tvOS 14.0, *)
 private struct __DummyIdentifiable: Identifiable { public let id = 0 }
 
-
-@available(iOS 14.0, tvOS 14.0, *)
 struct FullScreenPopup_Previews: PreviewProvider {
 
 	@State private static var isPresented: Bool = false

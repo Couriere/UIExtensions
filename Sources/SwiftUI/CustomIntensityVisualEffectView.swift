@@ -154,8 +154,6 @@ public extension View {
 	}
 }
 
-
-@available(iOS 15, tvOS 15, *)
 struct CustomIntensityVisualEffectView_Previews: PreviewProvider {
 	
 	struct PreviewContainer: View {

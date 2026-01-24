@@ -22,9 +22,6 @@
 
 import Foundation
 
-#if swift(>=5.1)
-import Foundation
-
 /// Property wrapper around Codable values backed by UserDefaults.
 ///
 /// Usage:
@@ -82,21 +79,17 @@ public struct CodableUserDefault<Value: Codable> {
 		return self
 	}
 
-
 	// MARK: - Internals
 
 	private func getValue() -> Value {
 		guard let rawData = store.object( forKey: key ) else { return defaultValue }
 
 		if let data = rawData as? Data {
-			// On iOS 13 and later, just decoding value.
-			if #available( iOS 13, tvOS 13, watchOS 6, * ),
-			   let value = try? _userDefaults_decoder.decode( Value.self, from: data ) {
+			if let value = try? _userDefaults_decoder.decode( Value.self, from: data ) {
 				return value
 			}
 			else {
-				// On iOS 12 and earlier or if decoding failed,
-				// attempting to decode proxy array value.
+				// Attempting to decode proxy array value.
 				if let proxyValue = try? _userDefaults_decoder.decode( [ Value ].self, from: data ),
 				   let value = proxyValue.first {
 					return value
@@ -111,16 +104,8 @@ public struct CodableUserDefault<Value: Codable> {
 		if newValue is __PropertyList {
 			store.set( newValue, forKey: key )
 		} else {
-			// On iOS 12 and earlier trying to encode simple values (Int, String, etc.) results
-			// in fatal error `Top-level Optional<Int> encoded as number JSON fragment.`.
-			if #available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *) {
-				let data = try! _userDefaults_encoder.encode( newValue )
-				store.set( data, forKey: key )
-			} else {
-				// On iOS 12 and earlier encasing new value in array.
-				let data = try! _userDefaults_encoder.encode( [ newValue ] )
-				store.set( data, forKey: key )
-			}
+			let data = try! _userDefaults_encoder.encode( newValue )
+			store.set( data, forKey: key )
 		}
 	}
 }
@@ -163,5 +148,3 @@ extension CGVector: __PropertyList { }
 extension CGSize: __PropertyList { }
 extension CGRect: __PropertyList { }
 extension CGAffineTransform: __PropertyList { }
-
-#endif

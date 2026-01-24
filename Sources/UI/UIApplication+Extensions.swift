@@ -33,8 +33,6 @@ public extension UIApplication {
 			.first { $0.activationState.isIn( .foregroundActive, .foregroundInactive ) }
 	}
 
-	/// Returns the key window of the currently active scene.
-	@available(iOS 15.0, tvOS 15.0, *)
 	static var keyWindow: UIWindow? {
 		activeScene?.keyWindow
 	}
@@ -53,7 +51,7 @@ public extension UIApplication {
 public extension UIApplication {
 
 	var topPresentedViewController: UIViewController? {
-		var controller = self.windows.first { $0.isKeyWindow }?.rootViewController
+		var controller = UIApplication.keyWindow?.rootViewController
 		while let presentedViewController = controller?.presentedViewController {
 			controller = presentedViewController
 		}

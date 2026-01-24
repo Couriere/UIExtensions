@@ -22,7 +22,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public extension View {
 
 	/// Adds a modifier for this view that fires an asynchronous action when a specific
@@ -114,7 +113,6 @@ public extension View {
 	}
 }
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public extension View {
 
 	/// Adds a modifier for this view that fires an asynchronous action when a specific
@@ -167,7 +165,6 @@ public extension View {
 	}
 }
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public struct OnChangeAsyncModifier<V>: ViewModifier where V: Equatable {
 
 	public let value: V

@@ -245,9 +245,7 @@ public extension UIView {
 	func maximumContentSizeCategory(
 		_ category: UIContentSizeCategory?
 	) -> Self {
-		if #available(iOS 15.0, tvOS 15, *) {
-			maximumContentSizeCategory = category
-		}
+		maximumContentSizeCategory = category
 		return self
 	}
 
@@ -255,9 +253,7 @@ public extension UIView {
 	func minimumContentSizeCategory(
 		_ category: UIContentSizeCategory?
 	) -> Self {
-		if #available(iOS 15.0, tvOS 15, *) {
-			minimumContentSizeCategory = category
-		}
+		minimumContentSizeCategory = category
 		return self
 	}
 }

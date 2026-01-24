@@ -101,7 +101,6 @@ public struct ReloadOptions: OptionSet, Sendable {
 /// 	}
 /// }
 /// ```
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 @MainActor
 public struct Loader<Input, Result, LoadingView, FailureView, Content> where Input: Equatable,
 																			 Input: Sendable,
@@ -190,7 +189,6 @@ public struct Loader<Input, Result, LoadingView, FailureView, Content> where Inp
 	}
 }
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 extension Loader: View {
 
 	public var body: some View {
@@ -219,7 +217,6 @@ extension Loader: View {
 	}
 }
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 private extension Loader {
 
 	var initialFlag: Bool {

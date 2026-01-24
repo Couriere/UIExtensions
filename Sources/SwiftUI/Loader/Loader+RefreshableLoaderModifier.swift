@@ -22,7 +22,6 @@
 
 import SwiftUI
 
-@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
 public extension View {
 
 	/// Marks this view as refreshable.
@@ -55,8 +54,6 @@ public extension View {
 	}
 }
 
-
-@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
 internal struct RefreshableLoaderModifier: ViewModifier {
 
 	internal let reloadAction: () -> Void
@@ -74,12 +71,10 @@ internal struct RefreshableLoaderModifier: ViewModifier {
 	}
 }
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 internal struct LoaderTaskKey: EnvironmentKey {
 	internal static var defaultValue: TaskWrapper? { nil }
 }
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 internal extension EnvironmentValues {
 	var loaderTask: TaskWrapper? {
 		get { self[LoaderTaskKey.self] }
@@ -87,7 +82,6 @@ internal extension EnvironmentValues {
 	}
 }
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 internal struct TaskWrapper: Sendable {
 
 	let action: @Sendable () async -> Void

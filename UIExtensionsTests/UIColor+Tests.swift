@@ -81,7 +81,6 @@ func uiColorConvertToHex() {
 }
 
 @Test( "Contrast colors" )
-@available(iOS 15.0, tvOS 15, macOS 12, *)
 func uiColorContrast() {
 	#expect( NativeColor( 0x101010 ).contrastScheme == .light )
 	#expect( NativeColor( 0x404040 ).contrastScheme == .light )

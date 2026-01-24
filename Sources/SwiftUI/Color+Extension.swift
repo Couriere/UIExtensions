@@ -104,21 +104,18 @@ public extension Color {
 
 	/// Returns the color in HEX format as `#rrggbb`.
 	/// If the color cannot be represented in RGB, it defaults to `#000000`.
-	@available(iOS 14.0, tvOS 14, macOS 11, *)
 	var hexRGB: String {
 		hexRGBA.dropLast( 2 ).string
 	}
 
 	/// Returns the color in HEX format as `#rrggbbaa`.
 	/// If the color cannot be represented in RGB, it defaults to `#00000000`.
-	@available(iOS 14.0, tvOS 14, macOS 11, *)
 	var hexRGBA: String {
 		NativeColor( self ).hexRGBA
 	}
 }
 
 #if canImport(UIKit)
-@available(iOS 14.0, tvOS 14, *)
 public extension Color {
 
 	var uiColor: UIColor {
@@ -133,7 +130,6 @@ public extension Color {
 	}
 }
 #elseif canImport(AppKit)
-@available(macOS 11.0, *)
 public extension Color {
 
 	var nsColor: NSColor {
@@ -189,7 +185,6 @@ public extension ShapeStyle where Self == Color {
 }
 
 
-@available(iOS 14.0, tvOS 14, macOS 11, *)
 extension Color {
 
 	/// Calculates the contrast color scheme based

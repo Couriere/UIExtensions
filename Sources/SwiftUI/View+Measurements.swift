@@ -330,7 +330,6 @@ private struct ViewFramePreferenceKey: PreferenceKey {
 	return PreviewContainer()
 }
 
-@available(iOS 14.0, *)
 #Preview("Frame") {
 
 	struct PreviewContainer: View {

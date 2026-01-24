@@ -3,7 +3,7 @@ import PackageDescription
 
 let package = Package(
 	name: "UIExtensions",
-	platforms: [ .iOS( .v13 ), .tvOS( .v13 ), .macOS( .v10_15 ), .watchOS( .v6 ) ],
+	platforms: [ .iOS( .v15 ), .tvOS( .v15 ), .macOS( .v12 ), .watchOS( .v9 ) ],
 	products: [
 		.library( name: "UIExtensions", targets: ["UIExtensions"]),
 	],

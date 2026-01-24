@@ -1,15 +1,29 @@
+// MIT License
 //
-//  SwiftUIView.swift
-//  
+// Copyright (c) 2015-present Vladimir Kazantsev
 //
-//  Created by Vladimir Kazantsev on 08.10.2023.
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 import SwiftUI
 
 #if canImport(UIKit)
 
-@available( iOS 14.0, tvOS 14.0, *)
 public extension View {
 	
 	/// Applies a transparent or colored background to the view,
@@ -91,7 +105,6 @@ public struct TransparentBackground: UIViewRepresentable {
 	///
 	/// - Parameter backgroundColor: The background color to set.
 	///
-	@available( iOS 14.0, tvOS 14.0, *)
 	public init( backgroundColor: Color ) {
 		self.backgroundColor = UIColor( backgroundColor )
 	}
@@ -119,7 +132,6 @@ public struct TransparentBackground: UIViewRepresentable {
 	public func updateUIView( _ uiView: UIView, context: Context ) {}
 }
 
-@available( iOS 14.0, tvOS 14.0, *)
 struct TransparentBackground_Preview: PreviewProvider {
 	
 	struct PreviewContainer: View {

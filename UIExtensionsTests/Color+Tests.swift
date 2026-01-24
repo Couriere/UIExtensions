@@ -45,11 +45,9 @@ func colorInitsWithIntegers() {
 func colorRandomColors() {
 
 #if canImport(UIKit)
-	if #available(iOS 14.0, tvOS 14.0, *) {
-		#expect( Color( randomWithOpacity: 1 ).opacity == 1 )
-		#expect( Float( Color( randomWithOpacity: 0.3 ).opacity ) == 0.3 )
-		#expect( Color( randomWithOpacity: 0 ).opacity == 0 )
-	}
+	#expect( Color( randomWithOpacity: 1 ).opacity == 1 )
+	#expect( Float( Color( randomWithOpacity: 0.3 ).opacity ) == 0.3 )
+	#expect( Color( randomWithOpacity: 0 ).opacity == 0 )
 #endif
 
 	let randomColors = (0..<100).reduce(
@@ -76,7 +74,6 @@ func colorInitFromString() {
 }
 
 @Test( "Convert to hex" )
-@available(iOS 14.0, tvOS 14, macOS 11, *)
 func colorConvertToHex() {
 	#expect( Color( intRed: 255, green: 0, blue: 0 ).hexRGB == "#FF0000" )
 	#expect( Color( intRed: 255, green: 128, blue: 0 ).hexRGB == "#FF8000" )
@@ -87,7 +84,6 @@ func colorConvertToHex() {
 }
 
 @Test( "Contrast colors" )
-@available(iOS 15.0, tvOS 15, macOS 12, *)
 func colorContrastColors() {
 	#expect( Color.cyan.contrastScheme == .dark )
 	#expect( Color.indigo.contrastScheme == .light )

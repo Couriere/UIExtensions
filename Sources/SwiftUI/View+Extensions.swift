@@ -163,7 +163,6 @@ public extension View {
 	}
 }
 
-@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
 public extension View {
 
 	/// Attaches an asynchronous task to the view, triggered when the optional
@@ -188,6 +187,28 @@ public extension View {
 			}
 	}
 
+	/// Attaches an asynchronous task to the view that runs only when the given
+	/// condition is `true`. The task is triggered on initial appearance and when
+	/// the condition changes.
+	/// - Parameters:
+	///   - condition: A Boolean value. When `true`, the action is executed; when
+	///     `false`, the action is skipped.
+	///   - priority: The priority of the asynchronous task. Defaults to `.userInitiated`.
+	///   - action: A closure to execute when the condition is `true`.
+	/// - Returns: A view with the task attached.
+	@inlinable
+	func task(
+		if condition: Bool,
+		priority: TaskPriority = .userInitiated,
+		@_inheritActorContext _ action: @escaping @Sendable () async -> Void
+	) -> some View {
+		self
+			.task(id: condition, priority: priority) {
+				guard condition else { return }
+				await action()
+			}
+	}
+
 	/// Attaches an asynchronous task to the view, triggered when the specified
 	/// value changes. The task runs with the specified priority and performs
 	/// the provided action.
@@ -200,15 +221,12 @@ public extension View {
 	func task<T>(
 		id value: T,
 		priority: TaskPriority = .userInitiated,
-		_ action: @escaping ( T ) async -> Void
+		@_inheritActorContext _ action: @escaping @Sendable ( T ) async -> Void
 	) -> some View where T : Equatable {
 		self
-			.onChange(
-				of: value,
-				initial: true,
-				priority: priority,
-				perform: action
-			)
+			.task( id: value, priority: priority ) {
+				await action( value )
+			}
 	}
 }
 
