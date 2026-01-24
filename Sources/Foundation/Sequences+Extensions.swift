@@ -22,18 +22,44 @@
 
 import Foundation
 
-public extension Sequence where Element: OptionalType {
+extension Sequence where Element: OptionalType {
 
 	/// Returns an array of unwrapped values for each non-nil element in the
 	/// collection. Equivalent to `compactMap { $0 }`.
 	/// - Returns: An array of unwrapped values from each non-nil element.
 	@inlinable
-	func compactMap() -> [Element.Wrapped] {
+	public func compactMap() -> [Element.Wrapped] {
 		compactMap { $0.value }
 	}
 }
 
-public extension Sequence {
+extension Sequence {
+
+	/// Returns an array containing the results of calling the given closure
+	/// once for each element of the sequence.
+	///
+	/// Unlike the standard `map(_:)`, this method ignores the elements of the
+	/// sequence and calls the provided closure without arguments for each
+	/// element. The number of produced values always matches the number of
+	/// elements in the sequence.
+	///
+	/// ## Example
+	/// ```swift
+	/// let values = [1, 2, 3]
+	/// let result = values.map { UUID() }
+	/// // Produces three unique UUIDs
+	/// ```
+	///
+	/// - Parameter transform: A closure that produces a value for each element
+	///   of the sequence.
+	/// - Returns: An array containing the values returned by `transform`.
+	@inline(__always)
+	@_disfavoredOverload
+	public func map<T>(
+		_ transform: () -> T
+	) -> [T] {
+		map { _ in transform() }
+	}
 
 	/// Returns first element in the collection
 	/// where the specified key path evaluates to `true`.
@@ -44,7 +70,7 @@ public extension Sequence {
 	/// evaluates to `true`, or `nil` if no such elements found.
 	///
 	@inlinable
-	func first( _ keypath: KeyPath<Element, Bool> ) -> Element? {
+	public func first( _ keypath: KeyPath<Element, Bool> ) -> Element? {
 		self.first { $0[keyPath: keypath] }
 	}
 
@@ -57,7 +83,7 @@ public extension Sequence {
 	/// - Returns: The first element where `keypath` equals `value`, or `nil`
 	/// if none is found.
 	@inlinable
-	func first<T>(
+	public func first<T>(
 		_ keypath: KeyPath<Element, T>,
 		equal value: T
 	) -> Element? where T: Equatable{
@@ -71,7 +97,7 @@ public extension Sequence {
 	///   - value: The value to match against.
 	/// - Returns: An array of elements where the `keypath` equals `value`.
 	@inlinable
-	func filter<T>(
+	public func filter<T>(
 		_ keypath: KeyPath<Element, T>,
 		equal value: T
 	) -> [ Element ] where T: Equatable{
@@ -85,7 +111,7 @@ public extension Sequence {
 	/// - Parameter keypath: A `KeyPath` that evaluates to an optional value.
 	/// - Returns: An array of non-nil values from `keypath`.
 	@inlinable
-	func compactMap<T>(
+	public func compactMap<T>(
 		_ keypath: KeyPath<Element, T?>
 	) -> [ T ] {
 		compactMap { $0[ keyPath: keypath ] }
@@ -99,7 +125,7 @@ public extension Sequence {
 	///   - value: The value to match against.
 	/// - Returns: `true` if any element's `keypath` equals `value`, else `false`.
 	@inlinable
-	func contains<T>(
+	public func contains<T>(
 		_ keypath: KeyPath<Element, T>,
 		equal value: T
 	) -> Bool where T: Equatable {
@@ -112,14 +138,12 @@ public extension Sequence {
 	/// - Parameter keypath: A `KeyPath` that evaluates to a `Bool`.
 	/// - Returns: `true` if any element's `keypath` is `true`, else `false`.
 	@inlinable
-	func contains(
+	public func contains(
 		_ keypath: KeyPath<Element, Bool>
 	) -> Bool {
 		contains { $0[ keyPath: keypath ] }
 	}
-}
 
-public extension Sequence {
 	/// Returns an array containing the elements of the sequence
 	/// where the specified key path evaluates to `true`.
 	///
@@ -132,12 +156,12 @@ public extension Sequence {
 	/// filtering elements based on a specific property.
 	///
 	@inlinable
-	func filter(_ isIncluded: KeyPath<Element, Bool>) -> [Element] {
+	public func filter(_ isIncluded: KeyPath<Element, Bool>) -> [Element] {
 		filter { $0[keyPath: isIncluded] }
 	}
 }
 
-public extension Collection {
+extension Collection {
 	///
 	/// Returns the index of the first element in the collection
 	/// where the specified key path evaluates to `true`.
@@ -148,13 +172,14 @@ public extension Collection {
 	/// evaluates to `true`, or `nil` if no such elements found.
 	///
 	@inlinable
-	func firstIndex(_ keypath: KeyPath<Element, Bool>) -> Index? {
+	public func firstIndex(_ keypath: KeyPath<Element, Bool>) -> Index? {
 		self.firstIndex { $0[keyPath: keypath] }
 	}
 }
 
-public extension KeyPath where Value == Bool {
-	var negate: KeyPath<Root, Bool> {
+extension KeyPath where Value == Bool {
+
+	public var negate: KeyPath<Root, Bool> {
 		appending( path: \.negate )
 	}
 }

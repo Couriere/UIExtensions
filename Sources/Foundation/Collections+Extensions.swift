@@ -44,18 +44,23 @@ public extension Collection where Element == Character {
 }
 
 
+extension Collection {
+
+	/// Safely gets an element with index.
+	/// Returns `nil` if index is out of bounds.
+	public subscript( safe index: Index ) -> Element? {
+		indices.contains( index ) ? self[ index ] : nil
+	}
+}
+
 public extension Collection where Self.Index == Int,
 								  Self.Indices: RangeExpression,
 								  Self.Indices.Bound == Int {
-	/// Safely gets an element with index.
-	/// Returns `nil` if index is out of bounds.
-	subscript( safe index: Int ) -> Element? {
-		return indices ~= index ? self[ index ] : nil
-	}
 
 	/// Splits an array in chunks, `chunkSize` size each.
 	func chunk( _ chunkSize: Int ) -> [[Element]] {
-		return stride( from: 0, to: count, by: chunkSize ).map { startIndex -> [Element] in
+		stride( from: 0, to: count, by: chunkSize )
+			.map { startIndex -> [Element] in
 			let endIndex = ( startIndex.advanced( by: chunkSize ) > self.count ) ? self.count - startIndex : chunkSize
 			return Array( self[ startIndex ..< startIndex.advanced( by: endIndex )] )
 		}
@@ -78,7 +83,7 @@ public extension Collection where Self.Index == Int,
 								  Self.Indices.Bound == Int {
 
 	subscript( safe indexPath: IndexPath ) -> Element.Element? {
-		return self[ safe: indexPath.section ]?[ indexPath.item ]
+		self[ safe: indexPath.section ]?[ indexPath.item ]
 	}
 }
 

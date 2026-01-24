@@ -22,12 +22,14 @@
 
 import Foundation
 
-public extension URL {
+extension URL {
+
+	public static let empty = URL( static: "https://" )
 
 	/// Initializes a new URL with the provided `string`.
 	///	- parameter string: A `StaticString` representation of the URL.
 	///	- returns: A newly initialized `URL` object.
-	init( static string: StaticString ) {
+	public init( static string: StaticString ) {
 		let string = string.withUTF8Buffer {
 			String( decoding: $0, as: UTF8.self )
 		}
@@ -35,33 +37,57 @@ public extension URL {
 	}
 }
 
-public extension URL {
+extension URL {
+
+	/// Returns a URL that ensures the path ends
+	/// with a trailing slash.
+	///
+	/// If the receiver's path does not end with `/`,
+	/// a slash is appended and a new URL is returned.
+	/// If the URL cannot be reconstructed from components,
+	/// the original URL is returned.
+	public var ensureTrailingSlash: URL {
+
+		guard var components = URLComponents(
+			url: self,
+			resolvingAgainstBaseURL: false
+		) else {
+			return self
+		}
+
+		if !components.path.hasSuffix("/") {
+			components.path += "/"
+		}
+
+		return components.url ?? self
+	}
 
 	/// Returns a new URL with the query component removed.
 	/// - returns: A new `URL` object with the query component removed.
-	var urlByDeletingQuery: URL? {
+	public var urlByDeletingQuery: URL? {
 		var components = URLComponents( url: self, resolvingAgainstBaseURL: false )
 		components?.query = nil
 		return components?.url
 	}
 
-	#if os(iOS) || os(tvOS)
+#if os(iOS) || os(tvOS)
 
-		// MARK: - System paths
+	// MARK: - System paths
 
-		static var libraryPath: URL {
-			let path = try! FileManager.default.url( for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
-			return path
-		}
+	public static var libraryPath: URL {
+		let path = try! FileManager.default.url( for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
+		return path
+	}
 
-		static var documentsPath: URL {
-			let path = try! FileManager.default.url( for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
-			return path
-		}
+	public static var documentsPath: URL {
+		let path = try! FileManager.default.url( for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
+		return path
+	}
 
-		static var cachePath: URL {
-			let path = try! FileManager.default.url( for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
-			return path
-		}
-	#endif
+	public static var cachePath: URL {
+		let path = try! FileManager.default.url( for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
+		return path
+	}
+#endif
 }
+

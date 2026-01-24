@@ -28,26 +28,25 @@ public typealias NativeEdgeInsets = UIEdgeInsets
 public typealias NativeEdgeInsets = NSEdgeInsets
 #endif
 
-
-public extension EdgeInsets {
+extension EdgeInsets {
 
 	/// A static instance representing zero edge insets.
-	static let zero = EdgeInsets()
+	public static let zero = EdgeInsets()
 
 	/// The total vertical inset, calculated as the sum of `top`
 	/// and `bottom`.
-	var vertical: Double {
+	public var vertical: Double {
 		top + bottom
 	}
 
 	/// The total horizontal inset, calculated as the sum of `leading`
 	/// and `trailing`.
-	var horizontal: Double {
+	public var horizontal: Double {
 		leading + trailing
 	}
 
 	/// Inverts all insets.
-	var inverted: EdgeInsets {
+	public var inverted: EdgeInsets {
 		return EdgeInsets( top: -top, leading: -leading, bottom: -bottom, trailing: -trailing )
 	}
 }

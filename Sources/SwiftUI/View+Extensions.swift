@@ -22,7 +22,7 @@
 
 import SwiftUI
 
-public extension View {
+extension View {
 
 	/// Positions this view within an invisible frame with the specified size.
 	///
@@ -35,7 +35,7 @@ public extension View {
 	/// - Returns: A view with fixed dimensions of `size`.
 	///
 	@inlinable
-	func frame(
+	public func frame(
 		_ size: CGSize,
 		alignment: Alignment = .center
 	) -> some View {
@@ -54,7 +54,7 @@ public extension View {
 	///   - alignment: The alignment of the view within its frame. Defaults to `.center`.
 	/// - Returns: A modified view with the specified square frame.
 	@inlinable
-	func frame(
+	public func frame(
 		_ sideLength: Double,
 		alignment: Alignment = .center
 	) -> some View {
@@ -66,6 +66,36 @@ public extension View {
 			)
 	}
 
+	/// Sets the view's maximum width and/or height
+	/// to fill available space along the specified axes.
+	///
+	/// Use this method to make a view expand
+	/// to the maximum size along the provided axes
+	/// while keeping the other dimension unconstrained.
+	/// For example, passing `[.horizontal, .vertical]`
+	/// makes the view fill all available space both
+	/// horizontally and vertically.
+	///
+	/// - Parameters:
+	///   - axis: The axes along which the view should
+	///   expand to the maximum size.
+	///   Defaults to both horizontal and vertical.
+	///   - alignment: The alignment of the view within
+	///   its frame. Defaults to `.center`.
+	/// - Returns: A view that expands to the maximum
+	/// size along the specified axes.
+	@inlinable
+	public func maxFrame(
+		_ axis: Axis.Set = [ .horizontal, .vertical ],
+		alignment: Alignment = .center,
+	) -> some View {
+		frame(
+			maxWidth: axis.contains( .horizontal ) ? .infinity : nil,
+			maxHeight: axis.contains( .vertical ) ? .infinity : nil,
+			alignment: alignment,
+		)
+	}
+
 	/// Applies padding to the view with separate values for horizontal and
 	/// vertical insets.
 	/// - Parameters:
@@ -73,8 +103,16 @@ public extension View {
 	///   - vertical: The vertical padding value.
 	/// - Returns: A view with the specified padding applied.
 	@inlinable
-	func padding( horizontal: Double, vertical: Double ) -> some View {
-		padding( .init( horizontal: horizontal, vertical: vertical ))
+	public func padding(
+		horizontal: Double,
+		vertical: Double
+	) -> some View {
+		padding(
+			.init(
+				horizontal: horizontal,
+				vertical: vertical
+			)
+		)
 	}
 }
 

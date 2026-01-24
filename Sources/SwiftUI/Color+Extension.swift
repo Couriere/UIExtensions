@@ -81,6 +81,29 @@ public extension Color {
 	private static let invertedHexCharactersSet = CharacterSet( charactersIn: "0123456789abcdefABCDEF" ).inverted
 }
 
+extension Color {
+
+	/// Initializes a dynamic Color that adapts to the system appearance.
+	///
+	/// This initializer returns `light` color when the user interface style is
+	/// light (or unspecified) and `dark` color when the user interface style is dark.
+	/// Internally it creates a dynamic `UIColor`/`NSColor` and wraps it into `Color`.
+	///
+	/// - Parameters:
+	///   - light: The color to use in light mode (and when the style is unspecified).
+	///   - dark: The color to use in dark mode.
+	@inlinable
+	public init( adaptiveLight light: Color, dark: Color ) {
+
+		self.init(
+			uiColor: NativeColor(
+				light: light.uiColor,
+				dark: dark.uiColor,
+			),
+		)
+	}
+}
+
 public extension Color {
 
 	/// Returns a Color by scanning the string for a hex number.

@@ -25,128 +25,225 @@ import Foundation
 import AppKit
 #endif
 
-public extension Array {
+// MARK: - Array + Optional Initializer
 
-	/**
-	Creates an array from an optional element.
-	Type of array elements is non-optional argument type.
-	If an element is `nil`, creates empty array.
+extension Array {
 
-	```
-	let optional: Int? = 5
-	let array = Array( optional ) // => [ 5 ]
-
-	let emptyOptional: Int? = nil
-	let array = Array( emptyOptional ) // => []
-	```
-	*/
-	init( _ element: Element? ) {
+	/// Creates an array from an optional element.
+	///
+	/// If the provided element is non-`nil`, the resulting array contains
+	/// exactly one element. If the element is `nil`, an empty array is created.
+	///
+	/// ## Example
+	/// ```swift
+	/// let value: Int? = 5
+	/// let array = Array(value) // [5]
+	///
+	/// let empty: Int? = nil
+	/// let emptyArray = Array(empty) // []
+	/// ```
+	///
+	/// - Parameter element: An optional element.
+	@inlinable
+	public init(_ element: Element?) {
 		if let element = element {
-			self = [ element ]
-		}
-		else {
+			self = [element]
+		} else {
 			self = []
 		}
 	}
 }
 
-public extension Array {
+extension Array {
 
-	/**
-	Returns an array with appended element.
+	/// Returns an array of contiguous subarrays (“windows”) of the given size.
+	///
+	/// Each window contains `ofCount` consecutive elements from the original
+	/// array. Windows are created by advancing the start index by one element
+	/// each time. If a window would exceed the array bounds, it is omitted.
+	///
+	/// ## Example
+	/// ```swift
+	/// let array = [1, 2, 3, 4]
+	/// let result = array.windows(ofCount: 2)
+	/// // [[1, 2], [2, 3], [3, 4]]
+	/// ```
+	///
+	/// - Parameter ofCount: The number of elements in each window.
+	/// - Returns: An array of subarrays, each containing `ofCount` elements.
+	///
+	/// - Note: If `ofCount` is greater than the array count, the result is empty.
+	@inlinable
+	public func windows( ofCount: Int ) -> [[Element]] {
 
-	```
-	[ 10, 20 ] + 30 => [ 10, 20, 30 ]
-	[ 10, 20 ].appending( 30 ) => [ 10, 20, 30 ]
-	```
-	*/
-	static func +( array: Self, element: Element ) -> Self {
-		return array + [ element ]
+		indices.compactMap { startIndex in
+			let end = startIndex.advanced(by: ofCount)
+			guard end <= count else { return nil }
+
+			return self[startIndex..<end].array
+		}
+	}
+}
+
+// MARK: - Array + Appending Operators
+
+extension Array {
+
+	/// Returns a new array with the given element appended.
+	///
+	/// ## Example
+	/// ```swift
+	/// [10, 20] + 30 // [10, 20, 30]
+	/// ```
+	///
+	/// - Parameters:
+	///   - array: The source array.
+	///   - element: The element to append.
+	/// - Returns: A new array containing the appended element.
+	@inlinable
+	public static func +(array: Self, element: Element) -> Self {
+		array + [element]
 	}
 
-	func appending( _ element: Element ) -> Self {
-		return self + [ element ]
+	/// Returns a new array with the given element appended.
+	///
+	/// - Parameter element: The element to append.
+	/// - Returns: A new array containing the appended element.
+	@inlinable
+	public func appending(_ element: Element) -> Self {
+		self + [element]
 	}
 
-
-	/**
-	Returns an array with appended optional element.
-	If an element is `nil`, returns array.
-
-	```
-	let optional: Int? = 30
-	[ 10, 20 ] + optional => [ 10, 20, 30 ]
-
-	let emptyOptional: Int? = nil
-	[ 10, 20 ] + emptyOptional => [ 10, 20 ]
-	```
-	*/
-	static func +( array: Self, element: Element? ) -> Self {
-		if let element = element { return array + [ element ] }
+	/// Returns a new array with the given optional element appended.
+	///
+	/// If the element is `nil`, the original array is returned unchanged.
+	///
+	/// ## Example
+	/// ```swift
+	/// let value: Int? = 30
+	/// [10, 20] + value // [10, 20, 30]
+	///
+	/// let empty: Int? = nil
+	/// [10, 20] + empty // [10, 20]
+	/// ```
+	///
+	/// - Parameters:
+	///   - array: The source array.
+	///   - element: An optional element to append.
+	/// - Returns: A new array with the element appended if it is non-`nil`.
+	@inlinable
+	public static func +(array: Self, element: Element?) -> Self {
+		if let element = element {
+			return array + [element]
+		}
 		return array
 	}
 
-	/**
-	Appends element to an array.
-
-	```
-	var array = [ 10, 20 ]
-	array += 30
-	print( array ) // => [ 10, 20, 30 ]
-	```
-	*/
-	static func +=( array: inout Self, element: Element ) {
-		array.append( element )
+	/// Appends the given element to the array.
+	///
+	/// ## Example
+	/// ```swift
+	/// var array = [10, 20]
+	/// array += 30
+	/// // [10, 20, 30]
+	/// ```
+	///
+	/// - Parameters:
+	///   - array: The array to modify.
+	///   - element: The element to append.
+	@inlinable
+	public static func +=(array: inout Self, element: Element) {
+		array.append(element)
 	}
 
-	/**
-	Appends optional element to an array.
-	If an element is `nil`, does nothing.
-
-
-	```
-	var array = [ 10, 20 ]
-	let optional: Int? = 30
-	let emptyOptional: Int? = nil
-
-	array += optional
-	print( array ) // => [ 10, 20, 30 ]
-	array += emptyOptional
-	print( array ) // => [ 10, 20, 30 ]
-	```
-	*/
-	static func +=( array: inout Self, element: Element? ) {
-		if let element = element { array.append( element ) }
-	}
-}
-
-public extension Array where Element: Equatable {
-
-	mutating func remove( _ element: Element ) {
-		if let index = self.firstIndex( of: element ) {
-			remove( at: index )
-		}
-	}
-
-	mutating func appendIfNotExist( _ newElement: Element ) {
-		if self.firstIndex( of: newElement ) == nil {
-			append( newElement )
+	/// Appends the given optional element to the array.
+	///
+	/// If the element is `nil`, the array is not modified.
+	///
+	/// ## Example
+	/// ```swift
+	/// var array = [10, 20]
+	/// let value: Int? = 30
+	/// let empty: Int? = nil
+	///
+	/// array += value
+	/// array += empty
+	/// // [10, 20, 30]
+	/// ```
+	///
+	/// - Parameters:
+	///   - array: The array to modify.
+	///   - element: An optional element to append.
+	@inlinable
+	public static func +=(array: inout Self, element: Element?) {
+		if let element = element {
+			array.append(element)
 		}
 	}
 }
 
-public extension Set {
-	mutating func toggle( _ member: Element ) {
-		if contains( member ) { remove(member) } else { insert(member) }
+// MARK: - Array + Equatable Utilities
+
+extension Array where Element: Equatable {
+
+	/// Removes the first occurrence of the specified element from the array.
+	///
+	/// If the element is not found, the array remains unchanged.
+	///
+	/// - Parameter element: The element to remove.
+	@inlinable
+	public mutating func remove(_ element: Element) {
+		if let index = firstIndex(of: element) {
+			remove(at: index)
+		}
+	}
+
+	/// Appends the given element to the array only if it does not already exist.
+	///
+	/// - Parameter newElement: The element to append.
+	@inlinable
+	public mutating func appendIfNotExist(_ newElement: Element) {
+		if firstIndex(of: newElement) == nil {
+			append(newElement)
+		}
 	}
 }
 
+// MARK: - Set Utilities
 
-public extension CollectionDifference.Change {
-	var element: ChangeElement {
+extension Set {
+
+	/// Toggles the presence of the given element in the set.
+	///
+	/// If the element exists in the set, it is removed.
+	/// Otherwise, it is inserted.
+	///
+	/// - Parameter member: The element to toggle.
+	@inlinable
+	public mutating func toggle(_ member: Element) {
+		if contains(member) {
+			remove(member)
+		} else {
+			insert(member)
+		}
+	}
+}
+
+// MARK: - CollectionDifference Utilities
+
+extension CollectionDifference.Change {
+
+	/// Returns the element associated with the change.
+	///
+	/// This property returns the element for both insertion
+	/// and removal changes.
+	@inlinable
+	public var element: ChangeElement {
 		switch self {
-		case .insert( _, let element, _ ): return element
-		case .remove( _, let element, _ ): return element
+		case .insert(_, let element, _):
+			return element
+		case .remove(_, let element, _):
+			return element
 		}
 	}
 }

@@ -22,15 +22,15 @@
 
 import Foundation
 
-public extension String {
+extension String {
 
 	/// Returns range from start to end of the string.
-	var wholeRange: Range<String.Index> {
+	public var wholeRange: Range<String.Index> {
 		return startIndex ..< endIndex
 	}
 
 	/// Returns NSRnge from start to end of the string.
-	var nsRange: NSRange {
+	public var nsRange: NSRange {
 		return NSRange( wholeRange, in: self )
 	}
 
@@ -38,23 +38,32 @@ public extension String {
 	/// - parameter range: A range of characters in the receiver.
 	/// - parameter replacement: The string with which to replace the characters in range.
 	/// - returns: A new string in which the characters in range of the receiver are replaced by replacement.
-	func replacingCharacters<T: StringProtocol>( in range: NSRange, with replacement: T ) -> String {
-		guard let range = Range( range, in: self ) else { fatalError( "range out of bounds" ) }
+	public func replacingCharacters<T: StringProtocol>(
+		in range: NSRange,
+		with replacement: T
+	) -> String {
+		guard let range = Range( range, in: self ) else {
+			fatalError( "range out of bounds" )
+		}
 		return replacingCharacters( in: range, with: replacement )
 	}
 
 	/// Accesses a contiguous subrange of the collection’s elements.
 	/// - parameter range: A range of the collection’s indices.
 	/// The bounds of the range must be valid indices of the collection.
-	subscript( range: NSRange ) -> Substring {
+	/// - returns: A substring covering the specified NSRange.
+	///
+	/// Accesses a substring using an NSRange in the receiver's indices.
+	public subscript( range: NSRange ) -> Substring {
 		let laneRange = Range( range, in: self )!
 		return self[ laneRange.lowerBound..<laneRange.upperBound ]
 	}
 
-	/// Breaks up a string into an array of substrings, each containing `length` characters.
+	/// Breaks up a string into an array of substrings,
+	/// each containing `length` characters.
 	/// - parameter length: The length of each substring. Must be greater than zero.
 	/// - returns: An array of substrings, each containing `length` characters.
-	func chunk( _ length: Int ) -> [ String ] {
+	public func chunk( _ length: Int ) -> [ String ] {
 		precondition( length > 0, "length must be greater than zero" )
 		return Array( self )
 			.chunk( length )
@@ -62,23 +71,26 @@ public extension String {
 	}
 
 	/// Returns new string by removing all non-digit symbols from receiver.
-	var digitsOnly: String {
+	public var digitsOnly: String {
 		return replacingOccurrences( of: "[^0-9]", with: "", options: .regularExpression, range: wholeRange )
 	}
 
 	/// Replaces all spaces in string to non-breaking spaces.
-	var nonBreakingSpaces: String {
+	public var nonBreakingSpaces: String {
 		self.replacingOccurrences( of: " ", with: "\u{a0}" )
 	}
 
 	/// Returns a new string made by removing from both ends of the String
 	/// whitespace and newline characters.
-	var trimmed: String {
+	public var trimmed: String {
 		return self.trimmingCharacters( in: CharacterSet.newlines.union(CharacterSet.whitespaces) )
 	}
 
 
-	subscript( safe index: Int ) -> Character? {
+	/// Safely accesses a character by index, returning nil if out of bounds.
+	/// - parameter index: The index of the character to access.
+	/// - returns: The character at the specified index, or nil if index is out of bounds.
+	public subscript( safe index: Int ) -> Character? {
 		guard index < count else { return nil }
 
 		let index = self.index( startIndex, offsetBy: index )
@@ -87,14 +99,14 @@ public extension String {
 
 
 	/// Returns `true` if receiver holds correct email address.
-	var isValidEmail: Bool {
+	public var isValidEmail: Bool {
 		let emailRegex = "[A-Z0-9a-z._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,64}"
 		return NSPredicate( format: "SELF MATCHES %@", emailRegex ).evaluate( with: self )
 	}
 
 
 	/// Returns string with stripped HTML tags.
-	func strippingHTMLTags() -> String {
+	public func strippingHTMLTags() -> String {
 		let range = NSRange( startIndex ..< endIndex, in: self )
 		return String.regex.stringByReplacingMatches( in: self,
 		                                              options: [],
@@ -102,22 +114,69 @@ public extension String {
 		                                              withTemplate: "" )
 	}
 
-	
-	init( _ staticString: StaticString ) {
+	/// Initializes a String from a StaticString.
+	/// - parameter staticString: The StaticString to initialize from.
+	public init( _ staticString: StaticString ) {
 		self = staticString.withUTF8Buffer {
 			String( decoding: $0, as: UTF8.self )
 		}
 	}
 
-	private static let regex = try! NSRegularExpression( pattern: "<[^>]*>", options: [] )
+	private static let regex = try! NSRegularExpression(
+		pattern: "<[^>]*>",
+		options: []
+	)
 }
 
+extension String {
 
-public extension Character {
-	var string: String { String( self ) }
+	/// Creates a URL from the string using `URL(string:)`.
+	public var url: URL? {
+		URL( string: self )
+	}
 }
 
+extension [ String? ] {
+	/// Joins non-nil strings using a separator.
+	/// - parameter separator: The separator string
+	/// to insert between each element. Default is empty string.
+	/// - returns: A concatenated string of all
+	/// non-nil elements separated by the separator.
+	public func joined( separator: String = "" ) -> String {
+		joinedStrings( self, separator: separator )
+	}
+}
 
+/// Joins an array of optional strings by a separator, omitting nils.
+/// - Parameters:
+///   - strings: Array of optional strings.
+///   - separator: Separator string.
+/// - Returns: Joined string with non-nil elements separated by separator.
+func joinedStrings(
+	_ strings: [ String? ],
+	separator: String = ""
+) -> String {
+	strings
+		.compactMap()
+		.joined( separator: separator )
+}
+
+/// Joins a variadic list of optional strings by a separator, omitting nils.
+/// - Parameters:
+///   - strings: Variadic optional strings.
+///   - separator: Separator string.
+/// - Returns: Joined string with non-nil elements separated by separator.
+func joinedStrings(
+	_ strings: String?...,
+	separator: String = ""
+) -> String {
+	joinedStrings( strings, separator: separator )
+}
+
+extension Character {
+	/// Returns a String containing this character.
+	public var string: String { String( self ) }
+}
 
 
 /// Calculating Hashes.
@@ -126,72 +185,41 @@ import CommonCrypto
 import CryptoKit
 #endif
 
-public extension String {
+extension String {
 
 	/// Calculates MD5 hash of the receiver and returns it as hex string.
-	var md5: String {
+	public var md5: String {
 		Insecure.MD5.hash( data: Data( utf8 )).hexadecimalString
 	}
 
 	/// Calculates SHA1 hash of the receiver and returns it as hex string.
-	var sha1: String {
+	public var sha1: String {
 		Insecure.SHA1.hash( data: Data( utf8 )).hexadecimalString
 	}
 
 	/// Calculates SHA256 hash of the receiver and returns it as hex string.
-	var sha256: String {
+	public var sha256: String {
 		SHA256.hash( data: Data( utf8 )).hexadecimalString
 	}
 
 	/// Calculates SHA512 hash of the receiver and returns it as hex string.
-	var sha512: String {
+	public var sha512: String {
 		SHA512.hash( data: Data( utf8 )).hexadecimalString
 	}
-
-
-	private func calculateHash(
-		hashFunction: ( UnsafeRawPointer?, CC_LONG, UnsafeMutablePointer<UInt8>? ) -> UnsafeMutablePointer<UInt8>?,
-		digestLength: Int32
-	) -> String {
-
-		func itoh( _ value: UInt8 ) -> UInt8 {
-			return ( value > 9 ) ? String.charA + value - 10 : String.char0 + value
-		}
-
-		let data = Data( self.utf8 )
-		return data.withUnsafeBytes { ( bytes: UnsafeRawBufferPointer ) -> String in
-
-			let count = Int( digestLength )
-			var hash = [UInt8]( repeating: 0, count: count )
-			_ = hashFunction( bytes.baseAddress, CC_LONG( data.count ), &hash )
-
-			let hexLen = count * 2
-			let hexData = UnsafeMutablePointer<UInt8>.allocate( capacity: hexLen )
-
-			for i in 0 ..< count {
-				hexData[ i * 2 ] = itoh( ( hash[ i ] >> 4 ) & 0xF )
-				hexData[ i * 2 + 1 ] = itoh( hash[ i ] & 0xF )
-			}
-
-			return String( bytesNoCopy: hexData, length: hexLen, encoding: .utf8, freeWhenDone: true ) ?? ""
-		}
-	}
-
-	private static let charA = UInt8( UnicodeScalar( "a" ).value )
-	private static let char0 = UInt8( UnicodeScalar( "0" ).value )
 }
 
-public extension Digest {
+extension Digest {
 
 	/// Returns the hexadecimal string representation of the digest.
-	var hexadecimalString: String {
+	public var hexadecimalString: String {
 		Data( self ).hexadecimalString
 	}
 }
 
-public extension String {
+extension String {
 
-	var snakeCaseFromCamelCase: String {
+	/// Converts a camelCase string to snake_case.
+	public var snakeCaseFromCamelCase: String {
 		let string = self.trimmingCharacters(in: String.underscoreCharacterSet)
 		guard !string.isEmpty else { return string }
 
@@ -199,7 +227,8 @@ public extension String {
 		return "\(split[0])\(split.dropFirst().map { $0.capitalized }.joined())"
 	}
 
-	var camelCaseFromSnakeCase: String {
+	/// Converts a snake_case string to camelCase.
+	public var camelCaseFromSnakeCase: String {
 
 		String.camelCasePatterns
 			.reduce( self ) { string, regex in
@@ -240,6 +269,7 @@ public extension String {
  ( "Стол", "Стола", "Столов" )
  */
 
+/// Returns the correct Russian noun form for the given number from three provided word forms.
 public func pluralString( forNumber number: Int, fromWordForms: ( String, String, String ) ) -> String {
 
 	let correctForm: String
@@ -262,7 +292,7 @@ public func pluralString( forNumber number: Int, fromWordForms: ( String, String
 	return correctForm
 }
 
-public extension String {
+extension String {
 
 	/**
 	 Возвращает корректную форму существительного для числительного
@@ -275,8 +305,7 @@ public extension String {
 	 word - слово для нормализации. Например:
 	 Стол -> [ "Стол", "Стола", "Столов" ]
 	 */
-
-	func plural( forNumber number: Int ) -> String {
+	public func plural( forNumber number: Int ) -> String {
 		let wordForms = ( self, self + "а", self + "ов" )
 		return pluralString( forNumber: number, fromWordForms: wordForms )
 	}

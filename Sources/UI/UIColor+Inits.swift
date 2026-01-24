@@ -30,8 +30,7 @@ import AppKit
 public typealias NativeColor = NSColor
 #endif
 
-public extension NativeColor {
-
+extension NativeColor {
 
 	/// Initializes and returns a color object using the specified opacity and Int RGB component values.
 	/// - parameter intRed: The red value of the color object, specified as a value from 0 to 255.
@@ -39,7 +38,7 @@ public extension NativeColor {
 	/// - parameter blue: The red value of the color object, specified as a value from 0 to 255.
 	/// - parameter alpha: The opacity value of the color object, specified as a value from 0.0 to 1.0.
 	/// Alpha values below 0.0 are interpreted as 0.0, and values above 1.0 are interpreted as 1.0.
-	convenience init( intRed: Int, green: Int, blue: Int, alpha: Double = 1 ) {
+	public convenience init( intRed: Int, green: Int, blue: Int, alpha: Double = 1 ) {
 		self.init(
 			red: Double( intRed ) / 255,
 			green: Double( green ) / 255,
@@ -49,7 +48,7 @@ public extension NativeColor {
 	}
 
 	/// Returns random color with supplied alpha.
-	convenience init( randomWithAlpha alpha: CGFloat ) {
+	public convenience init( randomWithAlpha alpha: CGFloat ) {
 		let randomRed = Int( arc4random_uniform( 256 ) )
 		let randomGreen = Int( arc4random_uniform( 256 ) )
 		let randomBlue = Int( arc4random_uniform( 256 ) )
@@ -62,7 +61,7 @@ public extension NativeColor {
 	/// - Parameters:
 	///   - int: A `UInt64` integer representing a color in RGB format.
 	///   - alpha: An optional alpha value, defaulting to 1.
-	convenience init( _ int: Int, alpha: Double = 1 ) {
+	public convenience init( _ int: Int, alpha: Double = 1 ) {
 		let red = Int( ( int >> 16 ) & 0xFF )
 		let green = Int( ( int >> 8 ) & 0xFF )
 		let blue = Int( int & 0xFF )
@@ -74,7 +73,7 @@ public extension NativeColor {
 	/// - Parameter rgba: Integer representing RGBA components. The first
 	///   byte is red, the second is green, the third is blue, and the last
 	///   byte is alpha.
-	convenience init( rgba: Int ) {
+	public convenience init( rgba: Int ) {
 		let red = Int( ( rgba >> 24 ) & 0xFF )
 		let green = Int( ( rgba >> 16 ) & 0xFF )
 		let blue = Int( ( rgba >> 8 ) & 0xFF )
@@ -85,8 +84,35 @@ public extension NativeColor {
 
 
 	@available( *, deprecated, renamed: "init(_:alpha:)" )
-	convenience init( int: UInt32, alpha: CGFloat = 1 ) {
+	public convenience init( int: UInt32, alpha: CGFloat = 1 ) {
 		self.init( Int( int ), alpha: alpha )
+	}
+}
+
+extension NativeColor {
+
+	/// Initializes a dynamic color that adapts to the system appearance.
+	///
+	/// This initializer returns `light` color when the user interface style is
+	/// light (or unspecified) and `dark` color when the user interface style is dark.
+	///
+	/// - Parameters:
+	///   - light: The color to use in light mode (and when the style is unspecified).
+	///   - dark: The color to use in dark mode.
+	public convenience init(
+		light: NativeColor,
+		dark: NativeColor
+	) {
+
+		self.init(
+			dynamicProvider: { traits in
+				switch traits.userInterfaceStyle {
+				case .light, .unspecified: light
+				case .dark: dark
+				@unknown default: light
+				}
+			}
+		)
 	}
 }
 

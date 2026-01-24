@@ -20,136 +20,211 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import XCTest
+import Foundation
+import Testing
 import UIExtensions
 
-class ArrayExtensionsTests: XCTestCase {
+@Suite("Array+ExtensionsTests")
+struct ArrayTests {
 
-	func testOptionalInit() {
+	// MARK: - Array Optional Init
 
+	@Test
+	func optionalInit() {
 		let optionalIntVar: Int? = 50
 		let optionalEmptyIntVar: Int? = nil
 
-		XCTAssertEqual( Array( optionalIntVar ), [ 50 ] )
-		XCTAssertEqual( Array( optionalEmptyIntVar ), [] )
+		#expect(Array(optionalIntVar) == [50])
+		#expect(Array(optionalEmptyIntVar).isEmpty)
 	}
 
-	func testPlusOperator() {
-		let array: [ Int ] = [ 10, 20, 30 ]
+	// MARK: - Plus Operator
+
+	@Test
+	func plusOperator() {
+		let array: [Int] = [10, 20, 30]
 
 		let intVar = 40
 		let optionalIntVar: Int? = 50
 		let optionalEmptyIntVar: Int? = nil
 
-		XCTAssertEqual( array + intVar, [ 10, 20, 30, 40 ] )
-		XCTAssertEqual( array + optionalIntVar, [ 10, 20, 30, 50 ] )
-		XCTAssertEqual( array + optionalEmptyIntVar, [ 10, 20, 30 ] )
+		#expect(array + intVar == [10, 20, 30, 40])
+		#expect(array + optionalIntVar == [10, 20, 30, 50])
+		#expect(array + optionalEmptyIntVar == [10, 20, 30])
 
+		let emptyArray: [Int] = []
 
-		let emptyArray: [ Int ] = []
-
-		XCTAssertEqual( emptyArray + intVar, [ 40 ] )
-		XCTAssertEqual( emptyArray + optionalIntVar, [ 50 ] )
-		XCTAssertEqual( emptyArray + optionalEmptyIntVar, [] )
+		#expect(emptyArray + intVar == [40])
+		#expect(emptyArray + optionalIntVar == [50])
+		#expect((emptyArray + optionalEmptyIntVar).isEmpty)
 	}
 
-	func testAppending() {
-		let array: [ Int ] = [ 10, 20, 30 ]
+	// MARK: - Appending
 
+	@Test
+	func appending() {
+		let array: [Int] = [10, 20, 30]
 		let intVar = 40
 
-		XCTAssertEqual( array.appending( intVar ), [ 10, 20, 30, 40 ] )
+		#expect(array.appending(intVar) == [10, 20, 30, 40])
 
-		let emptyArray: [ Int ] = []
-
-		XCTAssertEqual( emptyArray.appending( intVar ), [ 40 ] )
+		let emptyArray: [Int] = []
+		#expect(emptyArray.appending(intVar) == [40])
 	}
 
-	func testPlusEqualOperator() {
-		var array: [ Int ] = [ 10, 20, 30 ]
+	// MARK: - Plus Equal Operator
+
+	@Test
+	func plusEqualOperator() {
+		var array: [Int] = [10, 20, 30]
 
 		let intVar = 40
 		let optionalIntVar: Int? = 50
 		let optionalEmptyIntVar: Int? = nil
 
 		array += intVar
-		XCTAssertEqual( array, [ 10, 20, 30, 40 ] )
-		array += optionalIntVar
-		XCTAssertEqual( array, [ 10, 20, 30, 40, 50 ] )
-		array += optionalEmptyIntVar
-		XCTAssertEqual( array, [ 10, 20, 30, 40, 50 ] )
+		#expect(array == [10, 20, 30, 40])
 
-		var emptyArray: [ Int ] = []
+		array += optionalIntVar
+		#expect(array == [10, 20, 30, 40, 50])
+
+		array += optionalEmptyIntVar
+		#expect(array == [10, 20, 30, 40, 50])
+
+		var emptyArray: [Int] = []
+
 		emptyArray += intVar
-		XCTAssertEqual( emptyArray, [ 40 ] )
+		#expect(emptyArray == [40])
 
 		emptyArray = []
 		emptyArray += optionalIntVar
-		XCTAssertEqual( emptyArray, [ 50 ] )
+		#expect(emptyArray == [50])
 
 		emptyArray = []
 		emptyArray += optionalEmptyIntVar
-		XCTAssertEqual( emptyArray, [] )
+		#expect(emptyArray.isEmpty)
 	}
 
-	func testSafeIndex() {
-		var array: [ Int ] = [ 10, 20, 30 ]
+	// MARK: - Safe Index
 
-		XCTAssertEqual( array[ safe: 1 ], 20 )
-		XCTAssertNil( array[ safe: -1 ] )
-		XCTAssertNil( array[ safe: 3 ] )
-		array += 40
-		XCTAssertEqual( array[ safe: 3 ], 40 )
+	@Test
+	func safeIndexProperties() {
+		for _ in 0..<1_000 {
+			let count = Int.random(in: 0...50)
+			let array = (0..<count).map { Int.random(in: -1_000...1_000) }
 
-		let emptyArray: [ Int ] = []
-		XCTAssertNil( emptyArray[ safe: 0 ] )
+			// Valid indices
+			for index in 0..<count {
+				#expect(array[safe: index] == array[index])
+			}
+
+			// Invalid indices
+			#expect(array[safe: -1] == nil)
+			#expect(array[safe: count] == nil)
+			#expect(array[safe: count + Int.random(in: 1...10)] == nil)
+		}
 	}
 
-	func testChunkArray() {
+	// MARK: - Chunk
 
-		let array: [ Int ] = [ 10, 20, 30, 40, 50, 60 ]
-		XCTAssertEqual( array.chunk( 1 ), [ [ 10 ], [ 20 ], [ 30 ], [ 40 ], [ 50 ], [ 60 ] ] )
-		XCTAssertEqual( array.chunk( 2 ), [ [ 10, 20 ], [ 30, 40 ], [ 50, 60 ] ] )
-		XCTAssertEqual( array.chunk( 3 ), [ [ 10, 20, 30 ], [ 40, 50, 60 ] ] )
-		XCTAssertEqual( array.chunk( 4 ), [ [ 10, 20, 30, 40 ], [ 50, 60 ] ] )
-		XCTAssertEqual( array.chunk( 10 ), [ [ 10, 20, 30, 40, 50, 60 ] ] )
+	@Test
+	func chunkProperties() {
 
-		let emptyArray: [ Int ] = []
-		XCTAssertEqual( emptyArray.chunk( 1 ), [] )
+		for _ in 0..<1_000 {
+
+			let array = (0..<Int.random(in: 0...100))
+				.map { Int.random(in: 0...1_000) }
+			let chunkSize = Int.random(in: 1...10)
+
+			let chunks = array.chunk(chunkSize)
+
+			// Property 1: Flatten preserves elements
+			let flattened = chunks.flatMap { $0 }
+			#expect(flattened == array)
+
+			// Property 2: Chunk sizes are valid
+			for chunk in chunks.dropLast() {
+				#expect(chunk.count == chunkSize)
+			}
+
+			// Property 3: Last chunk size is valid
+			if let last = chunks.last {
+				#expect(last.count <= chunkSize)
+				#expect(!last.isEmpty)
+			}
+		}
 	}
 
-	func testFirstIndexPath() {
-		let array = [ [ 10, 20 ], [ 30, 40, 45 ], [], [ 50, 60, 10, 70 ] ]
+	// MARK: - First IndexPath
 
-		XCTAssertEqual( array.firstIndexPath( of: 20 ), IndexPath( item: 1, section: 0 ) )
-		XCTAssertEqual( array.firstIndexPath( of: 30 ), IndexPath( item: 0, section: 1 ) )
-		XCTAssertEqual( array.firstIndexPath( of: 10 ), IndexPath( item: 0, section: 0 ) )
-		XCTAssertEqual( array.firstIndexPath( of: 70 ), IndexPath( item: 3, section: 3 ) )
-		XCTAssertNil( array.firstIndexPath( of: 0 ) )
+	@Test
+	func firstIndexPath() {
+		let array = [[10, 20], [30, 40, 45], [], [50, 60, 10, 70]]
 
-		XCTAssertEqual( array.firstIndexPath( where: { $0 == 20 } ), IndexPath( item: 1, section: 0 ) )
-		XCTAssertEqual( array.firstIndexPath( where: { $0 == 30 } ), IndexPath( item: 0, section: 1 ) )
-		XCTAssertEqual( array.firstIndexPath( where: { $0 == 10 } ), IndexPath( item: 0, section: 0 ) )
-		XCTAssertEqual( array.firstIndexPath( where: { $0 == 70 } ), IndexPath( item: 3, section: 3 ) )
-		XCTAssertNil( array.firstIndexPath( where: { $0 == 0 } ))
+		#expect(array.firstIndexPath(of: 20) == IndexPath(item: 1, section: 0))
+		#expect(array.firstIndexPath(of: 30) == IndexPath(item: 0, section: 1))
+		#expect(array.firstIndexPath(of: 10) == IndexPath(item: 0, section: 0))
+		#expect(array.firstIndexPath(of: 70) == IndexPath(item: 3, section: 3))
+		#expect(array.firstIndexPath(of: 0) == nil)
+
+		#expect(array.firstIndexPath(where: { $0 == 20 }) == IndexPath(item: 1, section: 0))
+		#expect(array.firstIndexPath(where: { $0 == 30 }) == IndexPath(item: 0, section: 1))
+		#expect(array.firstIndexPath(where: { $0 == 10 }) == IndexPath(item: 0, section: 0))
+		#expect(array.firstIndexPath(where: { $0 == 70 }) == IndexPath(item: 3, section: 3))
+		#expect(array.firstIndexPath(where: { $0 == 0 }) == nil)
 	}
 
+	// MARK: - First Identifiable IndexPath
 
-	func testFirstIdentifiableIndexPath() {
+	@Test
+	func firstIdentifiableIndexPath() {
 		struct I: Identifiable, ExpressibleByStringLiteral {
 			let id: String
 
-			init( stringLiteral: String ) {
-				id = stringLiteral
+			init(stringLiteral: String) {
+				self.id = stringLiteral
 			}
 		}
 
-		let array: [[ I ]] = [ [ "10", "20" ], [ "30", "40", "45" ], [], [ "50", "60", "10", "70" ] ]
+		let array: [[I]] = [
+			["10", "20"],
+			["30", "40", "45"],
+			[],
+			["50", "60", "10", "70"]
+		]
 
-		XCTAssertEqual( array.firstIndexPath( of: "20" ), IndexPath( item: 1, section: 0 ) )
-		XCTAssertEqual( array.firstIndexPath( of: "30" ), IndexPath( item: 0, section: 1 ) )
-		XCTAssertEqual( array.firstIndexPath( of: "10" ), IndexPath( item: 0, section: 0 ) )
-		XCTAssertEqual( array.firstIndexPath( of: "70" ), IndexPath( item: 3, section: 3 ) )
-		XCTAssertNil( array.firstIndexPath( of: "0" ) )
+		#expect(array.firstIndexPath(of: "20") == IndexPath(item: 1, section: 0))
+		#expect(array.firstIndexPath(of: "30") == IndexPath(item: 0, section: 1))
+		#expect(array.firstIndexPath(of: "10") == IndexPath(item: 0, section: 0))
+		#expect(array.firstIndexPath(of: "70") == IndexPath(item: 3, section: 3))
+		#expect(array.firstIndexPath(of: "0") == nil)
+	}
+
+	// MARK: - Windows
+
+	@Test
+	func windowsProperties() {
+
+		for _ in 0..<1_000 {
+			
+			let arrayCount = Int.random(in: 0...50)
+			let array = (0..<arrayCount).map { Int.random(in: 0...1_000) }
+			let windowSize = Int.random(in: 1...10)
+
+			let windows = array.windows(ofCount: windowSize)
+
+			// Property 1: Window size
+			#expect(windows.allSatisfy { $0.count == windowSize })
+
+			// Property 2: Window count formula
+			let expectedCount = max(0, array.count - windowSize + 1)
+			#expect(windows.count == expectedCount)
+
+			// Property 3: Order preservation
+			for (index, window) in windows.enumerated() {
+				let expected = Array(array[index..<index + windowSize])
+				#expect(window == expected)
+			}
+		}
 	}
 }
