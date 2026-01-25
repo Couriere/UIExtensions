@@ -22,35 +22,104 @@
 
 import SwiftUI
 
-public extension View {
+extension View {
 
-	/// Marks this view as refreshable.
+	/// Adds pull-to-refresh capability
+	/// to reload Loader content.
 	///
-	/// Apply this modifier to a view to set the ``EnvironmentValues/refresh``
-	/// value in the view's environment to a ``RefreshAction`` instance that
-	/// uses the specified `action` as its handler. Views that detect the
-	/// presence of the instance can change their appearance to provide a
-	/// way for the user to execute the handler.
+	/// This modifier enables users to refresh data
+	/// in a `Loader` using the standard
+	/// pull-to-refresh gesture. When the gesture
+	/// is performed, the provided action is called,
+	/// which **must modify the Loader's input parameter**
+	/// to trigger a data reload.
 	///
-	/// Provided action called on pull-to-refresh action from user and
-	/// should initiate reload from ``Loader`` instance by changing
-	/// it's ``Loader/input`` parameter.
+	/// - Important: This modifier must be applied
+	/// **inside** the `content` closure of your
+	/// `Loader`, as it depends on an environment
+	/// variable set by the `Loader` itself.
 	///
-	/// - Note: `refreshableLoader` should be placed inside `content` view
-	/// of the `Loader` as it's dependant on environment variable passed
-	/// down from it.
+	/// - Important: The `reloadAction` closure
+	/// **must change the `input` parameter** of the
+	/// `Loader` to trigger a reload. Simply calling
+	/// this modifier does **not** automatically
+	/// reload data - you must explicitly modify
+	/// the input value that was passed to the `Loader`.
 	///
-	/// - Parameters:
-	///   - action: A handler that should initiate update of `Loader` view.
-	/// - Returns: A view with a new refresh action in its environment.
-	func refreshableLoader( _ reloadAction: @escaping () -> Void ) -> some View {
-
-		self
-			.modifier(
-				RefreshableLoaderModifier(
-					reloadAction: reloadAction
-				)
+	/// ## How it works
+	///
+	/// 1. User performs a pull-to-refresh gesture
+	/// 2. `reloadAction` is called, where
+	/// **you must change the Loader's `input` parameter**
+	/// 3. `Loader` detects the input change
+	/// and automatically reloads data
+	/// 4. Refresh indicator disappears after loading completes
+	///
+	/// ## Usage Example
+	///
+	/// ```swift
+	/// struct FeedView: View {
+	///     @State private var timestamp: Date = .now
+	///
+	///     var body: some View {
+	///         Loader(
+	///             input: timestamp,
+	///             placeholder: Feed.placeholder,
+	///             failureView: ErrorView.init,
+	///             action: { time in
+	///                 try await APIClient.fetchFeed(since: time)
+	///             },
+	///             content: { $feed, state in
+	///                 List(feed.items) { item in
+	///                     FeedItemRow(item: item)
+	///                 }
+	///                 .refreshableLoader {
+	///                     // MUST update input to trigger reload
+	///                     timestamp = .now  // Change input value
+	///                 }
+	///             }
+	///         )
+	///     }
+	/// }
+	/// ```
+	///
+	/// ## Common Mistakes
+	///
+	/// ```swift
+	/// // ❌ Wrong: modifier outside Loader
+	/// Loader(...)
+	///     .refreshableLoader { ... }  // Won't work!
+	///
+	/// // ❌ Wrong: not changing input
+	/// .refreshableLoader {
+	///     print("Refreshing")  // Does nothing - no reload!
+	/// }
+	///
+	/// // ✅ Correct: modifier inside content AND changing input
+	/// Loader(...) { $data, state in
+	///     MyView(data: data)
+	///         .refreshableLoader {
+	///             inputParam = newValue  // MUST change input!
+	///         }
+	/// }
+	/// ```
+	///
+	/// - Parameter reloadAction: A closure that
+	///  **must modify the Loader's `input` parameter**
+	///  to initiate a data reload.
+	///  The reload does **not** happen automatically -
+	///  you must explicitly change the input value.
+	///
+	/// - Returns: A view with pull-to-refresh capability added.
+	///
+	public func refreshableLoader(
+		_ reloadAction: @escaping () -> Void
+	) -> some View {
+		self.modifier(
+			RefreshableLoaderModifier(
+				reloadAction: reloadAction
 			)
+		)
 	}
 }
 
@@ -58,7 +127,7 @@ internal struct RefreshableLoaderModifier: ViewModifier {
 
 	internal let reloadAction: () -> Void
 
-	@Environment( \.loaderTask ) private var loaderTask
+	@Environment(\.loaderTask) private var loaderTask
 
 	internal func body( content: Content ) -> some View {
 		content

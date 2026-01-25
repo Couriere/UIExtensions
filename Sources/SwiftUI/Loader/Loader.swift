@@ -53,6 +53,43 @@ public struct ReloadOptions: OptionSet, Sendable {
 	public static let disableAutoLoad = ReloadOptions(rawValue: 1 << 3)
 }
 
+/// Represents the current state of the loader's content.
+/// Used to inform content views about ongoing operations.
+public struct LoaderContentState: OptionSet, Sendable {
+
+	public var rawValue: Int
+	public init(rawValue: Int) {
+		self.rawValue = rawValue
+	}
+
+	/// Indicates that a loading operation is currently in progress.
+	/// This state can be used to show loading
+	/// indicators or disable user interactions.
+	public static let loading = LoaderContentState( rawValue: 1 << 0 )
+
+	/// Indicates that a placeholder is currently
+	/// being displayed instead of actual content.
+	/// This state informs the content view
+	/// that it's rendering in placeholder mode.
+	public static let placeholder = LoaderContentState( rawValue: 1 << 1 )
+
+	/// Combined state indicating both loading
+	/// is in progress and placeholder is being shown.
+	/// Useful for displaying skeleton screens
+	/// during initial or background loading.
+	public static let loadingPlaceholder: LoaderContentState = [ .loading, .placeholder ]
+
+	/// Returns `true` if a loading operation is currently in progress.
+	public var isLoading: Bool {
+		contains( .loading )
+	}
+
+	/// Returns `true` if a placeholder is currently being displayed.
+	public var isPlaceholder: Bool {
+		contains( .placeholder )
+	}
+}
+
 /// Generic loader view for handling asynchronous data loading with SwiftUI.
 ///
 /// Note: If you already have existing Loader and/or Failure views, consider creating a
@@ -103,12 +140,12 @@ public struct ReloadOptions: OptionSet, Sendable {
 /// ```
 @MainActor
 public struct Loader<Input, Result, LoadingView, FailureView, Content> where Input: Equatable,
-																			 Input: Sendable,
-																			 Result: Sendable,
-																			 LoadingView: View,
-																			 FailureView: View,
-																			 Content: View {
-
+	Input: Sendable,
+	Result: Sendable,
+	LoadingView: View,
+	FailureView: View,
+	Content: View
+{
 	/// The input parameter for data loading.
 	private let input: Input
 
@@ -127,7 +164,8 @@ public struct Loader<Input, Result, LoadingView, FailureView, Content> where Inp
 	private let failureView: ( Error, _ reload: @escaping () -> Void ) -> FailureView
 
 	/// ViewBuilder closure for rendering content based on loaded data.
-	private let content: (Binding<Result>, Bool) -> Content
+	/// Receives a binding to the result and the current loader state.
+	private let content: (Binding<Result>, LoaderContentState) -> Content
 
 	/// Loading action is in progress.
 	@State private var isLoading: Bool = false
@@ -151,9 +189,9 @@ public struct Loader<Input, Result, LoadingView, FailureView, Content> where Inp
 	///    Defaults to `[.clearOnReload, .reloadOnAppear]`.
 	///   - loadingView: The view to display while loading.
 	///   - failureView: View to display when the asynchronous action throws an error.
-	///   - reload: Trigger to force reloading after loading error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
+	///    Receives a binding to the result and the current loader content state.
 	///
 	/// Example:
 	/// ```
@@ -165,9 +203,9 @@ public struct Loader<Input, Result, LoadingView, FailureView, Content> where Inp
 	///			try await Task.sleep( for: .seconds( 1 ))
 	///			return Int.random( in: range )
 	///		},
-	///		content: { binding in
-	///			binding.wrappedValue = binding.wrappedValue * 2
+	///		content: { binding, state in
 	///			Text( String( binding.wrappedValue ))
+	///				.opacity( state.contains(.loading) ? 0.5 : 1.0 )
 	///		}
 	///	)
 	/// ```
@@ -178,7 +216,7 @@ public struct Loader<Input, Result, LoadingView, FailureView, Content> where Inp
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping ( Input ) async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ isLoading: Bool ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ state: LoaderContentState ) -> Content
 	) {
 		self.input = input
 		self.reloadOptions = reloadOptions
@@ -197,7 +235,7 @@ extension Loader: View {
 			switch ( Binding( $result ), failure ) {
 
 			case ( .some( let binding ), _ ):
-				content( binding, isLoading )
+				content( binding, isLoading ? .loading : [] )
 
 			case ( nil, .some( let failure )):
 				failureView( failure, { forcedReloadTrigger.toggle() })
@@ -220,7 +258,7 @@ extension Loader: View {
 private extension Loader {
 
 	var initialFlag: Bool {
-		
+
 		if reloadOptions.contains( .disableAutoLoad ) && result == nil {
 			return false
 		}
