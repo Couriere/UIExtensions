@@ -28,9 +28,46 @@ extension Sequence where Element: OptionalType {
 	/// collection. Equivalent to `compactMap { $0 }`.
 	/// - Returns: An array of unwrapped values from each non-nil element.
 	@inlinable
+	@inline(__always)
 	public func compactMap() -> [Element.Wrapped] {
 		compactMap { $0.value }
 	}
+}
+
+extension Sequence {
+	/// A convenience accessor that materializes the sequence into an `Array`.
+	///
+	/// This is equivalent to calling `Array(self)` and is useful for turning any
+	/// sequence into a random-access collection.
+	///
+	/// - Returns: An array containing the elements of the sequence, in order.
+	@inlinable
+	@inline(__always)
+	public var array: [Element] { Array( self ) }
+}
+
+extension Sequence where Element: Hashable {
+	/// A `Set` containing the unique elements of the sequence.
+	///
+	/// This is equivalent to `Set(self)` and removes duplicate elements using
+	/// `Hashable` conformance.
+	///
+	/// - Returns: A set of the sequence’s distinct elements.
+	@inlinable
+	@inline(__always)
+	public var set: Set<Element> { Set( self ) }
+}
+
+extension Sequence where Element == Character {
+	/// A `String` created from a sequence of `Character` values.
+	///
+	/// This is equivalent to `String(self)` and concatenates the characters in
+	/// order.
+	///
+	/// - Returns: A string formed by the characters of the sequence.
+	@inlinable
+	@inline(__always)
+	public var string: String { String( self ) }
 }
 
 extension Sequence {
@@ -53,6 +90,7 @@ extension Sequence {
 	/// - Parameter transform: A closure that produces a value for each element
 	///   of the sequence.
 	/// - Returns: An array containing the values returned by `transform`.
+	@inlinable
 	@inline(__always)
 	@_disfavoredOverload
 	public func map<T>(
@@ -179,6 +217,7 @@ extension Collection {
 
 extension KeyPath where Value == Bool {
 
+	@inlinable
 	public var negate: KeyPath<Root, Bool> {
 		appending( path: \.negate )
 	}

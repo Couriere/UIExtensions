@@ -30,20 +30,6 @@ public extension Collection {
 	var isNotEmpty: Bool { return !isEmpty }
 }
 
-
-public extension Collection {
-	var array: [Element] { return Array( self ) }
-}
-
-public extension Collection where Element: Hashable {
-	var set: Set<Element> { return Set( self ) }
-}
-
-public extension Collection where Element == Character {
-	var string: String { return String( self ) }
-}
-
-
 extension Collection {
 
 	/// Safely gets an element with index.

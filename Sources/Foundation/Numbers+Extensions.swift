@@ -22,22 +22,28 @@
 
 import Foundation
 
-public extension Int {
+extension Int {
 
 	/// Returns string representation of the receiver.
-	var string: String { return String( self ) }
+	@inlinable
+	@inline(__always)
+	public var string: String { String( self ) }
 }
 
-public extension String {
+extension String {
 	/// Attempts to convert the receiver to an Int.
 	/// - returns: The Int representation of the receiver or nil if the conversion fails.
-	var int: Int? { Int( self ) }
+	@inlinable
+	@inline(__always)
+	public var int: Int? { Int( self ) }
 }
 
-public extension Float {
+extension Float {
 
 	/// Returns string representation of the receiver.
-	var string: String { return String( self ) }
+	@inlinable
+	@inline(__always)
+	public var string: String { String( self ) }
 
 	/** 	Returns string representation of the receiver with precision.
 	  	- parameter precision: precision of formatted string.
@@ -48,15 +54,18 @@ public extension Float {
 	 f.toString( ".2" ) // "1.23"
 	 f.toString( "6.2" ) // "  1.23"
 	 */
-	func toString( _ precision: String ) -> String {
-		return String( format: "%\( precision )f", self )
+	@inlinable
+	public func toString( _ precision: String ) -> String {
+		String( format: "%\( precision )f", self )
 	}
 }
 
-public extension Double {
+extension Double {
 
 	/// Returns string representation of the receiver.
-	var string: String { return String( self ) }
+	@inlinable
+	@inline(__always)
+	public var string: String { String( self ) }
 
 	/** 	Returns string representation of the receiver with precision.
 	 - parameter precision: precision of formatted string.
@@ -67,32 +76,36 @@ public extension Double {
 	 d.toString( ".2" ) // "1.23"
 	 d.toString( "6.2" ) // "  1.23"
 	 */
-	func toString( _ precision: String ) -> String {
+	@inlinable
+	public func toString( _ precision: String ) -> String {
 		return String( format: "%\( precision )f", self )
 	}
 }
 
 
-public extension TimeInterval {
+extension TimeInterval {
 
 	/// Returns time formatted number of seconds.
 	/// hh:mm:ss
-	var formatted: String {
+	public var formatted: String {
 		let seconds = Int( isFinite ? self : 0 )
 		return String( format: "%.2d:%.2d:%.2d", seconds / 3600, seconds % 3600 / 60, seconds % 60 )
 	}
 }
 
-
-public extension Bool {
-	var negate: Bool { !self }
+extension Bool {
+	/// Returns the logical negation of the boolean.
+	@inlinable
+	@inline(__always)
+	public var negate: Bool { !self }
 }
 
-
+/// Logical-OR assignment operator for booleans.
 infix operator |=: AssignmentPrecedence
-public extension Bool {
+extension Bool {
 
-	static func |= ( left: inout Bool, right: Bool ) {
+	/// Updates the left-hand value by OR-ing it with the right-hand value.
+	public static func |= ( left: inout Bool, right: Bool ) {
 		left = left || right
 	}
 }
@@ -102,7 +115,7 @@ public extension Bool {
  Russian language only methods
  */
 
-public extension Int {
+extension Int {
 
 	/**
 	 Возвращает корректную форму слова для целого числа
@@ -114,8 +127,8 @@ public extension Int {
 	 ( "Стол", "Стола", "Столов" )
 	 */
 
-	func pluralWithForms( _ wordForms: ( String, String, String ) ) -> String {
-		return "\( self ) \( pluralString( forNumber: self, fromWordForms: wordForms ) )"
+	public func pluralWithForms( _ wordForms: ( String, String, String ) ) -> String {
+		"\( self ) \( pluralString( forNumber: self, fromWordForms: wordForms ) )"
 	}
 
 	/**
@@ -128,38 +141,39 @@ public extension Int {
 	 word - слово для нормализации. Например:
 	 Стол -> [ "Стол", "Стола", "Столов" ]
 	 */
-	func pluralForWord( _ word: String ) -> String {
-		return "\( self ) \( word.plural( forNumber: self ))"
+	public func pluralForWord( _ word: String ) -> String {
+		"\( self ) \( word.plural( forNumber: self ))"
 	}
 
-	var rub: String { return "\( self )₽" }
+	public var rub: String { "\( self )₽" }
 }
 
-public extension Comparable {
+extension Comparable {
 
 	/// Checks that Comparable is in range ( ..< ) of lowerBound and upperBound.
-	func isBetween( _ lowerBound: Self, and upperBound: Self ) -> Bool {
+	public func isBetween( _ lowerBound: Self, and upperBound: Self ) -> Bool {
 		return self >= lowerBound && self < upperBound
 	}
 }
 
 
-public extension UnsignedInteger {
-	static func seconds( _ timeInterval: TimeInterval ) -> UInt64 {
-		return UInt64( timeInterval * 1_000_000_000 )
+extension UnsignedInteger {
+	public static func seconds( _ timeInterval: TimeInterval ) -> UInt64 {
+		UInt64( timeInterval * 1_000_000_000 )
 	}
-	static func seconds<I: UnsignedInteger>( _ seconds: I ) -> UInt64 {
-		return UInt64( seconds ) * 1_000_000_000
+	public static func seconds<I: UnsignedInteger>( _ seconds: I ) -> UInt64 {
+		UInt64( seconds ) * 1_000_000_000
 	}
-	static func miliseconds<I: UnsignedInteger>( _ miliseconds: I ) -> UInt64 {
-		return UInt64( miliseconds ) * 1_000_000
+	public static func miliseconds<I: UnsignedInteger>( _ miliseconds: I ) -> UInt64 {
+		UInt64( miliseconds ) * 1_000_000
 	}
-	static func microseconds<I: UnsignedInteger>( _ microseconds: I ) -> UInt64 {
-		return UInt64( microseconds ) * 1_000
+	public static func microseconds<I: UnsignedInteger>( _ microseconds: I ) -> UInt64 {
+		UInt64( microseconds ) * 1_000
 	}
 }
 
 extension CGFloat {
+	@inlinable
 	@inline(__always)
 	public var double: Double { Double(self) }
 }
