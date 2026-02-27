@@ -81,13 +81,14 @@ public extension Color {
 	private static let invertedHexCharactersSet = CharacterSet( charactersIn: "0123456789abcdefABCDEF" ).inverted
 }
 
+#if canImport(UIKit) && !os(watchOS)
 extension Color {
 
 	/// Initializes a dynamic Color that adapts to the system appearance.
 	///
 	/// This initializer returns `light` color when the user interface style is
 	/// light (or unspecified) and `dark` color when the user interface style is dark.
-	/// Internally it creates a dynamic `UIColor`/`NSColor` and wraps it into `Color`.
+	/// Internally it creates a dynamic `UIColor` and wraps it into `Color`.
 	///
 	/// - Parameters:
 	///   - light: The color to use in light mode (and when the style is unspecified).
@@ -97,17 +98,55 @@ extension Color {
 
 		self.init(
 			uiColor: NativeColor(
-				light: light.uiColor,
-				dark: dark.uiColor,
+				light: UIColor( light ),
+				dark: UIColor( dark ),
 			),
 		)
 	}
 }
+#elseif canImport(AppKit)
+extension Color {
+
+	/// Initializes a dynamic Color that adapts to the system appearance.
+	///
+	/// This initializer returns `light` color when the system appearance is
+	/// light (or unspecified) and `dark` color when the system appearance is dark.
+	/// Internally it creates a dynamic `NSColor` and wraps it into `Color`.
+	///
+	/// - Parameters:
+	///   - light: The color to use in light mode (and when the style is unspecified).
+	///   - dark: The color to use in dark mode.
+	@inlinable
+	public init( adaptiveLight light: Color, dark: Color ) {
+
+		self.init(
+			nsColor: NativeColor(
+				light: NSColor( light ),
+				dark: NSColor( dark ),
+			),
+		)
+	}
+}
+#endif
 
 public extension Color {
 
-	/// Returns a Color by scanning the string for a hex number.
-	/// Skips any leading whitespace and ignores any trailing characters.
+	/// Initializes a color object by scanning the string for a hex number.
+	///
+	/// Searches the string for the first continuous sequence of 6 or 8
+	/// hexadecimal characters and interprets it as an RGB or RGBA color value.
+	/// Non-hex characters (including `#`, spaces, etc.) are automatically stripped.
+	///
+	/// - For a **6-character** hex string (`RRGGBB`), the `opacity` parameter
+	///   is used as the color's opacity.
+	/// - For an **8-character** hex string (`RRGGBBAA`), the opacity is extracted
+	///   from the last two characters and the `opacity` parameter is **ignored**.
+	///
+	/// - Parameters:
+	///   - hex: A string containing a hex color value (e.g. `"#FF8800"`, `"FF8800CC"`).
+	///   - opacity: The opacity value for 6-character hex strings, from 0.0 to 1.0.
+	///              Ignored when the hex string contains 8 characters. Defaults to 1.
+	/// - Returns: `nil` if no valid 6- or 8-character hex sequence is found in the string.
 	init?( hex: String, opacity: Double = 1 ) {
 
 		// Search for the first streak of six hexadecimal characters.

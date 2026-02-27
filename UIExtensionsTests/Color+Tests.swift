@@ -86,11 +86,15 @@ func colorConvertToHex() {
 @Test( "Contrast colors" )
 func colorContrastColors() {
 	#expect( Color.cyan.contrastScheme == .dark )
-	#expect( Color.indigo.contrastScheme == .light )
+
+	// Using an explicit dark color instead of .indigo,
+	// because Color.indigo has different RGB values on macOS vs iOS.
+	let darkColor = Color( intRed: 88, green: 86, blue: 214 )
+	#expect( darkColor.contrastScheme == .light )
 
 	#expect( Color.cyan.replaceWithContrastColor(light: .white, dark: .red) == .red )
-	#expect( Color.indigo.replaceWithContrastColor(light: .gray, dark: .red) == .gray )
+	#expect( darkColor.replaceWithContrastColor(light: .gray, dark: .red) == .gray )
 
 	#expect( Color.cyan.contrastColor == .black )
-	#expect( Color.indigo.contrastColor == .white )
+	#expect( darkColor.contrastColor == .white )
 }

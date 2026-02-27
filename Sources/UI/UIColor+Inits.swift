@@ -89,6 +89,7 @@ extension NativeColor {
 	}
 }
 
+#if canImport(UIKit) && !os(watchOS)
 extension NativeColor {
 
 	/// Initializes a dynamic color that adapts to the system appearance.
@@ -115,11 +116,54 @@ extension NativeColor {
 		)
 	}
 }
+#elseif canImport(AppKit)
+extension NativeColor {
+
+	/// Initializes a dynamic color that adapts to the system appearance.
+	///
+	/// This initializer returns `light` color when the system appearance is
+	/// light (or unspecified) and `dark` color when the system appearance is dark.
+	///
+	/// - Parameters:
+	///   - light: The color to use in light mode (and when the style is unspecified).
+	///   - dark: The color to use in dark mode.
+	public convenience init(
+		light: NativeColor,
+		dark: NativeColor
+	) {
+
+		self.init(
+			name: nil,
+			dynamicProvider: { appearance in
+				if appearance.bestMatch( from: [.aqua, .darkAqua] ) == .darkAqua {
+					dark
+				} else {
+					light
+				}
+			}
+		)
+	}
+}
+#endif
 
 public extension NativeColor {
 
-	/// Returns a UIColor by scanning the string for a hex number.
-	/// Skips any leading whitespace and ignores any trailing characters.
+	/// Initializes a color object by scanning the string for a hex number.
+	///
+	/// Searches the string for the first continuous sequence of 6 or 8
+	/// hexadecimal characters and interprets it as an RGB or RGBA color value.
+	/// Non-hex characters (including `#`, spaces, etc.) are automatically stripped.
+	///
+	/// - For a **6-character** hex string (`RRGGBB`), the `alpha` parameter
+	///   is used as the color's opacity.
+	/// - For an **8-character** hex string (`RRGGBBAA`), the alpha component
+	///   is extracted from the last two characters and the `alpha` parameter is **ignored**.
+	///
+	/// - Parameters:
+	///   - hex: A string containing a hex color value (e.g. `"#FF8800"`, `"FF8800CC"`).
+	///   - alpha: The opacity value for 6-character hex strings, from 0.0 to 1.0.
+	///            Ignored when the hex string contains 8 characters. Defaults to 1.
+	/// - Returns: `nil` if no valid 6- or 8-character hex sequence is found in the string.
 	convenience init?( hex: String, alpha: Double = 1 ) {
 
 		// Search for the first streak of six hexadecimal characters.

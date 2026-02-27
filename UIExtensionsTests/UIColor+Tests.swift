@@ -90,11 +90,15 @@ func uiColorContrast() {
 	#expect( NativeColor( 0xA060A0 ).contrastScheme == .light )
 
 	#expect( NativeColor.cyan.contrastScheme == .dark )
-	#expect( NativeColor.systemIndigo.contrastScheme == .light )
+
+	// Using an explicit dark color instead of .systemIndigo,
+	// because systemIndigo has different RGB values on macOS vs iOS.
+	let darkColor = NativeColor( intRed: 88, green: 86, blue: 214 )
+	#expect( darkColor.contrastScheme == .light )
 
 	#expect( NativeColor.cyan.replaceWithContrastColor(light: .white, dark: .red) == .red )
-	#expect( NativeColor.systemIndigo.replaceWithContrastColor(light: .gray, dark: .red) == .gray )
+	#expect( darkColor.replaceWithContrastColor(light: .gray, dark: .red) == .gray )
 
 	#expect( NativeColor.cyan.contrastColor == .black )
-	#expect( NativeColor.systemIndigo.contrastColor == .white )
+	#expect( darkColor.contrastColor == .white )
 }
