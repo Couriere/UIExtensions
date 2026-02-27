@@ -197,6 +197,44 @@ extension Sequence {
 	public func filter(_ isIncluded: KeyPath<Element, Bool>) -> [Element] {
 		filter { $0[keyPath: isIncluded] }
 	}
+
+	/// Returns an array of the elements sorted by the value at the given `keypath`.
+	///
+	/// - Parameters:
+	///   - keypath: A key path whose value is used for ordering.
+	///   - order: The sort order to apply. Defaults to `.forward`.
+	/// - Returns: A new array containing the sorted elements.
+	@inlinable
+	public func sorted<T: Comparable>(
+		_ keypath: KeyPath<Element, T> & Sendable,
+		order: SortOrder = .forward,
+	) -> Array<Element> {
+		let comparator = KeyPathComparator(
+			keypath,
+			order: order
+		)
+		return sorted( using: comparator )
+	}
+}
+
+extension MutableCollection where Self : RandomAccessCollection {
+
+	/// Sorts the collection in place by the value at the given `keypath`.
+	///
+	/// - Parameters:
+	///   - keypath: A key path whose value is used for ordering.
+	///   - order: The sort order to apply. Defaults to `.forward`.
+	@inlinable
+	public mutating func sort<T: Comparable>(
+		_ keypath: KeyPath<Element, T> & Sendable,
+		order: SortOrder = .forward,
+	) {
+		let comparator = KeyPathComparator(
+			keypath,
+			order: order
+		)
+		sort( using: comparator )
+	}
 }
 
 extension Collection {

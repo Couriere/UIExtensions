@@ -20,87 +20,96 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import XCTest
+import Testing
 import UIExtensions
 
 #if canImport(UIKit) && !os(watchOS)
+import UIKit
 @MainActor
-final class PaddingContainerTests: XCTestCase, @unchecked Sendable {
-
-	var containedView: UIView!
-
-	override func setUp() async throws {
-		try await super.setUp()
-		containedView = UIView()
-	}
+@Suite("PaddingContainerTests")
+struct PaddingContainerTests {
 
 	func checkInsets( in container: UIView, insets: UIEdgeInsets ) {
-		XCTAssert( container is PaddingContainer )
+		#expect( container is PaddingContainer )
 		// Leading
-		XCTAssertEqual( container.constraints[ 0 ].constant, insets.left )
+		#expect( container.constraints[ 0 ].constant == insets.left )
 		// Trailing
-		XCTAssertEqual( container.constraints[ 1 ].constant, insets.right )
+		#expect( container.constraints[ 1 ].constant == insets.right )
 		// Top
-		XCTAssertEqual( container.constraints[ 2 ].constant, insets.top )
+		#expect( container.constraints[ 2 ].constant == insets.top )
 		// Bottom
-		XCTAssertEqual( container.constraints[ 3 ].constant, insets.bottom )
+		#expect( container.constraints[ 3 ].constant == insets.bottom )
 	}
 
+	@Test
 	func testDefaultParameters() {
+		let containedView = UIView()
 		let container = containedView.padding()
 		checkInsets( in: container, insets: UIEdgeInsets( constantInset: 16 ))
 	}
 
+	@Test
 	func testDefaultAxisParameters() {
+		let containedView = UIView()
 		let container = containedView.padding( 20 )
 		checkInsets( in: container, insets: UIEdgeInsets( constantInset: 20 ))
 	}
 
+	@Test
 	func testDefaultLengthParameters() {
+		let containedView = UIView()
 		let container = containedView.padding( .horizontal )
 		checkInsets( in: container, insets: UIEdgeInsets( horizontal: 16 ))
 	}
 
+	@Test
 	func testDoublePadding() {
+		let containedView = UIView()
 		let container = containedView.padding( .leading, 50 )
 		checkInsets( in: container, insets: UIEdgeInsets( left: 50 ))
 		let secondPaddingContainer = container.padding( .leading, 51 )
-		XCTAssertIdentical( container, secondPaddingContainer )
+		#expect( container === secondPaddingContainer )
 		checkInsets( in: secondPaddingContainer, insets: UIEdgeInsets( left: 101 ))
 	}
 
+	@Test
 	func testAxisPadding() {
+		let containedView = UIView()
 		let container = containedView.padding( .horizontal, 30 )
 		checkInsets( in: container, insets: UIEdgeInsets( horizontal: 30 ))
 		let secondPaddingContainer = container.padding( .vertical, 41 )
-		XCTAssertIdentical( container, secondPaddingContainer )
+		#expect( container === secondPaddingContainer )
 		checkInsets(in: secondPaddingContainer, insets: UIEdgeInsets( horizontal: 30, vertical: 41 ))
 	}
 
+	@Test
 	func testCornersPadding() {
+		let containedView = UIView()
 		let container = containedView.padding( [ .top, .leading ], 21 )
 		checkInsets( in: container, insets: UIEdgeInsets( top: 21, left: 21 ))
 		let secondPaddingContainer = container.padding( [ .top, .trailing ], 31 )
-		XCTAssertIdentical( container, secondPaddingContainer )
+		#expect( container === secondPaddingContainer )
 		checkInsets( in: secondPaddingContainer, insets: UIEdgeInsets( top: 52, left: 21, bottom: 0, right: 31 ))
 		let thirdPaddingContainer = container.padding( [ .bottom ], 51 )
-		XCTAssertIdentical( secondPaddingContainer, thirdPaddingContainer )
+		#expect( secondPaddingContainer === thirdPaddingContainer )
 		checkInsets( in: thirdPaddingContainer, insets: UIEdgeInsets( top: 52, left: 21, bottom: 51, right: 31 ))
 	}
 
+	@Test
 	func testMemoryLeak() {
-		weak var weakContainedView = containedView
-		var container: UIView? = containedView.padding( 20 )
-		weak var weakContainer = container
+		var containedView: UIView? = UIView()
+		weak let weakContainedView = containedView
+		var container: UIView? = containedView?.padding( 20 )
+		weak let weakContainer = container
 
-		XCTAssertNotNil( weakContainedView )
-		XCTAssertNotNil( weakContainer )
+		#expect( weakContainedView != nil )
+		#expect( weakContainer != nil )
 		containedView = nil
-		XCTAssertNotNil( weakContainedView )
-		XCTAssertNotNil( weakContainer )
+		#expect( weakContainedView != nil )
+		#expect( weakContainer != nil )
 		container = nil
-		XCTAssertNil( weakContainedView )
-		XCTAssertNil( weakContainer )
+		#expect( weakContainedView == nil )
+		#expect( weakContainer == nil )
 	}
 }
 #endif
