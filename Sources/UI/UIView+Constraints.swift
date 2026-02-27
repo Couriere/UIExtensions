@@ -22,10 +22,11 @@
 
 #if canImport(AppKit)
 import AppKit
-#else
+#elseif !os(watchOS)
 import UIKit
 #endif
 
+#if !os(watchOS)
 extension XTLayoutGuide: LayoutGuideProtocol {}
 extension XTView: LayoutGuideProtocol {
 	public var owningView: XTView? { return superview }
@@ -693,3 +694,4 @@ public protocol LayoutGuideProtocol {
 	var centerXAnchor: NSLayoutXAxisAnchor { get }
 	var centerYAnchor: NSLayoutYAxisAnchor { get }
 }
+#endif // !os(watchOS)

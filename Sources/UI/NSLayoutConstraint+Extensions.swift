@@ -20,11 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(UIKit)
-import UIKit
-#elseif canImport(AppKit)
+#if canImport(AppKit)
 import AppKit
+#elseif !os(watchOS)
+import UIKit
 #endif
+
+#if !os(watchOS)
 
 public extension NSLayoutConstraint {
 
@@ -77,4 +79,6 @@ public extension Int {
 		return XTLayoutPriority( clamped )
 	}
 }
+
+#endif // !os(watchOS)
 

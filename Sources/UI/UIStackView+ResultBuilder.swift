@@ -20,12 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(UIKit)
-import UIKit
-#elseif canImport(AppKit)
+#if canImport(AppKit)
 import AppKit
+#elseif !os(watchOS)
+import UIKit
 #endif
 
+#if !os(watchOS)
 public extension XTStackView {
 
 	@available( *, deprecated, renamed: "UIViewBuilder" )
@@ -82,3 +83,4 @@ public extension XTStackView {
 		customSpaces.forEach { self.setCustomSpacing( $1, after: $0 )}
 	}
 }
+#endif // !os(watchOS)

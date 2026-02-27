@@ -22,10 +22,11 @@
 
 #if canImport(AppKit)
 import AppKit
-#else
+#elseif !os(watchOS)
 import UIKit
 #endif
 
+#if !os(watchOS)
 public extension XTView {
 
 	#if canImport(UIKit)
@@ -258,3 +259,4 @@ public extension UIView {
 	}
 }
 #endif
+#endif // !os(watchOS)

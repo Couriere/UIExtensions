@@ -22,7 +22,7 @@
 
 import SwiftUI
 
-#if canImport(UIKit)
+#if canImport(UIKit) && !os(watchOS)
 
 public extension View {
 	

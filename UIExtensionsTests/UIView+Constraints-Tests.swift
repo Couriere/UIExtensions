@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if !os(watchOS)
 import XCTest
 import UIExtensions
 
@@ -211,4 +212,6 @@ final class View_Constraints_Tests: XCTestCase, @unchecked Sendable {
 		XCTAssert( widthConstraint.priority == .required )
 	}
 }
+
+#endif // !os(watchOS)
 

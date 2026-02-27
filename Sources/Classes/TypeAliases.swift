@@ -31,15 +31,17 @@ public typealias XTEdgeInsets = NSEdgeInsets
 public typealias XTColor = NSColor
 public typealias XTFont = NSFont
 public typealias XTImage = NSImage
-#else
+#elseif canImport(UIKit)
 import UIKit
+public typealias XTEdgeInsets = UIEdgeInsets
+public typealias XTColor = UIColor
+public typealias XTFont = UIFont
+public typealias XTImage = UIImage
+#if !os(watchOS)
 public typealias XTView = UIView
 public typealias XTStackView = UIStackView
 public typealias XTLayoutGuide = UILayoutGuide
 public typealias XTLayoutPriority = UILayoutPriority
 public typealias XTOrientation = NSLayoutConstraint.Axis
-public typealias XTEdgeInsets = UIEdgeInsets
-public typealias XTColor = UIColor
-public typealias XTFont = UIFont
-public typealias XTImage = UIImage
+#endif
 #endif

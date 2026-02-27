@@ -22,7 +22,7 @@
 
 import SwiftUI
 
-#if canImport(UIKit)
+#if canImport(UIKit) && !os(watchOS)
 
 /// A View that encapsulates the effect, intensity,
 /// and duration of the visual effect.

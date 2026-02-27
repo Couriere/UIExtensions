@@ -22,7 +22,7 @@
 
 import SwiftUI
 
-#if canImport(UIKit)
+#if canImport(UIKit) && !os(watchOS)
 /// A custom subclass of `UIVisualEffectView` that provides the ability
 /// to control the intensity of the visual effect and animate its
 /// intensity changes.

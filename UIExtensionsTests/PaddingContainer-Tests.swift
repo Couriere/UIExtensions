@@ -23,7 +23,7 @@
 import XCTest
 import UIExtensions
 
-#if canImport(UIKit)
+#if canImport(UIKit) && !os(watchOS)
 @MainActor
 final class PaddingContainerTests: XCTestCase, @unchecked Sendable {
 

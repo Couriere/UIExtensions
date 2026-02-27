@@ -459,6 +459,7 @@ public extension UIAlertController {
 
 
 
+#if !os(watchOS)
 public extension LayoutGuideProtocol {
 
 	private func getSecondItem( _ constrainToMargins: Bool ) -> LayoutGuideProtocol {
@@ -845,6 +846,7 @@ extension LayoutGuideProtocol {
 		return constraints.activate()
 	}
 }
+#endif // !os(watchOS)
 
 #if os(iOS)
 public extension UIStackView {

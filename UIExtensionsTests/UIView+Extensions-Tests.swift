@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if !os(watchOS)
 import XCTest
 import UIExtensions
 
@@ -66,6 +67,7 @@ final class UIView_Extensions_Tests: XCTestCase {
 	#endif
 */
 }
+#endif // !os(watchOS)
 
 /*
 #if canImport(AppKit)

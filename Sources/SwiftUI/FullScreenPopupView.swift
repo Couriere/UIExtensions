@@ -22,7 +22,7 @@
 
 import SwiftUI
 
-#if canImport(UIKit)
+#if canImport(UIKit) && !os(watchOS)
 public extension View {
 
 	/// Presents a modal view that covers as much of the screen as

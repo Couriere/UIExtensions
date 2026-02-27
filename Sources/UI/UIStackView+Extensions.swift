@@ -20,12 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(UIKit)
-import UIKit
-#elseif canImport(AppKit)
+#if canImport(AppKit)
 import AppKit
+#elseif !os(watchOS)
+import UIKit
 #endif
 
+#if !os(watchOS)
 public extension XTStackView {
 
 	/// Adds views to the end of the arrangedSubviews array.
@@ -49,3 +50,4 @@ public extension XTStackView {
 		views.forEach { removeArrangedSubview( $0 ) }
 	}
 }
+#endif // !os(watchOS)

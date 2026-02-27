@@ -41,7 +41,13 @@ public extension Data {
 				hexData[ i * 2 + 1 ] = itoh( bytes[ i ] & 0xF )
 			}
 
+			#if os(watchOS)
+			let result = String( bytes: UnsafeBufferPointer( start: hexData, count: hexLen ), encoding: .utf8 ) ?? ""
+			hexData.deallocate()
+			return result
+			#else
 			return String( bytesNoCopy: hexData, length: hexLen, encoding: .utf8, freeWhenDone: true ) ?? ""
+			#endif
 		}
 	}
 

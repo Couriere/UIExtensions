@@ -20,15 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import XCTest
+import Testing
+import Foundation
+import UIExtensions
 
-class DataExtensionsTests: XCTestCase {
+@Test( "Data to hex" )
+func dataToHex() {
+	let fixedCases: [( [ UInt8 ], String )] = [
+		( [ 0, 1, 10, 11, 15, 16, 20, 31, 32, 127, 128, 200, 255 ], "00010a0b0f10141f207f80c8ff" ),
+		( [], "" ),
+	]
+	for ( bytes, expected ) in fixedCases {
+		#expect( Data( bytes ).hexadecimalString == expected )
+	}
 
-	func testDataToHex() {
-
-		let bytes: [ UInt8 ] = [ 0, 1, 10, 11, 15, 16, 20, 31, 32, 127, 128, 200, 255 ]
-		XCTAssertEqual( Data( bytes ).hexadecimalString,
-						"00010a0b0f10141f207f80c8ff" )
-		XCTAssertEqual( Data().hexadecimalString, "" )
+	for _ in 0..<100 {
+		let length = Int.random( in: 0...1024 )
+		let bytes = ( 0..<length ).map { _ in UInt8.random( in: 0...255 ) }
+		let data = Data( bytes )
+		let reference = bytes.map { String( format: "%02x", $0 ) }.joined()
+		#expect( data.hexadecimalString == reference )
 	}
 }

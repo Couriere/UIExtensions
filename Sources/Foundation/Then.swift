@@ -72,6 +72,7 @@ public extension Then where Self: AnyObject {
 	}
 }
 
+#if !os(watchOS)
 public extension Then where Self: XTView {
 
 	/// Makes it available to set properties with closures just after initializing.
@@ -93,6 +94,7 @@ public extension Then where Self: XTView {
 		return self
 	}
 }
+#endif
 
 extension NSObject: Then {}
 

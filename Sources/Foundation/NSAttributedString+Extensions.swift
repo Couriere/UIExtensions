@@ -348,6 +348,8 @@ public extension NSMutableAttributedString {
 		let safeLocation = max( 0, min( length - 1, location ))
 		#if os(tvOS)
 			let systemFontSize: CGFloat = 29
+		#elseif os(watchOS)
+			let systemFontSize: CGFloat = 16
 		#else
 			let systemFontSize: CGFloat = XTFont.systemFontSize
 		#endif
