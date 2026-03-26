@@ -215,8 +215,8 @@ public extension View {
 	func task<T>(
 		unwrapping value: T?,
 		priority: TaskPriority = .userInitiated,
-		@_inheritActorContext _ action: @escaping @Sendable ( T ) async -> Void
-	) -> some View where T : Equatable {
+		_ action: sending @escaping @isolated(any) ( sending T ) async -> Void
+	) -> some View where T : Equatable & Sendable {
 
 		self
 			.task( id: value, priority: priority ) {
@@ -238,7 +238,7 @@ public extension View {
 	func task(
 		if condition: Bool,
 		priority: TaskPriority = .userInitiated,
-		@_inheritActorContext _ action: @escaping @Sendable () async -> Void
+		_ action: sending @escaping @isolated(any) () async -> Void
 	) -> some View {
 		self
 			.task(id: condition, priority: priority) {
@@ -259,8 +259,8 @@ public extension View {
 	func task<T>(
 		id value: T,
 		priority: TaskPriority = .userInitiated,
-		@_inheritActorContext _ action: @escaping @Sendable ( T ) async -> Void
-	) -> some View where T : Equatable {
+		_ action: sending @escaping @isolated(any) ( T ) async -> Void
+	) -> some View where T : Equatable & Sendable {
 		self
 			.task( id: value, priority: priority ) {
 				await action( value )

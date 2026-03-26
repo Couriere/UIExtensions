@@ -97,7 +97,7 @@ extension Button where Label == Image {
 	@MainActor
 	public init(
 		_ image: Image,
-		action: @escaping @MainActor() -> Void
+		action: @escaping @MainActor () -> Void
 	) {
 		self.init(
 			action: action,

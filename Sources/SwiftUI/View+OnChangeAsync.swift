@@ -56,7 +56,7 @@ public extension View {
 		initial: Bool = false,
 		priority: TaskPriority = .userInitiated,
 		_ action: @escaping (_ oldValue: V, _ newValue: V) async -> Void
-	) -> some View where V : Equatable {
+	) -> some View where V : Equatable, V: Sendable {
 
 		return self
 			.modifier(
@@ -99,7 +99,7 @@ public extension View {
 		initial: Bool = false,
 		priority: TaskPriority = .userInitiated,
 		_ action: @escaping () async -> Void
-	) -> some View where V : Equatable {
+	) -> some View where V : Equatable, V: Sendable {
 
 		return self
 			.modifier(
@@ -151,7 +151,7 @@ public extension View {
 		initial: Bool = false,
 		priority: TaskPriority = .userInitiated,
 		perform action: @escaping  (_ newValue: V) async -> Void
-	) -> some View where V : Equatable {
+	) -> some View where V : Equatable, V: Sendable {
 
 		return self
 			.modifier(
@@ -165,12 +165,12 @@ public extension View {
 	}
 }
 
-public struct OnChangeAsyncModifier<V>: ViewModifier where V: Equatable {
+public struct OnChangeAsyncModifier<V>: ViewModifier where V: Equatable, V: Sendable {
 
 	public let value: V
 	public let initial: Bool
 	public let priority: TaskPriority
-	public let action: ( _ oldValue: sending V, _ newValue: sending V ) async -> Void
+	public let action: @isolated(any) ( _ oldValue: V, _ newValue: V ) async -> Void
 
 	@State private var task: Task<Void, Never>?
 
