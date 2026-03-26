@@ -78,7 +78,7 @@ func colorConvertToHex() {
 	#expect( Color( intRed: 255, green: 0, blue: 0 ).hexRGB == "#FF0000" )
 	#expect( Color( intRed: 255, green: 128, blue: 0 ).hexRGB == "#FF8000" )
 
-	#expect( Color( intRed: 0, green: 0, blue: 128, opacity: 0.5 ).hexRGBA == "#0000807F" )
+	#expect( Color( intRed: 0, green: 0, blue: 128, opacity: 0.5 ).hexRGBA == "#00008080" )
 	#expect( Color( intRed: 0, green: 0, blue: 255, opacity: 0 ).hexRGBA == "#0000FF00" )
 	#expect( Color( intRed: 255, green: 0, blue: 255, opacity: 1 ).hexRGBA == "#FF00FFFF" )
 }

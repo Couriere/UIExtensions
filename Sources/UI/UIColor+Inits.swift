@@ -199,7 +199,7 @@ public extension NativeColor {
 
 		return String(
 			format: "#%02X%02X%02X%02X",
-			Int(r * 255), Int(g * 255), Int(b * 255), Int(a * 255)
+			Int((r * 255).rounded()), Int((g * 255).rounded()), Int((b * 255).rounded()), Int((a * 255).rounded())
 		)
 	}
 
