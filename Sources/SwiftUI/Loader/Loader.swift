@@ -79,6 +79,14 @@ public struct LoaderContentState: OptionSet, Sendable {
 	/// during initial or background loading.
 	public static let loadingPlaceholder: LoaderContentState = [ .loading, .placeholder ]
 
+	/// Indicates that the content view has just replaced
+	/// the loading view after a completed load.
+	/// This flag is set each time the loader switches
+	/// from `loadingView` to `contentView`, and is passed
+	/// to the content only for the first render after
+	/// each such transition.
+	public static let justLoaded = LoaderContentState( rawValue: 1 << 2 )
+
 	/// Returns `true` if a loading operation is currently in progress.
 	public var isLoading: Bool {
 		contains( .loading )
@@ -87,6 +95,14 @@ public struct LoaderContentState: OptionSet, Sendable {
 	/// Returns `true` if a placeholder is currently being displayed.
 	public var isPlaceholder: Bool {
 		contains( .placeholder )
+	}
+
+	/// Returns `true` when content has just replaced
+	/// the loading view after a completed load.
+	/// This happens on each `loadingView` to `contentView`
+	/// transition and only for its first render.
+	public var isJustLoaded: Bool {
+		contains( .justLoaded )
 	}
 }
 
@@ -179,6 +195,11 @@ public struct Loader<Input, Result, LoadingView, FailureView, Content> where Inp
 	/// State to force reload after loading failure.
 	@State private var forcedReloadTrigger: Bool = false
 
+	/// Stores transient flags for the `loadingView` to `contentView`
+	/// transition outside the main view state, so they do not trigger
+	/// an extra body pass at the wrong moment.
+	@StateObject private var contentTransitionState = ContentTransitionState()
+
 	/// Initializes the Loader View with specified parameters.
 	/// When the value of the `input` parameter changes,
 	/// the data will be reloaded based on the chosen `reloadOptions`.
@@ -235,7 +256,11 @@ extension Loader: View {
 			switch ( Binding( $result ), failure ) {
 
 			case ( .some( let binding ), _ ):
-				content( binding, isLoading ? .loading : [] )
+				content( binding, contentState )
+						.onAppear {
+							contentTransitionState
+								.isJustLoadedPending = false
+						}
 
 			case ( nil, .some( let failure )):
 				failureView( failure, { forcedReloadTrigger.toggle() })
@@ -256,6 +281,14 @@ extension Loader: View {
 }
 
 private extension Loader {
+
+	var contentState: LoaderContentState {
+		var state: LoaderContentState = isLoading ? .loading : []
+		if contentTransitionState.isJustLoadedPending {
+			state.insert( .justLoaded )
+		}
+		return state
+	}
 
 	var initialFlag: Bool {
 
@@ -286,11 +319,27 @@ private extension Loader {
 
 		do {
 			let value = try await action( input )
+			contentTransitionState.isJustLoadedPending = result == nil
 			result = value
 		}
 		catch {
 			guard !Task.isCancelled else { return }
 			failure = error
 		}
+	}
+}
+
+private extension Loader {
+
+	/// Holds one-shot flags related to switching
+	/// from `loadingView` to `contentView`.
+	@MainActor
+	final class ContentTransitionState: ObservableObject {
+
+		/// Becomes `true` whenever `contentView` replaces `loadingView`.
+		/// The flag is cleared after the first render of that content.
+		/// This property is intentionally not `@Published` so toggling it
+		/// does not trigger an extra view update and reintroduce visual artifacts.
+		var isJustLoadedPending = false
 	}
 }
