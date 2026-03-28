@@ -170,7 +170,7 @@ public struct OnChangeAsyncModifier<V>: ViewModifier where V: Equatable, V: Send
 	public let value: V
 	public let initial: Bool
 	public let priority: TaskPriority
-	public let action: @isolated(any) ( _ oldValue: V, _ newValue: V ) async -> Void
+	public let action: ( _ oldValue: V, _ newValue: V ) async -> Void
 
 	@State private var task: Task<Void, Never>?
 
