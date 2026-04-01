@@ -215,7 +215,7 @@ public extension View {
 	func task<T>(
 		unwrapping value: T?,
 		priority: TaskPriority = .userInitiated,
-		_ action: sending @escaping @isolated(any) ( sending T ) async -> Void
+		_ action: sending @escaping @isolated(any) ( T ) async -> Void
 	) -> some View where T : Equatable & Sendable {
 
 		self
