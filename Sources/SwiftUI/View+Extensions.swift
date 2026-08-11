@@ -211,68 +211,6 @@ public extension View {
 
 public extension View {
 
-	/// Sets a background view that covers the entire screen, optionally ignoring safe area edges.
-	///
-	/// - Parameters:
-	///   - style: Shape style to fill background.
-	///   - safeAreaEdges: The safe area edges to be ignored by the background.
-	///
-	/// - Returns: A view with the specified background view covering the screen.
-	///
-	func wholeViewBackground<S: ShapeStyle>(
-		_ style: S,
-		ignoreSafeAreaEdges safeAreaEdges: Edge.Set = .all
-	) -> some View {
-		ZStack {
-			Rectangle()
-				.fill( style )
-				.edgesIgnoringSafeArea( safeAreaEdges )
-			self
-		}
-	}
-
-	/// Sets a background view that covers the entire screen, optionally ignoring safe area edges.
-	///
-	/// - Parameters:
-	///   - safeAreaEdges: The safe area edges to be ignored by the background.
-	///   - background: The background view to set.
-	///
-	/// - Returns: A view with the specified background view covering the screen.
-	///
-	func wholeViewBackground<Background: View>(
-		ignoreSafeAreaEdges safeAreaEdges: Edge.Set = .all,
-		@ViewBuilder _ background: () -> Background
-	) -> some View {
-		ZStack {
-			background()
-				.edgesIgnoringSafeArea( safeAreaEdges )
-			self
-		}
-	}
-
-	/// Sets a background view that covers the entire screen, optionally ignoring safe area edges.
-	///
-	/// - Parameters:
-	///   - background: The background view to set.
-	///   - safeAreaEdges: The safe area edges to be ignored by the background.
-	///
-	/// - Returns: A view with the specified background view covering the screen.
-	///
-	@available( *, deprecated, message: "Use `wholeViewBackground(ignoreSafeAreaEdges:background:)`.")
-	func wholeViewBackground<Background: View>(
-		view background: Background,
-		ignoreSafeAreaEdges safeAreaEdges: Edge.Set = .all
-	) -> some View {
-		ZStack {
-			background
-				.edgesIgnoringSafeArea( safeAreaEdges )
-			self
-		}
-	}
-}
-
-public extension View {
-
 	/// Attaches an asynchronous task to the view, triggered when the optional
 	/// value changes or becomes non-`nil`. The task runs with the specified
 	/// priority and performs the provided action.

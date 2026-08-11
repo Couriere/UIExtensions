@@ -142,7 +142,11 @@ struct TransparentBackground_Preview: PreviewProvider {
 				isPresentingModal = true
 			}
 			.buttonStyle( .plain )
-			.wholeViewBackground( LinearGradient(colors: [.red, .green, .blue], startPoint: .top, endPoint: .bottom))
+			.maxFrame()
+			.background(
+				LinearGradient(colors: [.red, .green, .blue], startPoint: .top, endPoint: .bottom),
+				ignoresSafeAreaEdges: .all
+			)
 			.fullScreenCover(isPresented: $isPresentingModal) {
 				Button( "Dismiss" ) {
 					isPresentingModal = false

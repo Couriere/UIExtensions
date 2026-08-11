@@ -26,6 +26,8 @@ import UIKit
 import AppKit
 #endif
 
+import SwiftUI
+
 #if os(iOS)||os(tvOS)
 
 public extension Date {
@@ -916,5 +918,81 @@ public extension Sequence {
 		equal value: T
 	) -> Bool where T: Equatable {
 		contains( keypath, equalTo: value )
+	}
+}
+
+public extension View {
+
+	/// Sets a background view that covers the entire screen, optionally ignoring safe area edges.
+	///
+	/// - Parameters:
+	///   - style: Shape style to fill background.
+	///   - safeAreaEdges: The safe area edges to be ignored by the background.
+	///
+	/// - Returns: A view with the specified background view covering the screen.
+	///
+	/// - Note: Unlike this method, `background(_:ignoresSafeAreaEdges:)` sizes
+	/// the background to the view itself. Expand the view first — for example
+	/// with `maxFrame()` — if the background has to cover the whole screen.
+	///
+	@available( *, deprecated, message: "Use `background(_:ignoresSafeAreaEdges:)`." )
+	func wholeViewBackground<S: ShapeStyle>(
+		_ style: S,
+		ignoreSafeAreaEdges safeAreaEdges: Edge.Set = .all
+	) -> some View {
+		ZStack {
+			Rectangle()
+				.fill( style )
+				.edgesIgnoringSafeArea( safeAreaEdges )
+			self
+		}
+	}
+
+	/// Sets a background view that covers the entire screen, optionally ignoring safe area edges.
+	///
+	/// - Parameters:
+	///   - safeAreaEdges: The safe area edges to be ignored by the background.
+	///   - background: The background view to set.
+	///
+	/// - Returns: A view with the specified background view covering the screen.
+	///
+	/// - Note: Unlike this method, `background(alignment:content:)` sizes
+	/// the background to the view itself. Expand the view first — for example
+	/// with `maxFrame()` — if the background has to cover the whole screen.
+	///
+	@available( *, deprecated, message: "Use `background(alignment:content:)` with `ignoresSafeArea(edges:)` applied to the background view." )
+	func wholeViewBackground<Background: View>(
+		ignoreSafeAreaEdges safeAreaEdges: Edge.Set = .all,
+		@ViewBuilder _ background: () -> Background
+	) -> some View {
+		ZStack {
+			background()
+				.edgesIgnoringSafeArea( safeAreaEdges )
+			self
+		}
+	}
+
+	/// Sets a background view that covers the entire screen, optionally ignoring safe area edges.
+	///
+	/// - Parameters:
+	///   - background: The background view to set.
+	///   - safeAreaEdges: The safe area edges to be ignored by the background.
+	///
+	/// - Returns: A view with the specified background view covering the screen.
+	///
+	/// - Note: Unlike this method, `background(alignment:content:)` sizes
+	/// the background to the view itself. Expand the view first — for example
+	/// with `maxFrame()` — if the background has to cover the whole screen.
+	///
+	@available( *, deprecated, message: "Use `background(alignment:content:)` with `ignoresSafeArea(edges:)` applied to the background view." )
+	func wholeViewBackground<Background: View>(
+		view background: Background,
+		ignoreSafeAreaEdges safeAreaEdges: Edge.Set = .all
+	) -> some View {
+		ZStack {
+			background
+				.edgesIgnoringSafeArea( safeAreaEdges )
+			self
+		}
 	}
 }
