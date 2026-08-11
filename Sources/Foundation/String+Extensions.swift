@@ -88,13 +88,22 @@ extension String {
 
 
 	/// Safely accesses a character by index, returning nil if out of bounds.
+	///
+	/// - note: `index( _:offsetBy:limitedBy: )` only honours `limit` when it lies
+	/// in the direction of travel, so `endIndex` does not constrain a negative
+	/// offset. Negative indices are rejected up front to avoid moving before
+	/// `startIndex`, which is a runtime trap.
+	///
 	/// - parameter index: The index of the character to access.
 	/// - returns: The character at the specified index, or nil if index is out of bounds.
 	public subscript( safe index: Int ) -> Character? {
-		guard index < count else { return nil }
+		guard
+			index >= 0,
+			let characterIndex = self.index( startIndex, offsetBy: index, limitedBy: endIndex ),
+			characterIndex < endIndex
+		else { return nil }
 
-		let index = self.index( startIndex, offsetBy: index )
-		return self[ index ]
+		return self[ characterIndex ]
 	}
 
 

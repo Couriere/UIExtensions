@@ -104,6 +104,29 @@ class StringExtensionsTests: XCTestCase {
 		XCTAssertEqual( "".chunk( 6 ), [])
 	}
 
+	func testSafeSubscript() {
+
+		let string = "abc"
+
+		XCTAssertEqual( string[ safe: 0 ], "a" )
+		XCTAssertEqual( string[ safe: 2 ], "c" )
+
+		XCTAssertNil( string[ safe: 3 ] )
+		XCTAssertNil( string[ safe: 99 ] )
+
+		XCTAssertNil( string[ safe: -1 ] )
+		XCTAssertNil( string[ safe: -99 ] )
+
+		XCTAssertNil( ""[ safe: 0 ] )
+		XCTAssertNil( ""[ safe: -1 ] )
+
+		// Grapheme clusters count as single characters.
+		let emoji = "a👩‍👩‍👧‍👦b"
+		XCTAssertEqual( emoji[ safe: 1 ], "👩‍👩‍👧‍👦" )
+		XCTAssertEqual( emoji[ safe: 2 ], "b" )
+		XCTAssertNil( emoji[ safe: 3 ] )
+	}
+
 	func testDigitsOnly() {
 
 		XCTAssertEqual( "1s2t3r4i5n6g7".digitsOnly, "1234567" )
