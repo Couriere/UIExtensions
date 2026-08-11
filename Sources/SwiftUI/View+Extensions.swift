@@ -96,6 +96,76 @@ extension View {
 		)
 	}
 
+	/// Sets the view's maximum width to fill all available horizontal space,
+	/// keeping its height unconstrained.
+	///
+	/// - Important: Unlike the standard SwiftUI `frame(maxWidth:alignment:)`,
+	/// the `alignment` parameter defaults to **`.leading`**, not `.center`,
+	/// because leading alignment is by far the most common case
+	/// when expanding a view horizontally.
+	/// Pass the alignment explicitly if you need a different one.
+	///
+	/// - Parameter alignment: The alignment of the view within
+	/// its frame. Defaults to `.leading`.
+	/// - Returns: A view that expands to the maximum available width.
+	@inlinable
+	public func maxWidth(
+		alignment: Alignment = .leading,
+	) -> some View {
+		frame(
+			maxWidth: .infinity,
+			alignment: alignment,
+		)
+	}
+
+	/// Sets the view's maximum height to fill all available vertical space,
+	/// keeping its width unconstrained.
+	///
+	/// - Parameter alignment: The alignment of the view within
+	/// its frame. Defaults to `.center`.
+	/// - Returns: A view that expands to the maximum available height.
+	@inlinable
+	public func maxHeight(
+		alignment: Alignment = .center,
+	) -> some View {
+		frame(
+			maxHeight: .infinity,
+			alignment: alignment,
+		)
+	}
+
+	/// Fixes the view at its ideal width, while letting its height
+	/// be flexible.
+	///
+	/// This is a shorthand for `fixedSize( horizontal: true, vertical: false )`.
+	/// Use it, for example, to stop a `Text` from being compressed
+	/// horizontally by its container.
+	///
+	/// - Returns: A view that keeps its ideal width.
+	@inlinable
+	public func fixedHorizontalSize() -> some View {
+		fixedSize(
+			horizontal: true,
+			vertical: false
+		)
+	}
+
+	/// Fixes the view at its ideal height, while letting its width
+	/// be flexible.
+	///
+	/// This is a shorthand for `fixedSize( horizontal: false, vertical: true )`.
+	/// Use it, for example, to let a multiline `Text` grow vertically
+	/// instead of being truncated.
+	///
+	/// - Returns: A view that keeps its ideal height.
+	@inlinable
+	public func fixedVerticalSize() -> some View {
+		fixedSize(
+			horizontal: false,
+			vertical: true
+		)
+	}
+
 	/// Applies padding to the view with separate values for horizontal and
 	/// vertical insets.
 	/// - Parameters:
