@@ -882,3 +882,39 @@ public extension Array {
 @available( *, unavailable, message: "Use AsyncStream or Combine instead.")
 open class Event<T> {
 }
+
+public extension Sequence {
+
+	/// Returns the first element in the collection where the value at the
+	/// specified `keypath` equals the given `value`.
+	@available( *, deprecated, renamed: "first(_:equalTo:)" )
+	@inlinable
+	func first<T>(
+		_ keypath: KeyPath<Element, T>,
+		equal value: T
+	) -> Element? where T: Equatable {
+		first( keypath, equalTo: value )
+	}
+
+	/// Returns an array of elements where the value at the specified `keypath`
+	/// matches the given `value`.
+	@available( *, deprecated, renamed: "filter(_:equalTo:)" )
+	@inlinable
+	func filter<T>(
+		_ keypath: KeyPath<Element, T>,
+		equal value: T
+	) -> [ Element ] where T: Equatable {
+		filter( keypath, equalTo: value )
+	}
+
+	/// Checks if any element in the collection has a value at the specified
+	/// `keypath` equal to the given `value`.
+	@available( *, deprecated, renamed: "contains(_:equalTo:)" )
+	@inlinable
+	func contains<T>(
+		_ keypath: KeyPath<Element, T>,
+		equal value: T
+	) -> Bool where T: Equatable {
+		contains( keypath, equalTo: value )
+	}
+}

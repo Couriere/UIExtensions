@@ -53,7 +53,7 @@ struct SequencesExtensionsTests {
             }
 
             let expectedContains = items.contains { $0.id == targetId }
-            #expect(items.contains(\.id, equal: targetId) == expectedContains)
+            #expect(items.contains(\.id, equalTo: targetId) == expectedContains)
 
             let expectedActive = items.contains { $0.isActive }
             #expect(items.contains(\.isActive) == expectedActive)

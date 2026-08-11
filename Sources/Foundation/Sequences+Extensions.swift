@@ -123,7 +123,7 @@ extension Sequence {
 	@inlinable
 	public func first<T>(
 		_ keypath: KeyPath<Element, T>,
-		equal value: T
+		equalTo value: T
 	) -> Element? where T: Equatable{
 		first { $0[keyPath: keypath] == value }
 	}
@@ -137,7 +137,7 @@ extension Sequence {
 	@inlinable
 	public func filter<T>(
 		_ keypath: KeyPath<Element, T>,
-		equal value: T
+		equalTo value: T
 	) -> [ Element ] where T: Equatable{
 		filter { $0[keyPath: keypath] == value }
 	}
@@ -165,7 +165,7 @@ extension Sequence {
 	@inlinable
 	public func contains<T>(
 		_ keypath: KeyPath<Element, T>,
-		equal value: T
+		equalTo value: T
 	) -> Bool where T: Equatable {
 		contains { $0[ keyPath: keypath ] == value }
 	}
@@ -250,6 +250,22 @@ extension Collection {
 	@inlinable
 	public func firstIndex(_ keypath: KeyPath<Element, Bool>) -> Index? {
 		self.firstIndex { $0[keyPath: keypath] }
+	}
+
+	/// Returns the index of the first element in the collection where the value
+	/// at the specified `keypath` equals the given `value`.
+	///
+	/// - Parameters:
+	///   - keypath: A `KeyPath` to compare.
+	///   - value: The value to match against.
+	/// - Returns: The index of the first element where `keypath` equals `value`,
+	/// or `nil` if none is found.
+	@inlinable
+	public func firstIndex<T>(
+		_ keypath: KeyPath<Element, T>,
+		equalTo value: T
+	) -> Index? where T: Equatable {
+		firstIndex { $0[ keyPath: keypath ] == value }
 	}
 }
 
