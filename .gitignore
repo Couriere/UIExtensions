@@ -4,6 +4,9 @@
 #ignore Carthage 
 Carthage/
 
+#ignore Swift Package Manager build artifacts
+.build/
+
 #ignore shared data
 *.xcshareddata
 *.xcuserdata
