@@ -48,12 +48,22 @@ public extension Dictionary {
 	}
 }
 
-public extension Dictionary where Value: OptionalType {
+extension Dictionary where Value: OptionalType {
 
-	/// Transforms dictionary with optional values to
-	/// dictionary with values of the same but not optional type.
-	/// All keys with `nil` values are dropped.
-	var sanitized: [ Key: Value.Wrapped ] {
+	/// Returns a dictionary containing only the keys with non-`nil` values,
+	/// unwrapped.
+	///
+	/// Equivalent to `compactMapValues { $0 }`, spelled without the
+	/// identity closure.
+	///
+	///     let values = [ "a": 1, "b": nil ]
+	///     print( values.compactMapValues() )
+	///     // Prints "["a": 1]"
+	///
+	/// - Returns: A dictionary with the same keys and unwrapped values,
+	///   without the keys whose value was `nil`.
+	@inlinable
+	public func compactMapValues() -> [ Key: Value.Wrapped ] {
 		compactMapValues { $0.value }
 	}
 }

@@ -147,7 +147,7 @@ extension View {
 		if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
 			onGeometryChange(
 				update: binding,
-				with: \.size.width.double
+				with: \.size.width.asDouble
 			)
 		}
 		else {
@@ -177,7 +177,7 @@ extension View {
 		if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
 			onGeometryChange(
 				update: binding,
-				with: \.size.height.double
+				with: \.size.height.asDouble
 			)
 		}
 		else {
@@ -292,6 +292,15 @@ private struct ViewFramePreferenceKey: PreferenceKey {
 	static func reduce( value: inout CGRect, nextValue: () -> CGRect ) {}
 }
 
+extension GeometryProxy {
+
+	/// The frame of the container view in the global coordinate space.
+	///
+	/// Shorthand for `frame( in: .global )`.
+	@inlinable
+	public var globalFrame: CGRect { frame( in: .global ) }
+}
+
 #Preview("Size") {
 
 	struct PreviewContainer: View {
@@ -375,4 +384,3 @@ private struct ViewFramePreferenceKey: PreferenceKey {
 
 	return PreviewContainer()
 }
-

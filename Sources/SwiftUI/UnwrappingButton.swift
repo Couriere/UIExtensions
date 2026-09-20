@@ -24,6 +24,7 @@ import SwiftUI
 nonisolated public struct UnwrappingButton<Label, Value> where Label: View, Value: Sendable {
 
 	let unwrapping: Value?
+	let role: ButtonRole?
 	let action: @MainActor ( Value ) -> Void
 	let label: Label
 
@@ -35,16 +36,20 @@ nonisolated public struct UnwrappingButton<Label, Value> where Label: View, Valu
 	/// - Parameters:
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	///     Receives the unwrapped value as its argument.
 	///   - label: A view that describes the purpose of the button's `action`.
 	public init(
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor ( Value ) -> Void,
 		@ViewBuilder label: () -> Label,
 	) {
 		self.label = label()
 		self.unwrapping = unwrapping
+		self.role = role
 		self.action = action
 	}
 }
@@ -69,6 +74,8 @@ extension UnwrappingButton where Label == Text {
 	///     use the main bundle.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	///     Receives the unwrapped value as its argument.
 	@inlinable
@@ -77,10 +84,12 @@ extension UnwrappingButton where Label == Text {
 		tableName: String? = nil,
 		bundle: Bundle? = nil,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor ( Value ) -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: action,
 			label: { Text( titleKey, tableName: tableName, bundle: bundle ) },
 		)
@@ -99,16 +108,20 @@ extension UnwrappingButton where Label == Text {
 	///   - title: A string that describes the purpose of the button's `action`.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	///     Receives the unwrapped value as its argument.
 	@inlinable @_disfavoredOverload
 	public init(
 		_ title: some StringProtocol,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor ( Value ) -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: action,
 			label: { Text( title ) },
 		)
@@ -132,6 +145,8 @@ extension UnwrappingButton where Label == Text {
 	///     use the main bundle.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	@inlinable
 	public init(
@@ -139,10 +154,12 @@ extension UnwrappingButton where Label == Text {
 		tableName: String? = nil,
 		bundle: Bundle? = nil,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: { _ in action() },
 			label: { Text( titleKey, tableName: tableName, bundle: bundle ) },
 		)
@@ -161,15 +178,19 @@ extension UnwrappingButton where Label == Text {
 	///   - title: A string that describes the purpose of the button's `action`.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	@inlinable @_disfavoredOverload
 	public init(
 		_ title: some StringProtocol,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: { _ in action() },
 			label: { Text( title ) },
 		)
@@ -187,16 +208,20 @@ extension UnwrappingButton where Label == Image {
 	///   - image: The image to use as the button's label.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	///     Receives the unwrapped value as its argument.
 	@inlinable
 	public init(
 		_ image: Image,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor ( Value ) -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: action,
 			label: { image },
 		)
@@ -212,15 +237,19 @@ extension UnwrappingButton where Label == Image {
 	///   - image: The image to use as the button's label.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	@inlinable
 	public init(
 		_ image: Image,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: { _ in action() },
 			label: { image },
 		)
@@ -248,6 +277,8 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 	///     use the main bundle.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	///     Receives the unwrapped value as its argument.
 	@inlinable
@@ -257,10 +288,12 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 		tableName: String? = nil,
 		bundle: Bundle? = nil,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor ( Value ) -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: action,
 			label: { Label( titleKey, image: image, tableName: tableName, bundle: bundle ) },
 		)
@@ -281,6 +314,8 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 	///   - image: The image to use as the label's icon.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	///     Receives the unwrapped value as its argument.
 	@inlinable @_disfavoredOverload
@@ -288,10 +323,12 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 		_ title: some StringProtocol,
 		image: Image,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor ( Value ) -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: action,
 			label: { Label( title, image: image ) },
 		)
@@ -317,6 +354,8 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 	///     use the main bundle.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	@inlinable
 	public init(
@@ -325,10 +364,12 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 		tableName: String? = nil,
 		bundle: Bundle? = nil,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: { _ in action() },
 			label: { Label( titleKey, image: image, tableName: tableName, bundle: bundle ) },
 		)
@@ -349,16 +390,20 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 	///   - image: The image to use as the label's icon.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	@inlinable @_disfavoredOverload
 	public init(
 		_ title: some StringProtocol,
 		image: Image,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: { _ in action() },
 			label: { Label( title, image: image ) },
 		)
@@ -384,6 +429,8 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 	///     use the main bundle.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	///     Receives the unwrapped value as its argument.
 	@inlinable
@@ -393,10 +440,12 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 		tableName: String? = nil,
 		bundle: Bundle? = nil,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor ( Value ) -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: action,
 			label: { Label( title: { Text( titleKey, tableName: tableName, bundle: bundle ) }, icon: { Image( systemName: systemImage ) } ) },
 		)
@@ -417,6 +466,8 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 	///   - systemImage: The name of the image resource to lookup.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	///     Receives the unwrapped value as its argument.
 	@inlinable @_disfavoredOverload
@@ -424,10 +475,12 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 		_ title: some StringProtocol,
 		systemImage: String,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor ( Value ) -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: action,
 			label: { Label( title, systemImage: systemImage ) },
 		)
@@ -453,6 +506,8 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 	///     use the main bundle.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	@inlinable
 	public init(
@@ -461,10 +516,12 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 		tableName: String? = nil,
 		bundle: Bundle? = nil,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: { _ in action() },
 			label: { Label( title: { Text( titleKey, tableName: tableName, bundle: bundle ) }, icon: { Image( systemName: systemImage ) } ) },
 		)
@@ -485,16 +542,20 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 	///   - systemImage: The name of the image resource to lookup.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	@inlinable @_disfavoredOverload
 	public init(
 		_ title: some StringProtocol,
 		systemImage: String,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: { _ in action() },
 			label: { Label( title, systemImage: systemImage ) },
 		)
@@ -513,17 +574,21 @@ extension UnwrappingButton where Label == Image {
 	///   - resource: The image resource to use as the button's label.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	///     Receives the unwrapped value as its argument.
 	@inlinable
 	public init(
 		_ resource: ImageResource,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor ( Value ) -> Void,
 	) {
 		self.init(
 			Image( resource ),
 			unwrapping: unwrapping,
+			role: role,
 			action: action,
 		)
 	}
@@ -538,16 +603,20 @@ extension UnwrappingButton where Label == Image {
 	///   - resource: The image resource to use as the button's label.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	@inlinable
 	public init(
 		_ resource: ImageResource,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			Image( resource ),
 			unwrapping: unwrapping,
+			role: role,
 			action: action,
 		)
 	}
@@ -575,6 +644,8 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 	///     use the main bundle.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	///     Receives the unwrapped value as its argument.
 	@inlinable
@@ -584,10 +655,12 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 		tableName: String? = nil,
 		bundle: Bundle? = nil,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor ( Value ) -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: action,
 			label: { Label( titleKey, image: Image( resource ), tableName: tableName, bundle: bundle ) },
 		)
@@ -608,6 +681,8 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 	///   - resource: The image resource to lookup.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	///     Receives the unwrapped value as its argument.
 	@inlinable @_disfavoredOverload
@@ -615,10 +690,12 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 		_ title: some StringProtocol,
 		image resource: ImageResource,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor ( Value ) -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: action,
 			label: { Label( title, image: Image( resource )) },
 		)
@@ -644,6 +721,8 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 	///     use the main bundle.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	@inlinable
 	public init(
@@ -652,10 +731,12 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 		tableName: String? = nil,
 		bundle: Bundle? = nil,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: { _ in action() },
 			label: { Label( titleKey, image: Image( resource ), tableName: tableName, bundle: bundle ) },
 		)
@@ -676,16 +757,20 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 	///   - resource: The image resource to lookup.
 	///   - unwrapping: An optional value that the button passes to
 	///     the action. The button is disabled while the value is `nil`.
+	///   - role: An optional semantic role that describes the button.
+	///     A value of `nil` means that the button has no assigned role.
 	///   - action: The action to perform when the user triggers the button.
 	@inlinable @_disfavoredOverload
 	public init(
 		_ title: some StringProtocol,
 		image resource: ImageResource,
 		unwrapping: Value?,
+		role: ButtonRole? = nil,
 		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			unwrapping: unwrapping,
+			role: role,
 			action: { _ in action() },
 			label: { Label( title, image: Image( resource )) },
 		)
@@ -701,7 +786,7 @@ extension UnwrappingButton: View {
 		let unwrapping = unwrapping
 		let action = action
 
-		Button {
+		Button( role: role ) {
 			guard let unwrapping else { return }
 			action( unwrapping )
 		} label: {

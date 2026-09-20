@@ -109,7 +109,153 @@ extension Bool {
 		left = left || right
 	}
 }
+extension UnsignedInteger {
+	public static func seconds( _ timeInterval: TimeInterval ) -> UInt64 {
+		UInt64( timeInterval * 1_000_000_000 )
+	}
+	public static func seconds<I: UnsignedInteger>( _ seconds: I ) -> UInt64 {
+		UInt64( seconds ) * 1_000_000_000
+	}
+	public static func miliseconds<I: UnsignedInteger>( _ miliseconds: I ) -> UInt64 {
+		UInt64( miliseconds ) * 1_000_000
+	}
+	public static func microseconds<I: UnsignedInteger>( _ microseconds: I ) -> UInt64 {
+		UInt64( microseconds ) * 1_000
+	}
+}
 
+extension CGFloat {
+	@inlinable
+	@inline(__always)
+	public var asDouble: Double { Double(self) }
+}
+
+// MARK: - Ranges
+
+extension Comparable {
+
+	/// Returns a Boolean value indicating whether the value lies
+	/// within the given half-open range.
+	///
+	/// - Parameter range: The range to test against.
+	/// - Returns: `true` if the value is greater than or equal to the lower
+	///   bound and less than the upper bound, otherwise `false`.
+	@inlinable
+	public func isIn( _ range: Range<Self> ) -> Bool {
+		self >= range.lowerBound && self < range.upperBound
+	}
+
+	/// Returns a Boolean value indicating whether the value lies
+	/// within the given closed range.
+	///
+	/// - Parameter range: The range to test against.
+	/// - Returns: `true` if the value is greater than or equal to the lower
+	///   bound and less than or equal to the upper bound, otherwise `false`.
+	@inlinable
+	public func isIn( _ range: ClosedRange<Self> ) -> Bool {
+		self >= range.lowerBound && self <= range.upperBound
+	}
+
+	/// Returns the value limited to the given closed range.
+	///
+	/// - Parameter range: The range to limit the value to.
+	/// - Returns: The nearest value within `range`.
+	@inlinable
+	public func clamped( in range: ClosedRange<Self> ) -> Self {
+		if self < range.lowerBound { return range.lowerBound }
+		if self > range.upperBound { return range.upperBound }
+		return self
+	}
+
+	/// Returns the value limited to the given half-open range.
+	///
+	/// - Parameter range: The range to limit the value to.
+	/// - Returns: The nearest value within `range`.
+	///
+	/// - Important: The upper bound is not part of a half-open range, yet it
+	///   is the closest representable result for a general `Comparable` type.
+	///   Floating-point types use an overload that returns the largest value
+	///   strictly below the upper bound instead.
+	@inlinable
+	public func clamped( in range: Range<Self> ) -> Self {
+		if self < range.lowerBound { return range.lowerBound }
+		if self > range.upperBound { return range.upperBound }
+		return self
+	}
+}
+
+extension BinaryFloatingPoint {
+
+	/// Returns the value limited to the given half-open range.
+	///
+	/// Unlike the general `Comparable` overload, the result never reaches
+	/// the upper bound: a value above the range is clamped to the largest
+	/// representable value strictly below it.
+	///
+	/// - Parameter range: The range to limit the value to.
+	/// - Returns: The nearest value within `range`.
+	@inlinable
+	public func clamped( in range: Range<Self> ) -> Self {
+		if self < range.lowerBound { return range.lowerBound }
+		if self > range.upperBound.nextDown { return range.upperBound.nextDown }
+		return self
+	}
+}
+
+// MARK: - Arithmetic Shorthands
+
+extension BinaryFloatingPoint {
+
+	/// The value multiplied by two.
+	@inlinable
+	@inline(__always)
+	public var doubled: Self { self * 2 }
+
+	/// The value divided by two.
+	@inlinable
+	@inline(__always)
+	public var halved: Self { self / 2 }
+
+	/// The value multiplied by three.
+	@inlinable
+	@inline(__always)
+	public var tripled: Self { self * 3 }
+
+	/// The value divided by three.
+	@inlinable
+	@inline(__always)
+	public var third: Self { self / 3 }
+}
+
+extension Comparable where Self: AdditiveArithmetic {
+
+	/// A Boolean value indicating whether the value is greater than zero.
+	@inlinable
+	@inline(__always)
+	public var greaterThanZero: Bool { self > .zero }
+
+	/// A Boolean value indicating whether the value is less than zero.
+	@inlinable
+	@inline(__always)
+	public var lessThanZero: Bool { self < .zero }
+
+	/// A Boolean value indicating whether the value is equal to zero.
+	@inlinable
+	@inline(__always)
+	public var equalToZero: Bool { self == .zero }
+
+	/// A Boolean value indicating whether the value is greater than
+	/// or equal to zero.
+	@inlinable
+	@inline(__always)
+	public var greaterThanOrEqualToZero: Bool { self >= .zero }
+
+	/// A Boolean value indicating whether the value is less than
+	/// or equal to zero.
+	@inlinable
+	@inline(__always)
+	public var lessThanOrEqualToZero: Bool { self <= .zero }
+}
 
 /**
  Russian language only methods
@@ -146,34 +292,4 @@ extension Int {
 	}
 
 	public var rub: String { "\( self )₽" }
-}
-
-extension Comparable {
-
-	/// Checks that Comparable is in range ( ..< ) of lowerBound and upperBound.
-	public func isBetween( _ lowerBound: Self, and upperBound: Self ) -> Bool {
-		return self >= lowerBound && self < upperBound
-	}
-}
-
-
-extension UnsignedInteger {
-	public static func seconds( _ timeInterval: TimeInterval ) -> UInt64 {
-		UInt64( timeInterval * 1_000_000_000 )
-	}
-	public static func seconds<I: UnsignedInteger>( _ seconds: I ) -> UInt64 {
-		UInt64( seconds ) * 1_000_000_000
-	}
-	public static func miliseconds<I: UnsignedInteger>( _ miliseconds: I ) -> UInt64 {
-		UInt64( miliseconds ) * 1_000_000
-	}
-	public static func microseconds<I: UnsignedInteger>( _ microseconds: I ) -> UInt64 {
-		UInt64( microseconds ) * 1_000
-	}
-}
-
-extension CGFloat {
-	@inlinable
-	@inline(__always)
-	public var double: Double { Double(self) }
 }

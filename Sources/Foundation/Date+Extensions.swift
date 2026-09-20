@@ -231,3 +231,161 @@ public extension TimeInterval {
 	var day: TimeInterval { return self * 24 * 60 * 60 }
 	var days: TimeInterval { return self * 24 * 60 * 60 }
 }
+
+extension Date {
+
+	/// The interval between this date and the current date and time.
+	///
+	/// The value is positive for a date in the past and negative for a
+	/// date in the future, which is the opposite of `timeIntervalSinceNow`.
+	@inlinable
+	@inline(__always)
+	public var timeIntervalUntilNow: TimeInterval {
+		-timeIntervalSinceNow
+	}
+
+	/// Returns the day of the month of the date.
+	///
+	/// - Parameter calendar: The calendar used to interpret the date.
+	///   Defaults to the user's current calendar.
+	/// - Returns: The day component of the date, from 1 to 31.
+	@inlinable
+	public func dayOfMonth( _ calendar: Calendar = .current ) -> Int {
+		calendar.component( .day, from: self )
+	}
+
+	/// Returns the last second of the day the date belongs to.
+	///
+	/// - Parameter timeZone: The time zone used to determine the day.
+	///   Pass `nil` to use the system time zone.
+	/// - Returns: The date with its time set to 23:59:59.
+	public func endOfDay( _ timeZone: TimeZone? = nil ) -> Date {
+
+		var calendar = Calendar.current
+		if let timeZone { calendar.timeZone = timeZone }
+
+		return calendar.startOfDay( for: self )
+			.addingTimeInterval( 1.day - 1 )
+	}
+}
+
+extension DateFormatter {
+
+	/// Creates a formatter with the given date format.
+	///
+	/// - Parameter dateFormat: The format string, such as `"yyyy-MM-dd"`.
+	///
+	/// - Note: The initializer is exposed to Objective-C, so that a subclass
+	///   of `DateFormatter` can declare its own `init( _: )`. A declaration
+	///   in an extension can't be overridden otherwise.
+	@objc
+	public convenience init( _ dateFormat: String ) {
+		self.init()
+		self.dateFormat = dateFormat
+	}
+}
+
+// MARK: - Date Ranges
+
+extension ClosedRange where Bound == Date {
+
+	/// Returns the range from the first day of the current month
+	/// through the end of today.
+	///
+	/// - Parameter calendar: The calendar used to determine the month.
+	///   Defaults to the user's current calendar.
+	/// - Returns: The month-to-date range of the current month.
+	public static func currentMonth( _ calendar: Calendar = .current ) -> Self {
+
+		let now = Date()
+		return now.startOfMonth( calendar.timeZone ) ... now.endOfDay( calendar.timeZone )
+	}
+
+	/// Returns a Boolean value indicating whether both bounds
+	/// fall on the same day.
+	///
+	/// - Parameter calendar: The calendar used to compare the bounds.
+	///   Defaults to the user's current calendar.
+	/// - Returns: `true` if the range does not cross a day boundary,
+	///   otherwise `false`.
+	@inlinable
+	public func isSingleDate( _ calendar: Calendar = .current ) -> Bool {
+		calendar.isDate(
+			lowerBound,
+			equalTo: upperBound,
+			toGranularity: .day,
+		)
+	}
+
+	/// Returns a Boolean value indicating whether both bounds
+	/// fall in the same month.
+	///
+	/// - Parameter calendar: The calendar used to compare the bounds.
+	///   Defaults to the user's current calendar.
+	/// - Returns: `true` if the range does not cross a month boundary,
+	///   otherwise `false`.
+	@inlinable
+	public func isSameMonth( _ calendar: Calendar = .current ) -> Bool {
+		calendar.isDate(
+			lowerBound,
+			equalTo: upperBound,
+			toGranularity: .month,
+		)
+	}
+
+	/// Returns a Boolean value indicating whether both bounds
+	/// fall in the same year.
+	///
+	/// - Parameter calendar: The calendar used to compare the bounds.
+	///   Defaults to the user's current calendar.
+	/// - Returns: `true` if the range does not cross a year boundary,
+	///   otherwise `false`.
+	@inlinable
+	public func isSameYear( _ calendar: Calendar = .current ) -> Bool {
+		calendar.isDate(
+			lowerBound,
+			equalTo: upperBound,
+			toGranularity: .year,
+		)
+	}
+
+	/// Returns a Boolean value indicating whether the range covers
+	/// a whole calendar month.
+	///
+	/// The range covers a whole month when it starts on the first day
+	/// of a month and ends on the last day of the same month. The time
+	/// of day of either bound is ignored, and the number of days in the
+	/// month, including leap years, is taken into account.
+	///
+	/// - Parameter calendar: The calendar used to determine the month.
+	///   Defaults to the user's current calendar.
+	/// - Returns: `true` if the range covers a whole month, otherwise `false`.
+	public func isWholeMonth( _ calendar: Calendar = .current ) -> Bool {
+
+		let timeZone = calendar.timeZone
+		let monthStart = lowerBound.startOfMonth( timeZone )
+		let monthEnd = lowerBound.endOfMonth( timeZone )
+
+		return calendar.isDate( lowerBound, inSameDayAs: monthStart )
+			&& calendar.isDate( upperBound, inSameDayAs: monthEnd )
+	}
+
+	/// Returns a Boolean value indicating whether the range covers
+	/// the current month up to today.
+	///
+	/// The range is month-to-date when it starts on the first day of the
+	/// month the upper bound belongs to, and ends today. The time of day
+	/// of either bound is ignored.
+	///
+	/// - Parameter calendar: The calendar used to determine the month.
+	///   Defaults to the user's current calendar.
+	/// - Returns: `true` if the range is month-to-date, otherwise `false`.
+	public func isMonthToDate( _ calendar: Calendar = .current ) -> Bool {
+
+		let monthStart = lowerBound.startOfMonth( calendar.timeZone )
+
+		return calendar.isDate( lowerBound, inSameDayAs: monthStart )
+			&& isSameMonth( calendar )
+			&& upperBound.isToday
+	}
+}

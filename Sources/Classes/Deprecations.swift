@@ -996,3 +996,24 @@ public extension View {
 		}
 	}
 }
+
+
+extension Dictionary where Value: OptionalType {
+
+	/// Transforms dictionary with optional values to
+	/// dictionary with values of the same but not optional type.
+	/// All keys with `nil` values are dropped.
+	@available( *, deprecated, renamed: "compactMapValues()" )
+	public var sanitized: [ Key: Value.Wrapped ] {
+		compactMapValues { $0.value }
+	}
+}
+
+extension Comparable {
+
+	/// Checks that Comparable is in range ( ..< ) of lowerBound and upperBound.
+	@available( *, deprecated, message: "Use `isIn( lowerBound ..< upperBound )` instead" )
+	public func isBetween( _ lowerBound: Self, and upperBound: Self ) -> Bool {
+		self >= lowerBound && self < upperBound
+	}
+}

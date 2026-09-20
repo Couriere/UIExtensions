@@ -130,3 +130,48 @@ public extension Collection where Self.Element: Collection,
 		return nil
 	}
 }
+
+extension Collection {
+
+	/// Safely gets a subsequence with a range of indices.
+	///
+	/// The range is clamped to the bounds of the collection, so a range
+	/// that starts before `startIndex` or ends after `endIndex` returns
+	/// the part that exists instead of trapping.
+	///
+	///     let array = [ 1, 2, 3 ]
+	///     print( Array( array[ safe: -2 ..< 2 ] ))
+	///     // Prints "[1, 2]"
+	///
+	/// - Parameter range: The range of indices to access.
+	/// - Returns: The subsequence within the bounds of the collection,
+	///   which is empty when the range lies entirely outside of them.
+	@inlinable
+	public subscript( safe range: Range<Index> ) -> SubSequence {
+
+		let lowerBound = Swift.min( Swift.max( range.lowerBound, startIndex ), endIndex )
+		let upperBound = Swift.min( Swift.max( range.upperBound, lowerBound ), endIndex )
+
+		return self[ lowerBound ..< upperBound ]
+	}
+
+	/// Returns an array with every element replaced by a mutated copy of itself.
+	///
+	/// Use this method to change a property of every element without
+	/// writing an explicit `map` that copies, mutates and returns.
+	///
+	///     let deselected = items.changingEach { $0.isSelected = false }
+	///
+	/// - Parameter perform: A closure that mutates the element passed to it.
+	/// - Returns: An array of the mutated elements.
+	@inlinable
+	public func changingEach(
+		_ perform: ( inout Element ) -> Void,
+	) -> [ Element ] {
+		map {
+			var element = $0
+			perform( &element )
+			return element
+		}
+	}
+}

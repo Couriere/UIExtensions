@@ -268,3 +268,44 @@ public extension CGFloat {
 	/// Returns degree value of the receivers radians.
 	var degrees: CGFloat { return self / .pi * 180 }
 }
+
+extension CGRect {
+
+	/// The area covered by the rectangle.
+	@inlinable
+	public var area: Double { size.width * size.height }
+}
+
+extension CGSize {
+
+	/// The length of the longer side of the size.
+	@inlinable
+	public var longestSide: Double { max( width, height ) }
+
+	/// The length of the shorter side of the size.
+	@inlinable
+	public var shortestSide: Double { min( width, height ) }
+}
+
+#if canImport( UIKit ) && !os( watchOS )
+import UIKit
+
+extension UIRectCorner {
+
+	/// The two corners along the top edge.
+	@inlinable
+	public static var top: UIRectCorner { [ .topLeft, .topRight ] }
+
+	/// The two corners along the bottom edge.
+	@inlinable
+	public static var bottom: UIRectCorner { [ .bottomLeft, .bottomRight ] }
+
+	/// The two corners along the left edge.
+	@inlinable
+	public static var left: UIRectCorner { [ .topLeft, .bottomLeft ] }
+
+	/// The two corners along the right edge.
+	@inlinable
+	public static var right: UIRectCorner { [ .topRight, .bottomRight ] }
+}
+#endif

@@ -276,3 +276,65 @@ extension KeyPath where Value == Bool {
 		appending( path: \.negate )
 	}
 }
+
+extension Optional where Wrapped: Sequence {
+
+	/// Returns an array containing the results of mapping the given closure
+	/// over the wrapped sequence, or a default value when there is none.
+	///
+	/// - Parameters:
+	///   - default: The array to return when the optional is `nil`.
+	///     Defaults to an empty array.
+	///   - transform: A closure that maps an element of the sequence.
+	/// - Returns: The mapped array, or `default` when the optional is `nil`.
+	@inlinable
+	public func map<U>(
+		default: [ U ] = [],
+		_ transform: ( Wrapped.Element ) -> U,
+	) -> [ U ] {
+		self?.map( transform ) ?? `default`
+	}
+
+	/// Returns an array containing the non-`nil` results of mapping the given
+	/// closure over the wrapped sequence, or a default value when there is none.
+	///
+	/// - Parameters:
+	///   - default: The array to return when the optional is `nil`.
+	///     Defaults to an empty array.
+	///   - transform: A closure that maps an element of the sequence
+	///     to an optional value.
+	/// - Returns: The mapped array, or `default` when the optional is `nil`.
+	@inlinable
+	public func compactMap<U>(
+		default: [ U ] = [],
+		_ transform: ( Wrapped.Element ) -> U?,
+	) -> [ U ] {
+		self?.compactMap( transform ) ?? `default`
+	}
+}
+
+extension RangeReplaceableCollection where Element: Hashable {
+
+	/// Returns a copy of the collection with duplicate elements removed.
+	///
+	/// The first occurrence of every element keeps its position, so the
+	/// order of the remaining elements is preserved.
+	///
+	///     print( [ 3, 1, 3, 2, 1 ].removingDuplicates )
+	///     // Prints "[3, 1, 2]"
+	@inlinable
+	public var removingDuplicates: Self {
+		var set: Set<Element> = []
+		return filter { set.insert( $0 ).inserted }
+	}
+
+	/// Removes duplicate elements from the collection in place.
+	///
+	/// The first occurrence of every element keeps its position, so the
+	/// order of the remaining elements is preserved.
+	@inlinable
+	public mutating func removeDuplicates() {
+		var set: Set<Element> = []
+		removeAll { !set.insert( $0 ).inserted }
+	}
+}

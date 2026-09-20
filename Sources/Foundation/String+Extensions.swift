@@ -319,3 +319,88 @@ extension String {
 		return pluralString( forNumber: number, fromWordForms: wordForms )
 	}
 }
+
+extension String {
+
+	/// Returns the string with its first character capitalized.
+	///
+	/// Unlike `capitalized`, the case of the remaining characters
+	/// is left untouched.
+	///
+	///     print( "hello world".capitalizedFirst )
+	///     // Prints "Hello world"
+	@inlinable
+	public var capitalizedFirst: String {
+		prefix( 1 ).uppercased() + dropFirst()
+	}
+
+	/// Capitalizes the first character of the string in place.
+	///
+	/// Unlike `capitalized`, the case of the remaining characters
+	/// is left untouched.
+	@inlinable
+	public mutating func capitalizeFirst() {
+		self = capitalizedFirst
+	}
+
+	/// Returns the string with every non-breaking space replaced
+	/// by a regular one.
+	///
+	/// This is the inverse of ``nonBreakingSpaces``.
+	@inlinable
+	public func removingNonBreakingSpaces() -> String {
+		replacingOccurrences( of: "\u{00a0}", with: " " )
+	}
+
+	/// Accesses the character at the given offset from the start of the string.
+	///
+	/// - Parameter index: The offset of the character to access. It must be
+	///   a valid offset within the string.
+	/// - Returns: The character at the given offset.
+	///
+	/// - Complexity: O(*n*), where *n* is `index`, because `String` is not
+	///   randomly accessible. Use ``subscript(safe:)`` to get `nil` instead
+	///   of a runtime trap for an offset outside the string.
+	@inlinable
+	public subscript( _ index: Int ) -> Character {
+		self[ self.index( startIndex, offsetBy: index ) ]
+	}
+}
+
+extension String {
+
+	/// The decoded payload of the string, treated as a JSON Web Token.
+	///
+	/// The token is split on periods, and the claims section, which is
+	/// the second one, is decoded from base64url. No signature check
+	/// is performed.
+	///
+	/// - Returns: The raw claims data, or `nil` if the string does not
+	///   carry a decodable claims section.
+	public var jwtClaimData: Data? {
+
+		guard let claimString = components( separatedBy: "." )
+			.dropFirst()
+			.first
+		else { return nil }
+
+		let paddingLength = ( 4 - claimString.count % 4 ) & 0x3
+		let padding = String( repeating: "=", count: paddingLength )
+
+		let base64String = claimString
+			.replacingOccurrences( of: "-", with: "+" )
+			.replacingOccurrences( of: "_", with: "/" )
+			.appending( padding )
+
+		return Data( base64Encoded: base64String )
+	}
+}
+
+extension String {
+
+	/// An attributed string with the same characters and no attributes.
+	@inlinable
+	public var attributedString: AttributedString {
+		AttributedString( self )
+	}
+}

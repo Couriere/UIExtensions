@@ -42,3 +42,43 @@ public extension UnkeyedDecodingContainer {
 		return result
 	}
 }
+
+private let fractionalSecondsFormatStyle = Date.ISO8601FormatStyle( includingFractionalSeconds: true )
+private let wholeSecondsFormatStyle = Date.ISO8601FormatStyle()
+
+extension JSONDecoder.DateDecodingStrategy {
+
+	/// A strategy that decodes ISO 8601 dates with or without
+	/// fractional seconds.
+	///
+	/// The system `iso8601` strategy matches the format exactly: fractional
+	/// seconds are either always required or always rejected, so a payload
+	/// that mixes `2026-08-17T05:32:17Z` and `2026-08-17T05:32:17.289731Z`
+	/// fails to decode. This strategy accepts both spellings.
+	///
+	///     decoder.dateDecodingStrategy = .iso8601Lenient
+	@available(
+		anyAppleOS,
+		deprecated: 26.0,
+		message: "The system `iso8601` strategy parses fractional seconds itself starting with version 26"
+	)
+	public static let iso8601Lenient = custom { decoder in
+
+		let string = try decoder.singleValueContainer().decode( String.self )
+
+		if let date = try? fractionalSecondsFormatStyle.parse( string ) {
+			return date
+		}
+
+		if let date = try? wholeSecondsFormatStyle.parse( string ) {
+			return date
+		}
+
+		throw DecodingError.dataCorrupted(
+			.init(
+				codingPath: decoder.codingPath,
+				debugDescription: "Expected an ISO8601 formatted date, got: \( string )",
+			),
+		)
+	}
+}

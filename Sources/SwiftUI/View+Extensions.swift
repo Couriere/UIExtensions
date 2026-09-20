@@ -344,3 +344,208 @@ public extension View {
 		}
 	}
 }
+
+// MARK: - Change Observation
+
+extension View {
+
+	/// Writes the new value into a binding whenever the observed value changes.
+	///
+	/// Use this modifier to mirror a value that is not a binding itself,
+	/// such as an environment value, into state owned by another view.
+	///
+	///     .onChange( of: scenePhase, update: $lastKnownPhase )
+	///
+	/// - Parameters:
+	///   - value: The value to observe.
+	///   - initial: Whether the binding is updated when the view first appears.
+	///   - binding: The binding that receives the new value.
+	/// - Returns: A view that keeps the binding in sync with the observed value.
+	@available( iOS 17, macOS 14, tvOS 17, watchOS 10, * )
+	@inlinable
+	public nonisolated func onChange<V>(
+		of value: V,
+		initial: Bool = false,
+		update binding: Binding<V>,
+	) -> some View where V: Equatable {
+		onChange( of: value, initial: initial ) { _, newValue in
+			binding.wrappedValue = newValue
+		}
+	}
+
+	/// Adds an action to perform when either of two observed values changes.
+	///
+	/// The standard `onChange( of:_: )` tracks a single value. This modifier
+	/// combines two values into one trigger, so the action runs once when
+	/// either value changes, and once — not twice — when both change together.
+	///
+	///     .onChange( of: selectedTab, or: searchText ) { tab, text in
+	///         reload( tab: tab, query: text )
+	///     }
+	///
+	/// - Parameters:
+	///   - first: The first value to observe.
+	///   - second: The second value to observe.
+	///   - action: The action to perform, receiving the current values of
+	///     `first` and `second`.
+	/// - Returns: A view that performs the action when either value changes.
+	@available( iOS 17, macOS 14, tvOS 17, watchOS 10, * )
+	@inlinable
+	public func onChange<T, V>(
+		of first: T,
+		or second: V,
+		perform action: @escaping ( T, V ) -> Void,
+	) -> some View where T: Equatable, V: Equatable {
+
+		onChange( of: _Trigger( first: first, second: second )) { _, trigger in
+			action( trigger.first, trigger.second )
+		}
+	}
+
+	/// Adds an asynchronous action to perform when either of two observed
+	/// values changes.
+	///
+	/// The asynchronous counterpart of ``onChange(of:or:perform:)``. Both
+	/// values are combined into one trigger, so the action runs once even
+	/// when `first` and `second` change together.
+	///
+	///     .onChange( of: selectedTab, or: searchText, initial: true ) { tab, text in
+	///         await reload( tab: tab, query: text )
+	///     }
+	///
+	/// - Parameters:
+	///   - first: The first value to observe.
+	///   - second: The second value to observe.
+	///   - initial: Whether the action runs when the view first appears,
+	///     before either value has changed.
+	///   - action: The asynchronous action to perform, receiving the current
+	///     values of `first` and `second`.
+	/// - Returns: A view that performs the action when either value changes.
+	@inlinable
+	public func onChange<T, V>(
+		of first: T,
+		or second: V,
+		initial: Bool = false,
+		perform action: @escaping ( T, V ) async -> Void,
+	) -> some View where T: Equatable & Sendable, V: Equatable & Sendable {
+
+		onChange(
+			of: _Trigger( first: first, second: second ),
+			initial: initial
+		) { _, trigger in
+			await action( trigger.first, trigger.second )
+		}
+	}
+
+	/// Adds a task to perform before this view appears, and restarts it
+	/// whenever either of two identifiers changes.
+	///
+	/// The standard `task( id:priority:_: )` restarts on a single identifier.
+	/// This modifier combines two of them into one trigger, so the task is
+	/// cancelled and restarted once when either changes, and once — not
+	/// twice — when both change together.
+	///
+	///     .task( id: selectedTab, or: searchText ) {
+	///         await loadData()
+	///     }
+	///
+	/// - Parameters:
+	///   - first: The first identifier. The task restarts when it changes.
+	///   - second: The second identifier. The task restarts when it changes.
+	///   - priority: The priority of the task.
+	///   - action: The asynchronous action to perform.
+	/// - Returns: A view that runs the task for the lifetime of the given
+	///   identifiers.
+	// NOTE: The action stays `@escaping @Sendable` on purpose. Rewriting it as
+	// `sending @escaping @isolated(any)` requires function type metadata that is
+	// not back-deployed and crashes at runtime on systems older than iOS 18.
+	// Revisit once the minimum deployment target reaches iOS 18.
+	@inlinable
+	public func task<T, V>(
+		id first: T,
+		or second: V,
+		priority: TaskPriority = .userInitiated,
+		_ action: @escaping @Sendable () async -> Void,
+	) -> some View where T: Equatable, V: Equatable {
+
+		task(
+			id: _Trigger( first: first, second: second ),
+			priority: priority,
+			action
+		)
+	}
+
+	/// Writes the new value into a binding whenever the given preference
+	/// key changes.
+	///
+	/// - Parameters:
+	///   - key: The preference key to observe.
+	///   - binding: The binding that receives the new value.
+	/// - Returns: A view that keeps the binding in sync with the preference.
+	@available( iOS 18, macOS 15, tvOS 18, watchOS 11, * )
+	@inlinable
+	public func onPreferenceChange<Key>(
+		_ key: Key.Type,
+		update binding: Binding<Key.Value>,
+	) -> some View where Key: PreferenceKey, Key.Value: Equatable & Sendable {
+		onPreferenceChange( key ) {
+			binding.wrappedValue = $0
+		}
+	}
+}
+
+/// A pair of values combined into a single equatable trigger.
+@usableFromInline
+struct _Trigger<First, Second>: Equatable where First: Equatable, Second: Equatable {
+
+	@usableFromInline
+	let first: First
+
+	@usableFromInline
+	let second: Second
+
+	@usableFromInline
+	init( first: First, second: Second ) {
+		self.first = first
+		self.second = second
+	}
+}
+
+// MARK: Sendable
+
+extension _Trigger: Sendable where First: Sendable, Second: Sendable {}
+
+// MARK: - Styling
+
+extension View {
+
+	/// Removes the background style set for this view's hierarchy.
+	///
+	/// Views such as `Label` and `Slider` draw their background using
+	/// the inherited background style. Clear it to let them fall back
+	/// to their default appearance.
+	@available( iOS 16, macOS 13, tvOS 16, watchOS 9, * )
+	@inlinable
+	public func clearBackgroundStyle() -> some View {
+		environment( \.backgroundStyle, nil )
+	}
+
+	/// Applies the given transform if the given condition evaluates to `true`.
+	///
+	/// - Parameters:
+	///   - condition: The condition to evaluate.
+	///   - transform: The transform to apply to the source view.
+	/// - Returns: Either the original view, or the modified view
+	///   when the condition is `true`.
+	@ViewBuilder
+	public func `if`(
+		_ condition: @autoclosure () -> Bool,
+		transform: ( Self ) -> some View,
+	) -> some View {
+		if condition() {
+			transform( self )
+		} else {
+			self
+		}
+	}
+}

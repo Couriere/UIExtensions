@@ -36,3 +36,42 @@ public extension Task where Success == Never, Failure == Never {
 		try await sleep( nanoseconds: UInt64.microseconds( microseconds ))
 	}
 }
+
+extension Task where Success == Never, Failure == Never {
+
+	/// Waits for the given interval and then runs the action, unless the
+	/// surrounding task is cancelled first.
+	///
+	/// Call this from a task that is restarted whenever the input changes,
+	/// such as `task( id: )` in SwiftUI: every change cancels the previous
+	/// task during its delay, so the action only runs once the input has
+	/// settled.
+	///
+	///     .task( id: query ) {
+	///         await Task.debounce( for: 0.3 ) {
+	///             await search( query )
+	///         }
+	///     }
+	///
+	/// - Parameters:
+	///   - timeInterval: The quiet period, in seconds, that must pass
+	///     before the action runs.
+	///   - action: The action to run once the delay has elapsed.
+	// NOTE: The action stays `@escaping @Sendable` on purpose. Rewriting it as
+	// `sending @escaping @isolated(any)` requires function type metadata that is
+	// not back-deployed and crashes at runtime on systems older than iOS 18.
+	// Revisit once the minimum deployment target reaches iOS 18.
+	public static func debounce(
+		for timeInterval: TimeInterval,
+		@_inheritActorContext _ action: @escaping @Sendable () async -> Void,
+	) async {
+
+		do {
+			try await Task.sleep( seconds: timeInterval )
+			await action()
+		}
+		catch {
+			// Cancelled during the delay: the action is skipped on purpose.
+		}
+	}
+}
