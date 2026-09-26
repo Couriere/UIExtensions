@@ -72,7 +72,7 @@ extension View {
 	/// Use this method to make a view expand
 	/// to the maximum size along the provided axes
 	/// while keeping the other dimension unconstrained.
-	/// For example, passing `[.horizontal, .vertical]`
+	/// For example, passing `.both`
 	/// makes the view fill all available space both
 	/// horizontally and vertically.
 	///
@@ -86,7 +86,7 @@ extension View {
 	/// size along the specified axes.
 	@inlinable
 	public func maxFrame(
-		_ axis: Axis.Set = [ .horizontal, .vertical ],
+		_ axis: Axis.Set = .both,
 		alignment: Alignment = .center,
 	) -> some View {
 		frame(
@@ -134,35 +134,24 @@ extension View {
 		)
 	}
 
-	/// Fixes the view at its ideal width, while letting its height
-	/// be flexible.
+	/// Fixes the view at its ideal size along the specified axes,
+	/// while letting it stay flexible along the others.
 	///
-	/// This is a shorthand for `fixedSize( horizontal: true, vertical: false )`.
-	/// Use it, for example, to stop a `Text` from being compressed
-	/// horizontally by its container.
+	/// This is a shorthand for `fixedSize( horizontal:vertical: )`.
+	/// Use `.horizontal`, for example, to stop a `Text` from being
+	/// compressed horizontally by its container, or `.vertical`
+	/// to let a multiline `Text` grow vertically instead of being
+	/// truncated.
 	///
-	/// - Returns: A view that keeps its ideal width.
+	/// - Parameter axes: The axes along which the view keeps
+	/// its ideal size.
+	/// - Returns: A view that keeps its ideal size along
+	/// the specified axes.
 	@inlinable
-	public func fixedHorizontalSize() -> some View {
+	public func fixedSize( _ axes: Axis.Set ) -> some View {
 		fixedSize(
-			horizontal: true,
-			vertical: false
-		)
-	}
-
-	/// Fixes the view at its ideal height, while letting its width
-	/// be flexible.
-	///
-	/// This is a shorthand for `fixedSize( horizontal: false, vertical: true )`.
-	/// Use it, for example, to let a multiline `Text` grow vertically
-	/// instead of being truncated.
-	///
-	/// - Returns: A view that keeps its ideal height.
-	@inlinable
-	public func fixedVerticalSize() -> some View {
-		fixedSize(
-			horizontal: false,
-			vertical: true
+			horizontal: axes.contains( .horizontal ),
+			vertical: axes.contains( .vertical )
 		)
 	}
 
