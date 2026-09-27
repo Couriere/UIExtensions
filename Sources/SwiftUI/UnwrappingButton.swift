@@ -562,7 +562,6 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 	}
 }
 
-@available( iOS 17, macOS 14, tvOS 17, watchOS 10, * )
 extension UnwrappingButton where Label == Image {
 
 	/// Creates a button that unwraps an optional value and displays
@@ -622,7 +621,6 @@ extension UnwrappingButton where Label == Image {
 	}
 }
 
-@available( iOS 17, macOS 14, tvOS 17, watchOS 10, * )
 extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 
 	/// Creates a button that unwraps an optional value and generates its

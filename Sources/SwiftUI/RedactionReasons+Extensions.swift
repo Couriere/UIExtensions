@@ -65,13 +65,11 @@ extension RedactionReasons {
 	/// The system sets this reason for content that is displayed
 	/// but is known to be out of date, such as a widget whose
 	/// timeline has not been refreshed yet.
-	@available( iOS 17, macOS 14, tvOS 17, watchOS 10, * )
 	@inlinable
 	public var isInvalidated: Bool { contains( .invalidated ) }
 
 	/// A Boolean value indicating whether the reasons do not contain
 	/// ``RedactionReasons/invalidated``.
-	@available( iOS 17, macOS 14, tvOS 17, watchOS 10, * )
 	@inlinable
 	public var isNotInvalidated: Bool { !contains( .invalidated ) }
 }

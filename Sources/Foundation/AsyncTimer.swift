@@ -35,7 +35,6 @@ import Foundation
 ///     }
 ///
 /// The sequence finishes when the task it runs in is cancelled.
-@available( iOS 16, macOS 13, tvOS 16, watchOS 9, * )
 public struct AsyncTimer<C: Clock>: AsyncSequence, Sendable {
 
 	public typealias Element = C.Duration
@@ -81,7 +80,6 @@ public struct AsyncTimer<C: Clock>: AsyncSequence, Sendable {
 
 // MARK: AsyncTimer.AsyncTimerIterator
 
-@available( iOS 16, macOS 13, tvOS 16, watchOS 9, * )
 extension AsyncTimer {
 
 	/// The iterator that produces the ticks of an ``AsyncTimer``.
@@ -133,7 +131,6 @@ extension AsyncTimer {
 	}
 }
 
-@available( iOS 16, macOS 13, tvOS 16, watchOS 9, * )
 extension AsyncTimer where C == ContinuousClock {
 
 	/// Creates a timer sequence ticking on the continuous clock.

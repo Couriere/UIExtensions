@@ -465,12 +465,7 @@ public extension UIAlertController {
 public extension LayoutGuideProtocol {
 
 	private func getSecondItem( _ constrainToMargins: Bool ) -> LayoutGuideProtocol {
-#if canImport(AppKit)
-		if #available( macOS 11, * ) { return constrainToMargins ? owningView!.layoutMarginsGuide : owningView! }
-		else { return owningView! }
-#else
 		return constrainToMargins ? owningView!.layoutMarginsGuide : owningView!
-#endif
 	}
 
 	@discardableResult
@@ -505,7 +500,6 @@ public extension LayoutGuideProtocol {
 		return constraints
 	}
 
-	@available( iOS 11, tvOS 11, OSX 11, * )
 	@discardableResult
 	@available( *, deprecated, message: "Use pin( .vertical, to: safeAreaLayoutGuide ) instead." )
 	func constrainVerticallyToSuperviewSafeAreaGuides( inset: CGFloat = 0 ) -> [ NSLayoutConstraint ] {
@@ -519,7 +513,6 @@ public extension LayoutGuideProtocol {
 		return constraints
 	}
 
-	@available( iOS 11, tvOS 11, OSX 11, * )
 	@discardableResult
 	@available( *, deprecated, message: "Use pin( .all ) instead." )
 	func constrainToSuperview( insets: XTEdgeInsets = .zero, constrainToMargins: Bool = false ) -> [ NSLayoutConstraint ] {
@@ -537,7 +530,6 @@ public extension LayoutGuideProtocol {
 		return constraints
 	}
 
-	@available( iOS 11, tvOS 11, OSX 11, * )
 	@discardableResult
 	@available( *, deprecated, message: "Use pin( .all, to: safeAreaLayoutGuide ) instead." )
 	func constrainToSuperviewSafeAreaGuides( insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
@@ -556,7 +548,6 @@ public extension LayoutGuideProtocol {
 
 	/// Constrains views leading, trailing and bottom to corresponding superview sides
 	/// and top of the view to safe area top.
-	@available( iOS 11, tvOS 11, OSX 11, * )
 	@discardableResult
 	@available( *, deprecated )
 	func constrainToSuperviewTopLayoutGuides( insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {

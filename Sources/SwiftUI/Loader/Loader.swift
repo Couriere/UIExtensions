@@ -198,7 +198,7 @@ public struct Loader<Input, Result, LoadingView, FailureView, Content> where Inp
 	/// Stores transient flags for the `loadingView` to `contentView`
 	/// transition outside the main view state, so they do not trigger
 	/// an extra body pass at the wrong moment.
-	@StateObject private var contentTransitionState = ContentTransitionState()
+	@State private var contentTransitionState = ContentTransitionState()
 
 	/// Initializes the Loader View with specified parameters.
 	/// When the value of the `input` parameter changes,
@@ -277,6 +277,9 @@ extension Loader: View {
 				action: performLoad
 			)
 		)
+		.onDisappear {
+			isLoading = false
+		}
 	}
 }
 
@@ -315,10 +318,11 @@ private extension Loader {
 		}
 
 		isLoading = true
-		defer { isLoading = false }
+		defer { if !Task.isCancelled { isLoading = false } }
 
 		do {
 			let value = try await action( input )
+			try Task.checkCancellation()
 			contentTransitionState.isJustLoadedPending = result == nil
 			result = value
 		}
@@ -334,11 +338,11 @@ private extension Loader {
 	/// Holds one-shot flags related to switching
 	/// from `loadingView` to `contentView`.
 	@MainActor
-	final class ContentTransitionState: ObservableObject {
+	final class ContentTransitionState {
 
 		/// Becomes `true` whenever `contentView` replaces `loadingView`.
 		/// The flag is cleared after the first render of that content.
-		/// This property is intentionally not `@Published` so toggling it
+		/// The class is intentionally not observable so toggling the flag
 		/// does not trigger an extra view update and reintroduce visual artifacts.
 		var isJustLoadedPending = false
 	}

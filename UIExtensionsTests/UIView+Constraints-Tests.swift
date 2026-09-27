@@ -117,7 +117,6 @@ final class View_Constraints_Tests: XCTestCase, @unchecked Sendable {
 		                  parent.bottomAnchor, child.bottomAnchor, 10, 1, .required )
 	}
 
-	@available( iOS 11, tvOS 11, OSX 11, * )
 	func testConstrainVerticallyToSuperviewSafeArea() {
 
 		let constraints = child.pin( .vertically, to: parent.safeAreaLayoutGuide)
@@ -132,7 +131,6 @@ final class View_Constraints_Tests: XCTestCase, @unchecked Sendable {
 
 	// MARK: - constrainToSuperview
 
-	@available( iOS 11, tvOS 11, OSX 11, * )
 	func testConstrainToSuperview() {
 
 		let constraints = child.pin( .all )
@@ -148,7 +146,6 @@ final class View_Constraints_Tests: XCTestCase, @unchecked Sendable {
 		                  parent.trailingAnchor, child.trailingAnchor, 0, 1, .required )
 	}
 
-	@available( iOS 11, tvOS 11, OSX 11, * )
 	func testConstrainToSuperviewWithInsets() {
 
 		let insets = XTEdgeInsets( top: 1, left: 2, bottom: 3, right: 4 )
@@ -165,7 +162,6 @@ final class View_Constraints_Tests: XCTestCase, @unchecked Sendable {
 		                  parent.trailingAnchor, child.trailingAnchor, 4, 1, .required )
 	}
 
-	@available( iOS 11, tvOS 11, OSX 11, * )
 	func testConstrainToSuperviewSafeArea() {
 
 		var constraints: [ NSLayoutConstraint ] = []

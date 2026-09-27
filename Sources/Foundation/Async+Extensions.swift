@@ -57,13 +57,9 @@ extension Task where Success == Never, Failure == Never {
 	///   - timeInterval: The quiet period, in seconds, that must pass
 	///     before the action runs.
 	///   - action: The action to run once the delay has elapsed.
-	// NOTE: The action stays `@escaping @Sendable` on purpose. Rewriting it as
-	// `sending @escaping @isolated(any)` requires function type metadata that is
-	// not back-deployed and crashes at runtime on systems older than iOS 18.
-	// Revisit once the minimum deployment target reaches iOS 18.
 	public static func debounce(
 		for timeInterval: TimeInterval,
-		@_inheritActorContext _ action: @escaping @Sendable () async -> Void,
+		@_inheritActorContext _ action: sending @escaping @isolated(any) () async -> Void,
 	) async {
 
 		do {

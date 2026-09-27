@@ -45,7 +45,6 @@ extension View {
 	/// Color.red
 	///     .onGeometryChange(update: $width, with: \.size.width)
 	/// ```
-	@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
 	@inlinable
 	public func onGeometryChange<T>(
 		update binding: Binding<T>,
@@ -73,37 +72,15 @@ extension View {
 	///			print("Measured Size: \(size)")
 	///     }
 	/// ```
-	@ViewBuilder
 	public func measureSize(
 		perform action: @escaping ( CGSize ) -> Void
 	) -> some View {
-		
-		if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
-			self
-				.onGeometryChange(
-					for: CGSize.self,
-					of: \.size,
-					action: action
-				)
-		}
-		else {
 
-			self
-				.background(
-					GeometryReader { geometry in
-						Color.clear
-							.preference(
-								key: ViewSizePreferenceKey.self,
-								value: geometry.size
-							)
-					}
-				)
-				.onPreferenceChange( ViewSizePreferenceKey.self ) { size in
-					DispatchQueue.main.async {
-						action( size )
-					}
-				}
-		}
+		onGeometryChange(
+			for: CGSize.self,
+			of: \.size,
+			action: action
+		)
 	}
 
 	/// Measures the size of the view and binds it to a CGSize variable.
@@ -139,20 +116,15 @@ extension View {
 	///    .measure( width: $viewWidth )
 	/// ```
 	///
-	@ViewBuilder @inlinable
+	@inlinable
 	public func measure(
 		width binding: Binding<Double>
 	) -> some View {
 
-		if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
-			onGeometryChange(
-				update: binding,
-				with: \.size.width.asDouble
-			)
-		}
-		else {
-			measureSize { binding.wrappedValue = $0.width }
-		}
+		onGeometryChange(
+			update: binding,
+			with: \.size.width.asDouble
+		)
 	}
 
 	/// Measures the height of the view and binds it to a Double variable.
@@ -169,32 +141,16 @@ extension View {
 	///    .measure(height: $viewHeight)
 	/// ```
 	///
-	@ViewBuilder @inlinable
+	@inlinable
 	public func measure(
 		height binding: Binding<Double>
 	) -> some View {
 
-		if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
-			onGeometryChange(
-				update: binding,
-				with: \.size.height.asDouble
-			)
-		}
-		else {
-			measureSize { binding.wrappedValue = $0.height }
-		}
+		onGeometryChange(
+			update: binding,
+			with: \.size.height.asDouble
+		)
 	}
-}
-
-/// A private preference key for measuring
-/// the size of a view.
-@available( iOS, deprecated: 16 )
-@available( macOS, deprecated: 13 )
-@available( tvOS, deprecated: 16 )
-@available( watchOS, deprecated: 9 )
-private struct ViewSizePreferenceKey: PreferenceKey {
-	static let defaultValue: CGSize = .zero
-	static func reduce( value: inout CGSize, nextValue: () -> CGSize ) {}
 }
 
 extension View {
@@ -217,42 +173,21 @@ extension View {
 	///			print("Measured Frame: \( frame )")
 	///     }
 	/// ```
-	@ViewBuilder
+	@inlinable
 	public func measureFrame(
 		in coordinateSpace: CoordinateSpace = .global,
 		action: @escaping ( CGRect ) -> Void
 	) -> some View {
 
-		if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+		let coordinateSpace = UnsafeSendable( coordinateSpace )
 
-			let coordinateSpace = UnsafeSendable( coordinateSpace )
-
-			self
-				.onGeometryChange(
-					for: CGRect.self,
-					of: {
-						$0.frame( in: coordinateSpace.value )
-					},
-					action: action
-				)
-		}
-		else {
-			self
-				.background(
-					GeometryReader { geometry in
-						Color.clear
-							.preference(
-								key: ViewFramePreferenceKey.self,
-								value: geometry.frame( in: coordinateSpace )
-							)
-					}
-				)
-				.onPreferenceChange( ViewFramePreferenceKey.self ) { frame in
-					DispatchQueue.main.async {
-						action( frame )
-					}
-				}
-		}
+		return onGeometryChange(
+			for: CGRect.self,
+			of: {
+				$0.frame( in: coordinateSpace.value )
+			},
+			action: action
+		)
 	}
 
 	/// Measures and observes the frame of the view within a specified coordinate space
@@ -279,17 +214,6 @@ extension View {
 	) -> some View {
 		measureFrame( in: coordinateSpace ) { binding.wrappedValue = $0 }
 	}
-}
-
-/// A private preference key for measuring
-/// the frame of a view.
-@available( iOS, deprecated: 16 )
-@available( macOS, deprecated: 13 )
-@available( tvOS, deprecated: 16 )
-@available( watchOS, deprecated: 9 )
-private struct ViewFramePreferenceKey: PreferenceKey {
-	static let defaultValue: CGRect = .zero
-	static func reduce( value: inout CGRect, nextValue: () -> CGRect ) {}
 }
 
 extension GeometryProxy {

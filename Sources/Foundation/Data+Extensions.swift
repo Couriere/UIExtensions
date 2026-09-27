@@ -33,21 +33,14 @@ public extension Data {
 
 		return withUnsafeBytes { ( bytes: UnsafeRawBufferPointer ) -> String in
 
-			let hexLen = count * 2
-			let hexData = UnsafeMutablePointer<UInt8>.allocate( capacity: hexLen )
+			String( unsafeUninitializedCapacity: bytes.count * 2 ) { hexData in
 
-			for i in 0 ..< count {
-				hexData[ i * 2 ] = itoh( ( bytes[ i ] >> 4 ) & 0xF )
-				hexData[ i * 2 + 1 ] = itoh( bytes[ i ] & 0xF )
+				for i in 0 ..< bytes.count {
+					hexData[ i * 2 ] = itoh( ( bytes[ i ] >> 4 ) & 0xF )
+					hexData[ i * 2 + 1 ] = itoh( bytes[ i ] & 0xF )
+				}
+				return bytes.count * 2
 			}
-
-			#if os(watchOS)
-			let result = String( bytes: UnsafeBufferPointer( start: hexData, count: hexLen ), encoding: .utf8 ) ?? ""
-			hexData.deallocate()
-			return result
-			#else
-			return String( bytesNoCopy: hexData, length: hexLen, encoding: .utf8, freeWhenDone: true ) ?? ""
-			#endif
 		}
 	}
 

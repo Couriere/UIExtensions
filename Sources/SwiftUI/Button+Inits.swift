@@ -271,7 +271,6 @@ extension Button where Label == Image {
 	}
 }
 
-@available( iOS 17, macOS 14, tvOS 17, watchOS 10, * )
 extension Button where Label == Image {
 
 	/// Creates a button that displays an image resource.
@@ -354,7 +353,6 @@ extension Button where Label == ModifiedContent<Image, _PaddingLayout> {
 	}
 }
 
-@available( iOS 17, macOS 14, tvOS 17, watchOS 10, * )
 extension Button where Label == ModifiedContent<Image, _PaddingLayout> {
 
 	/// Creates a button that displays an image resource surrounded
@@ -579,7 +577,6 @@ extension Button where Label == SwiftUI.Label<Text, Image> {
 	}
 }
 
-@available( iOS 17, macOS 14, tvOS 17, watchOS 10, * )
 extension Button where Label == SwiftUI.Label<Text, Image> {
 
 	/// Creates a button that generates its label from a localized string key

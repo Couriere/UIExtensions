@@ -176,40 +176,16 @@ public struct OnChangeAsyncModifier<V>: ViewModifier where V: Equatable, V: Send
 
 	public func body( content: Content ) -> some View {
 
-		if #available( iOS 17, tvOS 17, macOS 14, watchOS 10, * ) {
-			content
-				.onChange( of: value, initial: initial ) { oldValue, newValue in
-					task?.cancel()
-					task = Task( priority: priority ) {
-						await action( oldValue, newValue )
-					}
+		content
+			.onChange( of: value, initial: initial ) { oldValue, newValue in
+				task?.cancel()
+				task = Task( priority: priority ) {
+					await action( oldValue, newValue )
 				}
-				.onDisappear {
-					task?.cancel()
-					task = nil
-				}
-		}
-		else {
-
-			content
-				.onChange( of: value ) { [oldValue=value] newValue in
-					task?.cancel()
-					task = Task( priority: priority ) {
-						await action( oldValue, newValue )
-					}
-				}
-				.onAppear {
-					guard initial else { return }
-
-					task?.cancel()
-					task = Task( priority: priority ) { [action, value] in
-						await action( value, value )
-					}
-				}
-				.onDisappear {
-					task?.cancel()
-					task = nil
-				}
-		}
+			}
+			.onDisappear {
+				task?.cancel()
+				task = nil
+			}
 	}
 }

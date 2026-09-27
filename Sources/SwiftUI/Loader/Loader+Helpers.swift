@@ -22,38 +22,27 @@
 
 import SwiftUI
 
-internal struct LoaderOnChangeHelperModifier<V: Equatable & Sendable>: ViewModifier {
+struct LoaderOnChangeHelperModifier<V: Equatable & Sendable> {
 
-	public let value: V
-	public let reloadTrigger: Bool
-	public let initial: Bool
-	public let action: ( _ value: V, _ onAppear: Bool ) async -> Void
+	let value: V
+	let reloadTrigger: Bool
+	let initial: Bool
+	let action: @MainActor ( _ value: V, _ onAppear: Bool ) async -> Void
 
 	@State private var task: Task<Void, Never>?
+}
 
-	private struct ValueProxy: Equatable, Sendable {
-		let value: V
-		let reloadTrigger: Bool
-	}
-	private var valueProxy: ValueProxy {
-		ValueProxy( value: value, reloadTrigger: reloadTrigger )
-	}
-
-	public func body( content: Content ) -> some View {
+extension LoaderOnChangeHelperModifier: ViewModifier {
+	
+	func body( content: Content ) -> some View {
 
 		content
-			.onChange( of: valueProxy ) { proxy in
-				task?.cancel()
-				task = Task {
-					await action( proxy.value, false )
-				}
+			.onChange( of: value, or: reloadTrigger ) {
+				load( value, onAppear: false )
 			}
 			.onAppear {
-				guard initial else { return }
-
-				task?.cancel()
-				task = Task {
-					await action( value, true )
+				if initial {
+					load( value, onAppear: true )
 				}
 			}
 			.onDisappear {
@@ -61,5 +50,10 @@ internal struct LoaderOnChangeHelperModifier<V: Equatable & Sendable>: ViewModif
 				task = nil
 			}
 			.environment( \.loaderTask, TaskWrapper { _ = await task?.result } )
+	}
+
+	private func load( _ value: V, onAppear: Bool ) {
+		task?.cancel()
+		task = Task { await action( value, onAppear ) }
 	}
 }

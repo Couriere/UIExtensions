@@ -394,7 +394,6 @@ extension AsyncButton where Label == Image {
 	}
 }
 
-@available( iOS 17, macOS 14, tvOS 17, watchOS 10, * )
 extension AsyncButton where Label == Image {
 
 	/// Creates a button that unwraps an optional value, passes it to the
@@ -658,7 +657,6 @@ extension AsyncButton where Label == SwiftUI.Label<Text, Image> {
 	}
 }
 
-@available( iOS 17, macOS 14, tvOS 17, watchOS 10, * )
 extension AsyncButton where Label == SwiftUI.Label<Text, Image> {
 
 	/// Creates a button that unwraps an optional value, passes it to the

@@ -212,7 +212,7 @@ public extension View {
 	func task<T>(
 		unwrapping value: T?,
 		priority: TaskPriority = .userInitiated,
-		_ action: sending @escaping @isolated(any) ( T ) async -> Void
+		_ action: @escaping @isolated(any) ( T ) async -> Void
 	) -> some View where T : Equatable & Sendable {
 
 		self
@@ -235,7 +235,7 @@ public extension View {
 	func task(
 		if condition: Bool,
 		priority: TaskPriority = .userInitiated,
-		_ action: sending @escaping @isolated(any) () async -> Void
+		_ action: @escaping @isolated(any) () async -> Void
 	) -> some View {
 		self
 			.task(id: condition, priority: priority) {
@@ -256,7 +256,7 @@ public extension View {
 	func task<T>(
 		id value: T,
 		priority: TaskPriority = .userInitiated,
-		_ action: sending @escaping @isolated(any) ( T ) async -> Void
+		_ action: @escaping @isolated(any) ( T ) async -> Void
 	) -> some View where T : Equatable & Sendable {
 		self
 			.task( id: value, priority: priority ) {
@@ -350,7 +350,6 @@ extension View {
 	///   - initial: Whether the binding is updated when the view first appears.
 	///   - binding: The binding that receives the new value.
 	/// - Returns: A view that keeps the binding in sync with the observed value.
-	@available( iOS 17, macOS 14, tvOS 17, watchOS 10, * )
 	@inlinable
 	public nonisolated func onChange<V>(
 		of value: V,
@@ -364,9 +363,10 @@ extension View {
 
 	/// Adds an action to perform when either of two observed values changes.
 	///
-	/// The standard `onChange( of:_: )` tracks a single value. This modifier
-	/// combines two values into one trigger, so the action runs once when
-	/// either value changes, and once — not twice — when both change together.
+	/// The standard `onChange( of:initial:_: )` tracks a single value. This
+	/// modifier combines two values into one trigger, so the action runs once
+	/// when either value changes, and once — not twice — when both change
+	/// together.
 	///
 	///     .onChange( of: selectedTab, or: searchText ) { tab, text in
 	///         reload( tab: tab, query: text )
@@ -375,31 +375,36 @@ extension View {
 	/// - Parameters:
 	///   - first: The first value to observe.
 	///   - second: The second value to observe.
-	///   - action: The action to perform, receiving the current values of
+	///   - initial: Whether the action runs when the view first appears,
+	///     before either value has changed.
+	///   - action: The action to perform, receiving the new values of
 	///     `first` and `second`.
 	/// - Returns: A view that performs the action when either value changes.
-	@available( iOS 17, macOS 14, tvOS 17, watchOS 10, * )
 	@inlinable
 	public func onChange<T, V>(
 		of first: T,
 		or second: V,
-		perform action: @escaping ( T, V ) -> Void,
+		initial: Bool = false,
+		_ action: @escaping ( T, V ) -> Void,
 	) -> some View where T: Equatable, V: Equatable {
 
-		onChange( of: _Trigger( first: first, second: second )) { _, trigger in
-			action( trigger.first, trigger.second )
+		onChange(
+			of: _Trigger( first: first, second: second ),
+			initial: initial,
+		) { _, newValue in
+			action( newValue.first, newValue.second )
 		}
 	}
 
-	/// Adds an asynchronous action to perform when either of two observed
-	/// values changes.
+	/// Adds an action to perform when either of two observed values changes,
+	/// without passing the values to the action.
 	///
-	/// The asynchronous counterpart of ``onChange(of:or:perform:)``. Both
-	/// values are combined into one trigger, so the action runs once even
-	/// when `first` and `second` change together.
+	/// Use this variant when the action reads the values it needs itself.
+	/// Both values are combined into one trigger, so the action runs once
+	/// even when `first` and `second` change together.
 	///
-	///     .onChange( of: selectedTab, or: searchText, initial: true ) { tab, text in
-	///         await reload( tab: tab, query: text )
+	///     .onChange( of: selectedTab, or: searchText ) {
+	///         reload()
 	///     }
 	///
 	/// - Parameters:
@@ -407,23 +412,56 @@ extension View {
 	///   - second: The second value to observe.
 	///   - initial: Whether the action runs when the view first appears,
 	///     before either value has changed.
-	///   - action: The asynchronous action to perform, receiving the current
-	///     values of `first` and `second`.
+	///   - action: The action to perform.
 	/// - Returns: A view that performs the action when either value changes.
 	@inlinable
 	public func onChange<T, V>(
 		of first: T,
 		or second: V,
 		initial: Bool = false,
-		perform action: @escaping ( T, V ) async -> Void,
+		_ action: @escaping () -> Void,
+	) -> some View where T: Equatable, V: Equatable {
+
+		onChange(
+			of: _Trigger( first: first, second: second ),
+			initial: initial,
+			action,
+		)
+	}
+
+	/// Adds an asynchronous action to perform when either of two observed
+	/// values changes.
+	///
+	/// The asynchronous counterpart of the parameterless
+	/// `onChange( of:or:initial:_: )`. Both values are combined into one
+	/// trigger, so the action runs once even when `first` and `second` change
+	/// together. If a value changes while the previous action is still
+	/// running, the previous task is cancelled.
+	///
+	///     .onChange( of: selectedTab, or: searchText, initial: true ) {
+	///         await reload()
+	///     }
+	///
+	/// - Parameters:
+	///   - first: The first value to observe.
+	///   - second: The second value to observe.
+	///   - initial: Whether the action runs when the view first appears,
+	///     before either value has changed.
+	///   - action: The asynchronous action to perform.
+	/// - Returns: A view that performs the action when either value changes.
+	@inlinable
+	public func onChange<T, V>(
+		of first: T,
+		or second: V,
+		initial: Bool = false,
+		_ action: @escaping () async -> Void,
 	) -> some View where T: Equatable & Sendable, V: Equatable & Sendable {
 
 		onChange(
 			of: _Trigger( first: first, second: second ),
-			initial: initial
-		) { _, trigger in
-			await action( trigger.first, trigger.second )
-		}
+			initial: initial,
+			action
+		)
 	}
 
 	/// Adds a task to perform before this view appears, and restarts it
@@ -445,16 +483,12 @@ extension View {
 	///   - action: The asynchronous action to perform.
 	/// - Returns: A view that runs the task for the lifetime of the given
 	///   identifiers.
-	// NOTE: The action stays `@escaping @Sendable` on purpose. Rewriting it as
-	// `sending @escaping @isolated(any)` requires function type metadata that is
-	// not back-deployed and crashes at runtime on systems older than iOS 18.
-	// Revisit once the minimum deployment target reaches iOS 18.
 	@inlinable
 	public func task<T, V>(
 		id first: T,
 		or second: V,
 		priority: TaskPriority = .userInitiated,
-		_ action: @escaping @Sendable () async -> Void,
+		@_inheritActorContext _ action: sending @escaping @isolated(any) () async -> Void,
 	) -> some View where T: Equatable, V: Equatable {
 
 		task(
@@ -471,7 +505,6 @@ extension View {
 	///   - key: The preference key to observe.
 	///   - binding: The binding that receives the new value.
 	/// - Returns: A view that keeps the binding in sync with the preference.
-	@available( iOS 18, macOS 15, tvOS 18, watchOS 11, * )
 	@inlinable
 	public func onPreferenceChange<Key>(
 		_ key: Key.Type,
@@ -513,7 +546,6 @@ extension View {
 	/// Views such as `Label` and `Slider` draw their background using
 	/// the inherited background style. Clear it to let them fall back
 	/// to their default appearance.
-	@available( iOS 16, macOS 13, tvOS 16, watchOS 9, * )
 	@inlinable
 	public func clearBackgroundStyle() -> some View {
 		environment( \.backgroundStyle, nil )

@@ -48,7 +48,6 @@ extension View {
 	///   - action: A closure to run when the value changes to `target`.
 	/// - Returns: A view that fires an action when the specified value changes to `target`.
 	@inlinable
-	@inline(__always)
 	public func onChange<V>(
 		of value: V,
 		to target: V,
@@ -56,7 +55,9 @@ extension View {
 		_ action: @escaping () -> Void
 	) -> some View where V: Equatable {
 
-		onChange( of: value, to: { $0 == target }, initial: initial, action )
+		onChange( of: value, initial: initial ) { _, newValue in
+			if newValue == target { action() }
+		}
 	}
 
 	/// Performs an action when the specified value changes to a value
@@ -86,7 +87,7 @@ extension View {
 	///     that satisfies `predicate`.
 	/// - Returns: A view that fires an action when the specified value changes
 	///   to a value that satisfies `predicate`.
-	@ViewBuilder
+	@inlinable
 	public func onChange<V>(
 		of value: V,
 		to predicate: @escaping ( V ) -> Bool,
@@ -94,18 +95,8 @@ extension View {
 		_ action: @escaping () -> Void
 	) -> some View where V: Equatable {
 
-		if #available( iOS 17, tvOS 17, macOS 14, watchOS 10, * ) {
-			onChange( of: value, initial: initial ) { _, newValue in
-				if predicate( newValue ) { action() }
-			}
-		}
-		else {
-			onChange( of: value ) { newValue in
-				if predicate( newValue ) { action() }
-			}
-			.onAppear {
-				if initial, predicate( value ) { action() }
-			}
+		onChange( of: value, initial: initial ) { _, newValue in
+			if predicate( newValue ) { action() }
 		}
 	}
 }

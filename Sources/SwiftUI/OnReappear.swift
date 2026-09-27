@@ -57,13 +57,9 @@ extension View {
 	///   - action: An asynchronous closure to execute on each subsequent appearance.
 	/// - Returns: A view that triggers the asynchronous action on all
 	///   appearances after the first.
-	// NOTE: The action stays `@escaping @Sendable` on purpose. Rewriting it as
-	// `sending @escaping @isolated(any)` requires function type metadata that is
-	// not back-deployed and crashes at runtime on systems older than iOS 18.
-	// Revisit once the minimum deployment target reaches iOS 18.
 	public func onReappear(
 		priority: TaskPriority = .userInitiated,
-		@_inheritActorContext _ action: @escaping @Sendable () async -> Void,
+		@_inheritActorContext _ action: sending @escaping @isolated(any) () async -> Void,
 	) -> some View {
 
 		modifier(
@@ -105,12 +101,12 @@ extension _OnReappearModifier: ViewModifier {
 struct _OnReappearAsyncModifier {
 
 	let priority: TaskPriority
-	let action: @Sendable () async -> Void
+	let action: @isolated(any) () async -> Void
 	@State private var hasAppeared = false
 
 	init(
 		priority: TaskPriority,
-		action: @escaping @Sendable () async -> Void,
+		action: sending @escaping @isolated(any) () async -> Void,
 	) {
 		self.priority = priority
 		self.action = action

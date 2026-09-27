@@ -103,8 +103,8 @@ private struct FullScreenView<Item: Identifiable, ParentContent: View, PopupView
 	var body: some View {
 		parentContent
 			._underlyingViewController { underlyingViewController = $0 }
-			.onChange( of: isPresented ) { _ in presentOrDismissFullScreenCover() }
-			.onChange( of: item?.id ) { _ in presentOrDismissFullScreenCover() }
+			.onChange( of: isPresented ) { presentOrDismissFullScreenCover() }
+			.onChange( of: item?.id ) { presentOrDismissFullScreenCover() }
 
 			.onDisappear {
 				overlay?.dismiss( animated: true )
