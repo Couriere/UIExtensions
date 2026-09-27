@@ -34,9 +34,11 @@ public extension UINavigationController {
 	/// the transition to be animated. You might specify `false` if you are setting up
 	/// the navigation controller at launch time.
 	/// - parameter completion: Handler that will be called after transition animation is finished.
-	func pushViewController( _ viewController: UIViewController,
-	                         animated: Bool = true,
-	                         completion: @escaping () -> Void ) {
+	func pushViewController(
+		_ viewController: UIViewController,
+		animated: Bool = true,
+		completion: @escaping () -> Void,
+	) {
 
 		pushViewController( viewController, animated: animated )
 		// Push of very first controller executes without aimation. So we need to force completion call.
@@ -50,8 +52,10 @@ public extension UINavigationController {
 	/// - parameter completion: Handler that will be called after transition animation is finished.
 	/// - returns: The view controller that was popped from the stack.
 	@discardableResult
-	func popViewController( animated: Bool = true,
-	                        completion: @escaping () -> Void ) -> UIViewController? {
+	func popViewController(
+		animated: Bool = true,
+		completion: @escaping () -> Void,
+	) -> UIViewController? {
 
 		let controller = popViewController( animated: animated )
 		setCompletionHandler( completion, animated: animated )
@@ -68,9 +72,11 @@ public extension UINavigationController {
 	/// - returns: An array containing the view controllers that were popped from the stack.
 	/// - note: Completion handler may be called right away if viewController is already at the top of the stack.
 	@discardableResult
-	func popToViewController( _ viewController: UIViewController,
-	                          animated: Bool = true,
-	                          completion: @escaping () -> Void ) -> [ UIViewController ]? {
+	func popToViewController(
+		_ viewController: UIViewController,
+		animated: Bool = true,
+		completion: @escaping () -> Void,
+	) -> [ UIViewController ]? {
 
 		guard topViewController != viewController else {
 			completion()
@@ -90,8 +96,10 @@ public extension UINavigationController {
 	/// - returns: An array of view controllers representing the items that were popped from the stack.
 	/// - note: Completion handler may be called instantly if navigation top controller is root controller.
 	@discardableResult
-	func popToRootViewController( animated: Bool = true,
-	                              completion: @escaping () -> Void ) -> [ UIViewController ]? {
+	func popToRootViewController(
+		animated: Bool = true,
+		completion: @escaping () -> Void,
+	) -> [ UIViewController ]? {
 
 		guard viewControllers.count > 1 else {
 			completion()
@@ -103,7 +111,6 @@ public extension UINavigationController {
 		return controllers
 	}
 
-
 	/// Replaces the view controllers currently managed by
 	/// the navigation controller with the specified items.
 	/// - parameter viewControllers: The view controllers to place in the stack.
@@ -113,15 +120,15 @@ public extension UINavigationController {
 	/// - parameter animated: If `true`, animate the pushing or popping of the top view controller.
 	/// If `false`, replace the view controllers without any animations.
 	/// - parameter completion: Handler that will be called after transition animation is finished.
-	func setViewControllers( _ viewControllers: [ UIViewController ],
-	                         animated: Bool,
-	                         completion: @escaping () -> Void ) {
+	func setViewControllers(
+		_ viewControllers: [ UIViewController ],
+		animated: Bool,
+		completion: @escaping () -> Void,
+	) {
 
 		setViewControllers( viewControllers, animated: animated )
 		setCompletionHandler( completion, animated: animated )
 	}
-
-
 
 	private func setCompletionHandler( _ completion: @escaping () -> Void, animated: Bool ) {
 
@@ -132,7 +139,6 @@ public extension UINavigationController {
 		}
 	}
 }
-
 
 /// Pre iOS7 push/pop animation style
 public extension UINavigationController {
@@ -162,9 +168,9 @@ public extension UINavigationController {
 
 /// Custom segues for retro Push/Pop
 public class RetroPushSegue: UIStoryboardSegue {
-	public override func perform() {
+	override public func perform() {
 
-		guard let navigationController = self.source.navigationController else {
+		guard let navigationController = source.navigationController else {
 			assertionFailure( "Must be called within UINavigationController" )
 			return
 		}
@@ -173,15 +179,14 @@ public class RetroPushSegue: UIStoryboardSegue {
 }
 
 public class RetroPushSegueUnwind: UIStoryboardSegue {
-	public override func perform() {
+	override public func perform() {
 
-		guard let navigationController = self.source.navigationController else {
+		guard let navigationController = source.navigationController else {
 			assertionFailure( "Must be called within UINavigationController" )
 			return
 		}
 		navigationController.popViewControllerRetro()
 	}
 }
-
 
 #endif

@@ -28,14 +28,14 @@ import SwiftUI
 /// and duration of the visual effect.
 @MainActor
 public struct CustomIntensityVisualEffectView {
-	
+
 	/// The visual effect to apply.
 	public let effect: UIVisualEffect
 	/// The intensity of the visual effect.
 	public let intensity: Double
 	/// The duration of the animation.
 	public let duration: TimeInterval
-	
+
 	/// Initializes a `CustomIntensityVisualEffectView` with default parameters.
 	///
 	/// - Parameters:
@@ -46,7 +46,7 @@ public struct CustomIntensityVisualEffectView {
 	public init(
 		effect: UIVisualEffect = UIBlurEffect( style: .dark ),
 		intensity: Double,
-		duration: TimeInterval = 0
+		duration: TimeInterval = 0,
 	) {
 		self.effect = effect
 		self.intensity = intensity
@@ -55,15 +55,15 @@ public struct CustomIntensityVisualEffectView {
 }
 
 extension CustomIntensityVisualEffectView: UIViewRepresentable {
-	
+
 	public func makeCoordinator() -> Coordinator {
 		return Coordinator( effect: effect )
 	}
-	
+
 	public func makeUIView( context: Context ) -> UIView {
 		return context.coordinator.visualEffectsView
 	}
-	
+
 	public func updateUIView( _ uiView: UIView, context: Context ) {
 		context.coordinator.visualEffectsView.setIntensity(intensity, duration: duration)
 	}
@@ -79,16 +79,16 @@ public extension CustomIntensityVisualEffectView {
 
 		init( effect: UIVisualEffect ) {
 
-			/// The visual effects view to present.
-			visualEffectsView = CustomIntensityVisualEffectUIView(
-				effect: effect
+			// The visual effects view to present.
+			self.visualEffectsView = CustomIntensityVisualEffectUIView(
+				effect: effect,
 			)
 		}
 	}
 }
 
 public extension View {
-	
+
 	/// Layers the blurred background behind this view.
 	///
 	/// - Parameters:
@@ -106,20 +106,19 @@ public extension View {
 		style: UIBlurEffect.Style = .dark,
 		intensity: Double = 0.3,
 		duration: TimeInterval = 0,
-		safeAreaEdges: Edge.Set = .all
+		safeAreaEdges: Edge.Set = .all,
 	) -> some View {
-		
-		self
-			.background(
-				CustomIntensityVisualEffectView(
-					effect: UIBlurEffect( style: style ),
-					intensity: intensity,
-					duration: duration
-				)
-				.edgesIgnoringSafeArea( safeAreaEdges )
+
+		background(
+			CustomIntensityVisualEffectView(
+				effect: UIBlurEffect( style: style ),
+				intensity: intensity,
+				duration: duration,
 			)
+				.edgesIgnoringSafeArea( safeAreaEdges ),
+		)
 	}
-	
+
 	/// Applies the blurred background to the whole screen behind this view.
 	///
 	/// - Parameters:
@@ -137,34 +136,34 @@ public extension View {
 		style: UIBlurEffect.Style = .dark,
 		intensity: Double = 0.3,
 		duration: TimeInterval = 0,
-		safeAreaEdges: Edge.Set = .all
+		safeAreaEdges: Edge.Set = .all,
 	) -> some View {
-		
+
 		ZStack {
-		
+
 			CustomIntensityVisualEffectView(
 				effect: UIBlurEffect( style: style ),
 				intensity: intensity,
-				duration: duration
+				duration: duration,
 			)
 			.edgesIgnoringSafeArea( safeAreaEdges )
-			
+
 			self
 		}
 	}
 }
 
 struct CustomIntensityVisualEffectView_Previews: PreviewProvider {
-	
+
 	struct PreviewContainer: View {
-		
+
 		@State private var blurred: Bool = true
-		
+
 		var body: some View {
 			ZStack {
-				
+
 				Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam fringilla turpis id nulla rutrum porta vitae id lectus. Mauris fringilla sem non lectus aliquam tincidunt. Praesent malesuada lectus vel nulla ultrices, non euismod ex cursus. Praesent aliquam at tortor non rhoncus. Ut iaculis tortor ut ex interdum, eu interdum justo mattis. Proin sed quam placerat, tristique dui at, euismod erat. Vestibulum placerat enim nulla, nec fermentum felis condimentum sed. Quisque sed fermentum urna. Nam massa nulla, consequat vitae ipsum eget, iaculis sagittis tellus. Morbi elementum, risus non tristique efficitur, nunc neque sodales metus, in maximus tellus sapien porta quam. Praesent finibus nibh mi, id cursus metus luctus a. Maecenas lobortis, ipsum eget eleifend luctus, nibh urna sollicitudin nibh, a egestas felis nulla sit amet nibh. Fusce accumsan nisl nisl, eget fringilla erat ultricies et. Duis eget justo rutrum, volutpat odio sit amet, bibendum diam. Etiam malesuada sapien at lorem consequat malesuada et quis augue. Sed quis mauris ut tortor posuere scelerisque ac iaculis lorem.")
-				
+
 				Button( "Toggle blur" ) {
 					blurred.toggle()
 				}
@@ -172,12 +171,12 @@ struct CustomIntensityVisualEffectView_Previews: PreviewProvider {
 				.padding( 100 )
 				.blurredBackground(
 					intensity: blurred ? 0.2 : 0,
-					duration: blurred ? 1 : 0
+					duration: blurred ? 1 : 0,
 				)
 			}
 		}
 	}
-	
+
 	static var previews: some View {
 		PreviewContainer()
 	}

@@ -74,7 +74,8 @@ public extension UIScrollView {
 	/// ```
 	convenience init(
 		showIndicators: Bool = true,
-		@UIViewBuilder _ content: () -> [ UIView ] ) {
+		@UIViewBuilder _ content: () -> [ UIView ],
+	) {
 
 		self.init( frame: .zero )
 
@@ -92,7 +93,7 @@ public extension UIScrollView {
 		} else {
 			innerView = UIStackView { builtViews }
 		}
-		
+
 		addSubview( innerView )
 		innerView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -119,7 +120,7 @@ public extension UIScrollView {
 	func constrainContentWidthToFrame( constant: CGFloat = 0 ) -> NSLayoutConstraint {
 		let constraint = contentLayoutGuide.widthAnchor.constraint(
 			equalTo: frameLayoutGuide.widthAnchor,
-			constant: constant
+			constant: constant,
 		)
 		constraint.isActive = true
 		contentInset = UIEdgeInsets( horizontal: -constant / 2, vertical: 0 )

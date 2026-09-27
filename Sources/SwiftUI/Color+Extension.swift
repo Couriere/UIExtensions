@@ -35,7 +35,7 @@ public extension Color {
 			red: Double( intRed ) / 255,
 			green: Double( green ) / 255,
 			blue: Double( blue ) / 255,
-			opacity: opacity
+			opacity: opacity,
 		)
 	}
 
@@ -104,6 +104,7 @@ extension Color {
 		)
 	}
 }
+
 #elseif canImport(AppKit)
 extension Color {
 
@@ -191,6 +192,7 @@ public extension Color {
 		return opacity
 	}
 }
+
 #elseif canImport(AppKit)
 public extension Color {
 
@@ -246,7 +248,6 @@ public extension ShapeStyle where Self == Color {
 	}
 }
 
-
 extension Color {
 
 	/// Calculates the contrast color scheme based
@@ -274,7 +275,7 @@ extension Color {
 	/// - Returns: The contrast color chosen based on the receiver's lightness.
 	public func replaceWithContrastColor(
 		light: Color,
-		dark: Color
+		dark: Color,
 	) -> Color {
 		contrastScheme == .light ? light : dark
 	}

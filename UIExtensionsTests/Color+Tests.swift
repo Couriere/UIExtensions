@@ -24,8 +24,8 @@ import SwiftUI
 import Testing
 import UIExtensions
 
-@Test( "Init with integers" )
-func colorInitsWithIntegers() {
+@Test
+func `Color init with integers`() {
 
 	#expect( Color( 0xFF0000 ) == Color( red: 1, green: 0, blue: 0, opacity: 1 ) )
 	#expect( Color( 0xFF00 ) == Color( red: 0, green: 1, blue: 0, opacity: 1 ))
@@ -36,13 +36,13 @@ func colorInitsWithIntegers() {
 
 	#expect( Color( 0xFF0000, opacity: 0.2 ) == Color( red: 1, green: 0, blue: 0, opacity: 0.2 ))
 
-	#expect( Color( rgba: 0xFF000080 ) == Color( red: 1, green: 0, blue: 0, opacity: 128 / 255 ))
-	#expect( Color( rgba: 0x00FF00FF ) == Color( red: 0, green: 1, blue: 0, opacity: 1 ))
-	#expect( Color( rgba: 0x0000FF00 ) == Color( red: 0, green: 0, blue: 1, opacity: 0 ))
+	#expect( Color( rgba: 0xFF00_0080 ) == Color( red: 1, green: 0, blue: 0, opacity: 128 / 255 ))
+	#expect( Color( rgba: 0x00FF_00FF ) == Color( red: 0, green: 1, blue: 0, opacity: 1 ))
+	#expect( Color( rgba: 0x0000_FF00 ) == Color( red: 0, green: 0, blue: 1, opacity: 0 ))
 }
 
-@Test( "Random colors" )
-func colorRandomColors() {
+@Test
+func `Color random colors`() {
 
 #if canImport(UIKit)
 	#expect( Color( randomWithOpacity: 1 ).opacity == 1 )
@@ -51,17 +51,17 @@ func colorRandomColors() {
 #endif
 
 	let randomColors = (0..<100).reduce(
-		into: Set<Color>()
+		into: Set<Color>(),
 	) { acc, _ in
-		acc.insert( Color.init( randomWithOpacity: 1 ))
+		acc.insert( Color( randomWithOpacity: 1 ))
 	}
 
 	#expect( randomColors.count == 100 )
 }
 
-@Test( "Init from string" )
-func colorInitFromString() {
-	
+@Test
+func `Color init from string`() {
+
 	#expect( Color( hex: "0xFF0000" ) == Color( 0xFF0000 ))
 	#expect( Color( hex: "00FF00" ) == Color( 0x00FF00 ))
 	#expect( Color( hex: "0000FF" ) == Color( 0x0000FF ))
@@ -73,8 +73,8 @@ func colorInitFromString() {
 	#expect( Color( hex: "0000FF0" ) == nil )
 }
 
-@Test( "Convert to hex" )
-func colorConvertToHex() {
+@Test
+func `Color convert to hex`() {
 	#expect( Color( intRed: 255, green: 0, blue: 0 ).hexRGB == "#FF0000" )
 	#expect( Color( intRed: 255, green: 128, blue: 0 ).hexRGB == "#FF8000" )
 
@@ -83,8 +83,8 @@ func colorConvertToHex() {
 	#expect( Color( intRed: 255, green: 0, blue: 255, opacity: 1 ).hexRGBA == "#FF00FFFF" )
 }
 
-@Test( "Contrast colors" )
-func colorContrastColors() {
+@Test
+func `Color contrast colors`() {
 	#expect( Color.cyan.contrastScheme == .dark )
 
 	// Using an explicit dark color instead of .indigo,

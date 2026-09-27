@@ -37,19 +37,19 @@ public extension UIViewController {
 	static func safePresentFromTopViewController(
 		controller: UIViewController,
 		animated: Bool,
-		completion: ( () -> Void )? = nil )
-	{
+		completion: ( () -> Void )? = nil,
+	) {
 		UIApplication.shared.safePresentFromTopViewController(
 			controller: controller,
 			animated: animated,
-			completion: completion
+			completion: completion,
 		)
 	}
 
 	/// Вызывает блок завершения после того, как контроллер на вершине стека контроллеров
 	/// будет готов к показу нового, то есть не будет в процессе появления или скрытия.
 	static func safeTopPresentedViewController(
-		controllerReadyHandler: @escaping ( _ topPresentedViewController: UIViewController? ) -> Void
+		controllerReadyHandler: @escaping ( _ topPresentedViewController: UIViewController? ) -> Void,
 	) {
 		UIApplication.shared.safeTopPresentedViewController( controllerReadyHandler: controllerReadyHandler )
 	}

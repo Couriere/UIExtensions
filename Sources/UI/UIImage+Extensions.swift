@@ -39,7 +39,6 @@ public extension UIImage {
 	}
 }
 
-
 public extension UIImage {
 
 	/// Changes length of bigger side of the image to provided value.
@@ -52,7 +51,7 @@ public extension UIImage {
 			CGSize( width: side * aspectRatio, height: side )
 
 		let format: UIGraphicsImageRendererFormat = .preferred()
-		format.scale = self.scale
+		format.scale = scale
 		return UIGraphicsImageRenderer( size: scaledSize, format: format )
 			.image { context in
 				draw( in: context.format.bounds )
@@ -62,10 +61,10 @@ public extension UIImage {
 	//////
 	/// Apply `color` to all non-transparent pixels in image.
 	//////
-	@available( iOS, deprecated: 13, renamed: "withTintColor"  )
+	@available( iOS, deprecated: 13, renamed: "withTintColor" )
 	@available( tvOS, deprecated: 13, renamed: "withTintColor" )
 	func applyTintColor( _ color: UIColor, renderingMode: UIImage.RenderingMode = .automatic ) -> UIImage {
-		self.withTintColor( color, renderingMode: renderingMode )
+		withTintColor( color, renderingMode: renderingMode )
 	}
 }
 #endif

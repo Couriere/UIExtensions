@@ -53,6 +53,7 @@ public struct CodableUserDefault<Value: Codable> {
 	public init( wrappedValue: Value, _ key: String, storeName: String? ) {
 		self.init( wrappedValue: wrappedValue, key, store: UserDefaults( suiteName: storeName ))
 	}
+
 	public init( wrappedValue: Value, _ key: String, suiteName: String? ) {
 		self.init( wrappedValue: wrappedValue, key, storeName: suiteName )
 	}
@@ -115,6 +116,7 @@ extension CodableUserDefault where Value : ExpressibleByNilLiteral {
 	public init(_ key: String, store: UserDefaults? = nil) where Value: Codable {
 		self.init( wrappedValue: nil, key, store: store )
 	}
+
 	public init(_ key: String, storeName: String? ) where Value: Codable {
 		self.init( wrappedValue: nil, key, storeName: storeName )
 	}
@@ -123,28 +125,88 @@ extension CodableUserDefault where Value : ExpressibleByNilLiteral {
 private let _userDefaults_encoder = JSONEncoder()
 private let _userDefaults_decoder = JSONDecoder()
 
-
 private protocol __PropertyList {}
-extension Bool: __PropertyList { }
-extension Date: __PropertyList { }
-extension String: __PropertyList { }
-extension URL: __PropertyList { }
 
-extension Int: __PropertyList { }
-extension Int8: __PropertyList { }
-extension Int16: __PropertyList { }
-extension Int32: __PropertyList { }
-extension Int64: __PropertyList { }
-extension UInt: __PropertyList { }
-extension UInt8: __PropertyList { }
-extension UInt16: __PropertyList { }
-extension UInt32: __PropertyList { }
-extension UInt64: __PropertyList { }
-extension Float: __PropertyList { }
-extension Double: __PropertyList { }
+// MARK: - Bool + __PropertyList
 
-extension CGPoint: __PropertyList { }
-extension CGVector: __PropertyList { }
-extension CGSize: __PropertyList { }
-extension CGRect: __PropertyList { }
-extension CGAffineTransform: __PropertyList { }
+extension Bool: __PropertyList {}
+
+// MARK: - Date + __PropertyList
+
+extension Date: __PropertyList {}
+
+// MARK: - String + __PropertyList
+
+extension String: __PropertyList {}
+
+// MARK: - URL + __PropertyList
+
+extension URL: __PropertyList {}
+
+// MARK: - Int + __PropertyList
+
+extension Int: __PropertyList {}
+
+// MARK: - Int8 + __PropertyList
+
+extension Int8: __PropertyList {}
+
+// MARK: - Int16 + __PropertyList
+
+extension Int16: __PropertyList {}
+
+// MARK: - Int32 + __PropertyList
+
+extension Int32: __PropertyList {}
+
+// MARK: - Int64 + __PropertyList
+
+extension Int64: __PropertyList {}
+
+// MARK: - UInt + __PropertyList
+
+extension UInt: __PropertyList {}
+
+// MARK: - UInt8 + __PropertyList
+
+extension UInt8: __PropertyList {}
+
+// MARK: - UInt16 + __PropertyList
+
+extension UInt16: __PropertyList {}
+
+// MARK: - UInt32 + __PropertyList
+
+extension UInt32: __PropertyList {}
+
+// MARK: - UInt64 + __PropertyList
+
+extension UInt64: __PropertyList {}
+
+// MARK: - Float + __PropertyList
+
+extension Float: __PropertyList {}
+
+// MARK: - Double + __PropertyList
+
+extension Double: __PropertyList {}
+
+// MARK: - CGPoint + __PropertyList
+
+extension CGPoint: __PropertyList {}
+
+// MARK: - CGVector + __PropertyList
+
+extension CGVector: __PropertyList {}
+
+// MARK: - CGSize + __PropertyList
+
+extension CGSize: __PropertyList {}
+
+// MARK: - CGRect + __PropertyList
+
+extension CGRect: __PropertyList {}
+
+// MARK: - CGAffineTransform + __PropertyList
+
+extension CGAffineTransform: __PropertyList {}

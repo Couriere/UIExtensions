@@ -22,6 +22,8 @@
 
 import Foundation
 
+// MARK: - Calendar + Then
+
 extension Calendar: Then {}
 
 public enum Weekday: Int {
@@ -59,12 +61,11 @@ public extension Date {
 		return calendar.date( byAdding: .year, value: years, to: self )!
 	}
 
-
 	/// Returns same date with time set to a start of specified hour.
 	func startOfHour( _ hour: Int, timeZone: TimeZone? = nil ) -> Date {
 
 		var calendar = Calendar.current
-		if let timeZone = timeZone { calendar.timeZone = timeZone }
+		if let timeZone { calendar.timeZone = timeZone }
 
 		let components: Set<Calendar.Component> = [ .year, .month, .day, .hour, .minute, .second, .weekday ]
 		var dateComponents = calendar.dateComponents( components, from: self )
@@ -81,7 +82,7 @@ public extension Date {
 	func startOfDay( _ timeZone: TimeZone? = nil ) -> Date {
 
 		var calendar = Calendar.current
-		if let timeZone = timeZone { calendar.timeZone = timeZone }
+		if let timeZone { calendar.timeZone = timeZone }
 
 		return calendar.startOfDay( for: self )
 	}
@@ -91,7 +92,7 @@ public extension Date {
 	func startOfMonth( _ timeZone: TimeZone? = nil ) -> Date {
 
 		var calendar = Calendar.current
-		if let timeZone = timeZone { calendar.timeZone = timeZone }
+		if let timeZone { calendar.timeZone = timeZone }
 
 		return calendar
 			.dateInterval( of: .month, for: self )?
@@ -103,7 +104,7 @@ public extension Date {
 	func endOfMonth( _ timeZone: TimeZone? = nil ) -> Date {
 
 		var calendar = Calendar.current
-		if let timeZone = timeZone { calendar.timeZone = timeZone }
+		if let timeZone { calendar.timeZone = timeZone }
 
 		return calendar
 			.dateInterval( of: .month, for: self )?
@@ -116,7 +117,7 @@ public extension Date {
 	func startOfYear( _ timeZone: TimeZone? = nil ) -> Date {
 
 		var calendar = Calendar.current
-		if let timeZone = timeZone { calendar.timeZone = timeZone }
+		if let timeZone { calendar.timeZone = timeZone }
 
 		return calendar
 			.dateInterval( of: .year, for: self )?
@@ -128,14 +129,13 @@ public extension Date {
 	func endOfYear( _ timeZone: TimeZone? = nil ) -> Date {
 
 		var calendar = Calendar.current
-		if let timeZone = timeZone { calendar.timeZone = timeZone }
+		if let timeZone { calendar.timeZone = timeZone }
 
 		return calendar
 			.dateInterval( of: .year, for: self )?
 			.end
 			.addingTimeInterval( -1 ) ?? self
 	}
-
 
 	/// Returns weekday of the date.
 	var weekday: Weekday {
@@ -187,7 +187,6 @@ public extension Date {
 		return Calendar.current.isDateInWeekend( self )
 	}
 
-
 	/// Compares the given date and self down to the given component,
 	/// reporting them equal if they are the same in the given component and all larger components.
 	///
@@ -198,7 +197,6 @@ public extension Date {
 		return Calendar.current.isDate( self, equalTo: date, toGranularity: component )
 	}
 }
-
 
 /// Convenience time properties.
 /// Usage: Date() + 2.days + 1.hour

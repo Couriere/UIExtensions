@@ -21,8 +21,8 @@
 // SOFTWARE.
 
 #if canImport(UIKit) && !os(watchOS)
-import XCTest
 import UIExtensions
+import XCTest
 
 class GlobalTableViewCell: UITableViewCell {}
 class GlobalTableHeaderFooterView: UITableViewHeaderFooterView {}
@@ -35,6 +35,7 @@ enum Enum {
 	class CollectionViewCell: UICollectionViewCell {}
 	class CollectionReusable: UICollectionViewCell {}
 }
+
 @MainActor
 final class CellIdentifiersTests: XCTestCase {
 
@@ -42,7 +43,6 @@ final class CellIdentifiersTests: XCTestCase {
 	class InnerTableHeaderFooterView: UITableViewHeaderFooterView {}
 	class InnerCollectionViewCell: UICollectionViewCell { var color: UIColor? = nil }
 	class InnerCollectionReusable: UICollectionViewCell { var s = "" }
-
 
 	func testIdentifiersAreCorrect() {
 

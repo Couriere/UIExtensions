@@ -37,7 +37,7 @@ extension View {
 	public func onReappear( _ action: @escaping () -> Void ) -> some View {
 
 		modifier(
-			_OnReappearModifier( action: action )
+			_OnReappearModifier( action: action ),
 		)
 	}
 
@@ -65,8 +65,8 @@ extension View {
 		modifier(
 			_OnReappearAsyncModifier(
 				priority: priority,
-				action: action
-			)
+				action: action,
+			),
 		)
 	}
 }

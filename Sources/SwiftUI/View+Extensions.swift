@@ -37,13 +37,13 @@ extension View {
 	@inlinable
 	public func frame(
 		_ size: CGSize,
-		alignment: Alignment = .center
+		alignment: Alignment = .center,
 	) -> some View {
 
-		self.frame(
+		frame(
 			width: size.width,
 			height: size.height,
-			alignment: alignment
+			alignment: alignment,
 		)
 	}
 
@@ -56,14 +56,13 @@ extension View {
 	@inlinable
 	public func frame(
 		_ sideLength: Double,
-		alignment: Alignment = .center
+		alignment: Alignment = .center,
 	) -> some View {
-		self
-			.frame(
-				width: sideLength,
-				height: sideLength,
-				alignment: alignment
-			)
+		frame(
+			width: sideLength,
+			height: sideLength,
+			alignment: alignment,
+		)
 	}
 
 	/// Sets the view's maximum width and/or height
@@ -151,7 +150,7 @@ extension View {
 	public func fixedSize( _ axes: Axis.Set ) -> some View {
 		fixedSize(
 			horizontal: axes.contains( .horizontal ),
-			vertical: axes.contains( .vertical )
+			vertical: axes.contains( .vertical ),
 		)
 	}
 
@@ -164,13 +163,13 @@ extension View {
 	@inlinable
 	public func padding(
 		horizontal: Double,
-		vertical: Double
+		vertical: Double,
 	) -> some View {
 		padding(
 			.init(
 				horizontal: horizontal,
-				vertical: vertical
-			)
+				vertical: vertical,
+			),
 		)
 	}
 }
@@ -186,7 +185,7 @@ public extension View {
 	@ViewBuilder
 	func hidden( _ isHidden: Bool ) -> some View {
 		if isHidden {
-			self.hidden()
+			hidden()
 		} else {
 			self
 		}
@@ -212,14 +211,13 @@ public extension View {
 	func task<T>(
 		unwrapping value: T?,
 		priority: TaskPriority = .userInitiated,
-		_ action: @escaping @isolated(any) ( T ) async -> Void
+		_ action: @escaping @isolated(any) ( T ) async -> Void,
 	) -> some View where T : Equatable & Sendable {
 
-		self
-			.task( id: value, priority: priority ) {
-				guard let value else { return }
-				await action( value )
-			}
+		task( id: value, priority: priority ) {
+			guard let value else { return }
+			await action( value )
+		}
 	}
 
 	/// Attaches an asynchronous task to the view that runs only when the given
@@ -235,13 +233,12 @@ public extension View {
 	func task(
 		if condition: Bool,
 		priority: TaskPriority = .userInitiated,
-		_ action: @escaping @isolated(any) () async -> Void
+		_ action: @escaping @isolated(any) () async -> Void,
 	) -> some View {
-		self
-			.task(id: condition, priority: priority) {
-				guard condition else { return }
-				await action()
-			}
+		task(id: condition, priority: priority) {
+			guard condition else { return }
+			await action()
+		}
 	}
 
 	/// Attaches an asynchronous task to the view, triggered when the specified
@@ -256,12 +253,11 @@ public extension View {
 	func task<T>(
 		id value: T,
 		priority: TaskPriority = .userInitiated,
-		_ action: @escaping @isolated(any) ( T ) async -> Void
+		_ action: @escaping @isolated(any) ( T ) async -> Void,
 	) -> some View where T : Equatable & Sendable {
-		self
-			.task( id: value, priority: priority ) {
-				await action( value )
-			}
+		task( id: value, priority: priority ) {
+			await action( value )
+		}
 	}
 }
 
@@ -319,10 +315,10 @@ public extension View {
 	/// - parameter modifier: The modifier to apply to the view
 	///  if `unwrapping` is non-nil.
 	@ViewBuilder
-	@inlinable nonisolated
-	func modifier<Input>(
+	@inlinable
+	nonisolated func modifier<Input>(
 		unwrapping: Input?,
-		modifier: @escaping ( Input ) -> some ViewModifier
+		modifier: @escaping ( Input ) -> some ViewModifier,
 	) -> some View {
 
 		if let unwrapping {
@@ -460,7 +456,7 @@ extension View {
 		onChange(
 			of: _Trigger( first: first, second: second ),
 			initial: initial,
-			action
+			action,
 		)
 	}
 
@@ -494,7 +490,7 @@ extension View {
 		task(
 			id: _Trigger( first: first, second: second ),
 			priority: priority,
-			action
+			action,
 		)
 	}
 

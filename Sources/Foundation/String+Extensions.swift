@@ -40,7 +40,7 @@ extension String {
 	/// - returns: A new string in which the characters in range of the receiver are replaced by replacement.
 	public func replacingCharacters<T: StringProtocol>(
 		in range: NSRange,
-		with replacement: T
+		with replacement: T,
 	) -> String {
 		guard let range = Range( range, in: self ) else {
 			fatalError( "range out of bounds" )
@@ -77,15 +77,14 @@ extension String {
 
 	/// Replaces all spaces in string to non-breaking spaces.
 	public var nonBreakingSpaces: String {
-		self.replacingOccurrences( of: " ", with: "\u{a0}" )
+		replacingOccurrences( of: " ", with: "\u{a0}" )
 	}
 
 	/// Returns a new string made by removing from both ends of the String
 	/// whitespace and newline characters.
 	public var trimmed: String {
-		return self.trimmingCharacters( in: CharacterSet.newlines.union(CharacterSet.whitespaces) )
+		return trimmingCharacters( in: CharacterSet.newlines.union(CharacterSet.whitespaces) )
 	}
-
 
 	/// Safely accesses a character by index, returning nil if out of bounds.
 	///
@@ -106,21 +105,21 @@ extension String {
 		return self[ characterIndex ]
 	}
 
-
 	/// Returns `true` if receiver holds correct email address.
 	public var isValidEmail: Bool {
 		let emailRegex = "[A-Z0-9a-z._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,64}"
 		return NSPredicate( format: "SELF MATCHES %@", emailRegex ).evaluate( with: self )
 	}
 
-
 	/// Returns string with stripped HTML tags.
 	public func strippingHTMLTags() -> String {
 		let range = NSRange( startIndex ..< endIndex, in: self )
-		return String.regex.stringByReplacingMatches( in: self,
-		                                              options: [],
-		                                              range: range,
-		                                              withTemplate: "" )
+		return String.regex.stringByReplacingMatches(
+			in: self,
+			options: [],
+			range: range,
+			withTemplate: "",
+		)
 	}
 
 	/// Initializes a String from a StaticString.
@@ -133,7 +132,7 @@ extension String {
 
 	private static let regex = try! NSRegularExpression(
 		pattern: "<[^>]*>",
-		options: []
+		options: [],
 	)
 }
 
@@ -163,7 +162,7 @@ extension [ String? ] {
 /// - Returns: Joined string with non-nil elements separated by separator.
 func joinedStrings(
 	_ strings: [ String? ],
-	separator: String = ""
+	separator: String = "",
 ) -> String {
 	strings
 		.compactMap()
@@ -177,7 +176,7 @@ func joinedStrings(
 /// - Returns: Joined string with non-nil elements separated by separator.
 func joinedStrings(
 	_ strings: String?...,
-	separator: String = ""
+	separator: String = "",
 ) -> String {
 	joinedStrings( strings, separator: separator )
 }
@@ -187,8 +186,7 @@ extension Character {
 	public var string: String { String( self ) }
 }
 
-
-/// Calculating Hashes.
+// Calculating Hashes.
 import CommonCrypto
 #if canImport(CryptoKit)
 import CryptoKit
@@ -229,7 +227,7 @@ extension String {
 
 	/// Converts a camelCase string to snake_case.
 	public var snakeCaseFromCamelCase: String {
-		let string = self.trimmingCharacters(in: String.underscoreCharacterSet)
+		let string = trimmingCharacters(in: String.underscoreCharacterSet)
 		guard !string.isEmpty else { return string }
 
 		let split = string.split(separator: "_")
@@ -245,12 +243,11 @@ extension String {
 					in: string,
 					options: [],
 					range: NSRange(location: 0, length: string.count),
-					withTemplate: "$1_$2"
+					withTemplate: "$1_$2",
 				)
 			}
 			.lowercased()
 	}
-
 
 	private static let underscoreCharacterSet = CharacterSet(arrayLiteral: "_")
 	private static let camelCasePatterns: [NSRegularExpression] = [
@@ -261,13 +258,11 @@ extension String {
 	.map { try! NSRegularExpression(pattern: $0, options: []) }
 }
 
-
-
-/**
+/* 
  Russian language only methods.
  */
 
-/**
+/* 
  Возвращает корректную форму существительного для числительного
 
  - parameter wordForms: Возможные формы слова.
@@ -284,7 +279,7 @@ public func pluralString( forNumber number: Int, fromWordForms: ( String, String
 	let correctForm: String
 
 	let absNumber = abs( number )
-	if ( absNumber % 100 ) > 10 && ( absNumber % 100 ) < 20 {
+	if ( absNumber % 100 ) > 10, ( absNumber % 100 ) < 20 {
 		correctForm = fromWordForms.2
 	}
 	else {

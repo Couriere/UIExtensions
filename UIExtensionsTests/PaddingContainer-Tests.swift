@@ -25,6 +25,7 @@ import UIExtensions
 
 #if canImport(UIKit) && !os(watchOS)
 import UIKit
+
 @MainActor
 @Suite("PaddingContainerTests")
 struct PaddingContainerTests {
@@ -42,28 +43,28 @@ struct PaddingContainerTests {
 	}
 
 	@Test
-	func testDefaultParameters() {
+	func `default parameters`() {
 		let containedView = UIView()
 		let container = containedView.padding()
 		checkInsets( in: container, insets: UIEdgeInsets( constantInset: 16 ))
 	}
 
 	@Test
-	func testDefaultAxisParameters() {
+	func `default axis parameters`() {
 		let containedView = UIView()
 		let container = containedView.padding( 20 )
 		checkInsets( in: container, insets: UIEdgeInsets( constantInset: 20 ))
 	}
 
 	@Test
-	func testDefaultLengthParameters() {
+	func `default length parameters`() {
 		let containedView = UIView()
 		let container = containedView.padding( .horizontal )
 		checkInsets( in: container, insets: UIEdgeInsets( horizontal: 16 ))
 	}
 
 	@Test
-	func testDoublePadding() {
+	func `double padding`() {
 		let containedView = UIView()
 		let container = containedView.padding( .leading, 50 )
 		checkInsets( in: container, insets: UIEdgeInsets( left: 50 ))
@@ -73,7 +74,7 @@ struct PaddingContainerTests {
 	}
 
 	@Test
-	func testAxisPadding() {
+	func `axis padding`() {
 		let containedView = UIView()
 		let container = containedView.padding( .horizontal, 30 )
 		checkInsets( in: container, insets: UIEdgeInsets( horizontal: 30 ))
@@ -83,7 +84,7 @@ struct PaddingContainerTests {
 	}
 
 	@Test
-	func testCornersPadding() {
+	func `corners padding`() {
 		let containedView = UIView()
 		let container = containedView.padding( [ .top, .leading ], 21 )
 		checkInsets( in: container, insets: UIEdgeInsets( top: 21, left: 21 ))
@@ -96,7 +97,7 @@ struct PaddingContainerTests {
 	}
 
 	@Test
-	func testMemoryLeak() {
+	func `memory leak`() {
 		var containedView: UIView? = UIView()
 		weak let weakContainedView = containedView
 		var container: UIView? = containedView?.padding( 20 )

@@ -50,14 +50,18 @@ open class ContainerView: UIView {
 		public static let flexibleVertical: Options = [ .flexibleTop, .flexibleBottom ]
 
 		/// All constraints are flexible.
-		public static let flexibleAll: Options = [ .flexibleLeft, .flexibleRight,
-										  .flexibleTop, .flexibleBottom ]
+		public static let flexibleAll: Options = [
+			.flexibleLeft,
+			.flexibleRight,
+			.flexibleTop,
+			.flexibleBottom,
+		]
 	}
 
 	public init(
 		insets: UIEdgeInsets = .zero,
 		options: Options = [],
-		content: () -> UIView
+		content: () -> UIView,
 	) {
 		let containedView = content()
 		super.init( frame: containedView.frame.inset( by: insets.inverted ) )
@@ -67,34 +71,34 @@ open class ContainerView: UIView {
 
 		[
 			containedView.leftAnchor.constraint(
-				to: self.leftAnchor,
+				to: leftAnchor,
 				greaterRelation: options.contains( .flexibleLeft ),
-				constant: insets.left
+				constant: insets.left,
 			),
-			self.rightAnchor.constraint(
+			rightAnchor.constraint(
 				to: containedView.rightAnchor,
 				greaterRelation: options.contains( .flexibleRight ),
-				constant: insets.right
+				constant: insets.right,
 			),
 			containedView.topAnchor.constraint(
-				to: self.topAnchor,
+				to: topAnchor,
 				greaterRelation: options.contains( .flexibleTop ),
-				constant: insets.top
+				constant: insets.top,
 			),
-			self.bottomAnchor.constraint(
+			bottomAnchor.constraint(
 				to: containedView.bottomAnchor,
 				greaterRelation: options.contains( .flexibleBottom ),
-				constant: insets.bottom
+				constant: insets.bottom,
 			),
 		]
 			.activate()
 
 		// When both `.flexibleLeft`/`.flexibleRight` or both `.flexibleTop`/`.flexibleBottom`,
 		// options are selected, we have to add `centerX` or `centerY` constraint respectively.
-		if options.contains( .flexibleLeft ) && options.contains( .flexibleRight ) {
+		if options.contains( .flexibleLeft ), options.contains( .flexibleRight ) {
 			containedView.centerXAnchor.constraint( equalTo: centerXAnchor ).isActive = true
 		}
-		if options.contains( .flexibleTop ) && options.contains( .flexibleBottom ) {
+		if options.contains( .flexibleTop ), options.contains( .flexibleBottom ) {
 			containedView.centerYAnchor.constraint( equalTo: centerYAnchor ).isActive = true
 		}
 	}
@@ -102,26 +106,30 @@ open class ContainerView: UIView {
 	public convenience init(
 		containedView: UIView,
 		insets: UIEdgeInsets = .zero,
-		options: Options = []
+		options: Options = [],
 	) {
 		self.init(
 			insets: insets,
 			options: options,
-			content: { containedView }
+			content: { containedView },
 		)
 	}
 
+	@available(*, unavailable)
 	public required init?(coder _: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 }
 
-
 private extension NSLayoutAnchor {
 
 	@discardableResult
-	@objc func constraint( to anchor: NSLayoutAnchor<AnchorType>,
-	                       greaterRelation: Bool, constant: CGFloat ) -> NSLayoutConstraint {
+	@objc
+	func constraint(
+		to anchor: NSLayoutAnchor<AnchorType>,
+		greaterRelation: Bool,
+		constant: CGFloat,
+	) -> NSLayoutConstraint {
 
 		if greaterRelation {
 			return constraint( greaterThanOrEqualTo: anchor, constant: constant )

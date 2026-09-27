@@ -79,7 +79,6 @@ class NumbersExtensionsTests: XCTestCase {
 		XCTAssertEqual( t4.formatted, "00:00:06" )
 	}
 
-
 	func testPluralWordForms() {
 
 		let forms = ( "яйцо", "яйца", "яиц" )

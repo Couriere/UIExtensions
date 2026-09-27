@@ -55,18 +55,17 @@ public extension View {
 		of value: V,
 		initial: Bool = false,
 		priority: TaskPriority = .userInitiated,
-		_ action: @escaping (_ oldValue: V, _ newValue: V) async -> Void
+		_ action: @escaping (_ oldValue: V, _ newValue: V) async -> Void,
 	) -> some View where V : Equatable, V: Sendable {
 
-		return self
-			.modifier(
-				OnChangeAsyncModifier(
-					value: value,
-					initial: initial,
-					priority: priority,
-					action: action
-				)
-			)
+		return modifier(
+			OnChangeAsyncModifier(
+				value: value,
+				initial: initial,
+				priority: priority,
+				action: action,
+			),
+		)
 	}
 
 	/// Adds a modifier for this view that fires an asynchronous action when a specific
@@ -98,18 +97,17 @@ public extension View {
 		of value: V,
 		initial: Bool = false,
 		priority: TaskPriority = .userInitiated,
-		_ action: @escaping () async -> Void
+		_ action: @escaping () async -> Void,
 	) -> some View where V : Equatable, V: Sendable {
 
-		return self
-			.modifier(
-				OnChangeAsyncModifier(
-					value: value,
-					initial: initial,
-					priority: priority,
-					action: { _, _ in await action() }
-				)
-			)
+		return modifier(
+			OnChangeAsyncModifier(
+				value: value,
+				initial: initial,
+				priority: priority,
+				action: { _, _ in await action() },
+			),
+		)
 	}
 }
 
@@ -150,18 +148,17 @@ public extension View {
 		of value: V,
 		initial: Bool = false,
 		priority: TaskPriority = .userInitiated,
-		perform action: @escaping  (_ newValue: V) async -> Void
+		perform action: @escaping (_ newValue: V) async -> Void,
 	) -> some View where V : Equatable, V: Sendable {
 
-		return self
-			.modifier(
-				OnChangeAsyncModifier(
-					value: value,
-					initial: initial,
-					priority: priority,
-					action: { _, newValue in await action( newValue ) }
-				)
-			)
+		return modifier(
+			OnChangeAsyncModifier(
+				value: value,
+				initial: initial,
+				priority: priority,
+				action: { _, newValue in await action( newValue ) },
+			),
+		)
 	}
 }
 

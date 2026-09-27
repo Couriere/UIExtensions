@@ -33,7 +33,7 @@ public extension NSLayoutConstraint {
 	/// Activates and returns self.
 	@discardableResult
 	func activate() -> Self {
-		self.isActive = true
+		isActive = true
 		return self
 	}
 
@@ -42,7 +42,7 @@ public extension NSLayoutConstraint {
 	func setPriority( _ priority: XTLayoutPriority ) -> Self {
 		guard self.priority != priority else { return self }
 
-		if self.isActive,
+		if isActive,
 		   ( self.priority == .required ) != ( priority == .required ) {
 			isActive = false
 			self.priority = priority
@@ -61,15 +61,14 @@ public extension Sequence where Element == NSLayoutConstraint {
 
 	@discardableResult
 	func activate() -> Self {
-		self.perform { $0.isActive = true }
+		perform { $0.isActive = true }
 	}
 
 	@discardableResult
 	func setPriority( _ priority: XTLayoutPriority ) -> Self {
-		self.perform { $0.setPriority( priority ) }
+		perform { $0.setPriority( priority ) }
 	}
 }
-
 
 public extension Int {
 
@@ -81,4 +80,3 @@ public extension Int {
 }
 
 #endif // !os(watchOS)
-

@@ -68,19 +68,18 @@ import Foundation
 public func rubberBandEffect(
 	value: Double,
 	minValue: Double,
-	bounce: Double
+	bounce: Double,
 ) -> Double {
 
 	guard value < minValue else { return value }
 
 	let overscroll = minValue - value
 	let rubberBandedValue = (
-		1.0 - ( 1.0 / (( overscroll * 0.55 / bounce ) + 1.0 ))
+		1.0 - ( 1.0 / (( overscroll * 0.55 / bounce ) + 1.0 )),
 	) * bounce
 
 	return minValue - rubberBandedValue
 }
-
 
 /// Computes the rubber band effect for animating a value towards a
 /// maximum value with a bounce effect.
@@ -128,16 +127,15 @@ public func rubberBandEffect(
 public func rubberBandEffect(
 	value: Double,
 	maxValue: Double,
-	bounce: Double
+	bounce: Double,
 ) -> Double {
 
 	guard value > maxValue else { return value }
 
 	let overscroll = value - maxValue
 	let rubberBandedValue = (
-		1.0 - ( 1.0 / (( overscroll * 0.55 / bounce ) + 1.0 ))
+		1.0 - ( 1.0 / (( overscroll * 0.55 / bounce ) + 1.0 )),
 	) * bounce
 
 	return maxValue + rubberBandedValue
 }
-

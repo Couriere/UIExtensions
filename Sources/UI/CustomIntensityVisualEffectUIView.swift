@@ -27,16 +27,16 @@ import SwiftUI
 /// to control the intensity of the visual effect and animate its
 /// intensity changes.
 public final class CustomIntensityVisualEffectUIView: UIVisualEffectView {
-	
+
 	private var animator: UIViewPropertyAnimator!
 	private var displayLink: CADisplayLink?
-	
+
 	/// The current intensity of the visual effect.
 	private var intensityTarget: Double = 0
 	/// The value to change `fractionComplete` value
 	/// in each animation tick.
 	private var tickDelta: Double = 0
-	
+
 	/// Initializes a `CustomIntensityVisualEffectUIView` with
 	/// a specified effect.
 	///
@@ -45,13 +45,13 @@ public final class CustomIntensityVisualEffectUIView: UIVisualEffectView {
 	///
 	/// The view is initialized with zero intensity.
 	/// Application needs to call ``setIntensity(_:duration:)`` to see changes.
-	public override init(
-		effect: UIVisualEffect? = UIBlurEffect( style: .dark )
+	override public init(
+		effect: UIVisualEffect? = UIBlurEffect( style: .dark ),
 	) {
 		super.init( effect: effect )
 		setup()
 	}
-	
+
 	/// Initializes a `CustomIntensityVisualEffectUIView` with
 	/// a specified effect and intensity.
 	///
@@ -63,17 +63,19 @@ public final class CustomIntensityVisualEffectUIView: UIVisualEffectView {
 	/// The specified intensity is set immediately without animation.
 	public convenience init(
 		effect: UIVisualEffect? = UIBlurEffect( style: .dark ),
-		intensity: Double
+		intensity: Double,
 	) {
 		self.init( effect: effect )
 		setIntensity( intensity, duration: 0 )
 	}
+
+	@available(*, unavailable)
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	
+
 	/// Stops the animation when the view removed from its superview.
-	public override func didMoveToSuperview() {
+	override public func didMoveToSuperview() {
 		if superview == nil {
 			displayLink?.invalidate()
 			animator.stopAnimation( true )
@@ -82,7 +84,7 @@ public final class CustomIntensityVisualEffectUIView: UIVisualEffectView {
 }
 
 public extension CustomIntensityVisualEffectUIView {
-	
+
 	/// Sets the intensity of the visual effect with an optional duration.
 	///
 	/// - Parameters:
@@ -94,55 +96,56 @@ public extension CustomIntensityVisualEffectUIView {
 	/// instantaneously without animation.
 	func setIntensity(
 		_ intensity: Double,
-		duration: TimeInterval = 0
+		duration: TimeInterval = 0,
 	) {
 		guard intensity != intensityTarget else { return }
-		
+
 		displayLink?.invalidate()
-		
+
 		intensityTarget = intensity
-		
+
 		guard duration != 0 else {
 			animator.fractionComplete = intensity
 			return
 		}
-		
+
 		tickDelta = ( intensity - animator.fractionComplete ) /
 		( Double( UIScreen.main.maximumFramesPerSecond ) * duration )
-		
+
 		// Using a display link to animate `animator.fractionComplete`
 		displayLink = CADisplayLink(
 			target: self,
-			selector: #selector( displayLinkTick )
+			selector: #selector( displayLinkTick ),
 		)
 		displayLink?.add( to: .main, forMode: .common )
 	}
 }
 
 private extension CustomIntensityVisualEffectUIView {
-	
+
 	/// Sets up the view's initial properties.
 	func setup() {
 		translatesAutoresizingMaskIntoConstraints = false
-		
+
 		animator = UIViewPropertyAnimator(
 			duration: 1,
-			curve: .linear
+			curve: .linear,
 		) { [unowned self, effect] in
 			self.effect = effect
 		}
-		self.effect = nil
+		effect = nil
 		// Fixes background bug
 		animator.pausesOnCompletion = true
 	}
-	
+
 	/// The selector method called by the display link to update the animation progress.
-	@objc func displayLinkTick() {
+	@objc
+	func displayLinkTick() {
 		animator.fractionComplete += tickDelta
 		guard abs(animator.fractionComplete - intensityTarget) < tickDelta else {
 			return
 		}
-		
+
 		displayLink?.invalidate()
 		animator.fractionComplete = intensityTarget
 	}

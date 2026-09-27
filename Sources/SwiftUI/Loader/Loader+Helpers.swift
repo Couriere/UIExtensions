@@ -32,8 +32,10 @@ struct LoaderOnChangeHelperModifier<V: Equatable & Sendable> {
 	@State private var task: Task<Void, Never>?
 }
 
+// MARK: ViewModifier
+
 extension LoaderOnChangeHelperModifier: ViewModifier {
-	
+
 	func body( content: Content ) -> some View {
 
 		content

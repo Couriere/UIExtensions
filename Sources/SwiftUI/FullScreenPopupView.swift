@@ -45,16 +45,18 @@ public extension View {
 		onDismiss: (() -> Void)? = nil,
 		transitionStyle: UIModalTransitionStyle,
 		presentationStyle: UIModalPresentationStyle = .overFullScreen,
-		@ViewBuilder content: @escaping ( Item ) -> Content
+		@ViewBuilder content: @escaping ( Item ) -> Content,
 	) -> some View {
 
-		FullScreenView( isPresented: .constant( true ),
-						item: item,
-						onDismiss: onDismiss,
-						content: content,
-						transitionStyle: transitionStyle,
-						presentationStyle: presentationStyle,
-						parentContent: self )
+		FullScreenView(
+			isPresented: .constant( true ),
+			item: item,
+			onDismiss: onDismiss,
+			content: content,
+			transitionStyle: transitionStyle,
+			presentationStyle: presentationStyle,
+			parentContent: self,
+		)
 	}
 
 	/// Presents a modal view that covers as much of the screen as
@@ -72,16 +74,18 @@ public extension View {
 		onDismiss: (() -> Void)? = nil,
 		transitionStyle: UIModalTransitionStyle = .crossDissolve,
 		presentationStyle: UIModalPresentationStyle = .overFullScreen,
-		@ViewBuilder content: @escaping () -> Content
+		@ViewBuilder content: @escaping () -> Content,
 	) -> some View {
 
-		FullScreenView( isPresented: isPresented,
-						item: .constant( __DummyIdentifiable() ),
-						onDismiss: onDismiss,
-						content: { _ in content() },
-						transitionStyle: transitionStyle,
-						presentationStyle: presentationStyle,
-						parentContent: self )
+		FullScreenView(
+			isPresented: isPresented,
+			item: .constant( __DummyIdentifiable() ),
+			onDismiss: onDismiss,
+			content: { _ in content() },
+			transitionStyle: transitionStyle,
+			presentationStyle: presentationStyle,
+			parentContent: self,
+		)
 	}
 }
 
@@ -124,17 +128,20 @@ private extension FullScreenView {
 			self.onDismiss = onDismiss
 			super.init( rootView: rootView )
 		}
+
 		override func viewDidLoad() {
 			super.viewDidLoad()
 			presentationController?.delegate = self
 		}
-		@MainActor required dynamic init?(coder aDecoder: NSCoder) {
+
+		@available(*, unavailable)
+		@MainActor
+		dynamic required init?(coder aDecoder: NSCoder) {
 			fatalError("init(coder:) has not been implemented")
 		}
 
-
 		func presentationControllerDidDismiss(
-			_ presentationController: UIPresentationController
+			_ presentationController: UIPresentationController,
 		) {
 			onDismiss?()
 		}
@@ -153,7 +160,7 @@ private extension FullScreenView {
 		case ( true, .some( let parameter ), nil ):
 			let overlay = WrappedHostingController(
 				rootView: content( parameter ),
-				onDismiss: userDismissHandler
+				onDismiss: userDismissHandler,
 			)
 			overlay.modalTransitionStyle = transitionStyle
 			overlay.modalPresentationStyle = presentationStyle
@@ -164,8 +171,10 @@ private extension FullScreenView {
 
 		case let ( true, .some( parameter ), .some ):
 			overlay?.dismiss( animated: true ) {
-				let overlay = WrappedHostingController( rootView: content( parameter ),
-														onDismiss: userDismissHandler )
+				let overlay = WrappedHostingController(
+					rootView: content( parameter ),
+					onDismiss: userDismissHandler,
+				)
 				overlay.modalTransitionStyle = transitionStyle
 				overlay.modalPresentationStyle = presentationStyle
 				overlay.view.backgroundColor = .clear
@@ -218,9 +227,8 @@ private struct _UIKitIntrospectionViewController: UIViewControllerRepresentable 
 
 	func updateUIViewController(
 		_ uiViewController: UIViewController,
-		context: Context
-	) {
-	}
+		context: Context,
+	) {}
 
 	/// Since iOS 16 sometimes introspection UIViewControllers are not
 	/// installed in parent controller and left `detached`.
@@ -237,6 +245,7 @@ private struct _UIKitIntrospectionViewController: UIViewControllerRepresentable 
 			super.init( frame: .zero )
 		}
 
+		@available(*, unavailable)
 		required init?(coder: NSCoder) {
 			fatalError("init(coder:) has not been implemented")
 		}
@@ -250,15 +259,14 @@ private struct _UIKitIntrospectionViewController: UIViewControllerRepresentable 
 private extension View {
 
 	func _underlyingViewController(
-		handler: @escaping ( UIViewController ) -> Void
+		handler: @escaping ( UIViewController ) -> Void,
 	) -> some View {
 		let introspectView = _UIKitIntrospectionViewController( handler: handler )
-		return self
-			.overlay( introspectView.frame( width: 0, height: 0 ))
+		return overlay( introspectView.frame( width: 0, height: 0 ))
 	}
 }
 
-private struct __DummyIdentifiable: Identifiable { public let id = 0 }
+private struct __DummyIdentifiable: Identifiable { let id = 0 }
 
 struct FullScreenPopup_Previews: PreviewProvider {
 
@@ -270,7 +278,7 @@ struct FullScreenPopup_Previews: PreviewProvider {
 		}
 		.fullScreenCover(
 			isPresented: $isPresented,
-			content: { popupView }
+			content: { popupView },
 		)
 	}
 
@@ -284,7 +292,7 @@ struct FullScreenPopup_Previews: PreviewProvider {
 					Button( "Dismiss" ) {
 						isPresented = false
 					}
-				}
+				},
 			)
 			.shadow( radius: 10.0 )
 			.blurredBackground()

@@ -40,7 +40,6 @@ public extension Optional {
 	}
 }
 
-
 /// Syntax sugar for optional boolean variables.
 /// Following methods execute blocks when Bool? value is either `true`, `false` or `nil`.
 /// Calls can be chained.
@@ -84,12 +83,14 @@ public extension Optional where Wrapped: Collection {
 	}
 }
 
-// https://github.com/artsy/eidolon/blob/24e36a69bbafb4ef6dbe4d98b575ceb4e1d8345f/Kiosk/Observable%2BOperators.swift#L30-L40
-// By @ashfurrow
+/// https://github.com/artsy/eidolon/blob/24e36a69bbafb4ef6dbe4d98b575ceb4e1d8345f/Kiosk/Observable%2BOperators.swift#L30-L40
+/// By @ashfurrow
 public protocol OptionalType {
 	associatedtype Wrapped
 	var value: Wrapped? { get }
 }
+
+// MARK: - Optional + OptionalType
 
 extension Optional: OptionalType {
 	public var value: Wrapped? { return self }

@@ -1,4 +1,4 @@
-/// MIT License
+// MIT License
 //
 // Copyright (c) 2015-present Vladimir Kazantsev
 //
@@ -26,12 +26,15 @@ public extension Task where Success == Never, Failure == Never {
 	static func sleep( seconds: TimeInterval ) async throws {
 		try await sleep( nanoseconds: UInt64.seconds( seconds ))
 	}
+
 	static func sleep<I: UnsignedInteger>( seconds: I ) async throws {
 		try await sleep( nanoseconds: UInt64.seconds( seconds ))
 	}
+
 	static func sleep<I: UnsignedInteger>( miliseconds: I ) async throws {
 		try await sleep( nanoseconds: UInt64.miliseconds( miliseconds ))
 	}
+
 	static func sleep<I: UnsignedInteger>( microseconds: I ) async throws {
 		try await sleep( nanoseconds: UInt64.microseconds( microseconds ))
 	}

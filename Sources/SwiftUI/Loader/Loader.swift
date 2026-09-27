@@ -160,8 +160,7 @@ public struct Loader<Input, Result, LoadingView, FailureView, Content> where Inp
 	Result: Sendable,
 	LoadingView: View,
 	FailureView: View,
-	Content: View
-{
+	Content: View {
 	/// The input parameter for data loading.
 	private let input: Input
 
@@ -237,7 +236,7 @@ public struct Loader<Input, Result, LoadingView, FailureView, Content> where Inp
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping ( Input ) async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ state: LoaderContentState ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ state: LoaderContentState ) -> Content,
 	) {
 		self.input = input
 		self.reloadOptions = reloadOptions
@@ -248,6 +247,8 @@ public struct Loader<Input, Result, LoadingView, FailureView, Content> where Inp
 	}
 }
 
+// MARK: View
+
 extension Loader: View {
 
 	public var body: some View {
@@ -257,13 +258,13 @@ extension Loader: View {
 
 			case ( .some( let binding ), _ ):
 				content( binding, contentState )
-						.onAppear {
-							contentTransitionState
-								.isJustLoadedPending = false
-						}
+					.onAppear {
+						contentTransitionState
+							.isJustLoadedPending = false
+					}
 
 			case ( nil, .some( let failure )):
-				failureView( failure, { forcedReloadTrigger.toggle() })
+				failureView( failure) { forcedReloadTrigger.toggle() }
 
 			case ( nil, nil ):
 				loadingView
@@ -274,8 +275,8 @@ extension Loader: View {
 				value: input,
 				reloadTrigger: forcedReloadTrigger,
 				initial: initialFlag,
-				action: performLoad
-			)
+				action: performLoad,
+			),
 		)
 		.onDisappear {
 			isLoading = false
@@ -295,7 +296,7 @@ private extension Loader {
 
 	var initialFlag: Bool {
 
-		if reloadOptions.contains( .disableAutoLoad ) && result == nil {
+		if reloadOptions.contains( .disableAutoLoad ), result == nil {
 			return false
 		}
 		else {
@@ -332,6 +333,8 @@ private extension Loader {
 		}
 	}
 }
+
+// MARK: Loader.ContentTransitionState
 
 private extension Loader {
 

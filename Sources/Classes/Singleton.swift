@@ -63,8 +63,7 @@ public struct Singleton<ObjectType> where ObjectType: AnyObject, ObjectType: Sen
 		_singletonStorage.append( value )
 	}
 
-	public init() {
-	}
+	public init() {}
 }
 
 private let singletonLock = NSLock()

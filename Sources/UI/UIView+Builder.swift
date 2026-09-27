@@ -46,6 +46,7 @@ public class UIViewBuilder {
 	public static func buildEither( first component: UIViewBuilderArgument ) -> [ XTView ] {
 		component.arrayOfViews
 	}
+
 	public static func buildEither( second component: UIViewBuilderArgument ) -> [ XTView ] {
 		component.arrayOfViews
 	}
@@ -59,13 +60,14 @@ public class UIViewBuilder {
 public protocol UIViewBuilderArgument {
 	var arrayOfViews: [ XTView ] { get }
 }
+
 extension XTView: UIViewBuilderArgument {
 	public var arrayOfViews: [XTView] { [ self ] }
 }
+
 extension Array: UIViewBuilderArgument where Element: XTView {
 	public var arrayOfViews: [XTView] { self }
 }
-
 
 internal extension XTStackView {
 	final class _CustomBuilderSpacer: XTView {
@@ -74,6 +76,8 @@ internal extension XTStackView {
 			self.length = length
 			super.init(frame: .zero)
 		}
+
+		@available(*, unavailable)
 		required init?(coder: NSCoder) {
 			fatalError("init(coder:) has not been implemented")
 		}

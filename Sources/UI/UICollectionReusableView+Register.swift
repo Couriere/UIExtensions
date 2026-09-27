@@ -23,25 +23,25 @@
 #if canImport(UIKit) && !os(watchOS)
 import UIKit
 
-/// 	Helper extension for register/dequeue reusable views in `UICollectionView`
-///
-/// 	Usage:
-///
-/// 		... in `viewDidLoad()`:
-///
-/// 			ClassOfReusableViewCreatedInCode.registerSupplementaryClass( in: collection, forKind: UICollectionElementKindSectionFooter )
-/// 			ClassOfReusableViewCreatedFromXib.registerSupplementaryXib( in: collection, forKind: UICollectionElementKindSectionFooter )
-///
-/// 		... in `collectionView( _:, viewForSupplementaryElementOfKind:, at: ) -> UICollectionReusableView`:
-///
-/// 			let cell = ReusableView.dequeueSupplementaryViewOfKind( kind, for: indexPath, in: collectionView )
-///
-/// 	Reusable views, created from code should work as is.
-/// 	Reusable views, created from `xib` must set `Identifier` field in its `xib` to reusable views class name.
-///
-/// 	By default reusable identifier is equal to the class name.
-/// 	Reusable identifier can be changed by overriding `class var identifier: String`
-/// 	In that case reusable views, created from `xib`, must change cell identifier in its `xib` accordingly.
+// 	Helper extension for register/dequeue reusable views in `UICollectionView`
+//
+// 	Usage:
+//
+// 		... in `viewDidLoad()`:
+//
+// 			ClassOfReusableViewCreatedInCode.registerSupplementaryClass( in: collection, forKind: UICollectionElementKindSectionFooter )
+// 			ClassOfReusableViewCreatedFromXib.registerSupplementaryXib( in: collection, forKind: UICollectionElementKindSectionFooter )
+//
+// 		... in `collectionView( _:, viewForSupplementaryElementOfKind:, at: ) -> UICollectionReusableView`:
+//
+// 			let cell = ReusableView.dequeueSupplementaryViewOfKind( kind, for: indexPath, in: collectionView )
+//
+// 	Reusable views, created from code should work as is.
+// 	Reusable views, created from `xib` must set `Identifier` field in its `xib` to reusable views class name.
+//
+// 	By default reusable identifier is equal to the class name.
+// 	Reusable identifier can be changed by overriding `class var identifier: String`
+// 	In that case reusable views, created from `xib`, must change cell identifier in its `xib` accordingly.
 
 public extension UICollectionReusableView {
 
@@ -55,7 +55,7 @@ public extension UICollectionReusableView {
 		in collection: UICollectionView,
 		forKind: String,
 		xibName: String? = nil,
-		bundle: Bundle? = nil
+		bundle: Bundle? = nil,
 	) {
 		let nib = UINib( nibName: xibName ?? identifier, bundle: bundle ?? Bundle( for: self ) )
 		collection.register( nib, forSupplementaryViewOfKind: forKind, withReuseIdentifier: identifier )
@@ -64,7 +64,8 @@ public extension UICollectionReusableView {
 	static func dequeueSupplementaryView(
 		ofKind elementKind: String,
 		for indexPath: IndexPath,
-		in collectionView: UICollectionView ) -> Self {
+		in collectionView: UICollectionView,
+	) -> Self {
 
 		return helperGetObjectWithId( collectionView.dequeueReusableSupplementaryView( ofKind: elementKind, withReuseIdentifier: identifier, for: indexPath ), type: self )
 	}
@@ -74,27 +75,26 @@ public extension UICollectionReusableView {
 	}
 }
 
-
-/// 	Helper extension for register/dequeue cells in `UICollectionView`
-///
-/// 	Usage:
-///
-/// 		... in `viewDidLoad()`:
-///
-/// 			ClassOfCellCreatedInCode.registerClass( in: collection )
-/// 			ClassOfCellCreatedFromXib.registerXib( in: collection )
-///
-///
-/// 		... in `collectionView( _:, cellForItemAt: ) -> UICollectionViewCell`:
-///
-/// 			let cell = CellClass.dequeueCell( for: indexPath, in: collectionView )
-///
-/// 	Cells, created from code should work as is.
-/// 	Cells, created from `xib` must set `Identifier` field in its `xib` to cells class name.
-///
-/// 	By default reusable identifier is equal to the class name.
-/// 	Reusable identifier can be changed by overriding `class var identifier: String`
-/// 	In that case cells, created from `xib`, must change cell identifier in its `xib` accordingly.
+// 	Helper extension for register/dequeue cells in `UICollectionView`
+//
+// 	Usage:
+//
+// 		... in `viewDidLoad()`:
+//
+// 			ClassOfCellCreatedInCode.registerClass( in: collection )
+// 			ClassOfCellCreatedFromXib.registerXib( in: collection )
+//
+//
+// 		... in `collectionView( _:, cellForItemAt: ) -> UICollectionViewCell`:
+//
+// 			let cell = CellClass.dequeueCell( for: indexPath, in: collectionView )
+//
+// 	Cells, created from code should work as is.
+// 	Cells, created from `xib` must set `Identifier` field in its `xib` to cells class name.
+//
+// 	By default reusable identifier is equal to the class name.
+// 	Reusable identifier can be changed by overriding `class var identifier: String`
+// 	In that case cells, created from `xib`, must change cell identifier in its `xib` accordingly.
 
 public extension UICollectionViewCell {
 

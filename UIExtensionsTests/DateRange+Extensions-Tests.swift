@@ -51,8 +51,8 @@ struct DateRangeTests {
 
 	// MARK: - isWholeMonth
 
-	@Test("Whole months of different lengths")
-	func wholeMonths() {
+	@Test
+	func `Whole months of different lengths`() {
 		#expect(( date( 2024, 1, 1 ) ... date( 2024, 1, 31 )).isWholeMonth() )
 		#expect(( date( 2024, 2, 1 ) ... date( 2024, 2, 29 )).isWholeMonth() )
 		#expect(( date( 2023, 2, 1 ) ... date( 2023, 2, 28 )).isWholeMonth() )
@@ -60,8 +60,8 @@ struct DateRangeTests {
 		#expect(( date( 2024, 12, 1 ) ... date( 2024, 12, 31 )).isWholeMonth() )
 	}
 
-	@Test("Ranges that do not cover a whole month")
-	func partialMonths() {
+	@Test
+	func `Ranges that do not cover a whole month`() {
 		#expect( !( date( 2024, 1, 2 ) ... date( 2024, 1, 31 )).isWholeMonth() )
 		#expect( !( date( 2024, 1, 1 ) ... date( 2024, 1, 30 )).isWholeMonth() )
 		#expect( !( date( 2024, 1, 10 ) ... date( 2024, 1, 20 )).isWholeMonth() )
@@ -70,16 +70,16 @@ struct DateRangeTests {
 		#expect( !( date( 2024, 2, 1 ) ... date( 2024, 2, 28 )).isWholeMonth() )
 	}
 
-	@Test("Time of day is ignored")
-	func timeOfDayIsIgnored() {
+	@Test
+	func `Time of day is ignored`() {
 		#expect(( date( 2024, 1, 1, 10, 30 ) ... date( 2024, 1, 31, 23, 59 )).isWholeMonth() )
 		#expect(( date( 2024, 1, 1, 0, 0 ) ... date( 2024, 1, 31, 23, 59, 59 )).isWholeMonth() )
 	}
 
 	// MARK: - Granularity
 
-	@Test("Single date, month and year")
-	func granularity() {
+	@Test
+	func `Single date, month and year`() {
 
 		let singleDay = date( 2024, 5, 17, 1 ) ... date( 2024, 5, 17, 23 )
 		#expect( singleDay.isSingleDate() )
@@ -101,8 +101,8 @@ struct DateRangeTests {
 
 	// MARK: - Month To Date
 
-	@Test("Month to date")
-	func monthToDate() {
+	@Test
+	func `Month to date`() {
 
 		let currentMonth = ClosedRange<Date>.currentMonth()
 		#expect( currentMonth.isMonthToDate() )
@@ -115,8 +115,8 @@ struct DateRangeTests {
 
 	// MARK: - End Of Day
 
-	@Test("End of day is the last second of the day")
-	func endOfDay() {
+	@Test
+	func `End of day is the last second of the day`() {
 
 		let moment = date( 2024, 3, 15, 8, 42, 7 )
 		let endOfDay = moment.endOfDay()
@@ -127,8 +127,8 @@ struct DateRangeTests {
 		#expect( calendar.component( .second, from: endOfDay ) == 59 )
 	}
 
-	@Test("Day of month")
-	func dayOfMonth() {
+	@Test
+	func `Day of month`() {
 		#expect( date( 2024, 3, 15 ).dayOfMonth() == 15 )
 		#expect( date( 2024, 3, 1 ).dayOfMonth() == 1 )
 	}

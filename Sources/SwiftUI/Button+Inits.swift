@@ -34,11 +34,11 @@ extension Button {
 	@inlinable
 	public nonisolated init(
 		flag: Binding<Bool>,
-		@ViewBuilder label: () -> Label
+		@ViewBuilder label: () -> Label,
 	) {
 		self.init(
 			action: { flag.wrappedValue = true },
-			label: label
+			label: label,
 		)
 	}
 
@@ -56,7 +56,7 @@ extension Button {
 	public init<Value>(
 		_ value: Value,
 		action: @escaping @MainActor ( Value ) -> Void,
-		label: ( Value ) -> Label
+		label: ( Value ) -> Label,
 	) {
 		self.init {
 			action( value )
@@ -77,7 +77,7 @@ extension Button {
 	public init<Value>(
 		_ value: Value,
 		action: @escaping @MainActor () -> Void,
-		label: ( Value ) -> Label
+		label: ( Value ) -> Label,
 	) {
 		self.init( action: action ) {
 			label( value )
@@ -108,11 +108,11 @@ extension Button where Label == Text {
 		_ titleKey: LocalizedStringKey,
 		tableName: String? = nil,
 		bundle: Bundle? = nil,
-		flag: Binding<Bool>
+		flag: Binding<Bool>,
 	) {
 		self.init(
 			action: { flag.wrappedValue = true },
-			label: { Text( titleKey, tableName: tableName, bundle: bundle ) }
+			label: { Text( titleKey, tableName: tableName, bundle: bundle ) },
 		)
 	}
 
@@ -130,11 +130,11 @@ extension Button where Label == Text {
 	@inlinable @_disfavoredOverload
 	public nonisolated init(
 		_ title: some StringProtocol,
-		flag: Binding<Bool>
+		flag: Binding<Bool>,
 	) {
 		self.init(
 			action: { flag.wrappedValue = true },
-			label: { Text( title ) }
+			label: { Text( title ) },
 		)
 	}
 
@@ -162,7 +162,7 @@ extension Button where Label == Text {
 		_ value: Value,
 		tableName: String? = nil,
 		bundle: Bundle? = nil,
-		action: @escaping @MainActor ( Value ) -> Void
+		action: @escaping @MainActor ( Value ) -> Void,
 	) {
 		self.init {
 			action( value )
@@ -188,7 +188,7 @@ extension Button where Label == Text {
 	public init<Value>(
 		_ title: some StringProtocol,
 		_ value: Value,
-		action: @escaping @MainActor ( Value ) -> Void
+		action: @escaping @MainActor ( Value ) -> Void,
 	) {
 		self.init {
 			action( value )
@@ -208,11 +208,11 @@ extension Button where Label == Image {
 	@inlinable
 	public nonisolated init(
 		_ image: Image,
-		action: @escaping @MainActor () -> Void
+		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			action: action,
-			label: { image }
+			label: { image },
 		)
 	}
 
@@ -226,11 +226,11 @@ extension Button where Label == Image {
 	@inlinable
 	public nonisolated init(
 		_ image: Image,
-		flag: Binding<Bool>
+		flag: Binding<Bool>,
 	) {
 		self.init(
 			action: { flag.wrappedValue = true },
-			label: { image }
+			label: { image },
 		)
 	}
 
@@ -243,11 +243,11 @@ extension Button where Label == Image {
 	@inlinable
 	public nonisolated init(
 		systemName: String,
-		action: @escaping @MainActor () -> Void
+		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			action: action,
-			label: { Image( systemName: systemName ) }
+			label: { Image( systemName: systemName ) },
 		)
 	}
 
@@ -262,11 +262,11 @@ extension Button where Label == Image {
 	@inlinable
 	public nonisolated init(
 		systemName: String,
-		flag: Binding<Bool>
+		flag: Binding<Bool>,
 	) {
 		self.init(
 			Image( systemName: systemName ),
-			flag: flag
+			flag: flag,
 		)
 	}
 }
@@ -281,11 +281,11 @@ extension Button where Label == Image {
 	@inlinable
 	public nonisolated init(
 		_ resource: ImageResource,
-		action: @escaping @MainActor () -> Void
+		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			action: action,
-			label: { Image( resource ) }
+			label: { Image( resource ) },
 		)
 	}
 
@@ -299,11 +299,11 @@ extension Button where Label == Image {
 	@inlinable
 	public nonisolated init(
 		_ resource: ImageResource,
-		flag: Binding<Bool>
+		flag: Binding<Bool>,
 	) {
 		self.init(
 			Image( resource ),
-			flag: flag
+			flag: flag,
 		)
 	}
 }
@@ -320,14 +320,14 @@ extension Button where Label == ModifiedContent<Image, _PaddingLayout> {
 	public nonisolated init(
 		_ image: Image,
 		padding: EdgeInsets,
-		action: @escaping @MainActor () -> Void
+		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			action: action,
 			label: {
 				image
 					.modifier( _PaddingLayout( insets: padding ))
-			}
+			},
 		)
 	}
 
@@ -343,12 +343,12 @@ extension Button where Label == ModifiedContent<Image, _PaddingLayout> {
 	public nonisolated init(
 		_ image: Image,
 		padding: Double,
-		action: @escaping @MainActor () -> Void
+		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			image,
 			padding: EdgeInsets( padding ),
-			action: action
+			action: action,
 		)
 	}
 }
@@ -366,12 +366,12 @@ extension Button where Label == ModifiedContent<Image, _PaddingLayout> {
 	public nonisolated init(
 		_ resource: ImageResource,
 		padding: EdgeInsets,
-		action: @escaping @MainActor () -> Void
+		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			Image( resource ),
 			padding: padding,
-			action: action
+			action: action,
 		)
 	}
 
@@ -387,12 +387,12 @@ extension Button where Label == ModifiedContent<Image, _PaddingLayout> {
 	public nonisolated init(
 		_ resource: ImageResource,
 		padding: Double,
-		action: @escaping @MainActor () -> Void
+		action: @escaping @MainActor () -> Void,
 	) {
 		self.init(
 			Image( resource ),
 			padding: padding,
-			action: action
+			action: action,
 		)
 	}
 }
@@ -421,14 +421,14 @@ extension Button where Label == SwiftUI.Label<Text, Image> {
 		image: Image,
 		tableName: String? = nil,
 		bundle: Bundle? = nil,
-		action: @escaping @MainActor () -> Void
+		action: @escaping @MainActor () -> Void,
 	) {
 		self.init( action: action ) {
 			SwiftUI.Label(
 				titleKey,
 				image: image,
 				tableName: tableName,
-				bundle: bundle
+				bundle: bundle,
 			)
 		}
 	}
@@ -448,7 +448,7 @@ extension Button where Label == SwiftUI.Label<Text, Image> {
 	public nonisolated init(
 		_ title: some StringProtocol,
 		image: Image,
-		action: @escaping @MainActor () -> Void
+		action: @escaping @MainActor () -> Void,
 	) {
 		self.init( action: action ) {
 			SwiftUI.Label( title, image: image )
@@ -479,13 +479,13 @@ extension Button where Label == SwiftUI.Label<Text, Image> {
 		image: Image,
 		tableName: String? = nil,
 		bundle: Bundle? = nil,
-		flag: Binding<Bool>
+		flag: Binding<Bool>,
 	) {
 		self.init(
 			titleKey,
 			image: image,
 			tableName: tableName,
-			bundle: bundle
+			bundle: bundle,
 		) {
 			flag.wrappedValue = true
 		}
@@ -508,7 +508,7 @@ extension Button where Label == SwiftUI.Label<Text, Image> {
 	public nonisolated init(
 		_ title: some StringProtocol,
 		image: Image,
-		flag: Binding<Bool>
+		flag: Binding<Bool>,
 	) {
 		self.init( title, image: image ) {
 			flag.wrappedValue = true
@@ -539,14 +539,14 @@ extension Button where Label == SwiftUI.Label<Text, Image> {
 		systemImage: String,
 		tableName: String? = nil,
 		bundle: Bundle? = nil,
-		flag: Binding<Bool>
+		flag: Binding<Bool>,
 	) {
 		self.init(
 			titleKey,
 			image: Image( systemName: systemImage ),
 			tableName: tableName,
 			bundle: bundle,
-			flag: flag
+			flag: flag,
 		)
 	}
 
@@ -567,12 +567,12 @@ extension Button where Label == SwiftUI.Label<Text, Image> {
 	public nonisolated init(
 		_ title: some StringProtocol,
 		systemImage: String,
-		flag: Binding<Bool>
+		flag: Binding<Bool>,
 	) {
 		self.init(
 			title,
 			image: Image( systemName: systemImage ),
-			flag: flag
+			flag: flag,
 		)
 	}
 }
@@ -603,14 +603,14 @@ extension Button where Label == SwiftUI.Label<Text, Image> {
 		image resource: ImageResource,
 		tableName: String? = nil,
 		bundle: Bundle? = nil,
-		flag: Binding<Bool>
+		flag: Binding<Bool>,
 	) {
 		self.init(
 			titleKey,
 			image: Image( resource ),
 			tableName: tableName,
 			bundle: bundle,
-			flag: flag
+			flag: flag,
 		)
 	}
 
@@ -631,12 +631,12 @@ extension Button where Label == SwiftUI.Label<Text, Image> {
 	public nonisolated init(
 		_ title: some StringProtocol,
 		image resource: ImageResource,
-		flag: Binding<Bool>
+		flag: Binding<Bool>,
 	) {
 		self.init(
 			title,
 			image: Image( resource ),
-			flag: flag
+			flag: flag,
 		)
 	}
 }

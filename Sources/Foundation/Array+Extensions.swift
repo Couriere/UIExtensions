@@ -46,7 +46,7 @@ extension Array {
 	/// - Parameter element: An optional element.
 	@inlinable
 	public init(_ element: Element?) {
-		if let element = element {
+		if let element {
 			self = [element]
 		} else {
 			self = []
@@ -133,7 +133,7 @@ extension Array {
 	/// - Returns: A new array with the element appended if it is non-`nil`.
 	@inlinable
 	public static func +(array: Self, element: Element?) -> Self {
-		if let element = element {
+		if let element {
 			return array + [element]
 		}
 		return array
@@ -176,7 +176,7 @@ extension Array {
 	///   - element: An optional element to append.
 	@inlinable
 	public static func +=(array: inout Self, element: Element?) {
-		if let element = element {
+		if let element {
 			array.append(element)
 		}
 	}
@@ -277,10 +277,10 @@ extension Array {
 		_ subrange: R,
 		with newElements: C,
 	) -> [ Element ]
-	where C: Collection,
-		  R: RangeExpression,
-		  Element == C.Element,
-		  Int == R.Bound {
+		where C: Collection,
+		R: RangeExpression,
+		Element == C.Element,
+		Int == R.Bound {
 
 		var array = self
 		array.replaceSubrange( subrange, with: newElements )

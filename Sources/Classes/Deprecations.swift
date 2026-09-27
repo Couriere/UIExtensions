@@ -32,7 +32,7 @@ import SwiftUI
 
 public extension Date {
 
-	// ..<
+	/// ..<
 	@available( swift, deprecated: 4.2, message: "Use isBetween(_: and: )" )
 	func isBetweenDate( _ firstDate: Date, andDate secondDate: Date ) -> Bool {
 		let startResult = firstDate.compare( self )
@@ -46,7 +46,7 @@ public extension Date {
 }
 
 public extension Dictionary {
-	
+
 	@available( swift, deprecated: 4.0, obsoleted: 5.0, message: "Use Dictionary( uniqueKeysWithValues: ) instead" )
 	init(_ elements: [Element]) {
 		self.init()
@@ -79,7 +79,8 @@ public final class DefaultsKey<T> {
 		key: String,
 		userDefaults: UserDefaults = UserDefaults.standard,
 		archive: ( ( T ) throws -> Any )? = nil,
-		unarchive: ( ( Any? ) throws -> T? )? = nil ) {
+		unarchive: ( ( Any? ) throws -> T? )? = nil,
+	) {
 
 		self.key = key
 		self.userDefaults = userDefaults
@@ -114,20 +115,18 @@ public final class DefaultsKey<T> {
 		userDefaults.removeObject( forKey: key )
 	}
 
-
 	private func unarchiveValue() -> T? {
 		let data = userDefaults.value( forKey: key )
-		guard let unarchive = unarchive else { return data as? T }
+		guard let unarchive else { return data as? T }
 		do { return try unarchive( data ) } catch { return nil }
 	}
 
 	private func archiveValue( _ value: T? ) -> Any? {
-		guard let value = value else { return nil }
-		guard let archive = archive else { return value }
+		guard let value else { return nil }
+		guard let archive else { return value }
 		do { return try archive( value ) } catch { return nil }
 	}
 }
-
 
 public extension String {
 
@@ -158,19 +157,19 @@ public extension String {
 	@available( *, deprecated, renamed: "baselineOffset" )
 	@inlinable
 	func withBaselineOffset( _ offset: CGFloat ) -> NSAttributedString {
-		self.baselineOffset( offset )
+		baselineOffset( offset )
 	}
 
 	@available( *, deprecated, renamed: "strikethroughStyle" )
 	@inlinable
 	func withStrikethroughStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSAttributedString {
-		self.strikethroughStyle( style, color: color )
+		strikethroughStyle( style, color: color )
 	}
 
 	@available( *, deprecated, renamed: "underlineStyle" )
 	@inlinable
 	func withUnderlineStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSAttributedString {
-		self.underlineStyle( style, color: color )
+		underlineStyle( style, color: color )
 	}
 
 	@available( *, deprecated, renamed: "paragraphStyle" )
@@ -188,7 +187,7 @@ public extension String {
 	@available( *, deprecated, renamed: "lineHeightMultiple" )
 	@inlinable
 	func withLineHeightMultiple( _ multiple: CGFloat ) -> NSAttributedString {
-		self.lineHeightMultiple( multiple )
+		lineHeightMultiple( multiple )
 	}
 
 	@available( *, deprecated, renamed: "minimumLineHeight" )
@@ -215,9 +214,11 @@ public extension String {
 	/// - parameter verticalOffset: Offset in points, will be applied to image position.
 	@available( *, deprecated, renamed: "image" )
 	@inlinable
-	func withImage( _ image: UIImage,
-					atLocation location: Int? = nil,
-					verticalOffset: CGFloat = 0 ) -> NSAttributedString {
+	func withImage(
+		_ image: UIImage,
+		atLocation location: Int? = nil,
+		verticalOffset: CGFloat = 0,
+	) -> NSAttributedString {
 		self.image( image, at: location, verticalOffset: verticalOffset )
 	}
 
@@ -229,7 +230,7 @@ public extension String {
 	func image(
 		_ image: XTImage,
 		atLocation location: Int?,
-		verticalOffset: CGFloat = 0
+		verticalOffset: CGFloat = 0,
 	) -> NSAttributedString {
 		self.image( image, at: location, verticalOffset: verticalOffset )
 	}
@@ -239,45 +240,44 @@ public extension NSAttributedString {
 	/// Returns a copy of an attributed string with `text color` attribute set.
 	@available( *, deprecated, renamed: "color" )
 	func settingColor( _ color: UIColor ) -> NSAttributedString {
-		self.mutable().color( color )
+		mutable().color( color )
 	}
 
 	/// Returns a copy of an attributed string with `text font` attribute set.
 	@available( *, deprecated, renamed: "font" )
 	func settingFont( _ font: UIFont ) -> NSAttributedString {
-		self.mutable().font( font )
+		mutable().font( font )
 	}
 
 	/// Returns a copy of an attributed string with `kern` attribute set.
 	@available( *, deprecated, renamed: "kern" )
 	func settingKern( _ kern: CGFloat ) -> NSAttributedString {
-		self.mutable().kern( kern )
+		mutable().kern( kern )
 	}
 
 	/// Returns a copy of an attributed string with `baselineOffset` attributes set.
 	@available( *, deprecated, renamed: "baselineOffset" )
 	func settingBaselineOffset( _ offset: CGFloat ) -> NSAttributedString {
-		self.mutable().baselineOffset( offset )
+		mutable().baselineOffset( offset )
 	}
 
 	/// Returns a copy of an attributed string with `striketrough style and color` attributes set.
 	@available( *, deprecated, renamed: "strikethroughStyle" )
 	func settingStrikethroughStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSAttributedString {
-		self.mutable().strikethroughStyle( style, color: color )
+		mutable().strikethroughStyle( style, color: color )
 	}
 
 	/// Returns a copy of an attributed string with `underline style and color` attributes set.
 	@available( *, deprecated, renamed: "underlineStyle" )
 	func settingUnderlineStyle( _ style: NSUnderlineStyle, color: UIColor = .black ) -> NSAttributedString {
-		self.mutable().underlineStyle( style, color: color )
+		mutable().underlineStyle( style, color: color )
 	}
-
 
 	/// Returns a copy of an attributed string with `paragraphStyle` attribute set.
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
 	@available( *, deprecated, renamed: "paragraphStyle" )
 	func settingParagraphStyle( _ paragraphStyle: NSParagraphStyle ) -> NSAttributedString {
-		self.mutable().paragraphStyle( paragraphStyle )
+		mutable().paragraphStyle( paragraphStyle )
 	}
 
 	/// Returns a copy of an attributed string with `lineSpacing` property of
@@ -288,7 +288,7 @@ public extension NSAttributedString {
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
 	@available( *, deprecated, renamed: "lineSpacing" )
 	func settingLineSpacing( _ lineSpacing: CGFloat ) -> NSAttributedString {
-		self.mutable().lineSpacing( lineSpacing )
+		mutable().lineSpacing( lineSpacing )
 	}
 
 	/// Returns a copy of an attributed string with `paragraphSpacing` property of
@@ -299,7 +299,7 @@ public extension NSAttributedString {
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
 	@available( *, deprecated, renamed: "paragraphSpacing" )
 	func settingParagraphSpacing( _ paragraphSpacing: CGFloat ) -> NSAttributedString {
-		self.mutable().paragraphSpacing( paragraphSpacing )
+		mutable().paragraphSpacing( paragraphSpacing )
 	}
 
 	/// Returns a copy of an attributed string with `lineHeightMultiple` property of
@@ -310,7 +310,7 @@ public extension NSAttributedString {
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
 	@available( *, deprecated, renamed: "lineHeightMultiple" )
 	func settingLineHeightMultiple( _ multiple: CGFloat ) -> NSAttributedString {
-		self.mutable().lineHeightMultiple( multiple )
+		mutable().lineHeightMultiple( multiple )
 	}
 
 	/// Returns a copy of an attributed string with `minimumLineHeight` property of
@@ -321,7 +321,7 @@ public extension NSAttributedString {
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
 	@available( *, deprecated, renamed: "minimumLineHeight" )
 	func settingMinimumLineHeight( _ minimumLineHeight: CGFloat ) -> NSAttributedString {
-		self.mutable().minimumLineHeight( minimumLineHeight )
+		mutable().minimumLineHeight( minimumLineHeight )
 	}
 
 	/// Returns a copy of an attributed string with `alignment` property of
@@ -332,7 +332,7 @@ public extension NSAttributedString {
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
 	@available( *, deprecated, renamed: "alignment" )
 	func settingAlignment( _ alignment: NSTextAlignment ) -> NSAttributedString {
-		self.mutable().alignment( alignment )
+		mutable().alignment( alignment )
 	}
 
 	/// Returns a copy of an attributed string with `lineBreakMode` property of
@@ -343,7 +343,7 @@ public extension NSAttributedString {
 	/// - note: All existing paragraph styles attributes in string will be overwritten.
 	@available( *, deprecated, renamed: "lineBreakMode" )
 	func settingLineBreakMode( _ lineBreakMode: NSLineBreakMode ) -> NSAttributedString {
-		self.mutable().lineBreakMode( lineBreakMode )
+		mutable().lineBreakMode( lineBreakMode )
 	}
 }
 
@@ -358,11 +358,10 @@ public extension NSMutableAttributedString {
 	}
 }
 
-
 public extension UIViewController {
 
-	/// Returns distance from top to safe area. If running on iOS versions prior to 11,
-	/// uses `topLayoutGuide` length instead.
+	// Returns distance from top to safe area. If running on iOS versions prior to 11,
+	// uses `topLayoutGuide` length instead.
 
 	@available( iOS, deprecated: 11.0, message: "Use view.safeAreaInsets.top instead", renamed: "view.safeAreaInsets.top" )
 	@available( tvOS, deprecated: 11.0, message: "Use view.safeAreaInsets.top instead", renamed: "view.safeAreaInsets.top" )
@@ -422,11 +421,11 @@ public extension UIAlertController {
 		message: String?,
 		buttonTitles: [ String ]? = nil,
 		parentController: UIViewController? = nil,
-		handler: UIAlertControllerHandler? = nil
+		handler: UIAlertControllerHandler? = nil,
 	) {
 		dispatch_main_thread_sync {
 			let alert = UIAlertController( title: title, message: message, buttonTitles: buttonTitles, handler: handler )
-			if let parentController = parentController {
+			if let parentController {
 				parentController.present( alert, animated: true, completion: nil )
 			}
 			else {
@@ -441,25 +440,21 @@ public extension UIAlertController {
 		message: String?,
 		buttonTitles: [ String ]? = nil,
 		parentController: UIViewController? = nil,
-		handler: UIAlertControllerHandler? = nil
-	) {
-	}
+		handler: UIAlertControllerHandler? = nil,
+	) {}
 	#endif
-
 
 	@available( swift, deprecated: 5.5, message: "Use UIAlertController( title: message: buttonTitles: handler: )" )
 	class func alertControllerWith(
 		title: String?,
 		message: String?,
 		buttonTitles: [ String ]?,
-		handler: UIAlertControllerHandler?
+		handler: UIAlertControllerHandler?,
 	) -> UIAlertController {
 		return UIAlertController( title: title, message: message, buttonTitles: buttonTitles, handler: handler )
 	}
 }
 #endif
-
-
 
 #if !os(watchOS)
 public extension LayoutGuideProtocol {
@@ -560,7 +555,6 @@ public extension LayoutGuideProtocol {
 		return constraints
 	}
 
-
 	// MARK: - Centering
 
 	@discardableResult
@@ -573,14 +567,12 @@ public extension LayoutGuideProtocol {
 	@available( *, deprecated, message: "Use alignCenters( with:, priority: ) instead." )
 	func centerWithView(
 		_ view: LayoutGuideProtocol,
-		priority: XTLayoutPriority = .required
+		priority: XTLayoutPriority = .required,
 	) -> [ NSLayoutConstraint ] {
 		alignCenters( with: view, priority: priority )
 	}
 
-
 	// MARK: - Horizontal center
-
 
 	@discardableResult
 	@available( *, deprecated, message: "Use alignCenters( .horizontal ) instead." )
@@ -616,13 +608,12 @@ public extension LayoutGuideProtocol {
 		return constraint
 	}
 
-
 	@discardableResult
 	@available( *, deprecated, message: "Use pin( .vertically ) instead." )
 	func alignVertically( to guide: LayoutGuideProtocol, insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
 		let constraints = [
-			self.topAnchor.constraint( equalTo: guide.topAnchor, constant: insets.top ),
-			guide.bottomAnchor.constraint( equalTo: self.bottomAnchor, constant: insets.bottom ),
+			topAnchor.constraint( equalTo: guide.topAnchor, constant: insets.top ),
+			guide.bottomAnchor.constraint( equalTo: bottomAnchor, constant: insets.bottom ),
 		]
 
 		NSLayoutConstraint.activate( constraints )
@@ -633,8 +624,8 @@ public extension LayoutGuideProtocol {
 	@available( *, deprecated, message: "Use pin( .horizontally ) instead." )
 	func alignHorizontally( to guide: LayoutGuideProtocol, insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
 		let constraints = [
-			self.leftAnchor.constraint( equalTo: guide.leftAnchor, constant: insets.left ),
-			guide.rightAnchor.constraint( equalTo: self.rightAnchor, constant: insets.right ),
+			leftAnchor.constraint( equalTo: guide.leftAnchor, constant: insets.left ),
+			guide.rightAnchor.constraint( equalTo: rightAnchor, constant: insets.right ),
 		]
 
 		NSLayoutConstraint.activate( constraints )
@@ -645,24 +636,30 @@ public extension LayoutGuideProtocol {
 	@available( *, deprecated, message: "Use pin( .all ) instead." )
 	func align( to guide: LayoutGuideProtocol, insets: XTEdgeInsets = .zero ) -> [ NSLayoutConstraint ] {
 		let constraints = [
-			self.topAnchor.constraint( equalTo: guide.topAnchor, constant: insets.top ),
-			self.leftAnchor.constraint( equalTo: guide.leftAnchor, constant: insets.left ),
-			guide.bottomAnchor.constraint( equalTo: self.bottomAnchor, constant: insets.bottom ),
-			guide.rightAnchor.constraint( equalTo: self.rightAnchor, constant: insets.right ),
+			topAnchor.constraint( equalTo: guide.topAnchor, constant: insets.top ),
+			leftAnchor.constraint( equalTo: guide.leftAnchor, constant: insets.left ),
+			guide.bottomAnchor.constraint( equalTo: bottomAnchor, constant: insets.bottom ),
+			guide.rightAnchor.constraint( equalTo: rightAnchor, constant: insets.right ),
 		]
 
 		NSLayoutConstraint.activate( constraints )
 		return constraints
 	}
 
-
 	// MARK: - Size constraints
 
 	@discardableResult
 	@available( *, deprecated, renamed: "pin" )
 	func constrainTo( width: CGFloat, relatedBy: NSLayoutConstraint.Relation? = nil ) -> NSLayoutConstraint {
-		let constraint = NSLayoutConstraint( item: self, attribute: .width, relatedBy: relatedBy ?? .equal,
-											 toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width )
+		let constraint = NSLayoutConstraint(
+			item: self,
+			attribute: .width,
+			relatedBy: relatedBy ?? .equal,
+			toItem: nil,
+			attribute: .notAnAttribute,
+			multiplier: 1,
+			constant: width,
+		)
 		constraint.isActive = true
 		return constraint
 	}
@@ -670,8 +667,15 @@ public extension LayoutGuideProtocol {
 	@discardableResult
 	@available( *, deprecated, renamed: "pin" )
 	func constrainTo( height: CGFloat, relatedBy: NSLayoutConstraint.Relation? = nil ) -> NSLayoutConstraint {
-		let constraint = NSLayoutConstraint( item: self, attribute: .height, relatedBy: relatedBy ?? .equal,
-											 toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height )
+		let constraint = NSLayoutConstraint(
+			item: self,
+			attribute: .height,
+			relatedBy: relatedBy ?? .equal,
+			toItem: nil,
+			attribute: .notAnAttribute,
+			multiplier: 1,
+			constant: height,
+		)
 		constraint.isActive = true
 		return constraint
 	}
@@ -682,7 +686,6 @@ public extension LayoutGuideProtocol {
 		return constrain(size: size)
 	}
 
-
 	// MARK: - Aspect ratio
 
 	@discardableResult
@@ -692,7 +695,6 @@ public extension LayoutGuideProtocol {
 		constraint.isActive = true
 		return constraint
 	}
-
 
 	/// Pins supplied attribute of the view to the same attribute of its superview or
 	/// provided view.
@@ -710,17 +712,16 @@ public extension LayoutGuideProtocol {
 		relatedBy: NSLayoutConstraint.Relation = .equal,
 		multiplier: CGFloat = 1,
 		constant: CGFloat,
-		priority: XTLayoutPriority = .required
+		priority: XTLayoutPriority = .required,
 	) -> NSLayoutConstraint {
 
 		pinAttribute(
 			attribute, to: view, relatedBy: relatedBy,
 			multiplier: multiplier, constant: constant,
-			priority: priority
+			priority: priority,
 		)
 	}
 }
-
 
 @available( *, deprecated )
 public struct SideInsets: Hashable, Sendable {
@@ -734,7 +735,7 @@ public struct SideInsets: Hashable, Sendable {
 
 	public init(
 		top: Double? = nil, leading: Double? = nil,
-		bottom: Double? = nil, trailing: Double? = nil
+		bottom: Double? = nil, trailing: Double? = nil,
 	) {
 		self.top = top
 		self.leading = leading
@@ -766,6 +767,7 @@ public struct SideInsets: Hashable, Sendable {
 	public static func horizontally( _ inset: Double ) -> SideInsets {
 		SideInsets( leading: inset, trailing: inset )
 	}
+
 	public static func horizontally( _ leading: Double, _ trailing: Double ) -> SideInsets {
 		SideInsets( leading: leading, trailing: trailing )
 	}
@@ -774,6 +776,7 @@ public struct SideInsets: Hashable, Sendable {
 	public static func vertically( _ inset: Double ) -> SideInsets {
 		SideInsets( top: inset, bottom: inset )
 	}
+
 	public static func vertically( _ top: Double, _ bottom: Double ) -> SideInsets {
 		SideInsets( top: top, bottom: bottom )
 	}
@@ -782,12 +785,13 @@ public struct SideInsets: Hashable, Sendable {
 	public static func all( _ inset: Double ) -> SideInsets {
 		SideInsets( top: inset, leading: inset, bottom: inset, trailing: inset )
 	}
+
 	public static func all( _ horizontal: Double, _ vertical: Double ) -> SideInsets {
 		SideInsets(
 			top: vertical,
 			leading: horizontal,
 			bottom: vertical,
-			trailing: horizontal
+			trailing: horizontal,
 		)
 	}
 }
@@ -797,11 +801,10 @@ public extension XTEdgeInsets {
 	init( _ sides: SideInsets ) {
 		self.init(
 			top: sides.top ?? 0, left: sides.leading ?? 0,
-			bottom: sides.bottom ?? 0, right: sides.trailing ?? 0
+			bottom: sides.bottom ?? 0, right: sides.trailing ?? 0,
 		)
 	}
 }
-
 
 extension LayoutGuideProtocol {
 	/// Constrains sender to specified sides of `view`.
@@ -810,29 +813,29 @@ extension LayoutGuideProtocol {
 	@available( *, deprecated, renamed: "pin(_:_:to:)" )
 	func pin(
 		_ sides: SideInsets,
-		to view: LayoutGuideProtocol? = nil
+		to view: LayoutGuideProtocol? = nil,
 	) -> [ NSLayoutConstraint ] {
 		let secondItem = view ?? owningView!
 		var constraints: [ NSLayoutConstraint ] = []
 
 		if let top = sides.top {
 			constraints.append(
-				topAnchor.constraint( equalTo: secondItem.topAnchor, constant: top )
+				topAnchor.constraint( equalTo: secondItem.topAnchor, constant: top ),
 			)
 		}
 		if let leading = sides.leading {
 			constraints.append(
-				leadingAnchor.constraint( equalTo: secondItem.leadingAnchor, constant: leading )
+				leadingAnchor.constraint( equalTo: secondItem.leadingAnchor, constant: leading ),
 			)
 		}
 		if let bottom = sides.bottom {
 			constraints.append(
-				secondItem.bottomAnchor.constraint( equalTo: bottomAnchor, constant: bottom )
+				secondItem.bottomAnchor.constraint( equalTo: bottomAnchor, constant: bottom ),
 			)
 		}
 		if let trailing = sides.trailing {
 			constraints.append(
-				secondItem.trailingAnchor.constraint( equalTo: trailingAnchor, constant: trailing )
+				secondItem.trailingAnchor.constraint( equalTo: trailingAnchor, constant: trailing ),
 			)
 		}
 
@@ -849,7 +852,7 @@ public extension UIStackView {
 		spacing: Double = 0,
 		distribution: UIStackView.Distribution = .fill,
 		alignment: UIStackView.Alignment = .fill,
-		@UIViewBuilder _ content: () -> [ UIView ]
+		@UIViewBuilder _ content: () -> [ UIView ],
 	) {
 		self.init( axis, spacing: spacing, distribution: distribution, alignment: alignment, content )
 	}
@@ -867,14 +870,11 @@ public extension Array {
 	/// Каждому блоку итератор передаёт элемент массива и блок завершения `IterationResult` для передачи результата,
 	/// который ОБЯЗАТЕЛЬНО должен быть вызван. Только после вызова `IterationResult` для всех элементов
 	/// вызывается блок завершения самого метода `asyncFilter`.
-	func asyncFilter( asyncIsIncluded: @escaping AsyncIteration, completion: @escaping ( [ Element ] ) -> Void ) {
-	}
+	func asyncFilter( asyncIsIncluded: @escaping AsyncIteration, completion: @escaping ( [ Element ] ) -> Void ) {}
 }
-
 
 @available( *, unavailable, message: "Use AsyncStream or Combine instead.")
-open class Event<T> {
-}
+open class Event<T> {}
 
 public extension Sequence {
 
@@ -884,7 +884,7 @@ public extension Sequence {
 	@inlinable
 	func first<T>(
 		_ keypath: KeyPath<Element, T>,
-		equal value: T
+		equal value: T,
 	) -> Element? where T: Equatable {
 		first( keypath, equalTo: value )
 	}
@@ -895,7 +895,7 @@ public extension Sequence {
 	@inlinable
 	func filter<T>(
 		_ keypath: KeyPath<Element, T>,
-		equal value: T
+		equal value: T,
 	) -> [ Element ] where T: Equatable {
 		filter( keypath, equalTo: value )
 	}
@@ -906,7 +906,7 @@ public extension Sequence {
 	@inlinable
 	func contains<T>(
 		_ keypath: KeyPath<Element, T>,
-		equal value: T
+		equal value: T,
 	) -> Bool where T: Equatable {
 		contains( keypath, equalTo: value )
 	}
@@ -929,7 +929,7 @@ public extension View {
 	@available( *, deprecated, message: "Use `background(_:ignoresSafeAreaEdges:)`." )
 	func wholeViewBackground<S: ShapeStyle>(
 		_ style: S,
-		ignoreSafeAreaEdges safeAreaEdges: Edge.Set = .all
+		ignoreSafeAreaEdges safeAreaEdges: Edge.Set = .all,
 	) -> some View {
 		ZStack {
 			Rectangle()
@@ -954,7 +954,7 @@ public extension View {
 	@available( *, deprecated, message: "Use `background(alignment:content:)` with `ignoresSafeArea(edges:)` applied to the background view." )
 	func wholeViewBackground<Background: View>(
 		ignoreSafeAreaEdges safeAreaEdges: Edge.Set = .all,
-		@ViewBuilder _ background: () -> Background
+		@ViewBuilder _ background: () -> Background,
 	) -> some View {
 		ZStack {
 			background()
@@ -978,7 +978,7 @@ public extension View {
 	@available( *, deprecated, message: "Use `background(alignment:content:)` with `ignoresSafeArea(edges:)` applied to the background view." )
 	func wholeViewBackground<Background: View>(
 		view background: Background,
-		ignoreSafeAreaEdges safeAreaEdges: Edge.Set = .all
+		ignoreSafeAreaEdges safeAreaEdges: Edge.Set = .all,
 	) -> some View {
 		ZStack {
 			background
@@ -987,7 +987,6 @@ public extension View {
 		}
 	}
 }
-
 
 extension Dictionary where Value: OptionalType {
 

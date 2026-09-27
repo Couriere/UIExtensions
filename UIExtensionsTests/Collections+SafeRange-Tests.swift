@@ -31,49 +31,49 @@ struct CollectionsSafeRangeTests {
 
 	// MARK: - subscript( safe: )
 
-	@Test("Range inside the collection")
-	func rangeInside() {
+	@Test
+	func `Range inside the collection`() {
 		#expect( Array( array[ safe: 1 ..< 3 ] ) == [ 2, 3 ] )
 		#expect( Array( array[ safe: 0 ..< 5 ] ) == array )
 	}
 
-	@Test("Range crossing the upper bound")
-	func rangeAboveUpperBound() {
+	@Test
+	func `Range crossing the upper bound`() {
 		#expect( Array( array[ safe: 3 ..< 100 ] ) == [ 4, 5 ] )
 		#expect( Array( array[ safe: 5 ..< 10 ] ).isEmpty )
 		#expect( Array( array[ safe: 42 ..< 100 ] ).isEmpty )
 	}
 
-	@Test("Range crossing the lower bound")
-	func rangeBelowLowerBound() {
+	@Test
+	func `Range crossing the lower bound`() {
 		#expect( Array( array[ safe: -5 ..< 2 ] ) == [ 1, 2 ] )
 		#expect( Array( array[ safe: -100 ..< -5 ] ).isEmpty )
 		#expect( Array( array[ safe: -100 ..< 100 ] ) == array )
 	}
 
-	@Test("Empty collection")
-	func emptyCollection() {
+	@Test
+	func `Empty collection`() {
 		let empty: [ Int ] = []
 		#expect( Array( empty[ safe: -3 ..< 3 ] ).isEmpty )
 	}
 
 	// MARK: - rotatingLeft
 
-	@Test("Rotating left moves the first element to the end")
-	func rotatingLeft() {
+	@Test
+	func `Rotating left moves the first element to the end`() {
 		#expect( [ 1, 2, 3 ].rotatingLeft() == [ 2, 3, 1 ] )
 		#expect( [ 1 ].rotatingLeft() == [ 1 ] )
 	}
 
-	@Test("Rotating an empty array leaves it unchanged")
-	func rotatingEmptyArray() {
+	@Test
+	func `Rotating an empty array leaves it unchanged`() {
 		#expect( [ Int ]().rotatingLeft().isEmpty )
 	}
 
 	// MARK: - changingEach
 
-	@Test("Changing each element")
-	func changingEach() {
+	@Test
+	func `Changing each element`() {
 
 		struct Item: Equatable { var value: Int }
 
@@ -87,8 +87,8 @@ struct CollectionsSafeRangeTests {
 
 	// MARK: - replacingSubrange
 
-	@Test("Replacing a subrange")
-	func replacingSubrange() {
+	@Test
+	func `Replacing a subrange`() {
 		#expect(
 			[ 10, 20, 30, 40, 50 ].replacingSubrange( 1...3, with: repeatElement( 1, count: 5 ))
 				== [ 10, 1, 1, 1, 1, 1, 50 ],
@@ -97,8 +97,8 @@ struct CollectionsSafeRangeTests {
 
 	// MARK: - toggle
 
-	@Test("Toggling an array element")
-	func toggleElement() {
+	@Test
+	func `Toggling an array element`() {
 
 		var array = [ 1, 2, 3 ]
 		array.toggle( 2 )
@@ -109,8 +109,8 @@ struct CollectionsSafeRangeTests {
 
 	// MARK: - Duplicates
 
-	@Test("Removing duplicates keeps the first occurrence")
-	func removingDuplicates() {
+	@Test
+	func `Removing duplicates keeps the first occurrence`() {
 
 		#expect( [ 3, 1, 3, 2, 1 ].removingDuplicates == [ 3, 1, 2 ] )
 
@@ -123,21 +123,21 @@ struct CollectionsSafeRangeTests {
 @Suite("Numbers+ClampedTests")
 struct NumbersClampedTests {
 
-	@Test("Clamping to a closed range")
-	func clampedInClosedRange() {
+	@Test
+	func `Clamping to a closed range`() {
 		#expect( 5.clamped( in: 0 ... 10 ) == 5 )
 		#expect( (-5).clamped( in: 0 ... 10 ) == 0 )
 		#expect( 15.clamped( in: 0 ... 10 ) == 10 )
 	}
 
-	@Test("Clamping an integer to a half-open range")
-	func clampedInRange() {
+	@Test
+	func `Clamping an integer to a half-open range`() {
 		#expect( 5.clamped( in: 0 ..< 10 ) == 5 )
 		#expect( 15.clamped( in: 0 ..< 10 ) == 10 )
 	}
 
-	@Test("Clamping a floating-point value stays below the upper bound")
-	func clampedFloatingPoint() {
+	@Test
+	func `Clamping a floating-point value stays below the upper bound`() {
 
 		#expect( 5.0.clamped( in: 0.0 ..< 10.0 ) == 5.0 )
 		#expect( (-5.0).clamped( in: 0.0 ..< 10.0 ) == 0.0 )
@@ -147,16 +147,16 @@ struct NumbersClampedTests {
 		#expect( clamped == 10.0.nextDown )
 	}
 
-	@Test("Testing range membership")
-	func isIn() {
+	@Test
+	func `Testing range membership`() {
 		#expect( 5.isIn( 0 ..< 10 ))
 		#expect( !10.isIn( 0 ..< 10 ))
 		#expect( 10.isIn( 0 ... 10 ))
 		#expect( !11.isIn( 0 ... 10 ))
 	}
 
-	@Test("Comparison with zero")
-	func zeroComparisons() {
+	@Test
+	func `Comparison with zero`() {
 		#expect( 1.greaterThanZero )
 		#expect( (-1.0).lessThanZero )
 		#expect( 0.equalToZero )
@@ -164,8 +164,8 @@ struct NumbersClampedTests {
 		#expect( 0.0.lessThanOrEqualToZero )
 	}
 
-	@Test("Arithmetic shorthands")
-	func arithmeticShorthands() {
+	@Test
+	func `Arithmetic shorthands`() {
 		#expect( 2.0.doubled == 4.0 )
 		#expect( 5.0.halved == 2.5 )
 		#expect( 2.0.tripled == 6.0 )

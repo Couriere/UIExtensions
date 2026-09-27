@@ -41,7 +41,6 @@ public extension Timer {
 		return timer!
 	}
 
-
 	/**
 	 Creates and schedules a one-time `NSTimer` instance.
 
@@ -53,7 +52,6 @@ public extension Timer {
 	class func schedule( time: Date, handler: @escaping ( Timer? ) -> Void ) -> Timer {
 		return schedule( delay: time.timeIntervalSinceNow, handler: handler )
 	}
-
 
 	/**
 	 Creates and schedules a repeating `NSTimer` instance.

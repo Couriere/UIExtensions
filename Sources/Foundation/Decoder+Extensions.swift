@@ -32,7 +32,7 @@ public extension UnkeyedDecodingContainer {
 
 		var result: [ T ] = []
 		while !isAtEnd {
-			if let value = try? self.decode( T.self ) {
+			if let value = try? decode( T.self ) {
 				result.append( value )
 			}
 			else {

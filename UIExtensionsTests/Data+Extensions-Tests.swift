@@ -20,12 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Testing
 import Foundation
+import Testing
 import UIExtensions
 
-@Test( "Data to hex" )
-func dataToHex() {
+@Test
+func `Data to hex`() {
 	let fixedCases: [( [ UInt8 ], String )] = [
 		( [ 0, 1, 10, 11, 15, 16, 20, 31, 32, 127, 128, 200, 255 ], "00010a0b0f10141f207f80c8ff" ),
 		( [], "" ),

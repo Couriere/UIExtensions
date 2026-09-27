@@ -27,92 +27,91 @@ import UIExtensions
 @Suite("Sequences+ExtensionsTests")
 struct SequencesExtensionsTests {
 
-    private struct Item {
-        let id: Int
-        let value: Int
-        let isActive: Bool
-    }
+	private struct Item {
+		let id: Int
+		let value: Int
+		let isActive: Bool
+	}
 
-    @Test
-    func containsKeyPathEqualValueProperties() {
-        for _ in 0..<1_000 {
-            let count = Int.random(in: 10...100)
-            let items = (0..<count).map { index in
-                Item(
-                    id: index,
-                    value: Int.random(in: -1_000...1_000),
-                    isActive: Bool.random()
-                )
-            }
+	@Test
+	func `contains key path equal value properties`() {
+		for _ in 0..<1000 {
+			let count = Int.random(in: 10...100)
+			let items = (0..<count).map { index in
+				Item(
+					id: index,
+					value: Int.random(in: -1000...1000),
+					isActive: Bool.random(),
+				)
+			}
 
-            let targetId: Int
-            if let randomItem = items.randomElement() {
-                targetId = randomItem.id
-            } else {
-                targetId = Int.random(in: 0...100)
-            }
+			let targetId: Int = if let randomItem = items.randomElement() {
+				randomItem.id
+			} else {
+				Int.random(in: 0...100)
+			}
 
-            let expectedContains = items.contains { $0.id == targetId }
-            #expect(items.contains(\.id, equalTo: targetId) == expectedContains)
+			let expectedContains = items.contains { $0.id == targetId }
+			#expect(items.contains(\.id, equalTo: targetId) == expectedContains)
 
-            let expectedActive = items.contains { $0.isActive }
-            #expect(items.contains(\.isActive) == expectedActive)
-        }
-    }
+			let expectedActive = items.contains { $0.isActive }
+			#expect(items.contains(\.isActive) == expectedActive)
+		}
+	}
 
-    @Test
-    func sortedKeyPathProperties() {
-        for _ in 0..<1_000 {
-            let count = Int.random(in: 10...100)
-            let items = (0..<count).map { index in
-                Item(
-                    id: index,
-                    value: Int.random(in: -1_000...1_000),
-                    isActive: Bool.random()
-                )
-            }
+	@Test
+	func `sorted key path properties`() {
+		for _ in 0..<1000 {
+			let count = Int.random(in: 10...100)
+			let items = (0..<count).map { index in
+				Item(
+					id: index,
+					value: Int.random(in: -1000...1000),
+					isActive: Bool.random(),
+				)
+			}
 
-            let forward = items.sorted(\.value, order: .forward)
-            for index in 1..<forward.count {
-                #expect(forward[index - 1].value <= forward[index].value)
-            }
+			let forward = items.sorted(\.value, order: .forward)
+			for index in 1..<forward.count {
+				#expect(forward[index - 1].value <= forward[index].value)
+			}
 
-            let reverse = items.sorted(\.value, order: .reverse)
-            for index in 1..<reverse.count {
-                #expect(reverse[index - 1].value >= reverse[index].value)
-            }
+			let reverse = items.sorted(\.value, order: .reverse)
+			for index in 1..<reverse.count {
+				#expect(reverse[index - 1].value >= reverse[index].value)
+			}
 
-            let originalIds = items.map(\.id).sorted()
-            #expect(forward.map(\.id).sorted() == originalIds)
-            #expect(reverse.map(\.id).sorted() == originalIds)
-        }
-    }
+			let originalIds = items.map(\.id).sorted()
+			#expect(forward.map(\.id).sorted() == originalIds)
+			#expect(reverse.map(\.id).sorted() == originalIds)
+		}
+	}
 
-    @Test
-    func sortKeyPathProperties() {
-        for _ in 0..<1_000 {
-            let count = Int.random(in: 10...100)
-            var items = (0..<count).map { index in
-                Item(
-                    id: index,
-                    value: Int.random(in: -1_000...1_000),
-                    isActive: Bool.random()
-                )
-            }
+	@Test
+	func `sort key path properties`() {
+		for _ in 0..<1000 {
+			let count = Int.random(in: 10...100)
+			var items = (0..<count).map { index in
+				Item(
+					id: index,
+					value: Int.random(in: -1000...1000),
+					isActive: Bool.random(),
+				)
+			}
 
-            let originalIds = items.map(\.id).sorted()
+			let originalIds = items.map(\.id).sorted()
 
-            items.sort(\.value, order: .forward)
-            for index in 1..<items.count {
-                #expect(items[index - 1].value <= items[index].value)
-            }
-            #expect(items.map(\.id).sorted() == originalIds)
+			items.sort(\.value, order: .forward)
+			for index in 1..<items.count {
+				#expect(items[index - 1].value <= items[index].value)
+			}
+			#expect(items.map(\.id).sorted() == originalIds)
 
-            items.sort(\.value, order: .reverse)
-            for index in 1..<items.count {
-                #expect(items[index - 1].value >= items[index].value)
-            }
-            #expect(items.map(\.id).sorted() == originalIds)
-        }
-    }
+			items.sort(\.value, order: .reverse)
+			for index in 1..<items.count {
+				#expect(items[index - 1].value >= items[index].value)
+			}
+			#expect(items.map(\.id).sorted() == originalIds)
+		}
+	}
 }

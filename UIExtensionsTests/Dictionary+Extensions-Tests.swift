@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import XCTest
 import UIExtensions
+import XCTest
 
 @MainActor
 final class Dictionary_Extensions_Tests: XCTestCase {
@@ -30,7 +30,6 @@ final class Dictionary_Extensions_Tests: XCTestCase {
 
 		let dictionary1: [ String: Int ] = [ "a": 1, "b": 2, "c": 30, "d": 400 ]
 		let dictionary2: [ String: Int ] = [ "a": -1, "x": -2, "c": -30, "z": -400 ]
-
 
 		let result1Plus2: [ String: Int ] = [ "a": -1, "b": 2, "x": -2, "c": -30, "d": 400, "z": -400 ]
 		let result2Plus1: [ String: Int ] = [ "a": 1, "b": 2, "x": -2, "c": 30, "d": 400, "z": -400 ]
@@ -53,23 +52,31 @@ final class Dictionary_Extensions_Tests: XCTestCase {
 
 	func testStringSanitizer() {
 
-		let testDictionary1: [ String: String? ] = [ "One" : "One",
-													 "Two" : "Two",
-													 "Three" : nil,
-													 "Four" : "Four",
-													 "Five" : nil ]
+		let testDictionary1: [ String: String? ] = [
+			"One" : "One",
+			"Two" : "Two",
+			"Three" : nil,
+			"Four" : "Four",
+			"Five" : nil,
+		]
 
-		XCTAssert( testDictionary1.sanitized == [ "One" : "One",
-												 "Two" : "Two",
-												 "Four" : "Four" ] )
+		XCTAssert( testDictionary1.sanitized == [
+			"One" : "One",
+			"Two" : "Two",
+			"Four" : "Four",
+		] )
 
-		let testDictionary2: [ String: String? ] = [ "One" : "One",
-													 "Two" : "Two",
-													 "Three" : "Three" ]
+		let testDictionary2: [ String: String? ] = [
+			"One" : "One",
+			"Two" : "Two",
+			"Three" : "Three",
+		]
 
-		XCTAssert( testDictionary2.sanitized == [ "One" : "One",
-												 "Two" : "Two",
-												 "Three" : "Three" ] )
+		XCTAssert( testDictionary2.sanitized == [
+			"One" : "One",
+			"Two" : "Two",
+			"Three" : "Three",
+		] )
 
 		let testDictionary3: [ String: String? ] = [ "One" : nil ]
 

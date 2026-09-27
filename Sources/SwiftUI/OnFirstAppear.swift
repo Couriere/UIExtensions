@@ -40,7 +40,7 @@ extension View {
 	public func onFirstAppear( _ action: @escaping () -> Void ) -> some View {
 
 		modifier(
-			_OnFirstAppearModifier( action: action )
+			_OnFirstAppearModifier( action: action ),
 		)
 	}
 }
@@ -57,6 +57,8 @@ struct _OnFirstAppearModifier {
 	}
 }
 
+// MARK: ViewModifier
+
 extension _OnFirstAppearModifier: ViewModifier {
 
 	@usableFromInline
@@ -71,4 +73,3 @@ extension _OnFirstAppearModifier: ViewModifier {
 		}
 	}
 }
-

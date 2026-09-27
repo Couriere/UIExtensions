@@ -52,7 +52,7 @@ extension View {
 		of value: V,
 		to target: V,
 		initial: Bool = false,
-		_ action: @escaping () -> Void
+		_ action: @escaping () -> Void,
 	) -> some View where V: Equatable {
 
 		onChange( of: value, initial: initial ) { _, newValue in
@@ -92,7 +92,7 @@ extension View {
 		of value: V,
 		to predicate: @escaping ( V ) -> Bool,
 		initial: Bool = false,
-		_ action: @escaping () -> Void
+		_ action: @escaping () -> Void,
 	) -> some View where V: Equatable {
 
 		onChange( of: value, initial: initial ) { _, newValue in

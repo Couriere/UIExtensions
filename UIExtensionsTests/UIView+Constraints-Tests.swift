@@ -21,8 +21,8 @@
 // SOFTWARE.
 
 #if !os(watchOS)
-import XCTest
 import UIExtensions
+import XCTest
 
 @MainActor
 final class View_Constraints_Tests: XCTestCase, @unchecked Sendable {
@@ -54,12 +54,14 @@ final class View_Constraints_Tests: XCTestCase, @unchecked Sendable {
 		try await super.tearDown()
 	}
 
-	private func assertConstraint( _ constraint: NSLayoutConstraint,
-	                               _ firstAnchor: AnyObject,
-	                               _ secondAnchor: AnyObject,
-	                               _ constant: CGFloat,
-	                               _ multiplier: CGFloat,
-	                               _ priority: XTLayoutPriority ) {
+	private func assertConstraint(
+		_ constraint: NSLayoutConstraint,
+		_ firstAnchor: AnyObject,
+		_ secondAnchor: AnyObject,
+		_ constant: CGFloat,
+		_ multiplier: CGFloat,
+		_ priority: XTLayoutPriority,
+	) {
 
 		XCTAssert( constraint.firstAnchor === firstAnchor )
 		XCTAssert( constraint.secondAnchor === secondAnchor )
@@ -68,101 +70,206 @@ final class View_Constraints_Tests: XCTestCase, @unchecked Sendable {
 		XCTAssert( constraint.priority == priority )
 	}
 
-
 	// MARK: - constrainHorizontallyToSuperview()
 
-	func testConstrainHorizontallyToSuperview() {
+	func testConstrainHorizontallyToSuperview() throws {
 		let constraints = child.pin( .horizontal )
 
 		XCTAssert( constraints.count == 2 )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,
-		                  child.leadingAnchor, parent.leadingAnchor, 0, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 1 ] }!,
-		                  parent.trailingAnchor, child.trailingAnchor, 0, 1, .required )
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 0 ] }),
+			child.leadingAnchor,
+			parent.leadingAnchor,
+			0,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 1 ] }),
+			parent.trailingAnchor,
+			child.trailingAnchor,
+			0,
+			1,
+			.required,
+		)
 	}
 
-	func testConstrainHorizontallyToSuperviewWithInset() {
+	func testConstrainHorizontallyToSuperviewWithInset() throws {
 
 		let constraints = child.pin( .horizontal, 10 )
 
 		XCTAssert( constraints.count == 2 )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,
-		                  child.leadingAnchor, parent.leadingAnchor, 10, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 1 ] }!,
-		                  parent.trailingAnchor, child.trailingAnchor, 10, 1, .required )
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 0 ] }),
+			child.leadingAnchor,
+			parent.leadingAnchor,
+			10,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 1 ] }),
+			parent.trailingAnchor,
+			child.trailingAnchor,
+			10,
+			1,
+			.required,
+		)
 	}
-
 
 	// MARK: - constrainVerticallyToSuperview()
 
-	func testConstrainVerticallyToSuperview() {
+	func testConstrainVerticallyToSuperview() throws {
 
 		let constraints = child.pin( .vertical )
 
 		XCTAssert( constraints.count == 2 )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,
-		                  child.topAnchor, parent.topAnchor, 0, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 1 ] }!,
-		                  parent.bottomAnchor, child.bottomAnchor, 0, 1, .required )
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 0 ] }),
+			child.topAnchor,
+			parent.topAnchor,
+			0,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 1 ] }),
+			parent.bottomAnchor,
+			child.bottomAnchor,
+			0,
+			1,
+			.required,
+		)
 	}
 
-	func testConstrainVerticallyToSuperviewWithInset() {
+	func testConstrainVerticallyToSuperviewWithInset() throws {
 
 		let constraints = child.pin( .vertical, 10 )
 
 		XCTAssert( constraints.count == 2 )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,
-		                  child.topAnchor, parent.topAnchor, 10, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 1 ] }!,
-		                  parent.bottomAnchor, child.bottomAnchor, 10, 1, .required )
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 0 ] }),
+			child.topAnchor,
+			parent.topAnchor,
+			10,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 1 ] }),
+			parent.bottomAnchor,
+			child.bottomAnchor,
+			10,
+			1,
+			.required,
+		)
 	}
 
-	func testConstrainVerticallyToSuperviewSafeArea() {
+	func testConstrainVerticallyToSuperviewSafeArea() throws {
 
 		let constraints = child.pin( .vertically, to: parent.safeAreaLayoutGuide)
 
 		XCTAssert( constraints.count == 2 )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,
-		                  child.topAnchor, parent.safeAreaLayoutGuide.topAnchor, 0, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 1 ] }!,
-		                  parent.safeAreaLayoutGuide.bottomAnchor, child.bottomAnchor, 0, 1, .required )
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 0 ] }),
+			child.topAnchor,
+			parent.safeAreaLayoutGuide.topAnchor,
+			0,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 1 ] }),
+			parent.safeAreaLayoutGuide.bottomAnchor,
+			child.bottomAnchor,
+			0,
+			1,
+			.required,
+		)
 	}
-
 
 	// MARK: - constrainToSuperview
 
-	func testConstrainToSuperview() {
+	func testConstrainToSuperview() throws {
 
 		let constraints = child.pin( .all )
 
 		XCTAssert( constraints.count == 4 )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,
-		                  child.topAnchor, parent.topAnchor, 0, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 1 ] }!,
-		                  child.leadingAnchor, parent.leadingAnchor, 0, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 2 ] }!,
-		                  parent.bottomAnchor, child.bottomAnchor, 0, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 3 ] }!,
-		                  parent.trailingAnchor, child.trailingAnchor, 0, 1, .required )
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 0 ] }),
+			child.topAnchor,
+			parent.topAnchor,
+			0,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 1 ] }),
+			child.leadingAnchor,
+			parent.leadingAnchor,
+			0,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 2 ] }),
+			parent.bottomAnchor,
+			child.bottomAnchor,
+			0,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 3 ] }),
+			parent.trailingAnchor,
+			child.trailingAnchor,
+			0,
+			1,
+			.required,
+		)
 	}
 
-	func testConstrainToSuperviewWithInsets() {
+	func testConstrainToSuperviewWithInsets() throws {
 
 		let insets = XTEdgeInsets( top: 1, left: 2, bottom: 3, right: 4 )
 		let constraints = child.pin( insets )
 
 		XCTAssert( constraints.count == 4 )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,
-		                  child.topAnchor, parent.topAnchor, 1, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 1 ] }!,
-		                  child.leadingAnchor, parent.leadingAnchor, 2, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 2 ] }!,
-		                  parent.bottomAnchor, child.bottomAnchor, 3, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 3 ] }!,
-		                  parent.trailingAnchor, child.trailingAnchor, 4, 1, .required )
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 0 ] }),
+			child.topAnchor,
+			parent.topAnchor,
+			1,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 1 ] }),
+			child.leadingAnchor,
+			parent.leadingAnchor,
+			2,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 2 ] }),
+			parent.bottomAnchor,
+			child.bottomAnchor,
+			3,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 3 ] }),
+			parent.trailingAnchor,
+			child.trailingAnchor,
+			4,
+			1,
+			.required,
+		)
 	}
 
-	func testConstrainToSuperviewSafeArea() {
+	func testConstrainToSuperviewSafeArea() throws {
 
 		var constraints: [ NSLayoutConstraint ] = []
 		constraints += child.pin( .top, 40, to: parent.safeAreaLayoutGuide )
@@ -170,34 +277,75 @@ final class View_Constraints_Tests: XCTestCase, @unchecked Sendable {
 		constraints += child.pin( .bottom, 20, to: parent.safeAreaLayoutGuide )
 		constraints += child.pin( .trailing, 10, to: parent.safeAreaLayoutGuide )
 
-
 		XCTAssert( constraints.count == 4 )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,
-		                  child.topAnchor, parent.safeAreaLayoutGuide.topAnchor, 40, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 1 ] }!,
-		                  child.leadingAnchor, parent.safeAreaLayoutGuide.leadingAnchor, 30, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 2 ] }!,
-		                  parent.safeAreaLayoutGuide.bottomAnchor, child.bottomAnchor, 20, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 3 ] }!,
-		                  parent.safeAreaLayoutGuide.trailingAnchor, child.trailingAnchor, 10, 1, .required )
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 0 ] }),
+			child.topAnchor,
+			parent.safeAreaLayoutGuide.topAnchor,
+			40,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 1 ] }),
+			child.leadingAnchor,
+			parent.safeAreaLayoutGuide.leadingAnchor,
+			30,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 2 ] }),
+			parent.safeAreaLayoutGuide.bottomAnchor,
+			child.bottomAnchor,
+			20,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 3 ] }),
+			parent.safeAreaLayoutGuide.trailingAnchor,
+			child.trailingAnchor,
+			10,
+			1,
+			.required,
+		)
 	}
 
 	// MARK: - Arbitrary format constraints
 
-	func testConstrainWithFormat() {
+	func testConstrainWithFormat() throws {
 
-		let views = [ "sibling": siblingToChild! ]
+		let views = try [ "sibling": XCTUnwrap(siblingToChild) ]
 		let metrics: [ String: CGFloat ] = [ "inset": 10, "width": 20 ]
 		let constraints = child.constrainWithFormat( "H:|[self]-(inset)-[sibling(==width)]-(1)-|", views: views, metrics: metrics )
 
 		XCTAssertEqual( constraints.count, 4 )
 
-		assertConstraint( parent.constraints.first { $0 === constraints[ 0 ] }!,
-		                  child.leadingAnchor, parent.leadingAnchor, 0, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 1 ] }!,
-		                  siblingToChild.leadingAnchor, child.trailingAnchor, 10, 1, .required )
-		assertConstraint( parent.constraints.first { $0 === constraints[ 3 ] }!,
-		                  parent.trailingAnchor, siblingToChild.trailingAnchor, 1, 1, .required )
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 0 ] }),
+			child.leadingAnchor,
+			parent.leadingAnchor,
+			0,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 1 ] }),
+			siblingToChild.leadingAnchor,
+			child.trailingAnchor,
+			10,
+			1,
+			.required,
+		)
+		try assertConstraint(
+			XCTUnwrap(parent.constraints.first { $0 === constraints[ 3 ] }),
+			parent.trailingAnchor,
+			siblingToChild.trailingAnchor,
+			1,
+			1,
+			.required,
+		)
 
 		XCTAssert( siblingToChild.constraints.count == 1 )
 		let widthConstraint = siblingToChild.constraints[ 0 ]
@@ -210,4 +358,3 @@ final class View_Constraints_Tests: XCTestCase, @unchecked Sendable {
 }
 
 #endif // !os(watchOS)
-

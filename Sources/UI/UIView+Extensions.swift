@@ -76,7 +76,7 @@ public extension XTView {
 	///
 	func settingContentPriority(
 		_ priority: XTLayoutPriority,
-		for axes: Axes
+		for axes: Axes,
 	) -> Self {
 		if axes.contains( .horizontal ) {
 			setContentHuggingPriority( priority, for: .horizontal )
@@ -103,12 +103,11 @@ public extension XTView {
 	///
 	func setContentPriority(
 		_ priority: XTLayoutPriority,
-		for axes: Axes
+		for axes: Axes,
 	) {
 		_ = settingContentPriority( priority, for: axes )
 	}
 }
-
 
 public extension XTView {
 
@@ -130,10 +129,9 @@ public extension XTView {
 		let nib = UINib( nibName: xibFileName, bundle: bundle ?? Bundle( for: self ) )
 		views = nib.instantiate( withOwner: nil, options: nil ) as NSArray
 		#endif
-		return views?.compactMap( { $0 as? Self } ).first
+		return views?.compactMap { $0 as? Self }.first
 	}
 }
-
 
 #if canImport(UIKit)
 
@@ -146,12 +144,11 @@ public extension UIView {
 	}
 }
 
-
 public extension UIView {
 
 	@discardableResult
 	func background(
-		color: UIColor = .white
+		color: UIColor = .white,
 	) -> Self {
 
 		backgroundColor = color
@@ -160,7 +157,7 @@ public extension UIView {
 
 	@discardableResult
 	func cornerRadius(
-		_ cornerRadius: Double = 0
+		_ cornerRadius: Double = 0,
 	) -> Self {
 
 		layer.cornerRadius = cornerRadius
@@ -171,7 +168,7 @@ public extension UIView {
 	func shadow(
 		color: UIColor,
 		radius: Double = 1,
-		offset: CGSize = .zero
+		offset: CGSize = .zero,
 	) -> Self {
 
 		layer.shadowColor = color.cgColor
@@ -185,7 +182,7 @@ public extension UIView {
 	@discardableResult
 	func border(
 		color: UIColor,
-		width: Double = (1 / UIScreen.main.scale)
+		width: Double = (1 / UIScreen.main.scale),
 	) -> Self {
 		layer.borderColor = color.cgColor
 		layer.borderWidth = width
@@ -195,7 +192,7 @@ public extension UIView {
 
 	@discardableResult
 	func tint( _ color: UIColor ) -> Self {
-		self.tintColor = color
+		tintColor = color
 		return self
 	}
 
@@ -227,7 +224,7 @@ public extension UIView {
 	@discardableResult
 	func frame(
 		minWidth: Double? = nil, maxWidth: Double? = nil,
-		minHeight: Double? = nil, maxHeight: Double? = nil
+		minHeight: Double? = nil, maxHeight: Double? = nil,
 	) -> Self {
 		if let minWidth { constrain( width: minWidth, relatedBy: .greaterThanOrEqual ) }
 		if let maxWidth { constrain( width: maxWidth, relatedBy: .lessThanOrEqual ) }
@@ -244,7 +241,7 @@ public extension UIView {
 
 	@discardableResult
 	func maximumContentSizeCategory(
-		_ category: UIContentSizeCategory?
+		_ category: UIContentSizeCategory?,
 	) -> Self {
 		maximumContentSizeCategory = category
 		return self
@@ -252,7 +249,7 @@ public extension UIView {
 
 	@discardableResult
 	func minimumContentSizeCategory(
-		_ category: UIContentSizeCategory?
+		_ category: UIContentSizeCategory?,
 	) -> Self {
 		minimumContentSizeCategory = category
 		return self

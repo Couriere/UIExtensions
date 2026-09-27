@@ -21,7 +21,7 @@
 // SOFTWARE.
 import SwiftUI
 
-nonisolated public struct UnwrappingButton<Label, Value> where Label: View, Value: Sendable {
+public nonisolated struct UnwrappingButton<Label, Value> where Label: View, Value: Sendable {
 
 	let unwrapping: Value?
 	let role: ButtonRole?
@@ -227,7 +227,6 @@ extension UnwrappingButton where Label == Image {
 		)
 	}
 
-
 	/// Creates a button that unwraps an optional value and displays
 	/// an image.
 	///
@@ -299,7 +298,6 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 		)
 	}
 
-
 	/// Creates a button that unwraps an optional value and generates its
 	/// label from a string and an image.
 	///
@@ -333,7 +331,6 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 			label: { Label( title, image: image ) },
 		)
 	}
-
 
 	/// Creates a button that unwraps an optional value and generates its
 	/// label from a localized string key and an image.
@@ -375,7 +372,6 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 		)
 	}
 
-
 	/// Creates a button that unwraps an optional value and generates its
 	/// label from a string and an image.
 	///
@@ -408,7 +404,6 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 			label: { Label( title, image: image ) },
 		)
 	}
-
 
 	/// Creates a button that unwraps an optional value and generates its
 	/// label from a localized string key and a system image name.
@@ -450,7 +445,6 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 			label: { Label( title: { Text( titleKey, tableName: tableName, bundle: bundle ) }, icon: { Image( systemName: systemImage ) } ) },
 		)
 	}
-
 
 	/// Creates a button that unwraps an optional value and generates its
 	/// label from a string and a system image name.
@@ -486,7 +480,6 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 		)
 	}
 
-
 	/// Creates a button that unwraps an optional value and generates its
 	/// label from a localized string key and a system image name.
 	///
@@ -526,7 +519,6 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 			label: { Label( title: { Text( titleKey, tableName: tableName, bundle: bundle ) }, icon: { Image( systemName: systemImage ) } ) },
 		)
 	}
-
 
 	/// Creates a button that unwraps an optional value and generates its
 	/// label from a string and a system image name.
@@ -591,7 +583,6 @@ extension UnwrappingButton where Label == Image {
 			action: action,
 		)
 	}
-
 
 	/// Creates a button that unwraps an optional value and displays
 	/// an image resource.
@@ -664,7 +655,6 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 		)
 	}
 
-
 	/// Creates a button that unwraps an optional value and generates its
 	/// label from a string and an image resource.
 	///
@@ -698,7 +688,6 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 			label: { Label( title, image: Image( resource )) },
 		)
 	}
-
 
 	/// Creates a button that unwraps an optional value and generates its
 	/// label from a localized string key and an image resource.
@@ -739,7 +728,6 @@ extension UnwrappingButton where Label == SwiftUI.Label<Text, Image> {
 			label: { Label( titleKey, image: Image( resource ), tableName: tableName, bundle: bundle ) },
 		)
 	}
-
 
 	/// Creates a button that unwraps an optional value and generates its
 	/// label from a string and an image resource.

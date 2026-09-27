@@ -113,12 +113,12 @@ extension View {
 	/// - Returns: A view with pull-to-refresh capability added.
 	///
 	public func refreshableLoader(
-		_ reloadAction: @escaping () -> Void
+		_ reloadAction: @escaping () -> Void,
 	) -> some View {
-		self.modifier(
+		modifier(
 			RefreshableLoaderModifier(
-				reloadAction: reloadAction
-			)
+				reloadAction: reloadAction,
+			),
 		)
 	}
 }
@@ -140,18 +140,11 @@ internal struct RefreshableLoaderModifier: ViewModifier {
 	}
 }
 
-internal struct LoaderTaskKey: EnvironmentKey {
-	internal static var defaultValue: TaskWrapper? { nil }
-}
-
 internal extension EnvironmentValues {
-	var loaderTask: TaskWrapper? {
-		get { self[LoaderTaskKey.self] }
-		set { self[LoaderTaskKey.self] = newValue }
-	}
+	@Entry var loaderTask: TaskWrapper? = nil
 }
 
-internal struct TaskWrapper: Sendable {
+internal struct TaskWrapper {
 
 	let action: @Sendable () async -> Void
 

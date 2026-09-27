@@ -50,7 +50,7 @@ extension URL {
 
 		guard var components = URLComponents(
 			url: self,
-			resolvingAgainstBaseURL: false
+			resolvingAgainstBaseURL: false,
 		) else {
 			return self
 		}
@@ -75,19 +75,15 @@ extension URL {
 	// MARK: - System paths
 
 	public static var libraryPath: URL {
-		let path = try! FileManager.default.url( for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
-		return path
+		return try! FileManager.default.url( for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
 	}
 
 	public static var documentsPath: URL {
-		let path = try! FileManager.default.url( for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
-		return path
+		return try! FileManager.default.url( for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
 	}
 
 	public static var cachePath: URL {
-		let path = try! FileManager.default.url( for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
-		return path
+		return try! FileManager.default.url( for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false )
 	}
 #endif
 }
-

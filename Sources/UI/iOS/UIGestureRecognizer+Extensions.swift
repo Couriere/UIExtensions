@@ -40,7 +40,7 @@ public extension UIGestureRecognizer {
 			target ?? self,
 			"[\( Int.random( in: 1 ... Int.max ) )]",
 			wrapper,
-			.OBJC_ASSOCIATION_RETAIN
+			.OBJC_ASSOCIATION_RETAIN,
 		)
 	}
 
@@ -48,8 +48,14 @@ public extension UIGestureRecognizer {
 	private final class HandlerWrapper<T: UIGestureRecognizer> {
 		let handler: ( T ) -> Void
 		weak var recognizer: T?
-		init( _ handler: @escaping ( T ) -> Void ) { self.handler = handler }
-		@objc func invoke() { recognizer.then { handler( $0 ) } }
+		init( _ handler: @escaping ( T ) -> Void ) {
+			self.handler = handler
+		}
+
+		@objc
+		func invoke() {
+			recognizer.then { handler( $0 ) }
+		}
 	}
 }
 #endif

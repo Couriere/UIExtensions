@@ -35,22 +35,32 @@ public extension UIControl {
 	/// For a list of possible constants, see UIControl.Event.
 	/// - parameter handler: The closure that will be executed when action specified in
 	/// `controlEvents` is triggered.
-	func addHandler( for controlEvents: UIControl.Event,
-	                 action handler: @escaping () -> Void ) {
+	func addHandler(
+		for controlEvents: UIControl.Event,
+		action handler: @escaping () -> Void,
+	) {
 
 		let wrapper = HandlerWrapper( handler )
 		addTarget( wrapper, action: #selector( HandlerWrapper.invoke ), for: controlEvents )
-		objc_setAssociatedObject( self,
-		                          "[\( Int.random( in: 1 ... Int.max ) )]",
-		                          wrapper,
-		                          .OBJC_ASSOCIATION_RETAIN )
+		objc_setAssociatedObject(
+			self,
+			"[\( Int.random( in: 1 ... Int.max ) )]",
+			wrapper,
+			.OBJC_ASSOCIATION_RETAIN,
+		)
 	}
 
 	/// Wrapper class used to store closure.
 	private final class HandlerWrapper: NSObject {
 		private let handler: () -> Void
-		init( _ handler: @escaping () -> Void ) { self.handler = handler }
-		@objc fileprivate func invoke() { handler() }
+		init( _ handler: @escaping () -> Void ) {
+			self.handler = handler
+		}
+
+		@objc
+		fileprivate func invoke() {
+			handler()
+		}
 	}
 }
 #endif

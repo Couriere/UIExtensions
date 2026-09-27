@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import XCTest
-import UIExtensions
 import Combine
+import UIExtensions
+import XCTest
 
 #if swift(>=5.1)
 @MainActor
@@ -34,7 +34,7 @@ final class UserDefaults_PropertyWrapper: XCTestCase, @unchecked Sendable {
 	@CodableUserDefault( "arrayStore" ) var arrayStore: [ CGFloat ] = []
 	@CodableUserDefault( "optionalArrayStore" ) var optionalArrayStore: [ CGPoint ]?
 
-	@CodableUserDefault( "dataStore" ) var dataStore: Data = Data()
+	@CodableUserDefault( "dataStore" ) var dataStore: Data = .init()
 	@CodableUserDefault( "optionalDataStore" ) var optionalDataStore: Data?
 
 	@CodableUserDefault( "structStore" ) var structStore: Test = .default
@@ -48,10 +48,11 @@ final class UserDefaults_PropertyWrapper: XCTestCase, @unchecked Sendable {
 	@CodableUserDefault( "updatedFromiOS12DictionaryValue" ) var updatedFromiOS12DictionaryValue: [ String : Int ] = [:]
 	@CodableUserDefault( "updatedFromiOS12SetValue" ) var updatedFromiOS12SetValue: Set<String> = []
 
-
 	static let nonStandardSuite = UserDefaults( suiteName: "NonStandardSuite" )!
-	@CodableUserDefault( "nonStandardSuiteValue",
-				  store: UserDefaults_PropertyWrapper.nonStandardSuite )
+	@CodableUserDefault(
+		"nonStandardSuiteValue",
+		store: UserDefaults_PropertyWrapper.nonStandardSuite,
+	)
 	var nonStandardSuiteValue: Data?
 
 	let testURL = URL( string: "https://www.apple.com" )!
@@ -132,7 +133,6 @@ final class UserDefaults_PropertyWrapper: XCTestCase, @unchecked Sendable {
 		XCTAssertEqual( optionalArrayStore, nil )
 	}
 
-
 	struct Test: Codable, Equatable {
 		let i: Int
 		let s: String
@@ -197,12 +197,11 @@ final class UserDefaults_PropertyWrapper: XCTestCase, @unchecked Sendable {
 //		}
 //	}
 
-
-	func testExistingAndLegacyValue() {
+	func testExistingAndLegacyValue() throws {
 
 		let defaults = UserDefaults.standard
 
-		defaults.set( try! JSONEncoder().encode( testURL ), forKey: "existingValueStore" )
+		try defaults.set( JSONEncoder().encode( testURL ), forKey: "existingValueStore" )
 		defaults.set( 100, forKey: "existingLegacyValueStore" )
 
 		XCTAssertEqual( existingValueStore, testURL )

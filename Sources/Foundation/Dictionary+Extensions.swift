@@ -25,7 +25,7 @@ import Foundation
 public extension Dictionary {
 
 	func map<T, U>( _ transform: (Key, Value) throws -> (T, U) ) rethrows -> [T: U] {
-		return [T: U]( uniqueKeysWithValues: try map( transform ))
+		return try [T: U]( uniqueKeysWithValues: map( transform ))
 	}
 
 	mutating func addEntriesFromDictionary( _ dict: [ Key: Value ] ) {
@@ -42,8 +42,9 @@ public extension Dictionary {
 }
 
 public extension Dictionary {
-	
-	@inlinable subscript<T>( key: Key, default defaultValue: @autoclosure () -> T ) -> T {
+
+	@inlinable
+	subscript<T>( key: Key, default defaultValue: @autoclosure () -> T ) -> T {
 		self[ key ] as? T ?? defaultValue()
 	}
 }

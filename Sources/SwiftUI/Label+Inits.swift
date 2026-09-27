@@ -43,11 +43,11 @@ extension Label where Title == Text, Icon == Image {
 		_ titleKey: LocalizedStringKey,
 		image: Image,
 		tableName: String? = nil,
-		bundle: Bundle? = nil
+		bundle: Bundle? = nil,
 	) {
 		self.init(
 			title: { Text( titleKey, tableName: tableName, bundle: bundle ) },
-			icon: { image }
+			icon: { image },
 		)
 	}
 

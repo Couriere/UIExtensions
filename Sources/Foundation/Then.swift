@@ -28,7 +28,6 @@ import AppKit
 import UIKit
 #endif
 
-
 public protocol Then {}
 
 public extension Then where Self: Any {
@@ -39,7 +38,8 @@ public extension Then where Self: Any {
 	///       $0.origin.x = 10
 	///       $0.size.width = 100
 	///     }
-	@discardableResult func with(_ block: (inout Self) -> Void) -> Self {
+	@discardableResult
+	func with(_ block: (inout Self) -> Void) -> Self {
 		var copy = self
 		block(&copy)
 		return copy
@@ -55,7 +55,8 @@ public extension Then where Self: AnyObject {
 	///       $0.textColor = UIColor.blackColor()
 	///       $0.text = "Hello, World!"
 	///     }
-	@discardableResult func then( _ block: (Self) -> Void ) -> Self {
+	@discardableResult
+	func then( _ block: (Self) -> Void ) -> Self {
 		block(self)
 		return self
 	}
@@ -87,7 +88,7 @@ public extension Then where Self: XTView {
 	@discardableResult
 	func then(
 		useAutolayout: Bool = true,
-		_ block: (Self) -> Void
+		_ block: (Self) -> Void,
 	) -> Self {
 		translatesAutoresizingMaskIntoConstraints = !useAutolayout
 		block(self)
@@ -96,14 +97,38 @@ public extension Then where Self: XTView {
 }
 #endif
 
+// MARK: - NSObject + Then
+
 extension NSObject: Then {}
 
+// MARK: - JSONDecoder + Then
+
 extension JSONDecoder: Then {}
+
+// MARK: - JSONEncoder + Then
+
 extension JSONEncoder: Then {}
+
+// MARK: - PropertyListDecoder + Then
+
 extension PropertyListDecoder: Then {}
+
+// MARK: - PropertyListEncoder + Then
+
 extension PropertyListEncoder: Then {}
 
+// MARK: - CGPoint + Then
+
 extension CGPoint: Then {}
+
+// MARK: - CGRect + Then
+
 extension CGRect: Then {}
+
+// MARK: - CGSize + Then
+
 extension CGSize: Then {}
+
+// MARK: - CGVector + Then
+
 extension CGVector: Then {}

@@ -44,16 +44,19 @@ public extension CGPoint {
 
 		let c1 = x - point.x
 		let c2 = y - point.y
-		let distance = sqrt( c1 * c1 + c2 * c2 )
-
-		return distance
+		return sqrt( c1 * c1 + c2 * c2 )
 	}
 }
 
 public extension CGSize {
 
-	init( square side: Double ) { self.init( width: side, height: side ) }
-	init( square side: Int ) { self.init( width: side, height: side ) }
+	init( square side: Double ) {
+		self.init( width: side, height: side )
+	}
+
+	init( square side: Int ) {
+		self.init( width: side, height: side )
+	}
 
 	/// Aspect ratio of the CGSize object.
 	var aspectRatio: Double { width / height }
@@ -74,7 +77,7 @@ public extension CGSize {
 	static func +( lhs: Self, rhs: Self ) -> CGSize {
 		CGSize(
 			width: lhs.width + rhs.width,
-			height: lhs.height + rhs.height
+			height: lhs.height + rhs.height,
 		)
 	}
 
@@ -86,11 +89,11 @@ public extension CGSize {
 	/// - Returns: A new `CGSize` with width and height scaled by `rhs`.
 	static func *<FloatingPoint>(
 		lhs: Self,
-		rhs: FloatingPoint
+		rhs: FloatingPoint,
 	) -> CGSize where FloatingPoint: BinaryFloatingPoint {
 		CGSize(
 			width: lhs.width * Double( rhs ),
-			height: lhs.height * Double( rhs )
+			height: lhs.height * Double( rhs ),
 		)
 	}
 
@@ -102,7 +105,7 @@ public extension CGSize {
 	/// - Returns: A new `CGSize` with width and height divided by `rhs`.
 	static func /<FloatingPoint>(
 		lhs: Self,
-		rhs: FloatingPoint
+		rhs: FloatingPoint,
 	) -> CGSize where FloatingPoint: BinaryFloatingPoint {
 		lhs * ( 1 / rhs )
 	}
@@ -132,8 +135,8 @@ public extension CGRect {
 			origin: topLeft,
 			size: CGSize(
 				width: bottomRight.x - topLeft.x,
-				height: bottomRight.y - topLeft.y
-			)
+				height: bottomRight.y - topLeft.y,
+			),
 		)
 	}
 
@@ -177,7 +180,7 @@ public extension CGRect {
 			x: rect.origin.x * multiplier,
 			y: rect.origin.y * multiplier,
 			width: rect.size.width * multiplier,
-			height: rect.size.height * multiplier
+			height: rect.size.height * multiplier,
 		)
 	}
 
@@ -192,7 +195,7 @@ public extension CGRect {
 			x: rect.origin.x / divider,
 			y: rect.origin.y / divider,
 			width: rect.size.width / divider,
-			height: rect.size.height / divider
+			height: rect.size.height / divider,
 		)
 	}
 
@@ -214,7 +217,6 @@ public extension CGRect {
 		rect = rect / divider
 	}
 }
-
 
 public extension XTEdgeInsets {
 
@@ -250,7 +252,7 @@ public extension XTEdgeInsets {
 
 #if canImport(AppKit)
 public extension NSEdgeInsets {
-	static let zero: NSEdgeInsets = NSEdgeInsets()
+	static let zero: NSEdgeInsets = .init()
 }
 #endif
 

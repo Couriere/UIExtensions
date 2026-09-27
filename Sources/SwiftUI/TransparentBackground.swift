@@ -25,7 +25,7 @@ import SwiftUI
 #if canImport(UIKit) && !os(watchOS)
 
 public extension View {
-	
+
 	/// Applies a transparent or colored background to the view,
 	/// presented using `.fullScreenCover`.
 	///
@@ -50,14 +50,13 @@ public extension View {
 	/// ```
 	///
 	func transparentBackground(
-		_ color: Color = .clear
+		_ color: Color = .clear,
 	) -> some View {
-		self
-			.background(
-				TransparentBackground(
-					backgroundColor: color
-				)
-			)
+		background(
+			TransparentBackground(
+				backgroundColor: color,
+			),
+		)
 	}
 }
 
@@ -87,7 +86,7 @@ public extension View {
 /// ```
 ///
 public struct TransparentBackground: UIViewRepresentable {
-	
+
 	/// The background color to make the window transparent
 	/// or the specified color.
 	public let backgroundColor: UIColor
@@ -117,7 +116,11 @@ public struct TransparentBackground: UIViewRepresentable {
 			super.init( frame: .zero )
 			self.isHidden = true
 		}
-		required init?( coder: NSCoder ) { fatalError() }
+
+		@available(*, unavailable)
+		required init?( coder: NSCoder ) {
+			fatalError()
+		}
 
 		override func didMoveToWindow() {
 			super.didMoveToWindow()
@@ -133,10 +136,10 @@ public struct TransparentBackground: UIViewRepresentable {
 }
 
 struct TransparentBackground_Preview: PreviewProvider {
-	
+
 	struct PreviewContainer: View {
 		@State private var isPresentingModal = false
-		
+
 		var body: some View {
 			Button("Show Modal") {
 				isPresentingModal = true
@@ -145,7 +148,7 @@ struct TransparentBackground_Preview: PreviewProvider {
 			.maxFrame()
 			.background(
 				LinearGradient(colors: [.red, .green, .blue], startPoint: .top, endPoint: .bottom),
-				ignoresSafeAreaEdges: .all
+				ignoresSafeAreaEdges: .all,
 			)
 			.fullScreenCover(isPresented: $isPresentingModal) {
 				Button( "Dismiss" ) {
@@ -156,10 +159,10 @@ struct TransparentBackground_Preview: PreviewProvider {
 				.cornerRadius( 12 )
 				.transparentBackground( .black(0.5) )
 			}
-			.transaction { $0.disablesAnimations = true	}
+			.transaction { $0.disablesAnimations = true }
 		}
 	}
-	
+
 	static var previews: some View {
 		PreviewContainer()
 	}

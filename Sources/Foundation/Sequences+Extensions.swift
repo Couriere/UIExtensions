@@ -94,7 +94,7 @@ extension Sequence {
 	@inline(__always)
 	@_disfavoredOverload
 	public func map<T>(
-		_ transform: () -> T
+		_ transform: () -> T,
 	) -> [T] {
 		map { _ in transform() }
 	}
@@ -109,7 +109,7 @@ extension Sequence {
 	///
 	@inlinable
 	public func first( _ keypath: KeyPath<Element, Bool> ) -> Element? {
-		self.first { $0[keyPath: keypath] }
+		first { $0[keyPath: keypath] }
 	}
 
 	/// Returns the first element in the collection where the value at the
@@ -123,8 +123,8 @@ extension Sequence {
 	@inlinable
 	public func first<T>(
 		_ keypath: KeyPath<Element, T>,
-		equalTo value: T
-	) -> Element? where T: Equatable{
+		equalTo value: T,
+	) -> Element? where T: Equatable {
 		first { $0[keyPath: keypath] == value }
 	}
 
@@ -137,8 +137,8 @@ extension Sequence {
 	@inlinable
 	public func filter<T>(
 		_ keypath: KeyPath<Element, T>,
-		equalTo value: T
-	) -> [ Element ] where T: Equatable{
+		equalTo value: T,
+	) -> [ Element ] where T: Equatable {
 		filter { $0[keyPath: keypath] == value }
 	}
 
@@ -150,7 +150,7 @@ extension Sequence {
 	/// - Returns: An array of non-nil values from `keypath`.
 	@inlinable
 	public func compactMap<T>(
-		_ keypath: KeyPath<Element, T?>
+		_ keypath: KeyPath<Element, T?>,
 	) -> [ T ] {
 		compactMap { $0[ keyPath: keypath ] }
 	}
@@ -165,7 +165,7 @@ extension Sequence {
 	@inlinable
 	public func contains<T>(
 		_ keypath: KeyPath<Element, T>,
-		equalTo value: T
+		equalTo value: T,
 	) -> Bool where T: Equatable {
 		contains { $0[ keyPath: keypath ] == value }
 	}
@@ -177,7 +177,7 @@ extension Sequence {
 	/// - Returns: `true` if any element's `keypath` is `true`, else `false`.
 	@inlinable
 	public func contains(
-		_ keypath: KeyPath<Element, Bool>
+		_ keypath: KeyPath<Element, Bool>,
 	) -> Bool {
 		contains { $0[ keyPath: keypath ] }
 	}
@@ -211,7 +211,7 @@ extension Sequence {
 	) -> Array<Element> {
 		let comparator = KeyPathComparator(
 			keypath,
-			order: order
+			order: order,
 		)
 		return sorted( using: comparator )
 	}
@@ -231,7 +231,7 @@ extension MutableCollection where Self : RandomAccessCollection {
 	) {
 		let comparator = KeyPathComparator(
 			keypath,
-			order: order
+			order: order,
 		)
 		sort( using: comparator )
 	}
@@ -249,7 +249,7 @@ extension Collection {
 	///
 	@inlinable
 	public func firstIndex(_ keypath: KeyPath<Element, Bool>) -> Index? {
-		self.firstIndex { $0[keyPath: keypath] }
+		firstIndex { $0[keyPath: keypath] }
 	}
 
 	/// Returns the index of the first element in the collection where the value
@@ -263,7 +263,7 @@ extension Collection {
 	@inlinable
 	public func firstIndex<T>(
 		_ keypath: KeyPath<Element, T>,
-		equalTo value: T
+		equalTo value: T,
 	) -> Index? where T: Equatable {
 		firstIndex { $0[ keyPath: keypath ] == value }
 	}

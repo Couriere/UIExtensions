@@ -47,15 +47,14 @@ public extension UILabel {
 		self.text = text
 	}
 
-
 	/// Changes UILabel text with crossfade effect.
 	/// Transition is noop if new text is equal to old one.
 	/// - parameters text: Text to set on receiver with crossfade effect.
 	/// - parameters duration: Duration of crossfade effect.
 	func crossfadeTo( text: NSAttributedString, duration: TimeInterval = 0.2 ) {
-		guard text != self.attributedText else { return }
+		guard text != attributedText else { return }
 		applyFadeAnimation( duration: duration )
-		self.attributedText = text
+		attributedText = text
 	}
 
 	private func applyFadeAnimation( duration: TimeInterval ) {
@@ -67,7 +66,6 @@ public extension UILabel {
 		layer.add( animation, forKey: CATransitionType.fade.rawValue )
 	}
 }
-
 
 public extension UILabel {
 
@@ -170,13 +168,12 @@ public extension UILabel {
 	func image(
 		_ image: UIImage,
 		at location: Int? = nil,
-		verticalOffset: CGFloat = 0
+		verticalOffset: CGFloat = 0,
 	) -> Self {
 		attributedText = attributedText?
 			.image( image, at: location, verticalOffset: verticalOffset )
 		return self
 	}
-
 
 	/// Sets attributes of the text in the `UILabel`.
 	/// - note: All existing attributes will be overwritten.

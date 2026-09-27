@@ -62,7 +62,7 @@ extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping ( Input ) async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result, _ state: LoaderContentState ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Result, _ state: LoaderContentState ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -70,7 +70,7 @@ extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: action,
-			content: { binding, state in content( binding.wrappedValue, state ) }
+			content: { binding, state in content( binding.wrappedValue, state ) },
 		)
 	}
 
@@ -111,7 +111,7 @@ extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping ( Input ) async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Result ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -119,13 +119,9 @@ extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: action,
-			content: { binding, _ in content( binding.wrappedValue ) }
+			content: { binding, _ in content( binding.wrappedValue ) },
 		)
 	}
-
-
-
-
 
 	/// Initializes the Loader View with specified parameters.
 	/// When the value of the `input` parameter changes,
@@ -166,7 +162,7 @@ extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ state: LoaderContentState ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ state: LoaderContentState ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -174,7 +170,7 @@ extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: content
+			content: content,
 		)
 	}
 
@@ -216,7 +212,7 @@ extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Binding<Result> ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Binding<Result> ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -224,14 +220,9 @@ extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: { result, _ in content( result ) }
+			content: { result, _ in content( result ) },
 		)
 	}
-
-
-
-
-
 
 	/// Initializes the Loader View with specified parameters.
 	/// When the value of the `input` parameter changes,
@@ -271,7 +262,7 @@ extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result, _ state: LoaderContentState ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Result, _ state: LoaderContentState ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -279,7 +270,7 @@ extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: { binding, state in content( binding.wrappedValue, state ) }
+			content: { binding, state in content( binding.wrappedValue, state ) },
 		)
 	}
 
@@ -320,7 +311,7 @@ extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Result ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -328,13 +319,9 @@ extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: { binding, _ in content( binding.wrappedValue ) }
+			content: { binding, _ in content( binding.wrappedValue ) },
 		)
 	}
-
-
-
-
 
 	/// Initializes the Loader with no parameters for data loading.
 	/// Data may be reloaded only when view appears on screen.
@@ -371,7 +358,7 @@ extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ state: LoaderContentState ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ state: LoaderContentState ) -> Content,
 	) where Input == Int {
 		self.init(
 			input: 0,
@@ -379,7 +366,7 @@ extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: content
+			content: content,
 		)
 	}
 
@@ -417,7 +404,7 @@ extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Binding<Result> ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Binding<Result> ) -> Content,
 	) where Input == Int {
 		self.init(
 			input: 0,
@@ -425,13 +412,9 @@ extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: { result, _ in content( result ) }
+			content: { result, _ in content( result ) },
 		)
 	}
-
-
-
-
 
 	/// Initializes the Loader with no parameters for data loading.
 	/// Data can only be reloaded when the view appears on the screen.
@@ -467,7 +450,7 @@ extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result, _ state: LoaderContentState ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Result, _ state: LoaderContentState ) -> Content,
 	) where Input == Int {
 		self.init(
 			input: 0,
@@ -475,7 +458,7 @@ extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: content
+			content: content,
 		)
 	}
 
@@ -513,7 +496,7 @@ extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Result ) -> Content,
 	) where Input == Int {
 		self.init(
 			input: 0,
@@ -521,7 +504,7 @@ extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: content
+			content: content,
 		)
 	}
 }

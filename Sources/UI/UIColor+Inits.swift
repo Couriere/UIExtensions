@@ -24,9 +24,11 @@ import SwiftUI
 
 #if canImport(UIKit)
 import UIKit
+
 public typealias NativeColor = UIColor
 #elseif canImport(AppKit)
 import AppKit
+
 public typealias NativeColor = NSColor
 #endif
 
@@ -43,7 +45,7 @@ extension NativeColor {
 			red: Double( intRed ) / 255,
 			green: Double( green ) / 255,
 			blue: Double( blue ) / 255,
-			alpha: alpha
+			alpha: alpha,
 		)
 	}
 
@@ -82,7 +84,6 @@ extension NativeColor {
 		self.init( intRed: red, green: green, blue: blue, alpha: alpha )
 	}
 
-
 	@available( *, deprecated, renamed: "init(_:alpha:)" )
 	public convenience init( int: UInt32, alpha: CGFloat = 1 ) {
 		self.init( Int( int ), alpha: alpha )
@@ -102,7 +103,7 @@ extension NativeColor {
 	///   - dark: The color to use in dark mode.
 	public convenience init(
 		light: NativeColor,
-		dark: NativeColor
+		dark: NativeColor,
 	) {
 
 		self.init(
@@ -112,10 +113,11 @@ extension NativeColor {
 				case .dark: dark
 				@unknown default: light
 				}
-			}
+			},
 		)
 	}
 }
+
 #elseif canImport(AppKit)
 extension NativeColor {
 
@@ -129,7 +131,7 @@ extension NativeColor {
 	///   - dark: The color to use in dark mode.
 	public convenience init(
 		light: NativeColor,
-		dark: NativeColor
+		dark: NativeColor,
 	) {
 
 		self.init(
@@ -140,7 +142,7 @@ extension NativeColor {
 				} else {
 					light
 				}
-			}
+			},
 		)
 	}
 }
@@ -199,13 +201,12 @@ public extension NativeColor {
 
 		return String(
 			format: "#%02X%02X%02X%02X",
-			Int((r * 255).rounded()), Int((g * 255).rounded()), Int((b * 255).rounded()), Int((a * 255).rounded())
+			Int((r * 255).rounded()), Int((g * 255).rounded()), Int((b * 255).rounded()), Int((a * 255).rounded()),
 		)
 	}
 
 	private static let invertedHexCharactersSet = CharacterSet( charactersIn: "0123456789abcdefABCDEF" ).inverted
 }
-
 
 extension NativeColor {
 
@@ -219,12 +220,12 @@ extension NativeColor {
 		var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
 
 		#if canImport(AppKit)
-		guard let rgbColor = self.usingColorSpace(.deviceRGB) else {
+		guard let rgbColor = usingColorSpace(.deviceRGB) else {
 			return .light
 		}
 		rgbColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
 		#else
-		self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+		getRed(&red, green: &green, blue: &blue, alpha: &alpha)
 		#endif
 
 		let luminance = 0.299 * red + 0.587 * green + 0.114 * blue
@@ -247,7 +248,7 @@ extension NativeColor {
 	/// - Returns: The contrast color chosen based on the receiver's lightness.
 	public func replaceWithContrastColor(
 		light: NativeColor,
-		dark: NativeColor
+		dark: NativeColor,
 	) -> NativeColor {
 		contrastScheme == .light ? light : dark
 	}
@@ -272,14 +273,13 @@ public extension NativeColor {
 
 #if canImport( UIKit )
 		var alpha: CGFloat = 1
-		self.getWhite( nil, alpha: &alpha )
+		getWhite( nil, alpha: &alpha )
 		return alpha
 #else
 		alphaComponent
 #endif
 	}
 }
-
 
 public extension NativeColor {
 

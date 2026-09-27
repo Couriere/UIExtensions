@@ -30,13 +30,13 @@ public extension UIView {
 	func padding(
 		_ edges: Edges = .all,
 		_ length: Double = 16,
-		forceNewContainer: Bool = false
+		forceNewContainer: Bool = false,
 	) -> UIView {
 		let insets = UIEdgeInsets(
 			top: edges.contains( .top ) ? length : 0,
 			left: edges.contains( .leading ) ? length : 0,
 			bottom: edges.contains( .bottom ) ? length : 0,
-			right: edges.contains( .trailing ) ? length : 0
+			right: edges.contains( .trailing ) ? length : 0,
 		)
 		return padding( insets, forceNewContainer: forceNewContainer )
 	}
@@ -45,15 +45,14 @@ public extension UIView {
 	/// specified amount of padding.
 	func padding(
 		_ length: Double = 16,
-		forceNewContainer: Bool = false
+		forceNewContainer: Bool = false,
 	) -> UIView {
 		padding( .all, length, forceNewContainer: forceNewContainer )
 	}
 
-
 	func padding(
 		_ insets: UIEdgeInsets,
-		forceNewContainer: Bool = false
+		forceNewContainer: Bool = false,
 	) -> UIView {
 		if !forceNewContainer, let paddingContainer = self as? PaddingContainer {
 			paddingContainer.updateConstants( insets: insets )
@@ -79,28 +78,30 @@ open class PaddingContainer: UIView {
 		containedView.translatesAutoresizingMaskIntoConstraints = false
 		backgroundColor = .clear
 
-
 		addSubview( containedView )
 		let constraints: [ ( Edges, NSLayoutConstraint ) ] = [
-			( .leading, containedView.leadingAnchor.constraint( equalTo: self.leadingAnchor )),
-			( .trailing, self.trailingAnchor.constraint( equalTo: containedView.trailingAnchor )),
-			( .top, containedView.topAnchor.constraint( equalTo: self.topAnchor )),
-			( .bottom, self.bottomAnchor.constraint( equalTo: containedView.bottomAnchor ))
+			( .leading, containedView.leadingAnchor.constraint( equalTo: leadingAnchor )),
+			( .trailing, trailingAnchor.constraint( equalTo: containedView.trailingAnchor )),
+			( .top, containedView.topAnchor.constraint( equalTo: topAnchor )),
+			( .bottom, bottomAnchor.constraint( equalTo: containedView.bottomAnchor )),
 		]
 
-		paddingConstraints = Dictionary( uniqueKeysWithValues: constraints )
+		self.paddingConstraints = Dictionary( uniqueKeysWithValues: constraints )
 		NSLayoutConstraint.activate( constraints.map { $1 } )
 	}
-	public override init( frame: CGRect ) {
+
+	override public init( frame: CGRect ) {
 		fatalError("init(frame:) has not been implemented")
 	}
+
+	@available(*, unavailable)
 	public required convenience init?(coder _: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	open override func hitTest(
+	override open func hitTest(
 		_ point: CGPoint,
-		with event: UIEvent?
+		with event: UIEvent?,
 	) -> UIView? {
 		guard let hitView = super.hitTest( point, with: event ) else {
 			return nil

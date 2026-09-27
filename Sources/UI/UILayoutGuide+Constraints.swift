@@ -50,7 +50,7 @@ public extension UILayoutGuide {
 	@discardableResult
 	func constrainToSuperviewHorizontallyAndVertically(
 		to view: UIView,
-		insets: UIEdgeInsets = .zero
+		insets: UIEdgeInsets = .zero,
 	) -> [ NSLayoutConstraint ] {
 		pin( .top, insets.top, to: view ) +
 		pin( .bottom, insets.bottom, to: view ) +
@@ -58,7 +58,6 @@ public extension UILayoutGuide {
 		pin( .trailing, insets.right )
 	}
 }
-
 
 /// Debug helper extension to visualize UILayoutGuide on screen.
 public extension UILayoutGuide {
@@ -84,7 +83,8 @@ public extension UILayoutGuide {
 					layoutGuide,
 					&LayoutGuideRevealView.AssociatedObjectHandle,
 					revealView,
-					objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC )
+					objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC,
+				)
 			}
 		}
 
@@ -108,14 +108,14 @@ public extension UILayoutGuide {
 				// `NSKeyValueObservation` delivers changes through a nonisolated closure,
 				// but this reveal view is created, updated, and torn down on the main actor.
 				let revealView = UnsafeSendable( self )
-				observer = layoutGuide.observe( \.owningView ) { guide, change in
+				self.observer = layoutGuide.observe( \.owningView ) { guide, _ in
 
 					// We can assume (probably) that changes to
 					// `owningView` performed on main thread only.
 					MainActor.assumeIsolated {
-						
+
 						guard guide.owningView != revealView.value.superview else { return }
-						
+
 						// Владеющий этим окном `UILayoutGuide` сменил
 						// своё окно. Значит нам надо удалиться.
 						// Если `UILayoutGuide` нужно показать своё
@@ -124,12 +124,14 @@ public extension UILayoutGuide {
 						objc_setAssociatedObject(
 							guide,
 							&LayoutGuideRevealView.AssociatedObjectHandle,
-						nil,
-						objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC )
+							nil,
+							objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC,
+						)
 				}
 			}
 		}
 
+		@available(*, unavailable)
 		public required init?(coder _: NSCoder) {
 			fatalError("init(coder:) has not been implemented")
 		}

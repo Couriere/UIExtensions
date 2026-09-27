@@ -32,9 +32,9 @@ public extension UIButton {
 	///
 	convenience init( _ title: String ) {
 		self.init( frame: .zero )
-		self.setTitle( title, for: .normal )
+		setTitle( title, for: .normal )
 	}
-	
+
 	/// Creates a new instance of UIButton with the specified icon and optional title.
 	///
 	/// - Parameters:
@@ -43,10 +43,10 @@ public extension UIButton {
 	/// - returns: A new instance of UIButton with the specified icon and optional title.
 	convenience init( _ icon: UIImage?, _ title: String? = nil ) {
 		self.init( frame: .zero )
-		self.setTitle( title, for: .normal )
-		self.setImage( icon, for: .normal )
+		setTitle( title, for: .normal )
+		setImage( icon, for: .normal )
 	}
-	
+
 	/// Creates a new instance of UIButton with the specified icon name and optional title.
 	///
 	/// - Parameters:
@@ -55,10 +55,9 @@ public extension UIButton {
 	/// - returns: A new instance of UIButton with the specified icon and optional title.
 	convenience init( icon: String, _ title: String? = nil ) {
 		self.init( frame: .zero )
-		self.setTitle( title, for: .normal )
-		self.setImage( UIImage( named: icon ), for: .normal )
+		setTitle( title, for: .normal )
+		setImage( UIImage( named: icon ), for: .normal )
 	}
-	
 
 	/// Creates a custom UIButton with a set of subviews arranged
 	/// in a horizontal UIStackView.
@@ -88,31 +87,29 @@ public extension UIButton {
 		spacing: Double = 8,
 		alignment: UIStackView.Alignment = .center,
 		dimsOnTouch: Bool = true,
-		@UIViewBuilder _ content: ( UIButton ) -> [UIView]
+		@UIViewBuilder _ content: ( UIButton ) -> [UIView],
 	) {
 		self.init( type: .custom )
 
 		let contentViews = content( self )
 		precondition( contentViews.isNotEmpty )
 
-		let contentView: UIView
-
-		if contentViews.count == 1 {
-			contentView = contentViews[ 0 ]
+		let contentView: UIView = if contentViews.count == 1 {
+			contentViews[ 0 ]
 		} else {
-			contentView = UIStackView(
+			UIStackView(
 				.horizontal,
 				spacing: spacing,
 				alignment: alignment,
-				{ content( self ) }
+				{ content( self ) },
 			)
 		}
 		contentView.isUserInteractionEnabled = false
 		contentView.translatesAutoresizingMaskIntoConstraints = false
-		
+
 		addSubview( contentView )
 		contentView.pin()
-		
+
 		if dimsOnTouch {
 			addHandler( for: .allTouchEvents ) {
 				// Pause to update the `isHighlighted` state.
@@ -151,13 +148,13 @@ public extension UIButton {
 		spacing: Double = 8,
 		alignment: UIStackView.Alignment = .center,
 		dimsOnTouch: Bool = true,
-		@UIViewBuilder _ content: () -> [UIView]
+		@UIViewBuilder _ content: () -> [UIView],
 	) {
 		self.init(
 			spacing: spacing,
 			alignment: alignment,
 			dimsOnTouch: dimsOnTouch,
-			{ _ in content() }
+			{ _ in content() },
 		)
 	}
 }

@@ -48,7 +48,7 @@ extension View {
 	@inlinable
 	public func onGeometryChange<T>(
 		update binding: Binding<T>,
-		with transform: @escaping @Sendable (GeometryProxy) -> T
+		with transform: @escaping @Sendable (GeometryProxy) -> T,
 	) -> some View where T : Equatable, T : Sendable {
 
 		onGeometryChange(
@@ -73,13 +73,13 @@ extension View {
 	///     }
 	/// ```
 	public func measureSize(
-		perform action: @escaping ( CGSize ) -> Void
+		perform action: @escaping ( CGSize ) -> Void,
 	) -> some View {
 
 		onGeometryChange(
 			for: CGSize.self,
 			of: \.size,
-			action: action
+			action: action,
 		)
 	}
 
@@ -118,12 +118,12 @@ extension View {
 	///
 	@inlinable
 	public func measure(
-		width binding: Binding<Double>
+		width binding: Binding<Double>,
 	) -> some View {
 
 		onGeometryChange(
 			update: binding,
-			with: \.size.width.asDouble
+			with: \.size.width.asDouble,
 		)
 	}
 
@@ -143,12 +143,12 @@ extension View {
 	///
 	@inlinable
 	public func measure(
-		height binding: Binding<Double>
+		height binding: Binding<Double>,
 	) -> some View {
 
 		onGeometryChange(
 			update: binding,
-			with: \.size.height.asDouble
+			with: \.size.height.asDouble,
 		)
 	}
 }
@@ -176,7 +176,7 @@ extension View {
 	@inlinable
 	public func measureFrame(
 		in coordinateSpace: CoordinateSpace = .global,
-		action: @escaping ( CGRect ) -> Void
+		action: @escaping ( CGRect ) -> Void,
 	) -> some View {
 
 		let coordinateSpace = UnsafeSendable( coordinateSpace )
@@ -186,7 +186,7 @@ extension View {
 			of: {
 				$0.frame( in: coordinateSpace.value )
 			},
-			action: action
+			action: action,
 		)
 	}
 
@@ -210,7 +210,7 @@ extension View {
 	@inlinable
 	public func measure(
 		frame binding: Binding<CGRect>,
-		in coordinateSpace: CoordinateSpace = .global
+		in coordinateSpace: CoordinateSpace = .global,
 	) -> some View {
 		measureFrame( in: coordinateSpace ) { binding.wrappedValue = $0 }
 	}
@@ -241,7 +241,7 @@ extension GeometryProxy {
 				Color.red
 					.frame(
 						width: fixWidth ? 100 : nil,
-						height: fixHeight ? 100 : nil
+						height: fixHeight ? 100 : nil,
 					)
 					.measure(width: $width)
 					.measure(height: $height)
@@ -284,11 +284,11 @@ extension GeometryProxy {
 					Color.red
 						.frame(
 							width: 100,
-							height: 100
+							height: 100,
 						)
 						.measure(
 							frame: $frame,
-							in: .named(scrollNamespace)
+							in: .named(scrollNamespace),
 						)
 
 					ForEach( 0..<100, id: \.self ) { _ in
@@ -297,7 +297,7 @@ extension GeometryProxy {
 				}
 				.border( .orange, width: 2 )
 				.coordinateSpace(
-					name: scrollNamespace
+					name: scrollNamespace,
 				)
 
 				Text( "Frame: ( \(Int(frame.minX)), \(Int(frame.minY)), \(Int(frame.size.width)), \(Int(frame.size.height)) )" )

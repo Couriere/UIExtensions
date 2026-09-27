@@ -22,6 +22,7 @@
 
 #if canImport(AppKit)
 import AppKit
+
 public typealias XTView = NSView
 public typealias XTStackView = NSStackView
 public typealias XTLayoutGuide = NSLayoutGuide
@@ -33,6 +34,7 @@ public typealias XTFont = NSFont
 public typealias XTImage = NSImage
 #elseif canImport(UIKit)
 import UIKit
+
 public typealias XTEdgeInsets = UIEdgeInsets
 public typealias XTColor = UIColor
 public typealias XTFont = UIFont

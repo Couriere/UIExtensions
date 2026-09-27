@@ -51,11 +51,11 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 			input: input,
 			reloadOptions: reloadOptions,
 			loadingView: LoaderPlaceholderProxy(
-				content: content( .constant( placeholder ), .loadingPlaceholder )
+				content: content( .constant( placeholder ), .loadingPlaceholder ),
 			),
 			failureView: failureView,
 			action: action,
-			content: content
+			content: content,
 		)
 	}
 
@@ -86,11 +86,11 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 			input: input,
 			reloadOptions: reloadOptions,
 			loadingView: LoaderPlaceholderProxy(
-				content: content( .constant( placeholder ))
+				content: content( .constant( placeholder )),
 			),
 			failureView: failureView,
 			action: action,
-			content: { result, _ in content( result ) }
+			content: { result, _ in content( result ) },
 		)
 	}
 
@@ -121,11 +121,11 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 			input: input,
 			reloadOptions: reloadOptions,
 			loadingView: LoaderPlaceholderProxy(
-				content: content(placeholder, .loadingPlaceholder)
+				content: content(placeholder, .loadingPlaceholder),
 			),
 			failureView: failureView,
 			action: action,
-			content: content
+			content: content,
 		)
 	}
 
@@ -156,11 +156,11 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 			input: input,
 			reloadOptions: reloadOptions,
 			loadingView: LoaderPlaceholderProxy(
-				content: content(placeholder)
+				content: content(placeholder),
 			),
 			failureView: failureView,
 			action: action,
-			content: content
+			content: content,
 		)
 	}
 
@@ -191,11 +191,11 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 			input: input,
 			reloadOptions: reloadOptions,
 			loadingView: LoaderPlaceholderProxy(
-				content: content(.constant(placeholder), .loadingPlaceholder)
+				content: content(.constant(placeholder), .loadingPlaceholder),
 			),
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: content
+			content: content,
 		)
 	}
 
@@ -226,11 +226,11 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 			input: input,
 			reloadOptions: reloadOptions,
 			loadingView: LoaderPlaceholderProxy(
-				content: content(.constant(placeholder))
+				content: content(.constant(placeholder)),
 			),
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: { result, _ in content(result) }
+			content: { result, _ in content(result) },
 		)
 	}
 
@@ -261,11 +261,11 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 			input: input,
 			reloadOptions: reloadOptions,
 			loadingView: LoaderPlaceholderProxy(
-				content: content(placeholder, .loadingPlaceholder)
+				content: content(placeholder, .loadingPlaceholder),
 			),
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: content
+			content: content,
 		)
 	}
 
@@ -296,11 +296,11 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 			input: input,
 			reloadOptions: reloadOptions,
 			loadingView: LoaderPlaceholderProxy(
-				content: content(placeholder)
+				content: content(placeholder),
 			),
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: { binding, _ in content(binding.wrappedValue) }
+			content: { binding, _ in content(binding.wrappedValue) },
 		)
 	}
 }
@@ -333,7 +333,7 @@ extension Loader where Input == Int, LoadingView == LoaderPlaceholderProxy<Conte
 			placeholder: placeholder,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: content
+			content: content,
 		)
 	}
 
@@ -363,7 +363,7 @@ extension Loader where Input == Int, LoadingView == LoaderPlaceholderProxy<Conte
 			placeholder: placeholder,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: content
+			content: content,
 		)
 	}
 
@@ -393,7 +393,7 @@ extension Loader where Input == Int, LoadingView == LoaderPlaceholderProxy<Conte
 			placeholder: placeholder,
 			failureView: failureView,
 			action: action,
-			content: content
+			content: content,
 		)
 	}
 }

@@ -55,7 +55,7 @@ public extension DispatchQueue {
 		timeInterval: TimeInterval,
 		qos: DispatchQoS = .unspecified,
 		flags: DispatchWorkItemFlags = [],
-		block: @escaping @Sendable () -> Void
+		block: @escaping @Sendable () -> Void,
 	) {
 		let delayTime = DispatchTime.now() + Double(Int64( timeInterval * TimeInterval( NSEC_PER_SEC ))) / Double(NSEC_PER_SEC)
 		asyncAfter( deadline: delayTime, execute: block )

@@ -23,8 +23,8 @@
 import Testing
 import UIExtensions
 
-@Test( "Init with integers" )
-func uiColorInitsWithIntegers() {
+@Test
+func `UIColor init with integers`() {
 
 	#expect( NativeColor( 0xFF0000 ) == NativeColor.red )
 	#expect( NativeColor( 0xFF00 ) == NativeColor.green )
@@ -35,30 +35,30 @@ func uiColorInitsWithIntegers() {
 
 	#expect( NativeColor( 0xFF0000, alpha: 0.2 ) == NativeColor.red.withAlphaComponent( 0.2 ))
 
-	#expect( NativeColor( rgba: 0xFF000080 ) == NativeColor.red.withAlphaComponent( 128 / 255 ))
-	#expect( NativeColor( rgba: 0x00FF00FF ) == NativeColor.green )
-	#expect( NativeColor( rgba: 0x0000FF00 ) == NativeColor.blue.withAlphaComponent( 0 ))
+	#expect( NativeColor( rgba: 0xFF00_0080 ) == NativeColor.red.withAlphaComponent( 128 / 255 ))
+	#expect( NativeColor( rgba: 0x00FF_00FF ) == NativeColor.green )
+	#expect( NativeColor( rgba: 0x0000_FF00 ) == NativeColor.blue.withAlphaComponent( 0 ))
 }
 
-@Test( "Random colors" )
-func uiColorRandomColors() {
+@Test
+func `UIColor random colors`() {
 
 	#expect( NativeColor( randomWithAlpha: 1 ).alpha == 1 )
 	#expect( NativeColor( randomWithAlpha: 0.3 ).alpha == 0.3 )
 	#expect( NativeColor( randomWithAlpha: 0 ).alpha == 0 )
 
 	let randomColors = (0..<100).reduce(
-		into: Set<NativeColor>()
+		into: Set<NativeColor>(),
 	) { acc, _ in
-		acc.insert( NativeColor.init( randomWithAlpha: 1 ))
+		acc.insert( NativeColor( randomWithAlpha: 1 ))
 	}
 
 	#expect( randomColors.count == 100 )
 }
 
-@Test( "Init from string" )
-func uiColorInitFromString() {
-	
+@Test
+func `UIColor init from string`() {
+
 	#expect( NativeColor( hex: "0xFF0000" ) == NativeColor.red )
 	#expect( NativeColor( hex: "00FF00" ) == NativeColor.green )
 	#expect( NativeColor( hex: "0000FF" ) == NativeColor.blue )
@@ -70,8 +70,8 @@ func uiColorInitFromString() {
 	#expect( NativeColor( hex: "0000FF0" ) == nil )
 }
 
-@Test( "Convert to hex" )
-func uiColorConvertToHex() {
+@Test
+func `UIColor convert to hex`() {
 	#expect( NativeColor( intRed: 255, green: 0, blue: 0 ).hexRGB == "#FF0000" )
 	#expect( NativeColor( intRed: 255, green: 128, blue: 0 ).hexRGB == "#FF8000" )
 
@@ -80,8 +80,8 @@ func uiColorConvertToHex() {
 	#expect( NativeColor( intRed: 255, green: 0, blue: 255, alpha: 1 ).hexRGBA == "#FF00FFFF" )
 }
 
-@Test( "Contrast colors" )
-func uiColorContrast() {
+@Test
+func `UIColor contrast colors`() {
 	#expect( NativeColor( 0x101010 ).contrastScheme == .light )
 	#expect( NativeColor( 0x404040 ).contrastScheme == .light )
 	#expect( NativeColor( 0x808080 ).contrastScheme == .dark )

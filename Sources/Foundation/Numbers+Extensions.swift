@@ -82,7 +82,6 @@ extension Double {
 	}
 }
 
-
 extension TimeInterval {
 
 	/// Returns time formatted number of seconds.
@@ -109,18 +108,22 @@ extension Bool {
 		left = left || right
 	}
 }
+
 extension UnsignedInteger {
 	public static func seconds( _ timeInterval: TimeInterval ) -> UInt64 {
 		UInt64( timeInterval * 1_000_000_000 )
 	}
+
 	public static func seconds<I: UnsignedInteger>( _ seconds: I ) -> UInt64 {
 		UInt64( seconds ) * 1_000_000_000
 	}
+
 	public static func miliseconds<I: UnsignedInteger>( _ miliseconds: I ) -> UInt64 {
 		UInt64( miliseconds ) * 1_000_000
 	}
+
 	public static func microseconds<I: UnsignedInteger>( _ microseconds: I ) -> UInt64 {
-		UInt64( microseconds ) * 1_000
+		UInt64( microseconds ) * 1000
 	}
 }
 
@@ -257,13 +260,13 @@ extension Comparable where Self: AdditiveArithmetic {
 	public var lessThanOrEqualToZero: Bool { self <= .zero }
 }
 
-/**
+/* 
  Russian language only methods
  */
 
 extension Int {
 
-	/**
+	/* 
 	 Возвращает корректную форму слова для целого числа
 
 	 - parameter wordForms: Возможные формы слова.

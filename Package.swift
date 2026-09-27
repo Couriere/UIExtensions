@@ -12,8 +12,8 @@ let package = Package(
 		.testTarget(
 			name: "UIExtensionsTests",
 			dependencies: [ "UIExtensions" ],
-			path: "UIExtensionsTests"
+			path: "UIExtensionsTests",
 		),
 	],
-	swiftLanguageModes: [ .v6 ]
+	swiftLanguageModes: [ .v6 ],
 )

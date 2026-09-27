@@ -38,7 +38,7 @@ public extension XTStackView {
 		spacing: CGFloat = 0,
 		distribution: UIStackView.Distribution = .fill,
 		alignment: UIStackView.Alignment = .fill,
-		@UIViewBuilder _ content: () -> [ UIView ]
+		@UIViewBuilder _ content: () -> [ UIView ],
 	) {
 		self.init()
 		self.translatesAutoresizingMaskIntoConstraints = false
@@ -49,13 +49,14 @@ public extension XTStackView {
 
 		addArrangedSubviews( content )
 	}
+
 	#elseif os(macOS)
 	convenience init(
 		_ orientation: NSUserInterfaceLayoutOrientation = .vertical,
 		spacing: CGFloat = 0,
 		distribution: NSStackView.Distribution = .fill,
 		alignment: NSLayoutConstraint.Attribute? = nil,
-		@UIViewBuilder _ content: () -> [ NSView ]
+		@UIViewBuilder _ content: () -> [ NSView ],
 	) {
 		self.init()
 		self.translatesAutoresizingMaskIntoConstraints = false
@@ -68,7 +69,6 @@ public extension XTStackView {
 	}
 	#endif
 
-
 	func addArrangedSubviews( @UIViewBuilder _ content: () -> [ XTView ] ) {
 		var customSpaces: [ XTView : CGFloat ] = [:]
 		var arrangedSubviews: [ XTView ] = []
@@ -79,8 +79,8 @@ public extension XTStackView {
 				arrangedSubviews.append( view )
 			}
 		}
-		self.addArrangedSubviews( arrangedSubviews )
-		customSpaces.forEach { self.setCustomSpacing( $1, after: $0 )}
+		addArrangedSubviews( arrangedSubviews )
+		customSpaces.forEach { self.setCustomSpacing( $1, after: $0 ) }
 	}
 }
 #endif // !os(watchOS)

@@ -55,10 +55,12 @@ import Foundation
 /// }
 /// ```
 public struct UnsafeSendable<T>: @unchecked Sendable {
-    /// The wrapped value that is being treated as `Sendable`.
-    public let value: T
+	/// The wrapped value that is being treated as `Sendable`.
+	public let value: T
 
-    /// Creates a wrapper that treats `value` as `Sendable`.
-    /// - Parameter value: The value to wrap.
-    public init(_ value: T) { self.value = value }
+	/// Creates a wrapper that treats `value` as `Sendable`.
+	/// - Parameter value: The value to wrap.
+	public init(_ value: T) {
+		self.value = value
+	}
 }

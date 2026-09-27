@@ -62,7 +62,6 @@ public extension Bool {
 	}
 }
 
-
 public extension Sequence {
 
 	/// Calls the given closure on each element in the sequence in the same order as a for-in loop.
@@ -73,7 +72,6 @@ public extension Sequence {
 		return self
 	}
 }
-
 
 public extension Equatable {
 

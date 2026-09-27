@@ -1,21 +1,20 @@
 //
 //  ArrayBuilder-Tests.swift
-//  
+//
 //
 //  Created by Vladimir Kazantsev on 26.04.2024.
 //
 
-import XCTest
 import UIExtensions
+import XCTest
 
 final class ArrayBuilder_Tests: XCTestCase {
 
 	let bool = false
 
-	func testArrayBuilder() throws {
+	func testArrayBuilder() {
 
-		test( [] ) {
-		}
+		test( [] ) {}
 
 		test( ["hello"] ) {
 			"hello"
@@ -92,7 +91,6 @@ final class ArrayBuilder_Tests: XCTestCase {
 			["foo", "world"]
 		}
 
-
 		test( ["world1", "hello2"] ) {
 			if bool {
 				"hello1"
@@ -112,7 +110,6 @@ final class ArrayBuilder_Tests: XCTestCase {
 			}
 		}
 
-
 		test( ["world"] ) {
 			switch bool {
 			case true: "hello"
@@ -131,30 +128,30 @@ final class ArrayBuilder_Tests: XCTestCase {
 
 		XCTAssertEqual(
 			["hello"],
-			Array<String> { "hello" }
+			Array<String> { "hello" },
 		)
-		
+
 		XCTAssertEqual(
 			["hello", "world"],
-			Array<String> { "hello"; "world" }
+			Array<String> { "hello"; "world" },
 		)
-		
+
 		XCTAssertEqual(
 			["world"],
 			Array<String> {
-				if bool { 
+				if bool {
 					"hello"
 				} else {
 					"world"
 				}
-			}
+			},
 		)
 
 		XCTAssertEqual(
 			[],
 			Array<String> {
 				if bool { "hello" }
-			}
+			},
 		)
 
 		XCTAssertEqual(
@@ -166,7 +163,7 @@ final class ArrayBuilder_Tests: XCTestCase {
 					"hello"
 					"optional"
 				}
-			}
+			},
 		)
 
 		XCTAssertEqual(
@@ -178,7 +175,7 @@ final class ArrayBuilder_Tests: XCTestCase {
 					"optional"
 				}
 				"world"
-			}
+			},
 		)
 
 		XCTAssertEqual(
@@ -190,7 +187,7 @@ final class ArrayBuilder_Tests: XCTestCase {
 				}
 				"world"
 				"world"
-			}
+			},
 		)
 		XCTAssertEqual(
 			[ "optional", "world", "world" ],
@@ -204,7 +201,7 @@ final class ArrayBuilder_Tests: XCTestCase {
 				}
 				"world"
 				"world"
-			}
+			},
 		)
 
 		XCTAssertEqual(
@@ -215,19 +212,20 @@ final class ArrayBuilder_Tests: XCTestCase {
 					"hello"
 					"optional"
 				}
-			}
+			},
 		)
 	}
 
 	func test(
 		_ expected: [String],
-		@ArrayBuilder<String> block: () -> [String]
+		@ArrayBuilder<String> block: () -> [String],
 	) {
 		XCTAssertEqual(expected, block())
 	}
+
 	func test(
 		_ expected: String...,
-		@ArrayBuilder<String> block: () -> [String]
+		@ArrayBuilder<String> block: () -> [String],
 	) {
 		XCTAssertEqual(expected, block())
 	}

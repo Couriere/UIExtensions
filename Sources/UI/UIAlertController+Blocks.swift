@@ -31,7 +31,7 @@ public extension UIAlertController {
 		title: String?,
 		message: String?,
 		buttonTitles: [ String ]?,
-		handler: UIAlertControllerHandler?
+		handler: UIAlertControllerHandler?,
 	) {
 		let cancelButtonTitle = buttonTitles != nil ? buttonTitles![ 0 ] : "OK"
 
@@ -41,16 +41,15 @@ public extension UIAlertController {
 			handler?( self, self.actions.firstIndex( of: action ) ?? -1 )
 		}
 
-		self.addAction( UIAlertAction( title: cancelButtonTitle, style: .cancel, handler: actionHandler ))
+		addAction( UIAlertAction( title: cancelButtonTitle, style: .cancel, handler: actionHandler ))
 
 		if let buttons = buttonTitles {
 			for buttonTitle in buttons[ 1 ..< buttons.count ] {
-				self.addAction( UIAlertAction( title: buttonTitle, style: .default, handler: actionHandler ) )
+				addAction( UIAlertAction( title: buttonTitle, style: .default, handler: actionHandler ) )
 			}
 		}
 	}
 }
-
 
 public extension UIViewController {
 
@@ -58,14 +57,14 @@ public extension UIViewController {
 		_ title: String?,
 		message: String?,
 		buttonTitles: [ String ]? = nil,
-		handler: UIAlertControllerHandler? = nil
+		handler: UIAlertControllerHandler? = nil,
 	) {
 		dispatch_main_thread_sync {
 			let alert = UIAlertController(
 				title: title,
 				message: message,
 				buttonTitles: buttonTitles,
-				handler: handler
+				handler: handler,
 			)
 			self.present( alert, animated: true, completion: nil )
 		}

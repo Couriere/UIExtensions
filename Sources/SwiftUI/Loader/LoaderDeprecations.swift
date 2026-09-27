@@ -61,7 +61,7 @@ public extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping ( Input ) async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result, _ isLoading: Bool ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Result, _ isLoading: Bool ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -69,7 +69,7 @@ public extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: action,
-			content: { binding, state in content( binding.wrappedValue, state.contains(.loading) ) }
+			content: { binding, state in content( binding.wrappedValue, state.contains(.loading) ) },
 		)
 	}
 
@@ -111,7 +111,7 @@ public extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ isLoading: Bool ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ isLoading: Bool ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -119,7 +119,7 @@ public extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: { result, state in content( result, state.contains(.loading)) }
+			content: { result, state in content( result, state.contains(.loading)) },
 		)
 	}
 
@@ -160,7 +160,7 @@ public extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result, _ isLoading: Bool ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Result, _ isLoading: Bool ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -168,7 +168,7 @@ public extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: { binding, state in content( binding.wrappedValue, state.contains(.loading)) }
+			content: { binding, state in content( binding.wrappedValue, state.contains(.loading)) },
 		)
 	}
 
@@ -206,7 +206,7 @@ public extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ isLoading: Bool ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ isLoading: Bool ) -> Content,
 	) where Input == Int {
 		self.init(
 			input: 0,
@@ -214,7 +214,7 @@ public extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: { result, state in content( result, state.contains(.loading)) }
+			content: { result, state in content( result, state.contains(.loading)) },
 		)
 	}
 
@@ -251,7 +251,7 @@ public extension Loader {
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
 		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result, _ isLoading: Bool ) -> Content
+		@ViewBuilder content: @escaping ( _ result: Result, _ isLoading: Bool ) -> Content,
 	) where Input == Int {
 		self.init(
 			input: 0,
@@ -259,7 +259,7 @@ public extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: { result, state in content( result.wrappedValue, state.contains(.loading)) }
+			content: { result, state in content( result.wrappedValue, state.contains(.loading)) },
 		)
 	}
 }

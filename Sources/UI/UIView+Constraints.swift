@@ -46,9 +46,6 @@ public struct Axes: OptionSet, Hashable, Sendable {
 	public static let both: Axes = [ .horizontal, .vertical ]
 }
 
-
-
-
 /// Constraint flexibility options.
 public struct Edges: OptionSet, Hashable, Sendable {
 
@@ -82,7 +79,6 @@ public struct Edges: OptionSet, Hashable, Sendable {
 	public static let all: Edges = [ .leading, .top, .trailing, .bottom ]
 }
 
-
 public extension LayoutGuideProtocol {
 
 	/// Constrains all edges of the sender view
@@ -98,7 +94,7 @@ public extension LayoutGuideProtocol {
 	@discardableResult
 	func pin(
 		_ inset: Double,
-		to view: LayoutGuideProtocol? = nil
+		to view: LayoutGuideProtocol? = nil,
 	) -> [ NSLayoutConstraint ] {
 		pin( .all, inset, to: view )
 	}
@@ -119,35 +115,34 @@ public extension LayoutGuideProtocol {
 	func pin(
 		_ edges: Edges = .all,
 		_ inset: Double = 0,
-		to view: LayoutGuideProtocol? = nil
+		to view: LayoutGuideProtocol? = nil,
 	) -> [ NSLayoutConstraint ] {
 		let secondItem = view ?? owningView!
 		var constraints: [ NSLayoutConstraint ] = []
 
 		if edges.contains( .top ) {
 			constraints.append(
-				topAnchor.constraint( equalTo: secondItem.topAnchor, constant: inset )
+				topAnchor.constraint( equalTo: secondItem.topAnchor, constant: inset ),
 			)
 		}
 		if edges.contains( .leading ) {
 			constraints.append(
-				leadingAnchor.constraint( equalTo: secondItem.leadingAnchor, constant: inset )
+				leadingAnchor.constraint( equalTo: secondItem.leadingAnchor, constant: inset ),
 			)
 		}
 		if edges.contains( .bottom ) {
 			constraints.append(
-				secondItem.bottomAnchor.constraint( equalTo: bottomAnchor, constant: inset )
+				secondItem.bottomAnchor.constraint( equalTo: bottomAnchor, constant: inset ),
 			)
 		}
 		if edges.contains( .trailing ) {
 			constraints.append(
-				secondItem.trailingAnchor.constraint( equalTo: trailingAnchor, constant: inset )
+				secondItem.trailingAnchor.constraint( equalTo: trailingAnchor, constant: inset ),
 			)
 		}
 
 		return constraints.activate()
 	}
-
 
 	/// Constrains the edges of the sender view to the corresponding edges
 	/// of the specified view or its owning view, with the specified edge insets.
@@ -161,7 +156,7 @@ public extension LayoutGuideProtocol {
 	@discardableResult
 	func pin(
 		_ insets: XTEdgeInsets,
-		to view: LayoutGuideProtocol? = nil
+		to view: LayoutGuideProtocol? = nil,
 	) -> [ NSLayoutConstraint ] {
 		let view = view ?? owningView!
 
@@ -173,7 +168,7 @@ public extension LayoutGuideProtocol {
 		]
 			.activate()
 	}
-	
+
 	// MARK: - View centers.
 
 	@discardableResult
@@ -181,22 +176,22 @@ public extension LayoutGuideProtocol {
 		_ axes: Axes = .both,
 		with layoutGuide: LayoutGuideProtocol? = nil,
 		offset: CGPoint = .zero,
-		priority: XTLayoutPriority = .required
+		priority: XTLayoutPriority = .required,
 	) -> [ NSLayoutConstraint ] {
 		let view = layoutGuide ?? owningView!
 		var constraints: [ NSLayoutConstraint ] = []
-		
+
 		if axes.contains( .horizontal ) {
 			constraints.append(
 				centerXAnchor
-					.constraint( equalTo: view.centerXAnchor, constant: offset.x )
+					.constraint( equalTo: view.centerXAnchor, constant: offset.x ),
 			)
 		}
 
 		if axes.contains( .vertical ) {
 			constraints.append(
 				centerYAnchor
-					.constraint( equalTo: view.centerYAnchor, constant: offset.y )
+					.constraint( equalTo: view.centerYAnchor, constant: offset.y ),
 			)
 		}
 
@@ -219,11 +214,11 @@ public extension LayoutGuideProtocol {
 	@discardableResult
 	func constrain(
 		width: Double,
-		relatedBy: NSLayoutConstraint.Relation = .equal
+		relatedBy: NSLayoutConstraint.Relation = .equal,
 	) -> NSLayoutConstraint {
 		NSLayoutConstraint(
 			item: self, attribute: .width, relatedBy: relatedBy,
-			toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width
+			toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width,
 		)
 		.activate()
 	}
@@ -240,11 +235,11 @@ public extension LayoutGuideProtocol {
 	@discardableResult
 	func constrain(
 		height: Double,
-		relatedBy: NSLayoutConstraint.Relation = .equal
+		relatedBy: NSLayoutConstraint.Relation = .equal,
 	) -> NSLayoutConstraint {
 		NSLayoutConstraint(
 			item: self, attribute: .height, relatedBy: relatedBy,
-			toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height
+			toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height,
 		)
 		.activate()
 	}
@@ -261,14 +256,13 @@ public extension LayoutGuideProtocol {
 	@discardableResult
 	func constrain(
 		size: CGSize,
-		relatedBy: NSLayoutConstraint.Relation = .equal
+		relatedBy: NSLayoutConstraint.Relation = .equal,
 	) -> [ NSLayoutConstraint ] {
 		return [
 			constrain( width: size.width, relatedBy: relatedBy ),
-			constrain( height: size.height, relatedBy: relatedBy )
+			constrain( height: size.height, relatedBy: relatedBy ),
 		]
 	}
-
 
 	// MARK: - Aspect ratio
 
@@ -285,15 +279,14 @@ public extension LayoutGuideProtocol {
 	@discardableResult
 	func constrain(
 		aspectRatio multiplier: Double,
-		constant: Double = 0
+		constant: Double = 0,
 	) -> NSLayoutConstraint {
 		NSLayoutConstraint(
 			item: self, attribute: .width, relatedBy: .equal, toItem: self,
-			attribute: .height, multiplier: multiplier, constant: constant
+			attribute: .height, multiplier: multiplier, constant: constant,
 		)
 		.activate()
 	}
-
 
 	// MARK: - Sizes
 
@@ -301,11 +294,11 @@ public extension LayoutGuideProtocol {
 	func equalSizeWithView(
 		_ view: LayoutGuideProtocol,
 		constant: CGFloat = 0,
-		multiplier: CGFloat = 1
+		multiplier: CGFloat = 1,
 	) -> [ NSLayoutConstraint ] {
 		return [
 			equalWidthWithView( view, constant: constant, multiplier: multiplier ),
-			equalHeightWithView( view, constant: constant, multiplier: multiplier )
+			equalHeightWithView( view, constant: constant, multiplier: multiplier ),
 		]
 	}
 
@@ -314,11 +307,11 @@ public extension LayoutGuideProtocol {
 		_ view: LayoutGuideProtocol,
 		constant: CGFloat = 0,
 		multiplier: CGFloat = 1,
-		relation: NSLayoutConstraint.Relation = .equal
+		relation: NSLayoutConstraint.Relation = .equal,
 	) -> NSLayoutConstraint {
 		NSLayoutConstraint(
-			item: self,	attribute: .height, relatedBy: relation,
-			toItem: view, attribute: .height, multiplier: multiplier, constant: constant
+			item: self, attribute: .height, relatedBy: relation,
+			toItem: view, attribute: .height, multiplier: multiplier, constant: constant,
 		)
 		.activate()
 	}
@@ -328,15 +321,14 @@ public extension LayoutGuideProtocol {
 		_ view: LayoutGuideProtocol,
 		constant: CGFloat = 0,
 		multiplier: CGFloat = 1,
-		relation: NSLayoutConstraint.Relation = .equal
+		relation: NSLayoutConstraint.Relation = .equal,
 	) -> NSLayoutConstraint {
 		NSLayoutConstraint(
 			item: self, attribute: .width, relatedBy: relation,
-			toItem: view, attribute: .width, multiplier: multiplier, constant: constant
+			toItem: view, attribute: .width, multiplier: multiplier, constant: constant,
 		)
 		.activate()
 	}
-
 
 	// MARK: - Arbitrary format constraints
 
@@ -344,7 +336,7 @@ public extension LayoutGuideProtocol {
 	func constrainWithFormat(
 		_ format: String,
 		views: [ String: LayoutGuideProtocol ]? = nil,
-		metrics: [ String: CGFloat ]? = nil
+		metrics: [ String: CGFloat ]? = nil,
 	) -> [ NSLayoutConstraint ] {
 
 		var mutableViews = views ?? [:]
@@ -354,12 +346,11 @@ public extension LayoutGuideProtocol {
 			withVisualFormat: format,
 			options: [],
 			metrics: metrics,
-			views: mutableViews
+			views: mutableViews,
 		)
 		.activate()
 	}
 }
-
 
 public extension LayoutGuideProtocol {
 
@@ -381,17 +372,23 @@ public extension LayoutGuideProtocol {
 		relation: NSLayoutConstraint.Relation = .equal,
 		constant: CGFloat = 0,
 		multiplier: CGFloat = 1,
-		priority: XTLayoutPriority = .required
+		priority: XTLayoutPriority = .required,
 	) -> NSLayoutConstraint {
 
-		let constraint = NSLayoutConstraint( item: self, attribute: attribute, relatedBy: relation,
-											 toItem: guide, attribute: viewAttribute ?? attribute, multiplier: multiplier, constant: constant )
+		let constraint = NSLayoutConstraint(
+			item: self,
+			attribute: attribute,
+			relatedBy: relation,
+			toItem: guide,
+			attribute: viewAttribute ?? attribute,
+			multiplier: multiplier,
+			constant: constant,
+		)
 		constraint.priority = priority
 		constraint.isActive = true
 		return constraint
 	}
 }
-
 
 public extension LayoutGuideProtocol {
 
@@ -410,18 +407,17 @@ public extension LayoutGuideProtocol {
 		relatedBy: NSLayoutConstraint.Relation = .equal,
 		multiplier: CGFloat = 1,
 		constant: CGFloat = 0,
-		priority: XTLayoutPriority = .required
+		priority: XTLayoutPriority = .required,
 	) -> NSLayoutConstraint {
 
 		NSLayoutConstraint(
 			item: self, attribute: attribute, relatedBy: relatedBy,
 			toItem: view ?? owningView!, attribute: attribute,
-			multiplier: multiplier, constant: constant
+			multiplier: multiplier, constant: constant,
 		)
 		.setPriority( priority )
 		.activate()
 	}
-
 
 	/// Adds a constraint to stack this view after another view,
 	/// either horizontally or vertically.
@@ -450,7 +446,7 @@ public extension LayoutGuideProtocol {
 		relatedBy: NSLayoutConstraint.Relation = .equal,
 		multiplier: Double = 1,
 		constant: Double = 0,
-		priority: XTLayoutPriority = .required
+		priority: XTLayoutPriority = .required,
 	) -> NSLayoutConstraint {
 
 		NSLayoutConstraint(
@@ -459,7 +455,7 @@ public extension LayoutGuideProtocol {
 			relatedBy: relatedBy,
 			toItem: view,
 			attribute: direction == .horizontal ? .trailing : .bottom,
-			multiplier: multiplier, constant: constant
+			multiplier: multiplier, constant: constant,
 		)
 		.setPriority( priority )
 		.activate()
@@ -467,6 +463,7 @@ public extension LayoutGuideProtocol {
 }
 
 // MARK: - Embeding and pinning views
+
 public extension XTView {
 
 	/// Embeds one or more views inside the current view,
@@ -490,7 +487,7 @@ public extension XTView {
 	@discardableResult
 	func embed(
 		_ inset: Double,
-		@UIViewBuilder _ content: () -> [ XTView ]
+		@UIViewBuilder _ content: () -> [ XTView ],
 	) -> XTView {
 		embed( insets: XTEdgeInsets( constantInset: inset ), content )
 	}
@@ -509,7 +506,7 @@ public extension XTView {
 	@discardableResult
 	func embed(
 		inset: Double,
-		view: XTView
+		view: XTView,
 	) -> XTView {
 		embed( inset ) { view }
 	}
@@ -539,11 +536,11 @@ public extension XTView {
 	func embed(
 		horizontalInset: Double = 0,
 		verticalInset: Double = 0,
-		@UIViewBuilder _ content: () -> [ XTView ]
+		@UIViewBuilder _ content: () -> [ XTView ],
 	) -> XTView {
 		let insets = XTEdgeInsets(
 			horizontal: horizontalInset,
-			vertical: verticalInset
+			vertical: verticalInset,
 		)
 		return embed( insets: insets, content )
 	}
@@ -570,7 +567,7 @@ public extension XTView {
 	@discardableResult
 	func embed(
 		insets: XTEdgeInsets = .zero,
-		@UIViewBuilder _ content: () -> [ XTView ]
+		@UIViewBuilder _ content: () -> [ XTView ],
 	) -> XTView {
 		let views = content()
 		precondition( views.isNotEmpty )
@@ -585,10 +582,10 @@ public extension XTView {
 			addSubview( implicitStackView )
 			implicitStackView.pin( insets )
 		}
-		
+
 		return self
 	}
-	
+
 	/// Embeds one view inside the current view with the provided insets.
 	///
 	/// - parameter insets: The insets to use for pinning the views
@@ -604,17 +601,16 @@ public extension XTView {
 	@discardableResult
 	func embed(
 		insets: XTEdgeInsets = .zero,
-		view: XTView
+		view: XTView,
 	) -> XTView {
 		embed( insets: insets ) { view }
 	}
 }
 
-
 public extension XTView {
 
 	func removeOutsideConstraints() {
-		if let superview = self.superview {
+		if let superview {
 			let viewZIndex = superview.subviews.firstIndex( of: self )
 			removeFromSuperview()
 #if canImport(AppKit)
@@ -632,7 +628,6 @@ public extension XTView {
 	}
 }
 
-
 #if canImport(UIKit)
 @MainActor
 public extension CGSize {
@@ -641,6 +636,7 @@ public extension CGSize {
 }
 
 // MARK: - Calculating autolayout view size
+
 public extension UIView {
 
 	/// Calculates the system layout size fitting for the view with a given width.
@@ -656,7 +652,7 @@ public extension UIView {
 		let size = systemLayoutSizeFitting(
 			CGSize( width: width, height: 0 ),
 			withHorizontalFittingPriority: .required,
-			verticalFittingPriority: .fittingSizeLevel
+			verticalFittingPriority: .fittingSizeLevel,
 		)
 		return CGSize( width: width, height: size.height.rounded( .up ))
 	}

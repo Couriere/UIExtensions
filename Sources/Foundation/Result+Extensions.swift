@@ -35,7 +35,6 @@ public extension Result {
 	var error: Failure? { switch self { case .failure( let error ): return error; default: return nil }}
 }
 
-
 public extension Error {
 	func map<Transform>( _ transform: ( Error ) -> Transform ) -> Transform {
 		transform( self )

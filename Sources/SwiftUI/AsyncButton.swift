@@ -51,7 +51,7 @@ import SwiftUI
 /// Pass a binding as `isExecuting` to observe the progress from outside,
 /// or to drive it: while the binding is `true`, the button behaves as if
 /// its action were running.
-nonisolated public struct AsyncButton<Label, Value> where Label: View, Value: Sendable {
+public nonisolated struct AsyncButton<Label, Value> where Label: View, Value: Sendable {
 
 	private let label: Label
 	private let unwrapping: Value?

@@ -30,7 +30,7 @@ struct ArrayTests {
 	// MARK: - Array Optional Init
 
 	@Test
-	func optionalInit() {
+	func `optional init`() {
 		let optionalIntVar: Int? = 50
 		let optionalEmptyIntVar: Int? = nil
 
@@ -41,7 +41,7 @@ struct ArrayTests {
 	// MARK: - Plus Operator
 
 	@Test
-	func plusOperator() {
+	func `plus operator`() {
 		let array: [Int] = [10, 20, 30]
 
 		let intVar = 40
@@ -75,7 +75,7 @@ struct ArrayTests {
 	// MARK: - Plus Equal Operator
 
 	@Test
-	func plusEqualOperator() {
+	func `plus equal operator`() {
 		var array: [Int] = [10, 20, 30]
 
 		let intVar = 40
@@ -108,10 +108,10 @@ struct ArrayTests {
 	// MARK: - Safe Index
 
 	@Test
-	func safeIndexProperties() {
-		for _ in 0..<1_000 {
+	func `safe index properties`() {
+		for _ in 0..<1000 {
 			let count = Int.random(in: 0...50)
-			let array = (0..<count).map { Int.random(in: -1_000...1_000) }
+			let array = (0..<count).map { Int.random(in: -1000...1000) }
 
 			// Valid indices
 			for index in 0..<count {
@@ -128,12 +128,12 @@ struct ArrayTests {
 	// MARK: - Chunk
 
 	@Test
-	func chunkProperties() {
+	func `chunk properties`() {
 
-		for _ in 0..<1_000 {
+		for _ in 0..<1000 {
 
 			let array = (0..<Int.random(in: 0...100))
-				.map { Int.random(in: 0...1_000) }
+				.map { Int.random(in: 0...1000) }
 			let chunkSize = Int.random(in: 1...10)
 
 			let chunks = array.chunk(chunkSize)
@@ -158,7 +158,7 @@ struct ArrayTests {
 	// MARK: - First IndexPath
 
 	@Test
-	func firstIndexPath() {
+	func `first index path`() {
 		let array = [[10, 20], [30, 40, 45], [], [50, 60, 10, 70]]
 
 		#expect(array.firstIndexPath(of: 20) == IndexPath(item: 1, section: 0))
@@ -177,7 +177,7 @@ struct ArrayTests {
 	// MARK: - First Identifiable IndexPath
 
 	@Test
-	func firstIdentifiableIndexPath() {
+	func `first identifiable index path`() {
 		struct I: Identifiable, ExpressibleByStringLiteral {
 			let id: String
 
@@ -190,7 +190,7 @@ struct ArrayTests {
 			["10", "20"],
 			["30", "40", "45"],
 			[],
-			["50", "60", "10", "70"]
+			["50", "60", "10", "70"],
 		]
 
 		#expect(array.firstIndexPath(of: "20") == IndexPath(item: 1, section: 0))
@@ -203,12 +203,12 @@ struct ArrayTests {
 	// MARK: - Windows
 
 	@Test
-	func windowsProperties() {
+	func `windows properties`() {
 
-		for _ in 0..<1_000 {
-			
+		for _ in 0..<1000 {
+
 			let arrayCount = Int.random(in: 0...50)
-			let array = (0..<arrayCount).map { Int.random(in: 0...1_000) }
+			let array = (0..<arrayCount).map { Int.random(in: 0...1000) }
 			let windowSize = Int.random(in: 1...10)
 
 			let windows = array.windows(ofCount: windowSize)

@@ -40,22 +40,22 @@ extension Collection {
 }
 
 public extension Collection where Self.Index == Int,
-								  Self.Indices: RangeExpression,
-								  Self.Indices.Bound == Int {
+	Self.Indices: RangeExpression,
+	Self.Indices.Bound == Int {
 
 	/// Splits an array in chunks, `chunkSize` size each.
 	func chunk( _ chunkSize: Int ) -> [[Element]] {
 		stride( from: 0, to: count, by: chunkSize )
 			.map { startIndex -> [Element] in
-			let endIndex = ( startIndex.advanced( by: chunkSize ) > self.count ) ? self.count - startIndex : chunkSize
-			return Array( self[ startIndex ..< startIndex.advanced( by: endIndex )] )
-		}
+				let endIndex = ( startIndex.advanced( by: chunkSize ) > self.count ) ? self.count - startIndex : chunkSize
+				return Array( self[ startIndex ..< startIndex.advanced( by: endIndex )] )
+			}
 	}
 }
 
 public extension Collection where Self.Index == Int,
-								  Self.Element: Collection,
-								  Self.Element.Index == Int {
+	Self.Element: Collection,
+	Self.Element.Index == Int {
 
 	subscript( _ indexPath: IndexPath ) -> Element.Element {
 		return self[ indexPath.section ][ indexPath.item ]
@@ -63,19 +63,18 @@ public extension Collection where Self.Index == Int,
 }
 
 public extension Collection where Self.Index == Int,
-								  Self.Element: RandomAccessCollection,
-								  Self.Element.Index == Int,
-								  Self.Indices: RangeExpression,
-								  Self.Indices.Bound == Int {
+	Self.Element: RandomAccessCollection,
+	Self.Element.Index == Int,
+	Self.Indices: RangeExpression,
+	Self.Indices.Bound == Int {
 
 	subscript( safe indexPath: IndexPath ) -> Element.Element? {
 		self[ safe: indexPath.section ]?[ indexPath.item ]
 	}
 }
 
-
 public extension Collection where Self.Element: Collection,
-								  Self.Element.Index == Int {
+	Self.Element.Index == Int {
 
 	/// Returns the first indexPath in which an element of the two dimensional collection satisfies
 	/// the given predicate.
@@ -87,7 +86,7 @@ public extension Collection where Self.Element: Collection,
 	///   returns `nil`.
 	func firstIndexPath( where predicate: ( Self.Element.Element ) throws -> Bool) rethrows -> IndexPath? {
 
-		for ( section, row ) in self.enumerated() {
+		for ( section, row ) in enumerated() {
 			if let rowIndex = try row.firstIndex( where: predicate ) {
 				return IndexPath( item: rowIndex, section: section )
 			}
@@ -97,14 +96,14 @@ public extension Collection where Self.Element: Collection,
 }
 
 public extension Collection where Self.Element: Collection,
-								  Self.Element.Element: Equatable,
-								  Self.Element.Index == Int {
+	Self.Element.Element: Equatable,
+	Self.Element.Index == Int {
 
 	/// Search for an equatable element in two dimensional collection.
 	/// - parameter value: element to search.
 	/// - returns: IndexPath of first element equal to parameter or nil if no such element found.
 	func firstIndexPath( of value: Element.Element ) -> IndexPath? {
-		for ( section, row ) in self.enumerated() {
+		for ( section, row ) in enumerated() {
 			if let rowIndex = row.firstIndex( of: value ) {
 				return IndexPath( item: rowIndex, section: section )
 			}
@@ -114,15 +113,15 @@ public extension Collection where Self.Element: Collection,
 }
 
 public extension Collection where Self.Element: Collection,
-								  Self.Element.Element: Identifiable,
-								  Self.Element.Index == Int {
+	Self.Element.Element: Identifiable,
+	Self.Element.Index == Int {
 
 	/// Search for an identifiable element in two dimensional collection.
 	/// - parameter value: element to search.
 	/// - returns: IndexPath of first element with the same id as parameter
 	/// or nil if no such element found.
 	func firstIndexPath( of value: Element.Element ) -> IndexPath? {
-		for ( section, row ) in self.enumerated() {
+		for ( section, row ) in enumerated() {
 			if let rowIndex = row.firstIndex( where: { $0.id == value.id } ) {
 				return IndexPath( item: rowIndex, section: section )
 			}

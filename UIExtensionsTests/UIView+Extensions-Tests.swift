@@ -21,8 +21,8 @@
 // SOFTWARE.
 
 #if !os(watchOS)
-import XCTest
 import UIExtensions
+import XCTest
 
 @MainActor
 final class UIView_Extensions_Tests: XCTestCase {
@@ -70,15 +70,15 @@ final class UIView_Extensions_Tests: XCTestCase {
 #endif // !os(watchOS)
 
 /*
-#if canImport(AppKit)
-class TestViewMac: NSView {
-	@IBOutlet var button: NSButton!
-	@IBOutlet var label: NSTextField!
-}
-#else
-class TestViewPhone: UIView {
-	@IBOutlet var button: UIButton!
-	@IBOutlet var label: UILabel!
-}
-#endif
-*/
+ #if canImport(AppKit)
+ class TestViewMac: NSView {
+ 	@IBOutlet var button: NSButton!
+ 	@IBOutlet var label: NSTextField!
+ }
+ #else
+ class TestViewPhone: UIView {
+ 	@IBOutlet var button: UIButton!
+ 	@IBOutlet var label: UILabel!
+ }
+ #endif
+ */

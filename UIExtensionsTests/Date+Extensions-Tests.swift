@@ -40,127 +40,127 @@ class DateExtensionsTests: XCTestCase {
 		XCTAssert( Calendar.current.isDate( date, equalTo: dateFromTimestamp, toGranularity: .second ) )
 	}
 
-	func testAddingMonths() {
-		let date1 = formatter.date( from: "2019-10-01 10:00:00" )!
-		let date2 = formatter.date( from: "2019-11-01 10:00:00" )!
-		let date3 = formatter.date( from: "2020-01-01 10:00:00" )!
-		let date4 = formatter.date( from: "2019-01-01 10:00:00" )!
+	func testAddingMonths() throws {
+		let date1 = try XCTUnwrap(formatter.date( from: "2019-10-01 10:00:00" ))
+		let date2 = try XCTUnwrap(formatter.date( from: "2019-11-01 10:00:00" ))
+		let date3 = try XCTUnwrap(formatter.date( from: "2020-01-01 10:00:00" ))
+		let date4 = try XCTUnwrap(formatter.date( from: "2019-01-01 10:00:00" ))
 
 		XCTAssert( date1.addingMonths( 1 ) == date2 )
 		XCTAssert( date1.addingMonths( 3 ) == date3 )
 		XCTAssert( date1.addingMonths( -9 ) == date4 )
 
-		let date5 = formatter.date( from: "2019-08-31 10:00:00" )!
-		let date6 = formatter.date( from: "2019-09-30 10:00:00" )!
+		let date5 = try XCTUnwrap(formatter.date( from: "2019-08-31 10:00:00" ))
+		let date6 = try XCTUnwrap(formatter.date( from: "2019-09-30 10:00:00" ))
 
 		XCTAssert( date5.addingMonths( 1 ) == date6 )
 	}
 
-	func testAddingYears() {
-		let date1 = formatter.date( from: "2019-10-01 10:00:00" )!
-		let date2 = formatter.date( from: "2020-10-01 10:00:00" )!
-		let date3 = formatter.date( from: "2120-10-01 10:00:00" )!
-		let date4 = formatter.date( from: "2000-10-01 10:00:00" )!
+	func testAddingYears() throws {
+		let date1 = try XCTUnwrap(formatter.date( from: "2019-10-01 10:00:00" ))
+		let date2 = try XCTUnwrap(formatter.date( from: "2020-10-01 10:00:00" ))
+		let date3 = try XCTUnwrap(formatter.date( from: "2120-10-01 10:00:00" ))
+		let date4 = try XCTUnwrap(formatter.date( from: "2000-10-01 10:00:00" ))
 
 		XCTAssert( date1.addingYears( 1 ) == date2 )
 		XCTAssert( date1.addingYears( 101 ) == date3 )
 		XCTAssert( date1.addingYears( -19 ) == date4 )
 
-		let date5 = formatter.date( from: "2016-02-29 10:00:00" )!
-		let date6 = formatter.date( from: "2019-02-28 10:00:00" )!
+		let date5 = try XCTUnwrap(formatter.date( from: "2016-02-29 10:00:00" ))
+		let date6 = try XCTUnwrap(formatter.date( from: "2019-02-28 10:00:00" ))
 
 		XCTAssert( date5.addingYears( 3 ) == date6 )
 	}
 
-	func testStartOfHour() {
-		let date1 = formatter.date( from: "2019-10-01 10:30:00" )!
-		let date2 = formatter.date( from: "2019-10-01 10:00:00" )!
-		let date3 = formatter.date( from: "2019-10-01 00:00:00" )!
-		let date4 = formatter.date( from: "2019-10-01 23:00:00" )!
+	func testStartOfHour() throws {
+		let date1 = try XCTUnwrap(formatter.date( from: "2019-10-01 10:30:00" ))
+		let date2 = try XCTUnwrap(formatter.date( from: "2019-10-01 10:00:00" ))
+		let date3 = try XCTUnwrap(formatter.date( from: "2019-10-01 00:00:00" ))
+		let date4 = try XCTUnwrap(formatter.date( from: "2019-10-01 23:00:00" ))
 
 		XCTAssert( date1.startOfHour( 10 ) == date2 )
 		XCTAssert( date1.startOfHour( 0 ) == date3 )
 		XCTAssert( date1.startOfHour( 23 ) == date4 )
 
-		let date5 = formatter.date( from: "2019-10-01 23:59:59" )!
+		let date5 = try XCTUnwrap(formatter.date( from: "2019-10-01 23:59:59" ))
 		XCTAssert( date5.startOfHour( 23 ) == date4 )
 	}
 
-	func testStartOfDay() {
-		let date1 = formatter.date( from: "2019-10-01 10:30:00" )!
-		let date2 = formatter.date( from: "2019-10-01 00:00:00" )!
-		let date3 = formatter.date( from: "2019-10-01 23:59:59" )!
+	func testStartOfDay() throws {
+		let date1 = try XCTUnwrap(formatter.date( from: "2019-10-01 10:30:00" ))
+		let date2 = try XCTUnwrap(formatter.date( from: "2019-10-01 00:00:00" ))
+		let date3 = try XCTUnwrap(formatter.date( from: "2019-10-01 23:59:59" ))
 
 		XCTAssert( date1.startOfDay() == date2 )
 		XCTAssert( date2.startOfDay() == date2 )
 		XCTAssert( date3.startOfDay() == date2 )
 	}
 
-	func testStartOfMonth() {
-		let date1 = formatter.date( from: "2019-10-03 10:30:00" )!
-		let date2 = formatter.date( from: "2019-10-01 00:00:00" )!
-		let date3 = formatter.date( from: "2019-10-31 23:59:59" )!
+	func testStartOfMonth() throws {
+		let date1 = try XCTUnwrap(formatter.date( from: "2019-10-03 10:30:00" ))
+		let date2 = try XCTUnwrap(formatter.date( from: "2019-10-01 00:00:00" ))
+		let date3 = try XCTUnwrap(formatter.date( from: "2019-10-31 23:59:59" ))
 
 		XCTAssert( date1.startOfMonth() == date2 )
 		XCTAssert( date2.startOfMonth() == date2 )
 		XCTAssert( date3.startOfMonth() == date2 )
 	}
 
-	func testEndOfMonth() {
-		let date1 = formatter.date( from: "2019-10-03 10:30:00" )!
-		let date2 = formatter.date( from: "2019-10-01 00:00:00" )!
-		let date3 = formatter.date( from: "2019-10-31 23:59:59" )!
+	func testEndOfMonth() throws {
+		let date1 = try XCTUnwrap(formatter.date( from: "2019-10-03 10:30:00" ))
+		let date2 = try XCTUnwrap(formatter.date( from: "2019-10-01 00:00:00" ))
+		let date3 = try XCTUnwrap(formatter.date( from: "2019-10-31 23:59:59" ))
 
 		XCTAssert( date1.endOfMonth() == date3 )
 		XCTAssert( date2.endOfMonth() == date3 )
 		XCTAssert( date3.endOfMonth() == date3 )
 	}
 
-	func testStartOfYear() {
-		let date1 = formatter.date( from: "2019-01-01 00:00:00" )!
-		let date2 = formatter.date( from: "2019-10-03 10:30:00" )!
-		let date3 = formatter.date( from: "2019-12-31 23:59:59" )!
+	func testStartOfYear() throws {
+		let date1 = try XCTUnwrap(formatter.date( from: "2019-01-01 00:00:00" ))
+		let date2 = try XCTUnwrap(formatter.date( from: "2019-10-03 10:30:00" ))
+		let date3 = try XCTUnwrap(formatter.date( from: "2019-12-31 23:59:59" ))
 
 		XCTAssert( date1.startOfYear() == date1 )
 		XCTAssert( date2.startOfYear() == date1 )
 		XCTAssert( date3.startOfYear() == date1 )
 	}
 
-	func testEndOfYear() {
-		let date1 = formatter.date( from: "2019-01-01 00:00:00" )!
-		let date2 = formatter.date( from: "2019-10-03 10:30:00" )!
-		let date3 = formatter.date( from: "2019-12-31 23:59:59" )!
+	func testEndOfYear() throws {
+		let date1 = try XCTUnwrap(formatter.date( from: "2019-01-01 00:00:00" ))
+		let date2 = try XCTUnwrap(formatter.date( from: "2019-10-03 10:30:00" ))
+		let date3 = try XCTUnwrap(formatter.date( from: "2019-12-31 23:59:59" ))
 
 		XCTAssert( date1.endOfYear() == date3 )
 		XCTAssert( date2.endOfYear() == date3 )
 		XCTAssert( date3.endOfYear() == date3 )
 	}
 
-	func testWeekday() {
-		let date1 = formatter.date( from: "2019-01-01 00:00:00" )!
-		let date2 = formatter.date( from: "2019-12-29 23:59:59" )!
-		let date3 = formatter.date( from: "2016-02-29 11:59:59" )!
+	func testWeekday() throws {
+		let date1 = try XCTUnwrap(formatter.date( from: "2019-01-01 00:00:00" ))
+		let date2 = try XCTUnwrap(formatter.date( from: "2019-12-29 23:59:59" ))
+		let date3 = try XCTUnwrap(formatter.date( from: "2016-02-29 11:59:59" ))
 
 		XCTAssert( date1.weekday == .tuesday )
 		XCTAssert( date2.weekday == .sunday )
 		XCTAssert( date3.weekday == .monday )
 	}
 
-	func testTimeIntervalSinceStartOfTheDay() {
-		let date1 = formatter.date( from: "2019-01-01 00:00:00" )!
-		let date2 = formatter.date( from: "2019-12-29 23:59:59" )!
-		let date3 = formatter.date( from: "2016-02-29 12:00:59" )!
+	func testTimeIntervalSinceStartOfTheDay() throws {
+		let date1 = try XCTUnwrap(formatter.date( from: "2019-01-01 00:00:00" ))
+		let date2 = try XCTUnwrap(formatter.date( from: "2019-12-29 23:59:59" ))
+		let date3 = try XCTUnwrap(formatter.date( from: "2016-02-29 12:00:59" ))
 
 		XCTAssert( date1.timeIntervalSinceStartOfTheDay == 0 )
 		XCTAssert( date2.timeIntervalSinceStartOfTheDay == 86399 )
 		XCTAssert( date3.timeIntervalSinceStartOfTheDay == 43259 )
 	}
 
-	func testNumberOfDaysInMonth() {
-		let date1 = formatter.date( from: "2019-01-01 00:00:00" )!
-		let date2 = formatter.date( from: "2019-09-19 00:00:00" )!
-		let date3 = formatter.date( from: "2019-02-10 23:59:59" )!
-		let date4 = formatter.date( from: "2016-02-29 12:00:59" )!
+	func testNumberOfDaysInMonth() throws {
+		let date1 = try XCTUnwrap(formatter.date( from: "2019-01-01 00:00:00" ))
+		let date2 = try XCTUnwrap(formatter.date( from: "2019-09-19 00:00:00" ))
+		let date3 = try XCTUnwrap(formatter.date( from: "2019-02-10 23:59:59" ))
+		let date4 = try XCTUnwrap(formatter.date( from: "2016-02-29 12:00:59" ))
 
 		XCTAssert( date1.numberOfDaysInMonth == 31 )
 		XCTAssert( date2.numberOfDaysInMonth == 30 )
@@ -168,13 +168,13 @@ class DateExtensionsTests: XCTestCase {
 		XCTAssert( date4.numberOfDaysInMonth == 29 )
 	}
 
-	func testCompare() {
+	func testCompare() throws {
 		XCTAssertTrue( Date().isToday )
 		XCTAssertTrue( Date().addingTimeInterval( 24.hour ).isTomorrow )
 		XCTAssertTrue( Date().addingTimeInterval( -24.hour ).isYesterday )
 
-		let date1 = formatter.date( from: "2019-01-01 00:00:00" )!
-		let date2 = formatter.date( from: "2019-09-21 00:00:00" )!
+		let date1 = try XCTUnwrap(formatter.date( from: "2019-01-01 00:00:00" ))
+		let date2 = try XCTUnwrap(formatter.date( from: "2019-09-21 00:00:00" ))
 		XCTAssertFalse( date1.isDateInWeekend )
 		XCTAssertTrue( date2.isDateInWeekend )
 	}

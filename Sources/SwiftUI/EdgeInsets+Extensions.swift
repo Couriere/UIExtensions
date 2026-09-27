@@ -61,7 +61,7 @@ extension EdgeInsets {
 			top: uiEdgeInsets.top,
 			leading: uiEdgeInsets.left,
 			bottom: uiEdgeInsets.bottom,
-			trailing: uiEdgeInsets.right
+			trailing: uiEdgeInsets.right,
 		)
 	}
 
@@ -87,13 +87,17 @@ extension EdgeInsets {
 	///   - leading: The inset for the leading edge, or `nil` to use 0.
 	///   - bottom: The inset for the bottom edge, or `nil` to use 0.
 	///   - trailing: The inset for the trailing edge, or `nil` to use 0.
-	public init( top: Double? = nil, leading: Double? = nil,
-		  bottom: Double? = nil, trailing: Double? = nil ) {
+	public init(
+		top: Double? = nil,
+		leading: Double? = nil,
+		bottom: Double? = nil,
+		trailing: Double? = nil,
+	) {
 		self.init(
 			top: CGFloat( top ?? 0 ),
 			leading: CGFloat( leading ?? 0 ),
 			bottom: CGFloat( bottom ?? 0 ),
-			trailing: CGFloat( trailing ?? 0 )
+			trailing: CGFloat( trailing ?? 0 ),
 		)
 	}
 }
