@@ -127,7 +127,7 @@ internal struct RefreshableLoaderModifier: ViewModifier {
 
 	internal let reloadAction: () -> Void
 
-	@Environment(\.loaderTask) private var loaderTask
+	@Environment(\.loaderCompletion) private var loaderCompletion
 
 	internal func body( content: Content ) -> some View {
 		content
@@ -135,20 +135,7 @@ internal struct RefreshableLoaderModifier: ViewModifier {
 				reloadAction()
 				try? await Task.sleep( seconds: 0.2 )
 
-				await loaderTask?()
+				await loaderCompletion?.waitForCompletion()
 			}
-	}
-}
-
-internal extension EnvironmentValues {
-	@Entry var loaderTask: TaskWrapper? = nil
-}
-
-internal struct TaskWrapper {
-
-	let action: @Sendable () async -> Void
-
-	func callAsFunction() async {
-		await action()
 	}
 }

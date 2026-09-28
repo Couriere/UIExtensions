@@ -36,7 +36,7 @@ extension Loader {
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
-	///    Receives the result value and the current loader content state.
+	///    Receives the output value and the current loader content state.
 	///
 	/// Example:
 	/// ```
@@ -48,8 +48,8 @@ extension Loader {
 	///			try await Task.sleep( for: .seconds( 1 ))
 	///			return Int.random( in: range )
 	///		},
-	///		content: { result, state in
-	///			Text( String( result ))
+	///		content: { output, state in
+	///			Text( String( output ))
 	///				.opacity( state.contains(.loading) ? 0.5 : 1.0 )
 	///		}
 	///	)
@@ -61,8 +61,8 @@ extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping ( Input ) async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result, _ state: LoaderContentState ) -> Content,
+		action: @escaping ( Input ) async throws -> Output,
+		@ViewBuilder content: @escaping ( _ output: Output, _ state: LoaderContentState ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -86,7 +86,7 @@ extension Loader {
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
-	///    Receives only the result value without state information.
+	///    Receives only the output value without state information.
 	///
 	/// Example:
 	/// ```
@@ -98,8 +98,8 @@ extension Loader {
 	///			try await Task.sleep( for: .seconds( 1 ))
 	///			return Int.random( in: range )
 	///		},
-	///		content: { result in
-	///			Text( String( result ))
+	///		content: { output in
+	///			Text( String( output ))
 	///		}
 	///	)
 	/// ```
@@ -110,8 +110,8 @@ extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping ( Input ) async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result ) -> Content,
+		action: @escaping ( Input ) async throws -> Output,
+		@ViewBuilder content: @escaping ( _ output: Output ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -135,7 +135,7 @@ extension Loader {
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
-	///    Receives a binding to the result and the current loader content state.
+	///    Receives a binding to the output and the current loader content state.
 	///
 	/// Example:
 	/// ```
@@ -161,8 +161,8 @@ extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ state: LoaderContentState ) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping ( _ output: Binding<Output>, _ state: LoaderContentState ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -186,7 +186,7 @@ extension Loader {
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
-	///    Receives a binding to the result without state information.
+	///    Receives a binding to the output without state information.
 	///
 	/// Example:
 	/// ```
@@ -211,8 +211,8 @@ extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Binding<Result> ) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping ( _ output: Binding<Output> ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -220,7 +220,7 @@ extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: { result, _ in content( result ) },
+			content: { output, _ in content( output ) },
 		)
 	}
 
@@ -236,7 +236,7 @@ extension Loader {
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
-	///    Receives the result value and the current loader content state.
+	///    Receives the output value and the current loader content state.
 	///
 	/// Example:
 	/// ```
@@ -248,8 +248,8 @@ extension Loader {
 	///			try await Task.sleep( for: .seconds( 1 ))
 	///			return Int.random( in: 100..<1000 )
 	///		},
-	///		content: { result, state in
-	///			Text( String( result ))
+	///		content: { output, state in
+	///			Text( String( output ))
 	///				.opacity( state.contains(.loading) ? 0.5 : 1.0 )
 	///		}
 	///	)
@@ -261,8 +261,8 @@ extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result, _ state: LoaderContentState ) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping ( _ output: Output, _ state: LoaderContentState ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -286,7 +286,7 @@ extension Loader {
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
-	///    Receives only the result value without state information.
+	///    Receives only the output value without state information.
 	///
 	/// Example:
 	/// ```
@@ -298,8 +298,8 @@ extension Loader {
 	///			try await Task.sleep( for: .seconds( 1 ))
 	///			return Int.random( in: 100..<1000 )
 	///		},
-	///		content: { result in
-	///			Text( String( result ))
+	///		content: { output in
+	///			Text( String( output ))
 	///		}
 	///	)
 	/// ```
@@ -310,8 +310,8 @@ extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result ) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping ( _ output: Output ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -333,7 +333,7 @@ extension Loader {
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
-	///    Receives a binding to the result and the current loader content state.
+	///    Receives a binding to the output and the current loader content state.
 	///
 	/// Example:
 	/// ```
@@ -357,8 +357,8 @@ extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Binding<Result>, _ state: LoaderContentState ) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping ( _ output: Binding<Output>, _ state: LoaderContentState ) -> Content,
 	) where Input == Int {
 		self.init(
 			input: 0,
@@ -380,7 +380,7 @@ extension Loader {
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
-	///    Receives a binding to the result without state information.
+	///    Receives a binding to the output without state information.
 	///
 	/// Example:
 	/// ```
@@ -403,8 +403,8 @@ extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Binding<Result> ) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping ( _ output: Binding<Output> ) -> Content,
 	) where Input == Int {
 		self.init(
 			input: 0,
@@ -412,7 +412,7 @@ extension Loader {
 			loadingView: loadingView,
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: { result, _ in content( result ) },
+			content: { output, _ in content( output ) },
 		)
 	}
 
@@ -426,7 +426,7 @@ extension Loader {
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
-	///    Receives the result value and the current loader content state.
+	///    Receives the output value and the current loader content state.
 	///
 	/// Example:
 	/// ```
@@ -437,8 +437,8 @@ extension Loader {
 	///			try await Task.sleep( for: .seconds( 1 ))
 	///			return Int.random( in: 100..<1000 )
 	///		},
-	///		content: { result, state in
-	///			Text( String( result ))
+	///		content: { output, state in
+	///			Text( String( output ))
 	///				.opacity( state.contains(.loading) ? 0.5 : 1.0 )
 	///		}
 	///	)
@@ -449,8 +449,8 @@ extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result, _ state: LoaderContentState ) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping ( _ output: Output, _ state: LoaderContentState ) -> Content,
 	) where Input == Int {
 		self.init(
 			input: 0,
@@ -473,7 +473,7 @@ extension Loader {
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
-	///    Receives only the result value without state information.
+	///    Receives only the output value without state information.
 	///
 	/// Example:
 	/// ```
@@ -484,8 +484,8 @@ extension Loader {
 	///			try await Task.sleep( for: .seconds( 1 ))
 	///			return Int.random( in: 100..<1000 )
 	///		},
-	///		content: { result in
-	///			Text( String( result ))
+	///		content: { output in
+	///			Text( String( output ))
 	///		}
 	///	)
 	///	```
@@ -495,8 +495,8 @@ extension Loader {
 		reloadOptions: ReloadOptions = [ .clearOnReload, .reloadOnAppear ],
 		loadingView: LoadingView,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping ( _ result: Result ) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping ( _ output: Output ) -> Content,
 	) where Input == Int {
 		self.init(
 			input: 0,

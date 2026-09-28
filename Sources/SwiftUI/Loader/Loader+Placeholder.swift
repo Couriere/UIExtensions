@@ -33,7 +33,7 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	///   - input: The input parameter for data loading.
 	///   - reloadOptions: Options controlling the reloading behavior.
 	///   Defaults to `[.reloadOnAppear]`.
-	///   - placeholder: Placeholder result value to display during loading.
+	///   - placeholder: Placeholder output value to display during loading.
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
@@ -42,10 +42,10 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	public init(
 		input: Input,
 		reloadOptions: ReloadOptions = [.reloadOnAppear],
-		placeholder: Result,
+		placeholder: Output,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping (Input) async throws -> Result,
-		@ViewBuilder content: @escaping (_ result: Binding<Result>, _ state: LoaderContentState ) -> Content,
+		action: @escaping (Input) async throws -> Output,
+		@ViewBuilder content: @escaping (_ output: Binding<Output>, _ state: LoaderContentState ) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -68,7 +68,7 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	///   - input: The input parameter for data loading.
 	///   - reloadOptions: Options controlling the reloading behavior.
 	///   Defaults to `[.reloadOnAppear]`.
-	///   - placeholder: Placeholder result value to display during loading.
+	///   - placeholder: Placeholder output value to display during loading.
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
@@ -77,10 +77,10 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	public init(
 		input: Input,
 		reloadOptions: ReloadOptions = [.reloadOnAppear],
-		placeholder: Result,
+		placeholder: Output,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping (Input) async throws -> Result,
-		@ViewBuilder content: @escaping (Binding<Result>) -> Content,
+		action: @escaping (Input) async throws -> Output,
+		@ViewBuilder content: @escaping (Binding<Output>) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -90,7 +90,7 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 			),
 			failureView: failureView,
 			action: action,
-			content: { result, _ in content( result ) },
+			content: { output, _ in content( output ) },
 		)
 	}
 
@@ -103,7 +103,7 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	///   - input: The input parameter for data loading.
 	///   - reloadOptions: Options controlling the reloading behavior.
 	///   Defaults to `[.reloadOnAppear]`.
-	///   - placeholder: Placeholder result value to display during loading.
+	///   - placeholder: Placeholder output value to display during loading.
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
@@ -112,10 +112,10 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	public init(
 		input: Input,
 		reloadOptions: ReloadOptions = [.reloadOnAppear],
-		placeholder: Result,
+		placeholder: Output,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping (Input) async throws -> Result,
-		@ViewBuilder content: @escaping (_ result: Result, _ state: LoaderContentState) -> Content,
+		action: @escaping (Input) async throws -> Output,
+		@ViewBuilder content: @escaping (_ output: Output, _ state: LoaderContentState) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -138,7 +138,7 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	///   - input: The input parameter for data loading.
 	///   - reloadOptions: Options controlling the reloading behavior.
 	///   Defaults to `[.reloadOnAppear]`.
-	///   - placeholder: Placeholder result value to display during loading.
+	///   - placeholder: Placeholder output value to display during loading.
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
@@ -147,10 +147,10 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	public init(
 		input: Input,
 		reloadOptions: ReloadOptions = [.reloadOnAppear],
-		placeholder: Result,
+		placeholder: Output,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping (Input) async throws -> Result,
-		@ViewBuilder content: @escaping (Result) -> Content,
+		action: @escaping (Input) async throws -> Output,
+		@ViewBuilder content: @escaping (Output) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -173,7 +173,7 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	///   - input: The input parameter for data loading.
 	///   - reloadOptions: Options controlling the reloading behavior.
 	///   Defaults to `[.reloadOnAppear]`.
-	///   - placeholder: Placeholder result value to display during loading.
+	///   - placeholder: Placeholder output value to display during loading.
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
@@ -182,10 +182,10 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	public init(
 		input: Input,
 		reloadOptions: ReloadOptions = [.reloadOnAppear],
-		placeholder: Result,
+		placeholder: Output,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping (_ result: Binding<Result>, _ state: LoaderContentState) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping (_ output: Binding<Output>, _ state: LoaderContentState) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -208,7 +208,7 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	///   - input: The input parameter for data loading.
 	///   - reloadOptions: Options controlling the reloading behavior.
 	///   Defaults to `[.reloadOnAppear]`.
-	///   - placeholder: Placeholder result value to display during loading.
+	///   - placeholder: Placeholder output value to display during loading.
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
@@ -217,10 +217,10 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	public init(
 		input: Input,
 		reloadOptions: ReloadOptions = [.reloadOnAppear],
-		placeholder: Result,
+		placeholder: Output,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping (Binding<Result>) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping (Binding<Output>) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -230,7 +230,7 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 			),
 			failureView: failureView,
 			action: { _ in try await action() },
-			content: { result, _ in content(result) },
+			content: { output, _ in content(output) },
 		)
 	}
 
@@ -243,7 +243,7 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	///   - input: The input parameter for data loading.
 	///   - reloadOptions: Options controlling the reloading behavior.
 	///   Defaults to `[.reloadOnAppear]`.
-	///   - placeholder: Placeholder result value to display during loading.
+	///   - placeholder: Placeholder output value to display during loading.
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
@@ -252,10 +252,10 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	public init(
 		input: Input,
 		reloadOptions: ReloadOptions = [.reloadOnAppear],
-		placeholder: Result,
+		placeholder: Output,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping (_ result: Result, _ state: LoaderContentState) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping (_ output: Output, _ state: LoaderContentState) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -278,7 +278,7 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	///   - input: The input parameter for data loading.
 	///   - reloadOptions: Options controlling the reloading behavior.
 	///   Defaults to `[.reloadOnAppear]`.
-	///   - placeholder: Placeholder result value to display during loading.
+	///   - placeholder: Placeholder output value to display during loading.
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
@@ -287,10 +287,10 @@ extension Loader where LoadingView == LoaderPlaceholderProxy<Content> {
 	public init(
 		input: Input,
 		reloadOptions: ReloadOptions = [.reloadOnAppear],
-		placeholder: Result,
+		placeholder: Output,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping (Result) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping (Output) -> Content,
 	) {
 		self.init(
 			input: input,
@@ -314,7 +314,7 @@ extension Loader where Input == Int, LoadingView == LoaderPlaceholderProxy<Conte
 	/// - Parameters:
 	///   - reloadOptions: Options controlling the reloading behavior.
 	///   Defaults to `[.reloadOnAppear]`.
-	///   - placeholder: Placeholder result value to display during loading.
+	///   - placeholder: Placeholder output value to display during loading.
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
@@ -322,10 +322,10 @@ extension Loader where Input == Int, LoadingView == LoaderPlaceholderProxy<Conte
 	@inlinable
 	public init(
 		reloadOptions: ReloadOptions = [.reloadOnAppear],
-		placeholder: Result,
+		placeholder: Output,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping (_ result: Binding<Result>) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping (_ output: Binding<Output>) -> Content,
 	) {
 		self.init(
 			input: 0,
@@ -344,7 +344,7 @@ extension Loader where Input == Int, LoadingView == LoaderPlaceholderProxy<Conte
 	/// - Parameters:
 	///   - reloadOptions: Options controlling the reloading behavior.
 	///   Defaults to `[.reloadOnAppear]`.
-	///   - placeholder: Placeholder result value to display during loading.
+	///   - placeholder: Placeholder output value to display during loading.
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
@@ -352,10 +352,10 @@ extension Loader where Input == Int, LoadingView == LoaderPlaceholderProxy<Conte
 	@inlinable
 	public init(
 		reloadOptions: ReloadOptions = [.reloadOnAppear],
-		placeholder: Result,
+		placeholder: Output,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping (_ result: Result, _ state: LoaderContentState) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping (_ output: Output, _ state: LoaderContentState) -> Content,
 	) {
 		self.init(
 			input: 0,
@@ -374,7 +374,7 @@ extension Loader where Input == Int, LoadingView == LoaderPlaceholderProxy<Conte
 	/// - Parameters:
 	///   - reloadOptions: Options controlling the reloading behavior.
 	///   Defaults to `[.reloadOnAppear]`.
-	///   - placeholder: Placeholder result value to display during loading.
+	///   - placeholder: Placeholder output value to display during loading.
 	///   - failureView: View to display when the asynchronous action throws an error.
 	///   - action: Asynchronous function to perform data loading.
 	///   - content: ViewBuilder closure for rendering content based on loaded data.
@@ -382,10 +382,10 @@ extension Loader where Input == Int, LoadingView == LoaderPlaceholderProxy<Conte
 	@inlinable
 	public init(
 		reloadOptions: ReloadOptions = [.reloadOnAppear],
-		placeholder: Result,
+		placeholder: Output,
 		failureView: @escaping ( Error, _ reload: @escaping () -> Void ) -> FailureView,
-		action: @escaping () async throws -> Result,
-		@ViewBuilder content: @escaping (Result) -> Content,
+		action: @escaping () async throws -> Output,
+		@ViewBuilder content: @escaping (Output) -> Content,
 	) {
 		self.init(
 			input: 0,
