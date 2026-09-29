@@ -14,3 +14,8 @@ Carthage/
 timeline.xctimeline
 contents.xcworkspacedata
 contents.xcplayground
+
+# Keep the shared UI test scheme in the checked-in Xcode project.
+!UITests/UIExtensionsUITests.xcodeproj/xcshareddata/
+!UITests/UIExtensionsUITests.xcodeproj/xcshareddata/xcschemes/
+!UITests/UIExtensionsUITests.xcodeproj/xcshareddata/xcschemes/Host.xcscheme

@@ -111,7 +111,7 @@ public extension UIButton {
 		contentView.pin()
 
 		if dimsOnTouch {
-			addHandler( for: .allTouchEvents ) {
+			addHandler( for: .allTouchEvents ) { [unowned self] in
 				// Pause to update the `isHighlighted` state.
 				DispatchQueue.main.async { [unowned self] in
 					contentView.alpha = isHighlighted ? 0.5 : 1
