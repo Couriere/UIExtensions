@@ -66,7 +66,7 @@ public extension Dictionary {
 	}
 }
 
-@available( swift, deprecated: 5.1, message: "User @UserDefault property wrapper instead." )
+@available( swift, deprecated: 5.1, message: "Use @CodableUserDefaults property wrapper instead." )
 public final class DefaultsKey<T> {
 
 	public let key: String
@@ -865,11 +865,11 @@ public extension Array {
 	typealias IterationResult = ( Bool ) -> Void
 	typealias AsyncIteration = ( Element, _ result: @escaping IterationResult ) -> Void
 
-	/// Аналог фильтра для массива, но каждый вызов итератора может быть асинхронным.
-	/// В результате после отработки всех итераторов вызывается обработчик завершения.
-	/// Каждому блоку итератор передаёт элемент массива и блок завершения `IterationResult` для передачи результата,
-	/// который ОБЯЗАТЕЛЬНО должен быть вызван. Только после вызова `IterationResult` для всех элементов
-	/// вызывается блок завершения самого метода `asyncFilter`.
+	/// Filters an array while allowing each iteration to complete asynchronously.
+	/// The completion handler runs after all iterations have finished.
+	/// Each iteration receives an array element and an `IterationResult` callback,
+	/// which must be called. The `asyncFilter` completion handler runs only after
+	/// every element has reported its result.
 	func asyncFilter( asyncIsIncluded: @escaping AsyncIteration, completion: @escaping ( [ Element ] ) -> Void ) {}
 }
 
