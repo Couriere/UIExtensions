@@ -16,6 +16,8 @@
 		A10000000000000000000003 /* FullScreenPopupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* FullScreenPopupScreen.swift */; };
 		A10000000000000000000004 /* OnReappearUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* OnReappearUITests.swift */; };
 		A10000000000000000000005 /* AsyncButtonUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* AsyncButtonUITests.swift */; };
+		A10000000000000000000008 /* TabContainerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* TabContainerUITests.swift */; };
+		A10000000000000000000007 /* TabContainerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* TabContainerScreen.swift */; };
 		A10000000000000000000006 /* FullScreenPopupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* FullScreenPopupUITests.swift */; };
 		6418C30D1F9076C113C8357B /* LoaderScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED50A44E9324BD6308859E8 /* LoaderScreen.swift */; };
 		648CB7F87BCF74E5A6C48C64 /* XCTestCase+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CDBD578C507DA2F60EA034 /* XCTestCase+Helpers.swift */; };
@@ -45,6 +47,8 @@
 		A20000000000000000000003 /* FullScreenPopupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenPopupScreen.swift; sourceTree = "<group>"; };
 		A20000000000000000000004 /* OnReappearUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnReappearUITests.swift; sourceTree = "<group>"; };
 		A20000000000000000000005 /* AsyncButtonUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncButtonUITests.swift; sourceTree = "<group>"; };
+		A20000000000000000000008 /* TabContainerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabContainerUITests.swift; sourceTree = "<group>"; };
+		A20000000000000000000007 /* TabContainerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabContainerScreen.swift; sourceTree = "<group>"; };
 		A20000000000000000000006 /* FullScreenPopupUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenPopupUITests.swift; sourceTree = "<group>"; };
 		A2075907B87198B48439E42B /* ScreenID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenID.swift; sourceTree = "<group>"; };
 		CC3383FD305BD89C1A4E00D3 /* HostUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HostUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,6 +77,7 @@
 				A20000000000000000000001 /* OnReappearScreen.swift */,
 				A20000000000000000000002 /* AsyncButtonScreen.swift */,
 				A20000000000000000000003 /* FullScreenPopupScreen.swift */,
+				A20000000000000000000007 /* TabContainerScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -102,6 +107,7 @@
 				A20000000000000000000004 /* OnReappearUITests.swift */,
 				A20000000000000000000005 /* AsyncButtonUITests.swift */,
 				A20000000000000000000006 /* FullScreenPopupUITests.swift */,
+				A20000000000000000000008 /* TabContainerUITests.swift */,
 				807BF363CA8A0D8F1DA7267A /* Support */,
 			);
 			path = HostUITests;
@@ -235,6 +241,7 @@
 				A10000000000000000000001 /* OnReappearScreen.swift in Sources */,
 				A10000000000000000000002 /* AsyncButtonScreen.swift in Sources */,
 				A10000000000000000000003 /* FullScreenPopupScreen.swift in Sources */,
+				A10000000000000000000007 /* TabContainerScreen.swift in Sources */,
 				DC4598128885EA4A510943FC /* ScreenID.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -247,6 +254,7 @@
 				A10000000000000000000004 /* OnReappearUITests.swift in Sources */,
 				A10000000000000000000005 /* AsyncButtonUITests.swift in Sources */,
 				A10000000000000000000006 /* FullScreenPopupUITests.swift in Sources */,
+				A10000000000000000000008 /* TabContainerUITests.swift in Sources */,
 				8EEBAF38DC418953CBD76A0D /* OnFirstAppearUITests.swift in Sources */,
 				380AFBE99DC12E9418680193 /* ScreenID.swift in Sources */,
 				648CB7F87BCF74E5A6C48C64 /* XCTestCase+Helpers.swift in Sources */,

@@ -90,6 +90,8 @@ extension ScreenID {
 			FullScreenPopupScreen( variant: .boolean )
 		case .fullScreenPopupItem:
 			FullScreenPopupScreen( variant: .item )
+		case .tabContainer:
+			TabContainerScreen()
 		}
 	}
 }

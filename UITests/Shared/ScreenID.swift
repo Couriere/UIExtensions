@@ -50,6 +50,7 @@ enum ScreenID: String, CaseIterable {
 	case asyncButtonKeepsRunning
 	case fullScreenPopup
 	case fullScreenPopupItem
+	case tabContainer
 
 	static let launchArgument = "-UITestScreen"
 }
@@ -112,4 +113,15 @@ enum FullScreenPopupID {
 	static let dismiss = "fullScreenPopup.dismiss"
 	static let replace = "fullScreenPopup.replace"
 	static let dismissCount = "fullScreenPopup.dismissCount"
+}
+
+/// Accessibility identifiers of the `TabContainer` screen.
+enum TabContainerID {
+	static let firstTab = "tabContainer.firstTab"
+	static let secondTab = "tabContainer.secondTab"
+	static let toggleSecondTab = "tabContainer.toggleSecondTab"
+	static let firstCount = "tabContainer.firstCount"
+	static let secondCount = "tabContainer.secondCount"
+	static let incrementFirst = "tabContainer.incrementFirst"
+	static let incrementSecond = "tabContainer.incrementSecond"
 }
