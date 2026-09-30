@@ -30,10 +30,10 @@ public extension UIViewController {
 		return UIApplication.shared.topPresentedViewController
 	}
 
-	/// Показывает контроллер из контроллера, находящегося на вершине стека.
-	/// Если в данный момент этот контроллер показывается или скрывается, то показ
-	/// откладывается до момента завершения перехода.
-	/// Метод моментально возвращает контроль и проверяет возможность показа асинхронно.
+	/// Presents a view controller from the controller currently at the top of the presentation stack.
+	/// If that controller is currently presenting or dismissing, presentation is deferred
+	/// until the transition finishes. This method returns immediately and checks
+	/// asynchronously when presentation is possible.
 	static func safePresentFromTopViewController(
 		controller: UIViewController,
 		animated: Bool,
@@ -46,8 +46,8 @@ public extension UIViewController {
 		)
 	}
 
-	/// Вызывает блок завершения после того, как контроллер на вершине стека контроллеров
-	/// будет готов к показу нового, то есть не будет в процессе появления или скрытия.
+	/// Calls the completion handler when the topmost controller is ready to present
+	/// another controller, meaning it is not currently presenting or dismissing.
 	static func safeTopPresentedViewController(
 		controllerReadyHandler: @escaping ( _ topPresentedViewController: UIViewController? ) -> Void,
 	) {

@@ -45,7 +45,7 @@ struct CodableUserDefaultsTests {
 	@CodableUserDefaults( "existingLegacyValueStore" ) var existingLegacyValueStore: Int = 0
 	@CodableUserDefaults( "legacyEnumStore" ) var legacyEnumStore: LegacyEnum = .first
 
-	enum LegacyEnum: String, Codable, Sendable {
+	enum LegacyEnum: String, Codable {
 		case first
 		case second
 	}
@@ -76,7 +76,7 @@ struct CodableUserDefaultsTests {
 	}
 
 	@Test
-	func testInt() {
+	func int() {
 
 		#expect( valueStore == -1 )
 		valueStore = 1
@@ -91,7 +91,7 @@ struct CodableUserDefaultsTests {
 	}
 
 	@Test
-	func testData() {
+	func `test data`() {
 		#expect( dataStore == Data() )
 		let data = "Test string".data( using: .utf8 )!
 		dataStore = data
@@ -107,7 +107,7 @@ struct CodableUserDefaultsTests {
 	}
 
 	@Test
-	func testAray() {
+	func aray() {
 
 		#expect( arrayStore == [] )
 		arrayStore = [ 100, 5.123 ]
@@ -126,7 +126,7 @@ struct CodableUserDefaultsTests {
 		#expect( optionalArrayStore == nil )
 		optionalArrayStore = [ p1, p2 ]
 		#expect( optionalArrayStore == [ p1, p2 ] )
-		optionalArrayStore! += p3
+		optionalArrayStore += p3
 		#expect( optionalArrayStore == [ p1, p2, p3 ] )
 		optionalArrayStore?.remove( at: 0 )
 		#expect( optionalArrayStore == [ p2, p3 ] )
@@ -134,7 +134,7 @@ struct CodableUserDefaultsTests {
 		#expect( optionalArrayStore == nil )
 	}
 
-	struct Test: Codable, Equatable, Sendable {
+	struct Test: Codable, Equatable {
 		let i: Int
 		let s: String
 		let os: String?
@@ -144,7 +144,7 @@ struct CodableUserDefaultsTests {
 	}
 
 	@Test
-	func testCodable() {
+	func codable() {
 
 		let test = Test( i: 100, s: "Anti", os: "Optional", a: [] )
 
@@ -163,7 +163,7 @@ struct CodableUserDefaultsTests {
 	}
 
 	@Test
-	func testNonStandardSuiteValue() {
+	func `non standard suite value`() {
 
 		let testData = "TestString".data( using: .utf8 )
 
@@ -175,7 +175,7 @@ struct CodableUserDefaultsTests {
 	}
 
 	@Test
-	func testExistingAndLegacyValue() throws {
+	func `existing and legacy value`() throws {
 
 		let defaults = UserDefaults.standard
 
@@ -187,9 +187,9 @@ struct CodableUserDefaultsTests {
 	}
 
 	@Test
-	func testLegacyCodableRawRepresentableValue() throws {
+	func `legacy codable raw representable value`() throws {
 		let defaults = UserDefaults.standard
-		defaults.set( try JSONEncoder().encode( LegacyEnum.second ), forKey: "legacyEnumStore" )
+		try defaults.set( JSONEncoder().encode( LegacyEnum.second ), forKey: "legacyEnumStore" )
 		#expect( legacyEnumStore == .second )
 
 		legacyEnumStore = .first
@@ -197,9 +197,9 @@ struct CodableUserDefaultsTests {
 	}
 
 	@Test
-	func testPublisherTracksDirectWrites() {
+	func `publisher tracks direct writes`() throws {
 		let suite = UUID().uuidString
-		let defaults = UserDefaults( suiteName: suite )!
+		let defaults = try #require(UserDefaults( suiteName: suite ))
 		defer { defaults.removePersistentDomain( forName: suite ) }
 
 		let value = CodableUserDefaults( wrappedValue: 0, "publisherValue", store: defaults )
@@ -220,15 +220,15 @@ struct CodableUserDefaultsTests {
 			_value = CodableUserDefaults(
 				wrappedValue: 0,
 				"observableObjectValue",
-				store: store
+				store: store,
 			)
 		}
 	}
 
 	@Test
-	func testObservableObjectTracksDirectWrites() {
+	func `observable object tracks direct writes`() throws {
 		let suite = UUID().uuidString
-		let defaults = UserDefaults( suiteName: suite )!
+		let defaults = try #require(UserDefaults( suiteName: suite ))
 		defer { defaults.removePersistentDomain( forName: suite ) }
 
 		let model = ObservedModel( store: defaults )
@@ -243,7 +243,7 @@ struct CodableUserDefaultsTests {
 	}
 
 	@Test
-	func testRemove() {
+	func `test remove`() {
 		valueStore = 10
 		#expect( valueStore == 10 )
 		#expect( $valueStore.exists )

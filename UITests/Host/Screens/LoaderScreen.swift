@@ -109,7 +109,7 @@ struct LoaderScreen: View {
 
 	private func justLoadedContent(
 		_ output: Binding<String>,
-		_ state: LoaderContentState
+		_ state: LoaderContentState,
 	) -> some View {
 		List {
 			Text( output.wrappedValue )

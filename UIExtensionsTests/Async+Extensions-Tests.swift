@@ -67,7 +67,7 @@ func `Debounce runs only the last of rapidly restarted tasks`() async {
 	let log = Log()
 	var tasks: [Task<Void, Never>] = []
 
-	// Mimics `task( id: )`: every new value cancels the previous task.
+	/// Mimics `task( id: )`: every new value cancels the previous task.
 	func restart( with value: Int ) {
 		tasks.last?.cancel()
 		tasks.append( Task {

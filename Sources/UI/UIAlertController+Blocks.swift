@@ -37,7 +37,7 @@ public extension UIAlertController {
 
 		self.init( title: title, message: message, preferredStyle: .alert )
 
-		let actionHandler = { ( action: UIAlertAction ) -> Void in
+		let actionHandler: ( UIAlertAction ) -> Void = { action in
 			handler?( self, self.actions.firstIndex( of: action ) ?? -1 )
 		}
 

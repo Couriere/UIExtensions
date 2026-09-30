@@ -258,63 +258,6 @@ extension String {
 	.map { try! NSRegularExpression(pattern: $0, options: []) }
 }
 
-/* 
- Russian language only methods.
- */
-
-/* 
- Возвращает корректную форму существительного для числительного
-
- - parameter wordForms: Возможные формы слова.
-
- - returns: Правильная форма слова из вариантов.
-
- wordForms - массив из трёх вариантов существительного. Например:
- ( "Стол", "Стола", "Столов" )
- */
-
-/// Returns the correct Russian noun form for the given number from three provided word forms.
-public func pluralString( forNumber number: Int, fromWordForms: ( String, String, String ) ) -> String {
-
-	let correctForm: String
-
-	let absNumber = abs( number )
-	if ( absNumber % 100 ) > 10, ( absNumber % 100 ) < 20 {
-		correctForm = fromWordForms.2
-	}
-	else {
-		switch absNumber % 10 {
-		case 1:
-			correctForm = fromWordForms.0
-		case 2, 3, 4:
-			correctForm = fromWordForms.1
-		default:
-			correctForm = fromWordForms.2
-		}
-	}
-
-	return correctForm
-}
-
-extension String {
-
-	/**
-	 Возвращает корректную форму существительного для числительного
-	 из слова с добавлением стандартных окончаний [а], [ов]
-
-	 - parameter word:	Исходное слово
-
-	 - returns: Правильную форму исходного слова для указанного числительного
-
-	 word - слово для нормализации. Например:
-	 Стол -> [ "Стол", "Стола", "Столов" ]
-	 */
-	public func plural( forNumber number: Int ) -> String {
-		let wordForms = ( self, self + "а", self + "ов" )
-		return pluralString( forNumber: number, fromWordForms: wordForms )
-	}
-}
-
 extension String {
 
 	/// Returns the string with its first character capitalized.
@@ -397,5 +340,65 @@ extension String {
 	@inlinable
 	public var attributedString: AttributedString {
 		AttributedString( self )
+	}
+}
+
+/*
+ Russian language only methods.
+ */
+
+/*
+ Возвращает корректную форму существительного для числительного
+
+ - parameter wordForms: Возможные формы слова.
+
+ - returns: Правильная форма слова из вариантов.
+
+ wordForms - массив из трёх вариантов существительного. Например:
+ ( "Стол", "Стола", "Столов" )
+ */
+
+/// Returns the correct Russian noun form for the given number from three provided word forms.
+public func pluralString(
+	forNumber number: Int,
+	fromWordForms: ( String, String, String ),
+) -> String {
+
+	let correctForm: String
+
+	let absNumber = abs( number )
+	if ( absNumber % 100 ) > 10, ( absNumber % 100 ) < 20 {
+		correctForm = fromWordForms.2
+	}
+	else {
+		switch absNumber % 10 {
+		case 1:
+			correctForm = fromWordForms.0
+		case 2, 3, 4:
+			correctForm = fromWordForms.1
+		default:
+			correctForm = fromWordForms.2
+		}
+	}
+
+	return correctForm
+}
+
+extension String {
+
+	/**
+	 Возвращает корректную форму существительного для числительного
+	 из слова с добавлением стандартных окончаний [а], [ов]
+
+	 - parameter word:	Исходное слово
+
+	 - returns: Правильную форму исходного слова для указанного числительного
+
+	 word - слово для нормализации. Например:
+	 Стол -> [ "Стол", "Стола", "Столов" ]
+	 */
+	public func plural( forNumber number: Int ) -> String {
+		let wordForms = ( self, self + "а", self + "ов" )
+		return pluralString( forNumber: number, fromWordForms: wordForms )
 	}
 }

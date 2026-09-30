@@ -25,11 +25,9 @@ import UIKit
 
 public extension UIView {
 
-	/// Создаёт направляющую для фокуса, добавляет её в окно `superview` текущего объекта,
-	/// и цепляет направляющую к краям этого окна по горизонтали,
-	/// и по границам текущего объекта по вертикали.
-	/// Достаточно часто требуется для того, чтобы фокус переходил на объект,
-	/// расположенный не непосредственно над или под текущим объектом с фокусом.
+	/// Creates a focus guide, adds it to the provided or current superview, and constrains
+	/// it horizontally to that view and vertically to this view. This is useful when focus
+	/// needs to move to a view that is not directly above or below the currently focused view.
 	@discardableResult
 	func setHorizontalFocusGuide( superview: UIView? = nil, insets: UIEdgeInsets = .zero ) -> UIFocusGuide {
 		return UIFocusGuide().then {
@@ -43,10 +41,9 @@ public extension UIView {
 @MainActor
 public extension UILayoutGuide {
 
-	/// Цепляет гайд к краям родителя по горизонтали, и по границам указанного
-	/// окна по вертикали. Достаточно часто требуется на для того, чтобы
-	/// фокус переходил на объект, расположенный не непосредственно над или под
-	/// текущим объектом с фокусом.
+	/// Constrains the guide to its superview's horizontal edges and to the specified view's
+	/// vertical edges. This is useful when focus needs to move between views that are not
+	/// directly above or below one another.
 	@discardableResult
 	func constrainToSuperviewHorizontallyAndVertically(
 		to view: UIView,
@@ -116,10 +113,8 @@ public extension UILayoutGuide {
 
 						guard guide.owningView != revealView.value.superview else { return }
 
-						// Владеющий этим окном `UILayoutGuide` сменил
-						// своё окно. Значит нам надо удалиться.
-						// Если `UILayoutGuide` нужно показать своё
-						// местоположение, она должна снова вызвать `reveal`.
+						// The owning view of this `UILayoutGuide` has changed, so remove
+						// the debug view. Call `reveal` again to show the guide's new position.
 						revealView.value.removeFromSuperview()
 						objc_setAssociatedObject(
 							guide,

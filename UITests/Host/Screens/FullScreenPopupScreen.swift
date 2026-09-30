@@ -25,14 +25,14 @@ struct FullScreenPopupScreen: View {
 		.fullScreenCover(
 			isPresented: $isPresented,
 			onDismiss: { dismissCount += 1 },
-			transitionStyle: .crossDissolve
+			transitionStyle: .crossDissolve,
 		) {
 			popup( number: 0 ) { isPresented = false }
 		}
 		.fullScreenCover(
 			item: $item,
 			onDismiss: { dismissCount += 1 },
-			transitionStyle: .crossDissolve
+			transitionStyle: .crossDissolve,
 		) { value in
 			popup( number: value.id ) { item = nil }
 		}

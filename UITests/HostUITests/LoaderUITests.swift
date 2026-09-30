@@ -240,8 +240,8 @@ final class LoaderUITests: XCTestCase {
 
 	// MARK: Refreshable
 
-	// While the refresh indicator spins, XCUITest waits for the app to idle
-	// before every query, so this test lets loads complete on their own.
+	/// While the refresh indicator spins, XCUITest waits for the app to idle
+	/// before every query, so this test lets loads complete on their own.
 	func testPullToRefreshChangesInputAndReloads() {
 		let app = launch( .loaderKeepingOutput, arguments: [ LoaderID.autoCompleteArgument ])
 		assertLabel( app.staticTexts[ LoaderID.output ], "Output 1" )

@@ -296,7 +296,7 @@ public extension CodableUserDefaults where Value: RawRepresentable, Value.RawVal
 		wrappedValue: Value,
 		_ key: String,
 		store: UserDefaults = .standard,
-		) where Value: Codable {
+	) where Value: Codable {
 
 		self.init(
 			key: key,
@@ -358,14 +358,14 @@ private extension CodableUserDefaults {
 				self,
 				forKeyPath: key,
 				options: .new,
-				context: nil
+				context: nil,
 			)
 		}
 
 		deinit {
 			store.removeObserver(
 				self,
-				forKeyPath: keyPath
+				forKeyPath: keyPath,
 			)
 		}
 
@@ -378,7 +378,7 @@ private extension CodableUserDefaults {
 			if keyPath == self.keyPath {
 				registrar.withMutation(
 					of: self,
-					keyPath: \.value
+					keyPath: \.value,
 				) {}
 				signal.send(())
 				enclosingObjectWillChangePublisher

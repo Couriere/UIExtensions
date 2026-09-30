@@ -58,10 +58,10 @@ public extension UIApplication {
 		return controller
 	}
 
-	/// Показывает контроллер из контроллера, находящегося на вершине стека.
-	/// Если в данный момент этот контроллер показывается или скрывается, то показ
-	/// откладывается до момента завершения перехода.
-	/// Метод моментально возвращает контроль и проверяет возможность показа асинхронно.
+	/// Presents a view controller from the controller currently at the top of the presentation stack.
+	/// If that controller is currently presenting or dismissing, presentation is deferred
+	/// until the transition finishes. This method returns immediately and checks
+	/// asynchronously when presentation is possible.
 	func safePresentFromTopViewController(
 		controller: UIViewController,
 		animated: Bool,
@@ -73,8 +73,8 @@ public extension UIApplication {
 		}
 	}
 
-	/// Вызывает блок завершения после того, как контроллер на вершине стека контроллеров
-	/// будет готов к показу нового, то есть не будет в процессе появления или скрытия.
+	/// Calls the completion handler when the topmost controller is ready to present
+	/// another controller, meaning it is not currently presenting or dismissing.
 	func safeTopPresentedViewController(
 		controllerReadyHandler: @escaping ( _ topPresentedViewController: UIViewController? ) -> Void,
 	) {
@@ -84,17 +84,15 @@ public extension UIApplication {
 
 				if topViewController.isBeingPresented || topViewController.isBeingDismissed {
 
-					// Верхний контроллер в стеке сейчас в процессе показа или скрытия.
+					// The topmost controller is currently presenting or dismissing.
 					if let transitionCoordinator = topViewController.transitionCoordinator {
-						// Сейчас у контроллера должен быть `transitionCoordinator`.
-						// Используем его, чтобы определить момент завершения перехода.
+						// Use the transition coordinator to detect when the transition finishes.
 						transitionCoordinator.animate( alongsideTransition: nil ) { _ in
 							checkTopViewController()
 						}
 					}
 					else {
-						// Если по каким-то причинам координатор перехода отсутствует,
-						// повторяем запрос через некоторое время.
+						// If the transition coordinator is unavailable, retry after a short delay.
 						assertionFailure()
 						DispatchQueue.main.asyncAfter( timeInterval: 0.1 ) { checkTopViewController() }
 					}
@@ -102,18 +100,17 @@ public extension UIApplication {
 					return
 				}
 
-				// Выполняем блок завершения.
+				// Run the completion handler.
 				controllerReadyHandler( topViewController )
 			}
 			else {
-				// Если верхний контроллер в стеке на может быть найден,
-				// то ничего не делаем и вызываем обработчик завершения.
+				// If the topmost controller cannot be found, call the completion handler with nil.
 				controllerReadyHandler( nil )
 			}
 		}
 
 		DispatchQueue.main.async {
-			// Запускаем цикл.
+			// Start checking the topmost controller.
 			checkTopViewController()
 		}
 	}

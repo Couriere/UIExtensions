@@ -271,13 +271,13 @@ extension Loader: View {
 private extension Loader {
 
 	func load(
-		reason: LoaderModel<Input, Output>.Reason
+		reason: LoaderModel<Input, Output>.Reason,
 	) {
 		model.load(
 			input,
 			reason: reason,
 			options: reloadOptions,
-			action: action
+			action: action,
 		)
 	}
 }

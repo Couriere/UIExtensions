@@ -1,19 +1,79 @@
---swiftversion 5.1
+# file options
+--exclude **/*.json
+--swiftversion 6.2
 
+# format options
 --allman false
---indent tabs
---elseposition next-line
---wraparguments preserve
+--binarygrouping 4,8
+--closingparen balanced
+--trailing-commas always
+--conflictmarkers reject
+--decimalgrouping 3,6
+--exponentcase lowercase
+--exponentgrouping disabled
+--fractiongrouping disabled
+--fragment false
+--funcattributes prev-line
+--guardelse auto
+--header ignore
+--hexgrouping 4,8
+--hexliteralcase uppercase
+--ifdef preserve
+--importgrouping alphabetized
+--indent tab
+--indentcase false
+--linebreaks lf
+--maxwidth none
+--modifierorder
+--nospaceoperators
+--nowrapoperators
+--octalgrouping 4,8
+--operatorfunc spaced
+--patternlet hoist
+--redundanttype explicit
+--self init-only
+--selfrequired debug
+--semicolons inline
+--shortoptionals always
+--smarttabs enabled
+--stripunusedargs closure-only
+--tabwidth unspecified
+--trailingclosures
+--trimwhitespace always
+--typeattributes prev-line
+--varattributes preserve
+--voidtype void
+--wraparguments before-first
 --wrapcollections before-first
+--wrapparameters before-first
+--xcodeindentation disabled
+--yodaswap always
+--marktypes never
 
---disable andOperator
---disable anyObjectProtocol
+# Rules
+--enable blankLineAfterSwitchCase
 --disable blankLinesAtStartOfScope
---disable consecutiveBlankLines
---disable sortedImports
+--disable blankLinesBetweenChainedFunctions
+--enable consistentSwitchCaseSpacing
+--disable elseOnSameLine
+--enable environmentEntry
+--disable extensionAccessControl
+--disable genericExtensions
+--disable hoistPatternLet
+--disable opaqueGenericParameters
+--disable preferForLoop
+--disable preferKeyPath
+--disable redundantInternal
+--disable redundantNilInit
+--disable redundantReturn
+--disable simplifyGenericConstraints
+--disable sortDeclarations
+--disable sortSwitchCases
+--disable spaceAroundOperators
+--enable spaceAroundBraces
 --disable spaceInsideBrackets
 --disable spaceInsideParens
---disable wrapArguments
-
-
-
+--disable typeSugar
+--disable wrapMultilineStatementBraces
+--disable wrapPropertyBodies
+--enable markTypes

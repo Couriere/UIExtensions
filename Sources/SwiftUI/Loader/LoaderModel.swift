@@ -134,7 +134,7 @@ final class LoaderModel<Input, Output> where Input: Equatable & Sendable, Output
 
 		let result: Result<Output, Error>
 		do {
-			result = try .success( await action( input ))
+			result = try await .success( action( input ))
 		}
 		catch {
 			result = .failure( error )
@@ -149,6 +149,7 @@ final class LoaderModel<Input, Output> where Input: Equatable & Sendable, Output
 		case .success( let value ):
 			isJustLoadedPending = output == nil
 			output = value
+
 		case .failure( let error ):
 			failure = error
 		}
