@@ -425,6 +425,42 @@ extension View {
 		)
 	}
 
+	/// Adds an asynchronous action receiving the new values when either of
+	/// two observed values changes.
+	///
+	/// Both values are combined into one trigger, so the action runs once
+	/// even when `first` and `second` change together. If a value changes
+	/// while the previous action is still running, the previous task is
+	/// cancelled.
+	///
+	///     .onChange( of: selectedTab, or: searchText, initial: true ) { tab, text in
+	///         await reload( tab: tab, query: text )
+	///     }
+	///
+	/// - Parameters:
+	///   - first: The first value to observe.
+	///   - second: The second value to observe.
+	///   - initial: Whether the action runs when the view first appears,
+	///     before either value has changed.
+	///   - action: The asynchronous action to perform, receiving the new
+	///     values of `first` and `second`.
+	/// - Returns: A view that performs the action when either value changes.
+	@inlinable
+	public func onChange<T, V>(
+		of first: T,
+		or second: V,
+		initial: Bool = false,
+		_ action: @escaping ( T, V ) async -> Void,
+	) -> some View where T: Equatable & Sendable, V: Equatable & Sendable {
+
+		onChange(
+			of: _Trigger( first: first, second: second ),
+			initial: initial,
+		) { _, newValue in
+			await action( newValue.first, newValue.second )
+		}
+	}
+
 	/// Adds an asynchronous action to perform when either of two observed
 	/// values changes.
 	///
