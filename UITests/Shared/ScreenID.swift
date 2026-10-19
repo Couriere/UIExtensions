@@ -50,6 +50,7 @@ enum ScreenID: String, CaseIterable {
 	case asyncButtonKeepsRunning
 	case fullScreenPopup
 	case fullScreenPopupItem
+	case maskedTextField
 	case tabContainer
 
 	static let launchArgument = "-UITestScreen"
@@ -124,4 +125,37 @@ enum TabContainerID {
 	static let secondCount = "tabContainer.secondCount"
 	static let incrementFirst = "tabContainer.incrementFirst"
 	static let incrementSecond = "tabContainer.incrementSecond"
+}
+
+/// Identifiers and fixture values for the masked text field screen.
+enum MaskedTextFieldID {
+
+	enum Variant: String {
+		case phone
+		case date
+		case passport
+		case plain
+		case blocked
+		case hiddenMask
+	}
+
+	static func variant( _ variant: Variant ) -> String {
+		"masked_text_field_demo_variant_\( variant.rawValue )"
+	}
+
+	static func field( _ variant: Variant ) -> String {
+		"masked_text_field_demo_field_\( variant.rawValue )"
+	}
+
+	static func value( _ variant: Variant ) -> String {
+		"masked_text_field_demo_value_\( variant.rawValue )"
+	}
+
+	static let fillPhone = "masked_text_field_demo_fill_phone"
+
+	static let clearPhone = "masked_text_field_demo_clear_phone"
+
+	static let blockedCard = "8600123412341234"
+	static let externalPhone = "931331400"
+	static let plainCharacterLimit = 6
 }
