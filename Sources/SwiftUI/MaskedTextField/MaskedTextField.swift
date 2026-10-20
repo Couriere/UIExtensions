@@ -79,6 +79,7 @@ public struct MaskedTextField {
 	private var characterLimit: Int?
 	private var usesNumberInput: Bool = false
 	private var allowsInput: Bool = true
+	private var inputChange: ((String, Range<String.Index>, String) -> InputChange)?
 	private var inputFilter: (( String ) -> String?)?
 
 	@FocusState private var isFocused: Bool
@@ -104,6 +105,57 @@ public struct MaskedTextField {
 }
 
 public extension MaskedTextField {
+
+	/// A decision for an inferred edit of the displayed text, excluding the mask prefix.
+	enum InputChange {
+		/// Continues normal processing, including mask validation,
+		/// input filtering, and caret adjustment.
+		case accept
+		/// Discards the edit and restores the previous displayed text and caret position.
+		case reject
+		/// Replaces the entire significant value and moves the caret to its end.
+		case replaceAll(String)
+	}
+
+	/// Inspects a user edit before mask and length validation.
+	///
+	/// The closure receives the previous displayed text (without the immutable mask
+	/// prefix), a replacement range in that string, and the inserted text. Deletion
+	/// has an empty replacement. The range uses `String.Index`, not UTF-16 offsets.
+	///
+	/// Return `.accept` to continue normal input processing, `.reject` to restore
+	/// the previous text and caret, or `.replaceAll(value)` to replace the entire
+	/// significant value and move the caret to its end. The replacement value must
+	/// satisfy the mask and length limit; it must not contain formatting separators.
+	///
+	/// SwiftUI reports the resulting text rather than the original edit command.
+	/// The range and replacement are inferred from matching prefixes and suffixes,
+	/// so repeated characters can make the original edit ambiguous. This callback
+	/// handles typing, paste, and autofill; it does not identify the input source.
+	/// Programmatic binding updates do not invoke it.
+	///
+	/// For example, an application can recognize a complete phone number in an
+	/// inserted fragment and replace the current value with its national number:
+	///
+	/// ```swift
+	/// MaskedTextField(text: $phone, mask: "+998 ## ### ## ##")
+	///     .onInputChange { _, _, replacement in
+	///         let digits = replacement.filter { $0.isASCII && $0.isNumber }
+	///         guard digits.count == 12, digits.hasPrefix("998") else { return .accept }
+	///         return .replaceAll(String(digits.suffix(9)))
+	///     }
+	/// ```
+	///
+	/// In this example, inserting `+998 93 123 45 67` stores `931234567`, even
+	/// when the field already contains a number. Unrecognized fragments continue
+	/// through normal mask processing.
+	func onInputChange(
+		_ action: @escaping (String, Range<String.Index>, String) -> InputChange,
+	) -> Self {
+		var new = self
+		new.inputChange = action
+		return new
+	}
 
 	/// Sets the unfilled token symbol; nil hides the unfilled mask remainder.
 	func maskFillSymbol( _ character: Character? ) -> Self {
@@ -299,6 +351,26 @@ private extension MaskedTextField {
 			return revertEdit( to: previousText, caretOffset: caretBeforeEdit )
 		}
 
+		if let inputChange {
+			let edit = Self.inputEdit(from: previousText, to: editedText)
+			switch inputChange(previousText, edit.range, edit.replacement) {
+			case .accept:
+				break
+			case .reject:
+				return revertEdit(to: previousText, caretOffset: caretBeforeEdit)
+			case .replaceAll(let value):
+				let normalized = isNumberInput ? Self.normalizedNumber(value) : value
+				guard !overflows(normalized), significantCharacters(in: normalized) == normalized else {
+					return revertEdit(to: previousText, caretOffset: caretBeforeEdit)
+				}
+				let updatedText = format(normalized)
+				text = normalized
+				setDisplayedText(updatedText)
+				setCaret(afterSignificantCount: normalized.count, in: updatedText)
+				return
+			}
+		}
+
 		// Reject overflow rather than truncating an existing suffix the user did not delete.
 		guard !overflows( editedText ) else {
 			return revertEdit( to: previousText, caretOffset: caretBeforeEdit )
@@ -476,6 +548,17 @@ private extension MaskedTextField {
 
 extension MaskedTextField {
 
+	/// shortcut: matching edges make repeated-character edits ambiguous; retain the old selection if exact ranges become necessary.
+	static func inputEdit(from previous: String, to edited: String) -> (range: Range<String.Index>, replacement: String) {
+		let prefixCount = zip(previous, edited).prefix { $0 == $1 }.count
+		let oldTail = previous.dropFirst(prefixCount)
+		let newTail = edited.dropFirst(prefixCount)
+		let suffixCount = zip(oldTail.reversed(), newTail.reversed()).prefix { $0 == $1 }.count
+		let start = previous.index(previous.startIndex, offsetBy: prefixCount)
+		let end = previous.index(previous.endIndex, offsetBy: -suffixCount)
+		return (start..<end, String(newTail.dropLast(suffixCount)))
+	}
+
 	static func normalizedNumber( _ digits: String ) -> String {
 		let trimmed = digits.drop( while: { $0 == "0" } )
 		return trimmed.isEmpty && !digits.isEmpty ? "0" : String( trimmed )
@@ -617,10 +700,12 @@ extension MaskedTextField.Mask {
 }
 
 #if DEBUG
+
 private struct MaskedTextFieldPreview: View {
 
 	@State private var plainText: String = ""
 	@State private var phone: String = ""
+	@State private var inputChangePhone: String = ""
 	@State private var filledPhone: String = "931331400"
 	@State private var date: String = ""
 	@State private var card: String = ""
@@ -648,6 +733,32 @@ private struct MaskedTextFieldPreview: View {
 						mask: "+998 ## ### ## ##",
 					)
 					.placeholderColor( .red.opacity(0.6) )
+				}
+
+				row( "onInputChange", value: inputChangePhone ) {
+					MaskedTextField(
+						text: $inputChangePhone,
+						mask: "+998 ## ### ## ##",
+					)
+					.onInputChange { _, _, replacement in
+						let digits = replacement.filter { $0.isASCII && $0.isNumber }
+						guard digits.count == 12, digits.hasPrefix("998") else { return .accept }
+						return .replaceAll(String(digits.suffix(9)))
+					}
+					.maskFillSymbol( "0" )
+
+					#if os(iOS)
+					HStack {
+						Button( "Copy +998 93 123 45 67" ) {
+							UIPasteboard.general.string = "+998 93 123 45 67"
+						}
+						Button( "Copy 1234" ) {
+							UIPasteboard.general.string = "1234"
+						}
+					}
+					.buttonStyle( .bordered )
+					.font( .caption )
+					#endif
 				}
 
 				row( "Prefilled phone", value: filledPhone ) {

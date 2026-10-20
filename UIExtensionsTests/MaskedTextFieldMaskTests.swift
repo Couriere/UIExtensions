@@ -344,4 +344,24 @@ struct NumberInputTests {
 		#expect( MaskedTextField.groupedNumber( MaskedTextField.normalizedNumber( input ) ) == expected )
 	}
 }
+
+@Suite("Input change inference")
+struct MaskedTextFieldInputChangeTests {
+	@Test(arguments: [
+		("", "+998 93 123 45 67", "+998 93 123 45 67"),
+		("12 345", "12 +998931234567345", "+998931234567"),
+		("12 345", "93 123 45 67", "93 123 45 67"),
+		("123", "13", ""),
+		("11", "111", "1"),
+		("😀ab", "😀éb", "é"),
+	])
+	func `infers replacement`(previous: String, edited: String, replacement: String) {
+		let edit = MaskedTextField.inputEdit(from: previous, to: edited)
+		#expect(edit.replacement == replacement)
+		var reconstructed = previous
+		reconstructed.replaceSubrange(edit.range, with: edit.replacement)
+		#expect(reconstructed == edited)
+	}
+}
+
 #endif
