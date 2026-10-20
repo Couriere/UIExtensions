@@ -26,6 +26,8 @@
 		ED7D3B6784F165D842B727A2 /* HostApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA512CA7EC957DC77940350 /* HostApp.swift */; };
 		A10000000000000000000009 /* MaskedTextFieldScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* MaskedTextFieldScreen.swift */; };
 		A1000000000000000000000A /* MaskedTextFieldUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000A /* MaskedTextFieldUITests.swift */; };
+		A1000000000000000000000B /* HorizontalRailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000B /* HorizontalRailScreen.swift */; };
+		A1000000000000000000000C /* HorizontalRailUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000C /* HorizontalRailUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,8 @@
 		E4719F1000B99ED30E4F96D5 /* LoaderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderUITests.swift; sourceTree = "<group>"; };
 		A20000000000000000000009 /* MaskedTextFieldScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedTextFieldScreen.swift; sourceTree = "<group>"; };
 		A2000000000000000000000A /* MaskedTextFieldUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedTextFieldUITests.swift; sourceTree = "<group>"; };
+		A2000000000000000000000B /* HorizontalRailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalRailScreen.swift; sourceTree = "<group>"; };
+		A2000000000000000000000C /* HorizontalRailUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalRailUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				A20000000000000000000009 /* MaskedTextFieldScreen.swift */,
+				A2000000000000000000000B /* HorizontalRailScreen.swift */,
 				CED50A44E9324BD6308859E8 /* LoaderScreen.swift */,
 				98CF093E6C6A46259B12942D /* OnFirstAppearScreen.swift */,
 				A20000000000000000000001 /* OnReappearScreen.swift */,
@@ -108,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				A2000000000000000000000A /* MaskedTextFieldUITests.swift */,
+				A2000000000000000000000C /* HorizontalRailUITests.swift */,
 				E4719F1000B99ED30E4F96D5 /* LoaderUITests.swift */,
 				16BB7EEC204B54634B4F1382 /* OnFirstAppearUITests.swift */,
 				A20000000000000000000004 /* OnReappearUITests.swift */,
@@ -242,6 +248,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10000000000000000000009 /* MaskedTextFieldScreen.swift in Sources */,
+				A1000000000000000000000B /* HorizontalRailScreen.swift in Sources */,
 				ED7D3B6784F165D842B727A2 /* HostApp.swift in Sources */,
 				6418C30D1F9076C113C8357B /* LoaderScreen.swift in Sources */,
 				3C57C59A5B3312C1D128AF61 /* OnFirstAppearScreen.swift in Sources */,
@@ -258,6 +265,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1000000000000000000000A /* MaskedTextFieldUITests.swift in Sources */,
+				A1000000000000000000000C /* HorizontalRailUITests.swift in Sources */,
 				3030005A1D4FEB88725BA859 /* LoaderUITests.swift in Sources */,
 				A10000000000000000000004 /* OnReappearUITests.swift in Sources */,
 				A10000000000000000000005 /* AsyncButtonUITests.swift in Sources */,

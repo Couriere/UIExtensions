@@ -92,6 +92,8 @@ extension ScreenID {
 			FullScreenPopupScreen( variant: .item )
 		case .maskedTextField:
 			NavigationStack { MaskedTextFieldScreen() }
+		case .horizontalRail:
+			HorizontalRailScreen()
 		case .tabContainer:
 			TabContainerScreen()
 		}

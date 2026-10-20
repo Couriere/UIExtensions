@@ -36,3 +36,11 @@ You can rerun a failed test directly from Xcode to inspect it visually.
 
 Screens should let the test drive asynchronous work instead of waiting for timeouts.
 For example, `LoaderScreen` suspends every load until the test taps Complete or Fail.
+
+## HorizontalRail
+
+`HorizontalRailUITests` covers fixed and adaptive columns, next-item peeking,
+intrinsic item width, centered underflow, empty data, selection-driven scrolling,
+swipe-driven selection, scroll progress, and the `.onChanged` and `.never`
+selection scroll behaviors. The host fixture uses a 320-point rail and
+locale-independent progress labels so geometry and values are reproducible.

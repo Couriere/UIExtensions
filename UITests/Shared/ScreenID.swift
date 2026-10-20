@@ -52,6 +52,7 @@ enum ScreenID: String, CaseIterable {
 	case fullScreenPopupItem
 	case maskedTextField
 	case tabContainer
+	case horizontalRail
 
 	static let launchArgument = "-UITestScreen"
 }
@@ -158,4 +159,20 @@ enum MaskedTextFieldID {
 	static let blockedCard = "8600123412341234"
 	static let externalPhone = "931331400"
 	static let plainCharacterLimit = 6
+}
+
+/// Fixture variants and accessibility identifiers for `HorizontalRail`.
+enum HorizontalRailID {
+	enum Variant: String {
+		case standard, fixedColumns, adaptiveColumns, centered, intrinsic, onChanged, never, empty
+	}
+
+	static let variantArgument = "-UITestRailVariant"
+	static let rail = "rail.scroll"
+	static let selection = "rail.selection"
+	static let progress = "rail.progress"
+	static let select = "rail.select"
+	static let replace = "rail.replace"
+
+	static func item( _ id: Int ) -> String { "rail.item.\( id )" }
 }
