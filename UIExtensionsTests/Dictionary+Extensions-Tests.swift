@@ -50,7 +50,7 @@ final class Dictionary_Extensions_Tests: XCTestCase {
 		XCTAssertEqual( testDictionary, result1Plus2 )
 	}
 
-	func testStringSanitizer() {
+	func testStringCompactMapValues() {
 
 		let testDictionary1: [ String: String? ] = [
 			"One" : "One",
@@ -60,7 +60,7 @@ final class Dictionary_Extensions_Tests: XCTestCase {
 			"Five" : nil,
 		]
 
-		XCTAssert( testDictionary1.sanitized == [
+		XCTAssert( testDictionary1.compactMapValues() == [
 			"One" : "One",
 			"Two" : "Two",
 			"Four" : "Four",
@@ -72,7 +72,7 @@ final class Dictionary_Extensions_Tests: XCTestCase {
 			"Three" : "Three",
 		]
 
-		XCTAssert( testDictionary2.sanitized == [
+		XCTAssert( testDictionary2.compactMapValues() == [
 			"One" : "One",
 			"Two" : "Two",
 			"Three" : "Three",
@@ -80,35 +80,35 @@ final class Dictionary_Extensions_Tests: XCTestCase {
 
 		let testDictionary3: [ String: String? ] = [ "One" : nil ]
 
-		XCTAssert( testDictionary3.sanitized.isEmpty )
+		XCTAssert( testDictionary3.compactMapValues().isEmpty )
 	}
 
-	func testIntSanitizer() {
+	func testIntCompactMapValues() {
 
 		let testDictionary1: [ Int: Int? ] = [ 1 : 1, 2 : nil, 3 : 3, 4 : 4, 5 : nil ]
-		XCTAssert( testDictionary1.sanitized == [ 1 : 1, 3 : 3, 4 : 4 ] )
+		XCTAssert( testDictionary1.compactMapValues() == [ 1 : 1, 3 : 3, 4 : 4 ] )
 
 		let testDictionary2: [ Int: Int? ] = [:]
-		XCTAssert( testDictionary2.sanitized.isEmpty )
+		XCTAssert( testDictionary2.compactMapValues().isEmpty )
 
 		let testDictionary3: [ Int: Int? ] = [ 100 : nil ]
-		XCTAssert( testDictionary3.sanitized.isEmpty )
+		XCTAssert( testDictionary3.compactMapValues().isEmpty )
 	}
 
-	func testAnySanitizer() {
+	func testAnyCompactMapValues() {
 
 		let testDictionary1: [ Int: Any? ] = [ 1 : 1, 2 : nil, 3 : "Three", 4 : 30.5, 5 : nil ]
-		let sanitized = testDictionary1.sanitized
-		XCTAssert( ( sanitized[ 1 ] as? Int ) == 1 )
-		XCTAssert( !sanitized.keys.contains( 2 ) )
-		XCTAssert( ( sanitized[ 3 ] as? String ) == "Three" )
-		XCTAssert( ( sanitized[ 4 ] as? Double ) == 30.5 )
-		XCTAssert( !sanitized.keys.contains( 5 ) )
+		let compacted = testDictionary1.compactMapValues()
+		XCTAssert( ( compacted[ 1 ] as? Int ) == 1 )
+		XCTAssert( !compacted.keys.contains( 2 ) )
+		XCTAssert( ( compacted[ 3 ] as? String ) == "Three" )
+		XCTAssert( ( compacted[ 4 ] as? Double ) == 30.5 )
+		XCTAssert( !compacted.keys.contains( 5 ) )
 
 		let testDictionary2: [ Int: Any? ] = [:]
-		XCTAssert( testDictionary2.sanitized.isEmpty )
+		XCTAssert( testDictionary2.compactMapValues().isEmpty )
 
 		let testDictionary3: [ Int: Any? ] = [ 100 : nil ]
-		XCTAssert( testDictionary3.sanitized.isEmpty )
+		XCTAssert( testDictionary3.compactMapValues().isEmpty )
 	}
 }

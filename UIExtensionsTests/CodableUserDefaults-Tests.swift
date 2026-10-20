@@ -126,7 +126,7 @@ struct CodableUserDefaultsTests {
 		#expect( optionalArrayStore == nil )
 		optionalArrayStore = [ p1, p2 ]
 		#expect( optionalArrayStore == [ p1, p2 ] )
-		optionalArrayStore += p3
+		optionalArrayStore?.append( p3 )
 		#expect( optionalArrayStore == [ p1, p2, p3 ] )
 		optionalArrayStore?.remove( at: 0 )
 		#expect( optionalArrayStore == [ p2, p3 ] )
