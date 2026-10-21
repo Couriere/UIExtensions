@@ -138,6 +138,9 @@ enum MaskedTextFieldID {
 		case plain
 		case blocked
 		case hiddenMask
+		case number
+		case transformed
+		case replacement
 	}
 
 	static func variant( _ variant: Variant ) -> String {

@@ -52,6 +52,13 @@ public extension View {
 
 extension EnvironmentValues {
 
-	@Entry
-	var railProgressChanged: (@MainActor (Double) -> Void)? = nil
+	// An explicit key avoids @Entry's closure-comparison warning without hiding handler changes.
+	var railProgressChanged: (@MainActor (Double) -> Void)? {
+		get { self[RailProgressChangedKey.self] }
+		set { self[RailProgressChangedKey.self] = newValue }
+	}
+}
+
+private struct RailProgressChangedKey: EnvironmentKey {
+	static var defaultValue: (@MainActor (Double) -> Void)? { nil }
 }

@@ -24,196 +24,216 @@ import SwiftUI
 
 #if os(iOS) || os(macOS)
 
-/// A text field with masked, plain-text, and special numeric input modes.
+/// A text field that formats input while keeping the editable value
+/// in a string binding.
 ///
-/// ### Input modes
-///
-/// - **Masked input:** `mask` defines the accepted characters, separators, and
-///   input capacity. The binding contains significant characters only.
-/// - **Plain text:** accepts text as entered, subject to `.characterLimit(_:)`.
-/// - **Numeric input:** `.numberInput()` enables a special mode for nonnegative
-///   integers. Digits are grouped in threes (`"1 234 567"`), while the binding
-///   stores digits only (`"1234567"`). Leading zeros are removed; a single zero
-///   and an empty value are preserved. `.characterLimit(_:)` counts digits after
-///   normalization. A mask takes precedence over this mode.
+/// Choose `.plain` for unformatted text, `.masked(pattern)` for
+/// values such as phone numbers and dates, or `.groupedInteger` for
+/// nonnegative whole numbers. Mask separators and number-grouping
+/// spaces appear in the field but are not stored in the binding. See
+/// ``InputMode`` for each mode's value format.
 ///
 /// ```swift
-/// MaskedTextField("Phone", text: $phone, mask: "+998 ## ### ## ##")
-/// MaskedTextField("0", text: $amount)
-///     .numberInput()
-///     .characterLimit(16)
+/// MaskedTextField(
+///     "Phone",
+///     text: $phone,
+///     mode: .masked( "+998 ## ### ## ##" )
+/// )
+/// MaskedTextField(
+///     "Amount",
+///     text: $amount,
+///     mode: .groupedInteger( characterLimit: 16 )
+/// )
 /// ```
 ///
-/// ### Mask tokens
+/// Configure appearance and editing with the `maskedTextField…` view
+/// modifiers. A modifier on a container applies to every masked text
+/// field inside it; a modifier closer to a field overrides the
+/// inherited setting.
 ///
-/// - `#` accepts an ASCII digit.
-/// - `@` accepts a letter.
-/// - `*` accepts a letter or digit.
-///
-/// Other characters are separators. A prefix before the first token is immutable.
-/// Separators after the prefix must not match the mask's tokens.
-///
-/// ### Appearance
-///
-/// Placeholder and mask remainder colors inherit from
-/// `.maskedTextFieldPlaceholderColor(_:)`, defaulting to the system placeholder
-/// color. `.placeholderColor(_:)` overrides the color for an individual field.
-/// `.maskFillSymbol(_:)` sets the unfilled token symbol; nil hides the remainder.
-/// `.hidesMaskWhenEmpty()` hides the mask while empty and unfocused.
-/// `.trailingText(_:)` appends a label, such as a unit, after the entered value.
-///
-/// ### Keyboard
-///
-/// Numeric masks and the special numeric input mode use the number pad on iOS.
+/// On iOS, digit-only masks and `.groupedInteger` use the number pad
+/// and disable autocorrection. Other modes use the standard text
+/// field keyboard behavior.
 public struct MaskedTextField {
+
+	/// The format of a field's displayed text and the value stored in
+	/// its binding.
+	///
+	/// For modes with a character limit, nil allows any length. Zero
+	/// or a negative limit permits only an empty value. An edit
+	/// exceeding the limit is rejected as a whole, preserving the
+	/// previous value.
+	public enum InputMode: Equatable {
+		/// Text without automatic formatting. The binding stores the
+		/// entered text. `characterLimit` counts Swift characters,
+		/// including spaces.
+		case plain( characterLimit: Int? )
+
+		/// Text formatted with a pattern, such as `"+1 ## ### ## ##"`
+		/// for a phone number.
+		///
+		/// Each `#` accepts an ASCII digit, `@` a letter, and `*` a
+		/// letter or digit. Other characters are fixed separators.
+		/// Characters before the first token form a prefix that the
+		/// user cannot edit. Separators after the prefix must not be
+		/// characters accepted by the pattern's tokens.
+		///
+		/// The binding stores only characters entered into token
+		/// positions: for example, `"931234567"` is displayed as `"+1
+		/// 93 123 45 67"`. The number of tokens determines capacity.
+		/// A pattern without tokens behaves like `.plain`.
+		case masked( String )
+
+		/// A nonnegative whole number displayed with spaces between
+		/// groups of three digits.
+		///
+		/// The binding stores ASCII digits only: `"1234567"` is
+		/// displayed as `"1 234 567"`. Leading zeros are removed,
+		/// while an empty value and a single `"0"` are preserved.
+		/// Signs and decimal separators are not supported. Values
+		/// remain strings, so their size is not restricted to the
+		/// range of an integer type. `characterLimit` counts digits
+		/// after leading zeros are removed; grouping spaces do not
+		/// count.
+		case groupedInteger( characterLimit: Int? )
+
+		/// Unformatted text without a length limit.
+		public static var plain: Self {
+			.plain( characterLimit: nil )
+		}
+
+		/// A grouped nonnegative whole number without a digit limit.
+		public static var groupedInteger: Self {
+			.groupedInteger( characterLimit: nil )
+		}
+	}
+
+	/// How to handle a user edit received by
+	/// `.maskedTextFieldOnInputChange(_:)`.
+	public enum InputChange {
+		/// Applies the edit using the field's normal character
+		/// filtering and length limits.
+		///
+		/// Pass nil, or use `.accept`, to keep the original inserted
+		/// fragment. Pass a string to transform only that fragment,
+		/// for example `.accept(replacement:
+		/// replacement.uppercased())`. An empty string removes the
+		/// fragment. Formatting adjusts the caret to follow the
+		/// accepted characters.
+		case accept( replacement: String? = nil )
+
+		/// Discards the edit and restores the previous text and caret
+		/// position.
+		case reject
+
+		/// Replaces the entire editable value and moves the caret to
+		/// its end.
+		///
+		/// Provide a value without mask separators or the fixed
+		/// prefix. The edit is rejected if the value contains
+		/// characters the mode cannot accept or exceeds its capacity.
+		/// In `.groupedInteger`, leading zeros are removed first.
+		case replaceAll( String )
+
+		/// Applies the original edit using the field's normal
+		/// filtering and length limits.
+		public static var accept: Self {
+			.accept( replacement: nil )
+		}
+	}
 
 	private let prompt: String?
 	@Binding private var text: String
-	private let mask: Mask?
+	private let inputMode: InputMode
 
-	private var maskFillSymbol: Character? = " "
-	@Environment( \.maskedTextFieldPlaceholderColor ) private var defaultPlaceholderColor
-	private var placeholderColor: Color?
-	private var trailingText: String?
-	private var hidesMaskWhenEmpty: Bool = false
-	private var characterLimit: Int?
-	private var usesNumberInput: Bool = false
-	private var allowsInput: Bool = true
-	private var inputChange: ((String, Range<String.Index>, String) -> InputChange)?
-	private var inputFilter: (( String ) -> String?)?
+	@Environment( \.maskedTextFieldMaskFillSymbol ) private var maskFillSymbol
+	@Environment( \.maskedTextFieldPlaceholderColor ) private var placeholderColor
+	@Environment( \.maskedTextFieldTrailingText ) private var trailingText
+	@Environment( \.maskedTextFieldHidesMaskWhenEmpty ) private var hidesMaskWhenEmpty
+	@Environment( \.maskedTextFieldInputDisabled ) private var isInputDisabled
+	@Environment( \.maskedTextFieldOnInputChange ) private var inputChange
 
 	@FocusState private var isFocused: Bool
 	@State private var selection: TextSelection?
-	/// Separate display state restores rejected edits even when the binding is unchanged.
+	// Separate display state restores rejected edits even when the
+	// binding is unchanged.
 	@State private var displayedText: String = ""
-	/// Compare values rather than flags so coalesced user edits are not discarded.
+	// Compare values rather than flags so coalesced user edits are
+	// not discarded.
 	@State private var appliedText: String?
-	/// Selection before an edit disambiguates deletion among identical characters.
+	// Selection before an edit disambiguates deletion among identical
+	// characters.
 	@State private var caretOffset: Int?
-	/// The display value to which the stored caret belongs.
+	// The display value to which the stored caret belongs.
 	@State private var caretText: String = ""
 
+	/// Creates a field with an optional placeholder and the requested
+	/// input format.
+	///
+	/// - Parameters:
+	///   - prompt: Placeholder shown when the editable
+	///     value is empty.
+	///   - text: The editable value. For masked input,
+	///     provide characters without separators or the fixed prefix;
+	///     for grouped integers, provide digits only. Programmatic
+	///     updates refresh the display without calling the input
+	///     handler.
+	///   - mode: How characters are accepted, displayed,
+	///     and stored. Defaults to `.plain`.
 	public init(
 		_ prompt: String? = nil,
 		text: Binding<String>,
-		mask: String? = nil,
+		mode: InputMode = .plain,
 	) {
 		self.prompt = prompt
 		self._text = text
-		self.mask = mask.flatMap { Mask( pattern: $0 ) }
-	}
-}
-
-public extension MaskedTextField {
-
-	/// A decision for an inferred edit of the displayed text, excluding the mask prefix.
-	enum InputChange {
-		/// Continues normal processing, including mask validation,
-		/// input filtering, and caret adjustment.
-		case accept
-		/// Discards the edit and restores the previous displayed text and caret position.
-		case reject
-		/// Replaces the entire significant value and moves the caret to its end.
-		case replaceAll(String)
+		self.inputMode = mode
 	}
 
-	/// Inspects a user edit before mask and length validation.
+	/// Creates a text field that formats its value with a mask.
 	///
-	/// The closure receives the previous displayed text (without the immutable mask
-	/// prefix), a replacement range in that string, and the inserted text. Deletion
-	/// has an empty replacement. The range uses `String.Index`, not UTF-16 offsets.
-	///
-	/// Return `.accept` to continue normal input processing, `.reject` to restore
-	/// the previous text and caret, or `.replaceAll(value)` to replace the entire
-	/// significant value and move the caret to its end. The replacement value must
-	/// satisfy the mask and length limit; it must not contain formatting separators.
-	///
-	/// SwiftUI reports the resulting text rather than the original edit command.
-	/// The range and replacement are inferred from matching prefixes and suffixes,
-	/// so repeated characters can make the original edit ambiguous. This callback
-	/// handles typing, paste, and autofill; it does not identify the input source.
-	/// Programmatic binding updates do not invoke it.
-	///
-	/// For example, an application can recognize a complete phone number in an
-	/// inserted fragment and replace the current value with its national number:
+	/// The field inserts fixed separators as the user types.
+	/// The binding stores only characters entered into token
+	/// positions, without separators or a fixed prefix. For example,
+	/// `"4155550123"` appears as `"+1 (415) 555-0123"` with this
+	/// mask:
 	///
 	/// ```swift
-	/// MaskedTextField(text: $phone, mask: "+998 ## ### ## ##")
-	///     .onInputChange { _, _, replacement in
-	///         let digits = replacement.filter { $0.isASCII && $0.isNumber }
-	///         guard digits.count == 12, digits.hasPrefix("998") else { return .accept }
-	///         return .replaceAll(String(digits.suffix(9)))
-	///     }
+	/// MaskedTextField(
+	///     "Phone",
+	///     text: $phone,
+	///     mask: "+1 (###) ###-####",
+	/// )
 	/// ```
 	///
-	/// In this example, inserting `+998 93 123 45 67` stores `931234567`, even
-	/// when the field already contains a number. Unrecognized fragments continue
-	/// through normal mask processing.
-	func onInputChange(
-		_ action: @escaping (String, Range<String.Index>, String) -> InputChange,
-	) -> Self {
-		var new = self
-		new.inputChange = action
-		return new
-	}
-
-	/// Sets the unfilled token symbol; nil hides the unfilled mask remainder.
-	func maskFillSymbol( _ character: Character? ) -> Self {
-		var new = self
-		new.maskFillSymbol = character
-		return new
-	}
-
-	/// Overrides the inherited placeholder and unfilled mask color for this field.
-	func placeholderColor( _ color: Color ) -> Self {
-		var new = self
-		new.placeholderColor = color
-		return new
-	}
-
-	/// Appends a label, such as a unit, after the entered value.
-	func trailingText( _ text: String? ) -> Self {
-		var new = self
-		new.trailingText = text
-		return new
-	}
-
-	/// Hides the mask while the field is empty and unfocused.
-	func hidesMaskWhenEmpty( _ hides: Bool = true ) -> Self {
-		var new = self
-		new.hidesMaskWhenEmpty = hides
-		return new
-	}
-
-	/// Limits significant input length without a mask; a mask defines its own capacity.
-	func characterLimit( _ limit: Int? ) -> Self {
-		var new = self
-		new.characterLimit = limit
-		return new
-	}
-
-	/// Enables the special numeric input mode for nonnegative integers.
-	/// Groups digits in threes and removes leading zeros, preserving a single zero
-	/// or an empty value. The binding stores digits only; a mask takes precedence.
-	func numberInput( _ enabled: Bool = true ) -> Self {
-		var new = self
-		new.usesNumberInput = enabled
-		return new
-	}
-
-	/// Prevents edits without disabling the field or removing focus.
-	func allowsInput( _ allows: Bool ) -> Self {
-		var new = self
-		new.allowsInput = allows
-		return new
-	}
-
-	/// Transforms significant input, or rejects an edit by returning nil.
-	/// The result is not revalidated against the mask or character limit.
-	func inputFilter( _ filter: (( String ) -> String?)? ) -> Self {
-		var new = self
-		new.inputFilter = filter
-		return new
+	/// The number of input tokens determines the field's capacity.
+	/// A pattern without input tokens uses plain text input instead.
+	/// On iOS, digit-only masks use the number pad and disable
+	/// autocorrection.
+	///
+	/// This initializer is equivalent to passing `.masked(mask)` to
+	/// ``init(_:text:mode:)``.
+	///
+	/// - Parameters:
+	///   - prompt: The placeholder shown when the editable value is
+	///     empty. Defaults to nil, which shows no placeholder.
+	///   - text: A binding to the editable characters, without the
+	///     mask's separators or fixed prefix. Programmatic updates
+	///     refresh the display without calling the input handler.
+	///   - mask: A pattern in which `#` accepts an ASCII digit, `@`
+	///     accepts a letter, and `*` accepts a letter or digit. Other
+	///     characters are fixed separators. Characters before the
+	///     first token form a prefix that the user cannot edit.
+	public init(
+		_ prompt: String? = nil,
+		text: Binding<String>,
+		mask: String,
+	) {
+		self.init(
+			prompt,
+			text: text,
+			mode: .masked( mask ),
+		)
 	}
 }
 
@@ -235,7 +255,10 @@ extension MaskedTextField: View {
 				field
 			}
 		}
-		.animation( .default, value: isMaskVisible )
+		.animation(
+			.default,
+			value: isMaskVisible,
+		)
 
 		.onAppear {
 			setDisplayedText( formattedText )
@@ -244,11 +267,17 @@ extension MaskedTextField: View {
 			let ownEdit = appliedText
 			appliedText = nil
 			guard editedText != ownEdit else { return }
-			apply( edit: editedText, previousText: previousText )
+			apply(
+				edit: editedText,
+				previousText: previousText,
+			)
 		}
 		.onChange( of: selection ) {
 			guard displayedText == caretText else { return }
-			caretOffset = caretOffset( of: selection, in: displayedText )
+			caretOffset = caretOffset(
+				of: selection,
+				in: displayedText,
+			)
 		}
 		.onChange( of: text ) {
 			let updatedText = formattedText
@@ -269,7 +298,10 @@ private extension MaskedTextField {
 			"",
 			text: $displayedText,
 			selection: $selection,
-			prompt: prompt.map { Text( verbatim: $0 ).foregroundStyle( placeholderColor ?? defaultPlaceholderColor ) },
+			prompt: prompt.map {
+				Text( verbatim: $0 )
+					.foregroundStyle( placeholderColor )
+			},
 		)
 		.textFieldStyle( .plain )
 		.focused( $isFocused )
@@ -312,7 +344,7 @@ private extension MaskedTextField {
 				after: filledText.count,
 				fillSymbol: maskFillSymbol,
 			)
-			result = result + Text( verbatim: remainder ).foregroundStyle( placeholderColor ?? defaultPlaceholderColor )
+			result = result + Text( verbatim: remainder ).foregroundStyle( placeholderColor )
 		}
 
 		if let trailingText {
@@ -329,106 +361,192 @@ private extension MaskedTextField {
 
 private extension MaskedTextField {
 
-	var formattedText: String {
-		guard let mask else {
-			var characters = significantCharacters( in: text )
-			if isNumberInput {
-				characters = Self.normalizedNumber( characters )
-				if let characterLimit {
-					characters = String( characters.prefix( max( characterLimit, 0 ) ) )
-				}
-			}
-			return format( characters )
-		}
-		return mask.format( mask.significantCharacters( in: text ) )
+	var mask: Mask? {
+		guard case .masked( let pattern ) = inputMode else { return nil }
+		return Mask( pattern: pattern )
 	}
 
-	func apply( edit editedText: String, previousText: String ) {
+	var isNumberInput: Bool {
+		guard case .groupedInteger = inputMode else { return false }
+		return true
+	}
 
-		let caretBeforeEdit = caretOffsetBeforeEdit( from: previousText, to: editedText )
+	var characterLimit: Int? {
+		switch inputMode {
+		case .plain( let limit ), .groupedInteger( let limit ): return limit
+		case .masked: return nil
+		}
+	}
 
-		guard allowsInput else {
-			return revertEdit( to: previousText, caretOffset: caretBeforeEdit )
+	var formattedText: String {
+
+		guard let mask else {
+
+			var characters = significantCharacters( in: text )
+
+			if isNumberInput {
+
+				characters = Self.normalizedNumber( characters )
+
+				if let characterLimit {
+					characters = characters.prefix(
+						max( characterLimit, 0 ),
+					).string
+				}
+			}
+
+			return format( characters )
+		}
+
+		return mask.format(
+			mask.significantCharacters( in: text ),
+		)
+	}
+
+	func apply(
+		edit editedText: String,
+		previousText: String,
+	) {
+
+		var editedText = editedText
+		var transformedCaretOffset: Int?
+
+		let caretBeforeEdit = caretOffsetBeforeEdit(
+			from: previousText,
+			to: editedText,
+		)
+
+		guard !isInputDisabled else {
+			return revertEdit(
+				to: previousText,
+				caretOffset: caretBeforeEdit,
+			)
 		}
 
 		if let inputChange {
-			let edit = Self.inputEdit(from: previousText, to: editedText)
-			switch inputChange(previousText, edit.range, edit.replacement) {
-			case .accept:
-				break
-			case .reject:
-				return revertEdit(to: previousText, caretOffset: caretBeforeEdit)
-			case .replaceAll(let value):
-				let normalized = isNumberInput ? Self.normalizedNumber(value) : value
-				guard !overflows(normalized), significantCharacters(in: normalized) == normalized else {
-					return revertEdit(to: previousText, caretOffset: caretBeforeEdit)
+
+			let edit = Self.inputEdit(
+				from: previousText,
+				to: editedText,
+			)
+
+			switch inputChange( previousText, edit.range, edit.replacement ) {
+			case .accept( let replacement ):
+				if let replacement, replacement != edit.replacement {
+					transformedCaretOffset = previousText.distance(
+						from: previousText.startIndex,
+						to: edit.range.lowerBound,
+					) + replacement.count
+					editedText = previousText.replacingCharacters(
+						in: edit.range,
+						with: replacement,
+					)
 				}
-				let updatedText = format(normalized)
+
+			case .reject:
+				return revertEdit(
+					to: previousText,
+					caretOffset: caretBeforeEdit,
+				)
+
+			case .replaceAll( let value ):
+				let normalized = isNumberInput ? Self.normalizedNumber( value ) : value
+				guard !overflows( normalized ), significantCharacters( in: normalized ) == normalized else {
+					return revertEdit(
+						to: previousText,
+						caretOffset: caretBeforeEdit,
+					)
+				}
+				let updatedText = format( normalized )
 				text = normalized
-				setDisplayedText(updatedText)
-				setCaret(afterSignificantCount: normalized.count, in: updatedText)
+				setDisplayedText( updatedText )
+				setCaret(
+					afterSignificantCount: normalized.count,
+					in: updatedText,
+				)
 				return
 			}
 		}
 
-		// Reject overflow rather than truncating an existing suffix the user did not delete.
+		// Reject overflow rather than truncating an existing suffix
+		// the user did not delete.
 		guard !overflows( editedText ) else {
-			return revertEdit( to: previousText, caretOffset: caretBeforeEdit )
+			return revertEdit(
+				to: previousText,
+				caretOffset: caretBeforeEdit,
+			)
 		}
 
-		let caretAfterEdit = caretOffset( of: selection, in: editedText ) ?? min(
+		let caretAfterEdit = transformedCaretOffset ?? caretOffset(
+			of: selection,
+			in: editedText,
+		) ?? min(
 			max( caretBeforeEdit + editedText.count - previousText.count, 0 ),
 			editedText.count,
 		)
 
 		var significantCount = significantCharacters(
-			in: String( editedText.prefix( caretAfterEdit ) ),
+			in: String( editedText.prefix( caretAfterEdit )),
 		).count
+
 		var characters = significantCharacters( in: editedText )
 
-		// Deleting a separator removes the adjacent significant character instead.
+		// Deleting a separator removes the adjacent significant
+		// character instead.
 		if mask != nil || isNumberInput,
 		   editedText.count < previousText.count,
 		   significantCount > 0,
 		   characters == significantCharacters( in: previousText ) {
+
 			let isBackwardDeletion = caretAfterEdit < caretBeforeEdit
+
 			if isBackwardDeletion {
 				significantCount -= 1
 			}
+
 			characters.remove(
-				at: characters.index( characters.startIndex, offsetBy: significantCount ),
+				at: characters.index(
+					characters.startIndex,
+					offsetBy: significantCount,
+				),
 			)
 		}
 
-		if let inputFilter {
-			guard let filtered = inputFilter( characters ) else {
-				return revertEdit( to: previousText, caretOffset: caretBeforeEdit )
-			}
-			characters = filtered
-			significantCount = min( significantCount, characters.count )
-		}
-
 		if isNumberInput {
+
 			let normalized = Self.normalizedNumber( characters )
-			significantCount = max( significantCount - (characters.count - normalized.count), 0 )
+
+			significantCount = max(
+				significantCount - ( characters.count - normalized.count ),	0,
+			)
 			characters = normalized
 		}
 
 		let updatedText = format( characters )
-		// Only restore the caret when formatting changed the text, preserving rapid typing.
+		// Only restore the caret when formatting changed the text,
+		// preserving rapid typing.
 		let isFieldRewritten = updatedText != displayedText
 
 		text = characters
 		setDisplayedText( updatedText )
 
 		if isFieldRewritten {
-			setCaret( afterSignificantCount: significantCount, in: updatedText )
+			setCaret(
+				afterSignificantCount: significantCount,
+				in: updatedText,
+			)
 		}
 	}
 
-	func revertEdit( to previousText: String, caretOffset: Int ) {
+	func revertEdit(
+		to previousText: String,
+		caretOffset: Int,
+	) {
 		setDisplayedText( previousText )
-		setCaret( offset: caretOffset, in: previousText )
+		setCaret(
+			offset: caretOffset,
+			in: previousText,
+		)
 	}
 
 	func setDisplayedText( _ value: String ) {
@@ -438,15 +556,26 @@ private extension MaskedTextField {
 		displayedText = value
 	}
 
-	func setCaret( afterSignificantCount count: Int, in updatedText: String ) {
+	func setCaret(
+		afterSignificantCount count: Int,
+		in updatedText: String,
+	) {
 		setCaret(
-			offset: mask?.caretOffset( afterSignificantCount: count, in: updatedText )
-				?? numberCaretOffset( after: count, in: updatedText ),
+			offset: mask?.caretOffset(
+				afterSignificantCount: count,
+				in: updatedText,
+			) ?? numberCaretOffset(
+				after: count,
+				in: updatedText,
+			),
 			in: updatedText,
 		)
 	}
 
-	func setCaret( offset: Int, in updatedText: String ) {
+	func setCaret(
+		offset: Int,
+		in updatedText: String,
+	) {
 
 		let index = updatedText.index(
 			updatedText.startIndex,
@@ -457,15 +586,21 @@ private extension MaskedTextField {
 
 	func significantCharacters( in string: String ) -> String {
 
-		guard let mask else {
-			if isNumberInput {
-				return string.filter { Mask.Token.digit.accepts( $0 ) }
-			}
-			let characters = string
-			guard let characterLimit else { return characters }
-			return String( characters.prefix( max( characterLimit, 0 ) ) )
+		if let mask {
+			return mask.significantCharacters( in: string )
 		}
-		return mask.significantCharacters( in: string )
+		else if isNumberInput {
+			return string.filter { Mask.Token.digit.accepts( $0 ) }
+		}
+		else if let characterLimit {
+			return String(
+				string.prefix(
+					max( characterLimit, 0 ),
+				),
+			)
+		}
+
+		return string
 	}
 
 	func overflows( _ string: String ) -> Bool {
@@ -475,12 +610,13 @@ private extension MaskedTextField {
 			let characters = isNumberInput
 				? Self.normalizedNumber( string.filter { Mask.Token.digit.accepts( $0 ) } )
 				: string
-			return characters.count > max( characterLimit, 0 )
+			return characters.count > max(
+				characterLimit,
+				0,
+			)
 		}
 		return mask.overflows( string )
 	}
-
-	var isNumberInput: Bool { usesNumberInput && mask == nil }
 
 	func format( _ characters: String ) -> String {
 		if let mask {
@@ -489,74 +625,119 @@ private extension MaskedTextField {
 		return isNumberInput ? Self.groupedNumber( characters ) : characters
 	}
 
-	func numberCaretOffset( after count: Int, in string: String ) -> Int {
+	func numberCaretOffset(
+		after count: Int,
+		in string: String,
+	) -> Int {
+
 		guard isNumberInput, count > 0 else { return count }
+
 		var remaining = count
-		for (offset, character) in string.enumerated() {
+
+		for ( offset, character ) in string.enumerated() {
+
 			if Mask.Token.digit.accepts( character ) {
 				remaining -= 1
 			}
+
 			if remaining == 0 {
 				return offset + 1
 			}
 		}
+
 		return string.count
 	}
 
-	func caretOffsetBeforeEdit( from previousText: String, to editedText: String ) -> Int {
+	func caretOffsetBeforeEdit(
+		from previousText: String,
+		to editedText: String,
+	) -> Int {
 
 		if caretText == previousText, let caretOffset {
 			return min( caretOffset, previousText.count )
 		}
-		return estimatedCaretOffset( from: previousText, to: editedText )
+
+		return estimatedCaretOffset(
+			from: previousText,
+			to: editedText,
+		)
 	}
 
-	func caretOffset( of selection: TextSelection?, in string: String ) -> Int? {
+	func caretOffset(
+		of selection: TextSelection?,
+		in string: String,
+	) -> Int? {
 
 		guard let indices = selection?.indices,
 		      case .selection( let range ) = indices,
 		      range.upperBound >= string.startIndex,
 		      range.upperBound <= string.endIndex else { return nil }
 
-		return string.distance( from: string.startIndex, to: range.upperBound )
+		return string.distance(
+			from: string.startIndex,
+			to: range.upperBound,
+		)
 	}
 
-	/// Falls back to common prefix/suffix comparison until a stable selection is available.
-	func estimatedCaretOffset( from previousText: String, to editedText: String ) -> Int {
-
-		let previousCharacters = Array( previousText )
-		let editedCharacters = Array( editedText )
+	// Falls back to common prefix/suffix comparison until a stable
+	// selection is available.
+	func estimatedCaretOffset(
+		from previousText: String,
+		to editedText: String,
+	) -> Int {
 
 		var prefixLength = 0
-		while prefixLength < previousCharacters.count,
-		      prefixLength < editedCharacters.count,
-		      previousCharacters[prefixLength] == editedCharacters[prefixLength] {
+		while prefixLength < previousText.count,
+		      prefixLength < editedText.count,
+		      previousText[prefixLength] == editedText[prefixLength] {
 			prefixLength += 1
 		}
 
 		var suffixLength = 0
-		while suffixLength < previousCharacters.count - prefixLength,
-		      suffixLength < editedCharacters.count - prefixLength,
-		      previousCharacters[previousCharacters.count - suffixLength - 1]
-		      == editedCharacters[editedCharacters.count - suffixLength - 1] {
+		while suffixLength < previousText.count - prefixLength,
+		      suffixLength < editedText.count - prefixLength,
+		      previousText[previousText.count - suffixLength - 1]
+		      == editedText[editedText.count - suffixLength - 1] {
 			suffixLength += 1
 		}
 
-		return previousCharacters.count - suffixLength
+		return previousText.count - suffixLength
 	}
 }
 
 extension MaskedTextField {
 
-	/// shortcut: matching edges make repeated-character edits ambiguous; retain the old selection if exact ranges become necessary.
-	static func inputEdit(from previous: String, to edited: String) -> (range: Range<String.Index>, replacement: String) {
-		let prefixCount = zip(previous, edited).prefix { $0 == $1 }.count
-		let oldTail = previous.dropFirst(prefixCount)
-		let newTail = edited.dropFirst(prefixCount)
-		let suffixCount = zip(oldTail.reversed(), newTail.reversed()).prefix { $0 == $1 }.count
-		let start = previous.index(previous.startIndex, offsetBy: prefixCount)
-		let end = previous.index(previous.endIndex, offsetBy: -suffixCount)
-		return (start..<end, String(newTail.dropLast(suffixCount)))
+	// shortcut: matching edges make repeated-character edits
+	// ambiguous; retain the old selection if exact ranges become
+	// necessary.
+	static func inputEdit(
+		from previous: String,
+		to edited: String,
+	) -> ( range: Range<String.Index>, replacement: String ) {
+
+		let prefixCount = zip(
+			previous,
+			edited,
+		).prefix { $0 == $1 }.count
+
+		let oldTail = previous.dropFirst( prefixCount )
+		let newTail = edited.dropFirst( prefixCount )
+
+		let suffixCount = zip(
+			oldTail.reversed(),
+			newTail.reversed(),
+		).prefix { $0 == $1 }.count
+
+		let start = previous.index(
+			previous.startIndex,
+			offsetBy: prefixCount,
+		)
+		let end = previous.index(
+			previous.endIndex,
+			offsetBy: -suffixCount,
+		)
+
+		return ( start..<end, String( newTail.dropLast( suffixCount ) ) )
 	}
 
 	static func normalizedNumber( _ digits: String ) -> String {
@@ -565,14 +746,17 @@ extension MaskedTextField {
 	}
 
 	static func groupedNumber( _ digits: String ) -> String {
+
 		let count = digits.count
 		var result = ""
-		for (offset, digit) in digits.enumerated() {
-			if offset > 0, (count - offset).isMultiple( of: 3 ) {
+
+		for ( offset, digit ) in digits.enumerated() {
+			if offset > 0, ( count - offset ).isMultiple( of: 3 ) {
 				result.append( " " )
 			}
 			result.append( digit )
 		}
+
 		return result
 	}
 }
@@ -676,11 +860,20 @@ extension MaskedTextField.Mask {
 		return result
 	}
 
-	func remainder( after offset: Int, fillSymbol: Character ) -> String {
-		String( body.dropFirst( offset ).map { Token( $0 ) == nil ? $0 : fillSymbol } )
+	func remainder(
+		after offset: Int,
+		fillSymbol: Character,
+	) -> String {
+		body
+			.dropFirst( offset )
+			.map { Token( $0 ) == nil ? $0 : fillSymbol }
+			.string
 	}
 
-	func caretOffset( afterSignificantCount count: Int, in formattedText: String ) -> Int {
+	func caretOffset(
+		afterSignificantCount count: Int,
+		in formattedText: String,
+	) -> Int {
 
 		guard count > 0 else { return 0 }
 
@@ -722,30 +915,42 @@ private struct MaskedTextFieldPreview: View {
 
 			VStack( spacing: 12 ) {
 
-				row( "Unformatted", value: plainText ) {
-					MaskedTextField( "Plain text", text: $plainText )
+				row(
+					"Unformatted",
+					value: plainText,
+				) {
+					MaskedTextField(
+						"Plain text",
+						text: $plainText,
+					)
 				}
 
-				row( "Phone", value: phone ) {
+				row(
+					"Phone",
+					value: phone,
+				) {
 					MaskedTextField(
 						"Phone number",
 						text: $phone,
-						mask: "+998 ## ### ## ##",
+						mode: .masked( "+998 ## ### ## ##" ),
 					)
-					.placeholderColor( .red.opacity(0.6) )
+					.maskedTextFieldPlaceholderColor( .red.opacity( 0.6 ) )
 				}
 
-				row( "onInputChange", value: inputChangePhone ) {
+				row(
+					"onInputChange",
+					value: inputChangePhone,
+				) {
 					MaskedTextField(
 						text: $inputChangePhone,
-						mask: "+998 ## ### ## ##",
+						mode: .masked( "+998 ## ### ## ##" ),
 					)
-					.onInputChange { _, _, replacement in
+					.maskedTextFieldOnInputChange { _, _, replacement in
 						let digits = replacement.filter { $0.isASCII && $0.isNumber }
-						guard digits.count == 12, digits.hasPrefix("998") else { return .accept }
-						return .replaceAll(String(digits.suffix(9)))
+						guard digits.count == 12, digits.hasPrefix( "998" ) else { return .accept }
+						return .replaceAll( String( digits.suffix( 9 ) ) )
 					}
-					.maskFillSymbol( "0" )
+					.maskedTextFieldMaskFillSymbol( "0" )
 
 					#if os(iOS)
 					HStack {
@@ -761,57 +966,114 @@ private struct MaskedTextFieldPreview: View {
 					#endif
 				}
 
-				row( "Prefilled phone", value: filledPhone ) {
-					MaskedTextField( text: $filledPhone, mask: "+998 ## ### ## ##" )
+				row(
+					"Prefilled phone",
+					value: filledPhone,
+				) {
+					MaskedTextField(
+						text: $filledPhone,
+						mode: .masked( "+998 ## ### ## ##" ),
+					)
 				}
 
-				row( "Date", value: date ) {
-					MaskedTextField( text: $date, mask: "##.##.####" )
-						.maskFillSymbol( "_" )
+				row(
+					"Date",
+					value: date,
+				) {
+					MaskedTextField(
+						text: $date,
+						mode: .masked( "##.##.####" ),
+					)
+						.maskedTextFieldMaskFillSymbol( "_" )
 				}
 
-				row( "Card", value: card ) {
-					MaskedTextField( text: $card, mask: "#### #### #### ####" )
-						.maskFillSymbol( "•" )
-						.placeholderColor( .blue )
+				row(
+					"Card",
+					value: card,
+				) {
+					MaskedTextField(
+						text: $card,
+						mode: .masked( "#### #### #### ####" ),
+					)
+						.maskedTextFieldMaskFillSymbol( "•" )
+						.maskedTextFieldPlaceholderColor( .blue )
 				}
 
-				row( "Passport", value: passport ) {
-					MaskedTextField( "AA 1234-567", text: $passport, mask: "@@ ####-###" )
-						.inputFilter { $0.uppercased() }
+				row(
+					"Passport",
+					value: passport,
+				) {
+					MaskedTextField(
+						"AA 1234-567",
+						text: $passport,
+						mode: .masked( "@@ ####-###" ),
+					)
+						.maskedTextFieldOnInputChange { _, _, replacement in
+							.accept( replacement: replacement.uppercased() )
+						}
 						#if os(iOS)
 						.textInputAutocapitalization( .characters )
 						#endif
 				}
 
-				row( "Letters and digits", value: alphanumeric ) {
-					MaskedTextField( text: $alphanumeric, mask: "**** ****" )
-						.maskFillSymbol( "_" )
+				row(
+					"Letters and digits",
+					value: alphanumeric,
+				) {
+					MaskedTextField(
+						text: $alphanumeric,
+						mode: .masked( "**** ****" ),
+					)
+						.maskedTextFieldMaskFillSymbol( "_" )
 				}
 
-				row( "Number input", value: amount ) {
-					MaskedTextField( "0", text: $amount )
-						.characterLimit( 16 )
-						.numberInput()
-						.trailingText( " units" )
+				row(
+					"Number input",
+					value: amount,
+				) {
+					MaskedTextField(
+						"0",
+						text: $amount,
+						mode: .groupedInteger( characterLimit: 16 ),
+					)
+						.maskedTextFieldTrailingText( " units" )
 				}
 
-				row( "Hidden when empty", value: comment ) {
-					MaskedTextField( "Comment", text: $comment, mask: "+998 ## ### ## ##" )
-						.hidesMaskWhenEmpty()
+				row(
+					"Hidden when empty",
+					value: comment,
+				) {
+					MaskedTextField(
+						"Comment",
+						text: $comment,
+						mode: .masked( "+998 ## ### ## ##" ),
+					)
+						.maskedTextFieldHidesMaskWhenEmpty()
 				}
 
 				VStack( spacing: 12 ) {
-					row( "Blocked input", value: blockedCard ) {
-						MaskedTextField( text: $blockedCard, mask: "#### #### #### ####" )
-							.allowsInput( !isInputBlocked )
+					row(
+						"Blocked input",
+						value: blockedCard,
+					) {
+						MaskedTextField(
+							text: $blockedCard,
+							mode: .masked( "#### #### #### ####" ),
+						)
+							.maskedTextFieldInputDisabled( isInputBlocked )
 					}
 
-					Toggle( "Block input", isOn: $isInputBlocked )
+					Toggle(
+						"Block input",
+						isOn: $isInputBlocked,
+					)
 						.font( .footnote )
 				}
 				.padding( 12 )
-				.background( Color.purple.opacity( 0.18 ), in: RoundedRectangle( cornerRadius: 16 ) )
+				.background(
+					Color.purple.opacity( 0.18 ),
+					in: RoundedRectangle( cornerRadius: 16 ),
+				)
 			}
 			.padding()
 		}
@@ -823,7 +1085,10 @@ private struct MaskedTextFieldPreview: View {
 		@ViewBuilder field: () -> some View,
 	) -> some View {
 
-		VStack( alignment: .leading, spacing: 4 ) {
+		VStack(
+			alignment: .leading,
+			spacing: 4,
+		) {
 
 			HStack {
 				Text( title )
@@ -835,11 +1100,17 @@ private struct MaskedTextFieldPreview: View {
 
 			field()
 				.font( .body )
-				.padding( .horizontal, 12 )
+				.padding(
+					.horizontal,
+					12,
+				)
 				.frame( height: 48 )
 				.overlay(
 					RoundedRectangle( cornerRadius: 12 )
-						.stroke( .gray.opacity( 0.4 ), lineWidth: 1 ),
+						.stroke(
+							.gray.opacity( 0.4 ),
+							lineWidth: 1,
+						),
 				)
 		}
 	}

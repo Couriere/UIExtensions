@@ -43,25 +43,7 @@ final class MaskedTextFieldUITests: XCTestCase {
 
 extension MaskedTextFieldUITests {
 
-	func testForwardDeleteBeforeSeparatorAfterFifthDigit() {
-		assertForwardDeleteBeforeSeparator(
-			leftArrowCount: 6,
-			displayed: "12 345 78 9",
-			value: "12345789",
-			afterInsertion: "12 345 07 89",
-		)
-	}
-
-	func testForwardDeleteBeforeSeparatorAfterSeventhDigit() {
-		assertForwardDeleteBeforeSeparator(
-			leftArrowCount: 3,
-			displayed: "12 345 67 9",
-			value: "12345679",
-			afterInsertion: "12 345 67 09",
-		)
-	}
-
-	func testForwardDeleteKeepsCaretPosition() {
+	func testForwardDeletionAndCaretAfterInsertion() {
 
 		launchApp()
 
@@ -78,19 +60,56 @@ extension MaskedTextFieldUITests {
 
 		for ( digit, displayed ) in steps {
 			field.typeText( digit )
-			assertDisplayed( displayed, in: field, of: .phone )
+			assertDisplayed(
+				displayed,
+				in: field,
+				of: .phone,
+			)
 		}
 
 		for _ in 0..<4 {
-			field.typeKey( XCUIKeyboardKey.leftArrow.rawValue, modifierFlags: [] )
+			field.typeKey(
+				XCUIKeyboardKey.leftArrow.rawValue,
+				modifierFlags: [],
+			)
 		}
-		field.typeKey( "d", modifierFlags: .control )
-		assertDisplayed( "12 356", in: field, of: .phone )
-		assertValue( "12356", of: .phone )
+		field.typeKey(
+			"d",
+			modifierFlags: .control,
+		)
+		assertDisplayed(
+			"12 356",
+			in: field,
+			of: .phone,
+		)
+		assertValue(
+			"12356",
+			of: .phone,
+		)
 
 		field.typeText( "9" )
-		assertDisplayed( "12 395 6", in: field, of: .phone )
-		assertValue( "123956", of: .phone )
+		assertDisplayed(
+			"12 395 6",
+			in: field,
+			of: .phone,
+		)
+		assertValue(
+			"123956",
+			of: .phone,
+		)
+
+		assertForwardDeleteBeforeSeparator(
+			leftArrowCount: 6,
+			displayed: "12 345 78 9",
+			value: "12345789",
+			afterInsertion: "12 345 07 89",
+		)
+		assertForwardDeleteBeforeSeparator(
+			leftArrowCount: 3,
+			displayed: "12 345 67 9",
+			value: "12345679",
+			afterInsertion: "12 345 67 09",
+		)
 	}
 
 	func testMaskedTextFieldInput() {
@@ -102,11 +121,327 @@ extension MaskedTextFieldUITests {
 		assertDeletionRemovesCharactersOneByOne()
 		assertExternalValueIsEditable()
 		assertSeparatorIsInsertedAutomatically()
-		assertInputFilterAndTokenKinds()
+		assertInputTransformationAndTokenKinds()
 		assertCharacterLimitWithoutMask()
 		assertBlockedFieldIgnoresInput()
 		assertMaskIsHiddenWhileFieldIsEmpty()
 	}
+	func testGroupedIntegerInputAndEditing() {
+		launchApp()
+		guard let field = focusedField( .number ) else { return }
+		for ( input, value, displayed ) in [
+			( "0", "0", "0" ),
+			( "0", "0", "0" ),
+			( "1", "1", "1" ),
+			( "2", "12", "12" ),
+			( "3", "123", "123" ),
+			( "4", "1234", "1 234" ),
+			( "5", "12345", "12 345" ),
+			( "6", "123456", "123 456" ),
+			( "7", "123456", "123 456" ),
+			( XCUIKeyboardKey.delete.rawValue, "12345", "12 345" ),
+			( XCUIKeyboardKey.delete.rawValue, "1234", "1 234" ),
+			( XCUIKeyboardKey.delete.rawValue, "123", "123" ),
+			( XCUIKeyboardKey.delete.rawValue, "12", "12" ),
+			( XCUIKeyboardKey.delete.rawValue, "1", "1" ),
+			( XCUIKeyboardKey.delete.rawValue, "", "" ),
+			( "r", "12", "12" ),
+			( "i", "12", "12" ),
+			( "o", "12", "12" ),
+			( "3", "123", "123" ),
+		] {
+			assertEdit(
+				input,
+				value: value,
+				displayed: displayed,
+				in: field,
+				of: .number,
+			)
+		}
+		resetFixture( field )
+		for ( input, value, displayed ) in [
+			( "1", "1", "1" ),
+			( "2", "12", "12" ),
+			( "3", "123", "123" ),
+			( "4", "1234", "1 234" ),
+		] {
+			assertEdit(
+				input,
+				value: value,
+				displayed: displayed,
+				in: field,
+				of: .number,
+			)
+		}
+		moveCaret(
+			3,
+			in: field,
+		)
+		for ( input, value, displayed ) in [
+			( XCUIKeyboardKey.delete.rawValue, "234", "234" ),
+			( "9", "9234", "9 234" ),
+		] {
+			assertEdit(
+				input,
+				value: value,
+				displayed: displayed,
+				in: field,
+				of: .number,
+			)
+		}
+		moveCaret(
+			1,
+			in: field,
+		)
+		field.typeKey(
+			"d",
+			modifierFlags: .control,
+		)
+		assertField(
+			"234",
+			displayed: nil,
+			in: field,
+			of: .number,
+		)
+		assertEdit(
+			"5",
+			value: "5234",
+			displayed: "5 234",
+			in: field,
+			of: .number,
+		)
+		resetFixture( field )
+		paste( "000000123456" )
+		assertField(
+			"123456",
+			displayed: "123 456",
+			in: field,
+			of: .number,
+		)
+
+	}
+
+	func testInputDecisionsPasteAndSelection() {
+		launchApp()
+		guard let field = focusedField( .transformed ) else { return }
+		moveCaret(
+			2,
+			in: field,
+		)
+		for ( input, value, displayed ) in [
+			( "x", "abXYZCD", "abXYZCD" ),
+			( "1", "abXYZ1CD", "abXYZ1CD" ),
+		] {
+			assertEdit(
+				input,
+				value: value,
+				displayed: displayed,
+				in: field,
+				of: .transformed,
+			)
+		}
+		resetFixture( field )
+		moveCaret(
+			2,
+			in: field,
+		)
+		paste( "shrink" )
+		assertField(
+			"abqCD",
+			displayed: nil,
+			in: field,
+			of: .transformed,
+		)
+		assertEdit(
+			"1",
+			value: "abq1CD",
+			displayed: nil,
+			in: field,
+			of: .transformed,
+		)
+		resetFixture( field )
+		moveCaret(
+			2,
+			in: field,
+		)
+		paste( "drop" )
+		assertField(
+			"abCD",
+			displayed: nil,
+			in: field,
+			of: .transformed,
+		)
+		assertEdit(
+			"1",
+			value: "ab1CD",
+			displayed: nil,
+			in: field,
+			of: .transformed,
+		)
+		resetFixture( field )
+		moveCaret(
+			2,
+			in: field,
+		)
+		paste( "1234567890" )
+		assertField(
+			"abCD",
+			displayed: nil,
+			in: field,
+			of: .transformed,
+		)
+		assertEdit(
+			"1",
+			value: "ab1CD",
+			displayed: nil,
+			in: field,
+			of: .transformed,
+		)
+		resetFixture( field )
+		moveCaret(
+			2,
+			in: field,
+		)
+		tapButton(
+			"masked_text_field_demo_reject",
+			name: "Reject edits",
+		)
+		for ( input, value, displayed ) in [
+			( "9", "abCD", "abCD" ),
+			( XCUIKeyboardKey.delete.rawValue, "abCD", "abCD" ),
+		] {
+			assertEdit(
+				input,
+				value: value,
+				displayed: displayed,
+				in: field,
+				of: .transformed,
+			)
+		}
+		paste( "12" )
+		assertField(
+			"abCD",
+			displayed: nil,
+			in: field,
+			of: .transformed,
+		)
+		tapButton(
+			"masked_text_field_demo_reject",
+			name: "Allow edits",
+		)
+		assertEdit(
+			"1",
+			value: "ab1CD",
+			displayed: nil,
+			in: field,
+			of: .transformed,
+		)
+		resetFixture( field )
+		moveCaret(
+			2,
+			in: field,
+			selecting: true,
+		)
+		assertEdit(
+			"k",
+			value: "abk",
+			displayed: nil,
+			in: field,
+			of: .transformed,
+		)
+		resetFixture( field )
+		moveCaret(
+			2,
+			in: field,
+			selecting: true,
+		)
+		paste( "12" )
+		assertField(
+			"ab12",
+			displayed: nil,
+			in: field,
+			of: .transformed,
+		)
+
+		guard let replacementField = focusedField( .replacement ) else { return }
+		moveCaret(
+			2,
+			in: replacementField,
+		)
+		for ( input, value, displayed ) in [
+			( "r", "98765432", "98 765 43 2" ),
+			( "1", "987654321", "98 765 43 21" ),
+			( "i", "987654321", "98 765 43 21" ),
+			( "o", "987654321", "98 765 43 21" ),
+			( XCUIKeyboardKey.delete.rawValue, "98765432", "98 765 43 2" ),
+		] {
+			assertEdit(
+				input,
+				value: value,
+				displayed: displayed,
+				in: replacementField,
+				of: .replacement,
+			)
+		}
+		resetFixture( replacementField )
+		moveCaret(
+			2,
+			in: replacementField,
+		)
+		paste( "+998 93 123 45 67" )
+		assertField(
+			"931234567",
+			displayed: "93 123 45 67",
+			in: replacementField,
+			of: .replacement,
+		)
+
+		guard let phoneField = focusedField( .phone ) else { return }
+		paste( "93 123 45 67" )
+		assertField(
+			"931234567",
+			displayed: "93 123 45 67",
+			in: phoneField,
+			of: .phone,
+		)
+		tapButton(
+			AID.clearPhone,
+			name: "Clear",
+		)
+		phoneField.tap()
+		for ( input, value, displayed ) in [
+			( "1", "1", "1" ),
+			( "2", "12", "12" ),
+			( "3", "123", "12 3" ),
+		] {
+			assertEdit(
+				input,
+				value: value,
+				displayed: displayed,
+				in: phoneField,
+				of: .phone,
+			)
+		}
+		moveCaret(
+			2,
+			in: phoneField,
+		)
+		paste( "1234567890" )
+		assertField(
+			"123",
+			displayed: "12 3",
+			in: phoneField,
+			of: .phone,
+		)
+		assertEdit(
+			"9",
+			value: "1293",
+			displayed: "12 93",
+			in: phoneField,
+			of: .phone,
+		)
+	}
+
 }
 
 private extension MaskedTextFieldUITests {
@@ -117,26 +452,53 @@ private extension MaskedTextFieldUITests {
 		value: String,
 		afterInsertion: String,
 	) {
-		launchApp()
+		guard tapButton(
+			AID.clearPhone,
+			name: "Clear",
+		) else { return }
 		guard let field = focusedField( .phone ) else { return }
 
 		let steps = [
 			"1", "12", "12 3", "12 34", "12 345", "12 345 6",
 			"12 345 67", "12 345 67 8", "12 345 67 89",
 		]
-		for ( digit, expected ) in zip( "123456789", steps ) {
+		for ( digit, expected ) in zip(
+			"123456789",
+			steps,
+		) {
 			field.typeText( String( digit ) )
-			assertDisplayed( expected, in: field, of: .phone )
+			assertDisplayed(
+				expected,
+				in: field,
+				of: .phone,
+			)
 		}
 		for _ in 0..<leftArrowCount {
-			field.typeKey( XCUIKeyboardKey.leftArrow.rawValue, modifierFlags: [] )
+			field.typeKey(
+				XCUIKeyboardKey.leftArrow.rawValue,
+				modifierFlags: [],
+			)
 		}
-		field.typeKey( "d", modifierFlags: .control )
-		assertDisplayed( displayed, in: field, of: .phone )
-		assertValue( value, of: .phone )
+		field.typeKey(
+			"d",
+			modifierFlags: .control,
+		)
+		assertDisplayed(
+			displayed,
+			in: field,
+			of: .phone,
+		)
+		assertValue(
+			value,
+			of: .phone,
+		)
 
 		field.typeText( "0" )
-		assertDisplayed( afterInsertion, in: field, of: .phone )
+		assertDisplayed(
+			afterInsertion,
+			in: field,
+			of: .phone,
+		)
 	}
 
 	func assertMaskFormatsTypedCharacters() {
@@ -157,10 +519,17 @@ private extension MaskedTextFieldUITests {
 
 		for ( digit, displayed ) in steps {
 			field.typeText( digit )
-			assertDisplayed( displayed, in: field, of: .phone )
+			assertDisplayed(
+				displayed,
+				in: field,
+				of: .phone,
+			)
 		}
 
-		assertValue( "931331400", of: .phone )
+		assertValue(
+			"931331400",
+			of: .phone,
+		)
 	}
 
 	func assertOverflowIsRejected() {
@@ -169,8 +538,15 @@ private extension MaskedTextFieldUITests {
 
 		field.typeText( "5" )
 
-		assertUnchanged( "93 133 14 00", in: field, of: .phone )
-		assertValue( "931331400", of: .phone )
+		assertUnchanged(
+			"93 133 14 00",
+			in: field,
+			of: .phone,
+		)
+		assertValue(
+			"931331400",
+			of: .phone,
+		)
 	}
 
 	func assertDeletionRemovesCharactersOneByOne() {
@@ -191,36 +567,81 @@ private extension MaskedTextFieldUITests {
 
 		for ( displayed, value ) in steps {
 			field.typeText( XCUIKeyboardKey.delete.rawValue )
-			assertDisplayed( displayed, in: field, of: .phone )
-			assertValue( value, of: .phone )
+			assertDisplayed(
+				displayed,
+				in: field,
+				of: .phone,
+			)
+			assertValue(
+				value,
+				of: .phone,
+			)
 		}
 
 		field.typeText( XCUIKeyboardKey.delete.rawValue )
-		assertUnchanged( "", in: field, of: .phone )
-		assertValue( "", of: .phone )
+		assertUnchanged(
+			"",
+			in: field,
+			of: .phone,
+		)
+		assertValue(
+			"",
+			of: .phone,
+		)
 	}
 
 	func assertExternalValueIsEditable() {
 
 		guard let field = field( .phone ) else { return }
 
-		guard tapButton( AID.fillPhone, name: "Set external value" ) else { return }
+		guard tapButton(
+			AID.fillPhone,
+			name: "Set external value",
+		) else { return }
 
-		assertDisplayed( "93 133 14 00", in: field, of: .phone )
-		assertValue( AID.externalPhone, of: .phone )
+		assertDisplayed(
+			"93 133 14 00",
+			in: field,
+			of: .phone,
+		)
+		assertValue(
+			AID.externalPhone,
+			of: .phone,
+		)
 
 		field.tap()
 		field.typeText( XCUIKeyboardKey.delete.rawValue )
-		assertDisplayed( "93 133 14 0", in: field, of: .phone )
+		assertDisplayed(
+			"93 133 14 0",
+			in: field,
+			of: .phone,
+		)
 
 		field.typeText( "5" )
-		assertDisplayed( "93 133 14 05", in: field, of: .phone )
-		assertValue( "931331405", of: .phone )
+		assertDisplayed(
+			"93 133 14 05",
+			in: field,
+			of: .phone,
+		)
+		assertValue(
+			"931331405",
+			of: .phone,
+		)
 
-		guard tapButton( AID.clearPhone, name: "Clear" ) else { return }
+		guard tapButton(
+			AID.clearPhone,
+			name: "Clear",
+		) else { return }
 
-		assertDisplayed( "", in: field, of: .phone )
-		assertValue( "", of: .phone )
+		assertDisplayed(
+			"",
+			in: field,
+			of: .phone,
+		)
+		assertValue(
+			"",
+			of: .phone,
+		)
 	}
 
 	func assertSeparatorIsInsertedAutomatically() {
@@ -240,36 +661,105 @@ private extension MaskedTextFieldUITests {
 
 		for ( digit, displayed, value ) in steps {
 			field.typeText( digit )
-			assertDisplayed( displayed, in: field, of: .date )
-			assertValue( value, of: .date )
+			assertDisplayed(
+				displayed,
+				in: field,
+				of: .date,
+			)
+			assertValue(
+				value,
+				of: .date,
+			)
 		}
 	}
 
-	func assertInputFilterAndTokenKinds() {
+	func assertInputTransformationAndTokenKinds() {
 
 		guard let field = focusedField( .passport ) else { return }
 
 		field.typeText( "a" )
-		assertDisplayed( "A", in: field, of: .passport )
+		assertDisplayed(
+			"A",
+			in: field,
+			of: .passport,
+		)
 
 		field.typeText( "b" )
-		assertDisplayed( "AB", in: field, of: .passport )
-		assertValue( "AB", of: .passport )
+		assertDisplayed(
+			"AB",
+			in: field,
+			of: .passport,
+		)
+		assertValue(
+			"AB",
+			of: .passport,
+		)
 
 		for letter in [ "c", "d" ] {
 			field.typeText( letter )
-			assertUnchanged( "AB", in: field, of: .passport )
+			assertUnchanged(
+				"AB",
+				in: field,
+				of: .passport,
+			)
 		}
-		assertValue( "AB", of: .passport )
+		assertValue(
+			"AB",
+			of: .passport,
+		)
 
 		let digits = "1234567"
 
 		for ( index, digit ) in digits.enumerated() {
 			field.typeText( String( digit ) )
-			assertDisplayed( "AB \( digits.prefix( index + 1 ) )", in: field, of: .passport )
+			assertDisplayed(
+				"AB \( digits.prefix( index + 1 ) )",
+				in: field,
+				of: .passport,
+			)
 		}
 
-		assertValue( "AB1234567", of: .passport )
+		assertValue(
+			"AB1234567",
+			of: .passport,
+		)
+
+		// Transform a replacement in the middle and keep the following insertion there.
+		for _ in 0..<10 {
+			field.typeKey(
+				XCUIKeyboardKey.leftArrow.rawValue,
+				modifierFlags: [],
+			)
+		}
+		field.typeKey(
+			"d",
+			modifierFlags: .control,
+		)
+		assertValue(
+			"B1234567",
+			of: .passport,
+		)
+		field.typeText( "c" )
+		assertDisplayed(
+			"CB 1234567",
+			in: field,
+			of: .passport,
+		)
+		field.typeKey(
+			"d",
+			modifierFlags: .control,
+		)
+		assertValue(
+			"C1234567",
+			of: .passport,
+		)
+		field.typeText( "d" )
+		assertDisplayed(
+			"CD 1234567",
+			in: field,
+			of: .passport,
+		)
+
 	}
 
 	func assertCharacterLimitWithoutMask() {
@@ -280,14 +770,28 @@ private extension MaskedTextFieldUITests {
 
 		for ( index, character ) in text.enumerated() {
 			field.typeText( String( character ) )
-			assertDisplayed( String( text.prefix( index + 1 ) ), in: field, of: .plain )
+			assertDisplayed(
+				String( text.prefix( index + 1 ) ),
+				in: field,
+				of: .plain,
+			)
 		}
 
-		assertValue( text, of: .plain )
+		assertValue(
+			text,
+			of: .plain,
+		)
 
 		field.typeText( "7" )
-		assertUnchanged( text, in: field, of: .plain )
-		assertValue( text, of: .plain )
+		assertUnchanged(
+			text,
+			in: field,
+			of: .plain,
+		)
+		assertValue(
+			text,
+			of: .plain,
+		)
 	}
 
 	func assertBlockedFieldIgnoresInput() {
@@ -297,12 +801,26 @@ private extension MaskedTextFieldUITests {
 		guard let field = focusedField( .blocked ) else { return }
 
 		field.typeText( "9" )
-		assertUnchanged( "8600 1234 1234 1234", in: field, of: .blocked )
-		assertValue( card, of: .blocked )
+		assertUnchanged(
+			"8600 1234 1234 1234",
+			in: field,
+			of: .blocked,
+		)
+		assertValue(
+			card,
+			of: .blocked,
+		)
 
 		field.typeText( XCUIKeyboardKey.delete.rawValue )
-		assertUnchanged( "8600 1234 1234 1234", in: field, of: .blocked )
-		assertValue( card, of: .blocked )
+		assertUnchanged(
+			"8600 1234 1234 1234",
+			in: field,
+			of: .blocked,
+		)
+		assertValue(
+			card,
+			of: .blocked,
+		)
 	}
 
 	func assertMaskIsHiddenWhileFieldIsEmpty() {
@@ -342,7 +860,10 @@ private extension MaskedTextFieldUITests {
 
 	func field( _ variant: AID.Variant ) -> XCUIElement? {
 
-		guard tapButton( AID.variant( variant ), name: variant.rawValue ) else { return nil }
+		guard tapButton(
+			AID.variant( variant ),
+			name: variant.rawValue,
+		) else { return nil }
 
 		let field = app.textFields[ AID.field( variant ) ]
 		guard field.waitForExistence( timeout: 10 ) else {
@@ -371,7 +892,10 @@ private extension MaskedTextFieldUITests {
 
 	var maskPrefixLabel: XCUIElement {
 		app.staticTexts
-			.matching( NSPredicate( format: "label BEGINSWITH %@", "+998" ) )
+			.matching( NSPredicate(
+				format: "label BEGINSWITH %@",
+				"+998",
+			) )
 			.firstMatch
 	}
 
@@ -379,7 +903,7 @@ private extension MaskedTextFieldUITests {
 	func tapButton( _ identifier: String, name: String ) -> Bool {
 
 		let button = app.buttons[ identifier ]
-		guard button.waitForExistence( timeout: 10 ) else {
+		guard button.exists || button.waitForExistence( timeout: 10 ) else {
 			XCTFail( "Button «\( name )» was not found. \( screenDump() )" )
 			return false
 		}
@@ -391,7 +915,11 @@ private extension MaskedTextFieldUITests {
 
 private extension MaskedTextFieldUITests {
 
-	func assertDisplayed( _ expected: String, in field: XCUIElement, of variant: AID.Variant ) {
+	func assertDisplayed(
+		_ expected: String,
+		in field: XCUIElement,
+		of variant: AID.Variant,
+	) {
 
 		let displayed = waitFor( expected ) { field.value as? String ?? "" }
 
@@ -403,7 +931,10 @@ private extension MaskedTextFieldUITests {
 		)
 	}
 
-	func assertValue( _ expected: String, of variant: AID.Variant ) {
+	func assertValue(
+		_ expected: String,
+		of variant: AID.Variant,
+	) {
 
 		let label = app.staticTexts[ AID.value( variant ) ]
 		let value = waitFor( "«\( expected )»" ) { label.label }
@@ -416,7 +947,11 @@ private extension MaskedTextFieldUITests {
 		)
 	}
 
-	func assertUnchanged( _ expected: String, in field: XCUIElement, of variant: AID.Variant ) {
+	func assertUnchanged(
+		_ expected: String,
+		in field: XCUIElement,
+		of variant: AID.Variant,
+	) {
 
 		Thread.sleep( forTimeInterval: 0.5 )
 
@@ -466,8 +1001,79 @@ private extension MaskedTextFieldUITests {
 
 		let texts = app.staticTexts.allElementsBoundByIndex
 			.prefix( 20 )
-			.map(\.label)
+			.map( \.label )
 
 		return "Buttons: \( buttons ). Fields: \( fields ). Texts: \( texts )"
+	}
+}
+
+private extension MaskedTextFieldUITests {
+
+	func assertField(
+		_ value: String,
+		displayed: String?,
+		in field: XCUIElement,
+		of variant: AID.Variant,
+	) {
+		assertDisplayed(
+			displayed ?? value,
+			in: field,
+			of: variant,
+		)
+		assertValue(
+			value,
+			of: variant,
+		)
+	}
+
+	func assertEdit(
+		_ input: String,
+		value: String,
+		displayed: String?,
+		in field: XCUIElement,
+		of variant: AID.Variant,
+	) {
+		field.typeText( input )
+		assertField(
+			value,
+			displayed: displayed,
+			in: field,
+			of: variant,
+		)
+	}
+
+	func moveCaret(
+		_ count: Int,
+		in field: XCUIElement,
+		selecting: Bool = false,
+	) {
+		for _ in 0..<count {
+			field.typeKey(
+				XCUIKeyboardKey.leftArrow.rawValue,
+				modifierFlags: selecting ? .shift : [],
+			)
+		}
+	}
+
+	func resetFixture( _ field: XCUIElement ) {
+		tapButton(
+			"masked_text_field_demo_reset",
+			name: "Reset",
+		)
+		field.tap()
+		let length = ( field.value as? String ?? "" ).count
+		for _ in 0..<length {
+			field.typeKey(
+				XCUIKeyboardKey.rightArrow.rawValue,
+				modifierFlags: [],
+			)
+		}
+	}
+
+	func paste( _ text: String ) {
+		tapButton(
+			"masked_text_field_demo_paste_" + text,
+			name: "Paste sample",
+		)
 	}
 }
