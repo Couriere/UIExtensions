@@ -93,6 +93,75 @@ extension View {
 		}
 	}
 
+	/// Updates a binding when the view crosses the threshold to be considered
+	/// on-screen or off-screen.
+	///
+	/// Use this modifier to keep a `Binding<Bool>` in sync with the scroll
+	/// visibility state of the view. The binding is updated when the view
+	/// crosses the provided visibility threshold.
+	///
+	///     struct VideoPlayer: View {
+	///         @State private var isVisible: Bool = false
+	///
+	///         var body: some View {
+	///             Group {
+	///                 // ...
+	///             }
+	///             .onScrollVisibilityChange(
+	///                 threshold: 0.2,
+	///                 update: $isVisible
+	///             )
+	///         }
+	///     }
+	///
+	/// If the view is already on-screen when it appears and the threshold
+	/// has been reached, the binding will be updated immediately.
+	///
+	/// - Parameters:
+	///   - threshold: The fraction of the view that must be visible within the
+	///     viewport before the binding is updated. The default value is `0.5`,
+	///     meaning more than 50% of the view must be visible.
+	///   - binding: A Boolean binding that reflects whether the view is
+	///     considered visible based on the given threshold.
+	@inlinable
+	public func onScrollVisibilityChange(
+		threshold: Double = 0.5,
+		update binding: Binding<Bool>,
+	) -> some View {
+		onScrollVisibilityChange( threshold: threshold ) {
+			binding.wrappedValue = $0
+		}
+	}
+
+	/// Updates a binding with a value derived from the view's scroll visibility
+	/// when the view crosses the threshold to be considered on-screen or off-screen.
+	///
+	/// - Parameters:
+	///   - threshold: The fraction of the view that must be visible within the
+	///     viewport before the binding is updated. The default value is `0.5`,
+	///     meaning more than 50% of the view must be visible.
+	///   - binding: A binding that will be updated with the transformed visibility.
+	///   - transform: A closure that receives whether the view is visible and
+	///     returns the value to assign to `binding`.
+	///
+	/// ### Example
+	/// ```swift
+	/// @State private var opacity: Double = 0
+	///
+	/// Image( "promo" )
+	///     .onScrollVisibilityChange( update: $opacity.animation() ) { $0 ? 1 : 0 }
+	/// ```
+	@inlinable
+	public func onScrollVisibilityChange<T>(
+		threshold: Double = 0.5,
+		update binding: Binding<T>,
+		with transform: @escaping ( _ isVisible: Bool ) -> T,
+	) -> some View {
+		onScrollVisibilityChange( threshold: threshold ) {
+			binding.wrappedValue = transform( $0 )
+		}
+	}
+
 	/// Measures the size of the view and performs an action with the result.
 	///
 	/// - Parameter action: A closure that takes a CGSize as its argument,
@@ -247,6 +316,62 @@ extension View {
 		in coordinateSpace: CoordinateSpace = .global,
 	) -> some View {
 		measureFrame( in: coordinateSpace ) { binding.wrappedValue = $0 }
+	}
+}
+
+extension View {
+
+	/// Observes changes to the scroll offset and reports transformed values.
+	///
+	/// The offset is adjusted by the scroll view's content insets before being
+	/// passed to `transform`, so the initial content position is represented by
+	/// `CGPoint.zero`.
+	///
+	/// - Parameters:
+	///   - transform: A closure that converts the current scroll offset into the
+	///     equatable value to observe.
+	///   - action: A closure called with the previous and current transformed
+	///     values when the value changes.
+	public func measureOffset<Value: Equatable>(
+		of transform: @escaping ( _ offset: CGPoint ) -> Value,
+		action: @escaping ( _ old: Value, _ new: Value ) -> Void,
+	) -> some View {
+
+		onScrollGeometryChange(
+			for: Value.self,
+			of: {
+				transform(
+					$0.contentOffset.offset(
+						dx: $0.contentInsets.leading,
+						dy: $0.contentInsets.top,
+					),
+				)
+			},
+			action: action,
+		)
+	}
+
+	/// Keeps a binding synchronized with a transformed scroll offset.
+	///
+	/// - Parameters:
+	///   - bind: The binding updated whenever the transformed offset changes.
+	///   - transform: A closure that converts the current scroll offset into the
+	///     value stored in `bind`.
+	///
+	/// Example usage:
+	/// ```
+	/// @State private var isScrolled = false
+	/// ...
+	/// ScrollView { ... }
+	///     .measureOffset( bind: $isScrolled ) { $0.y > 0 }
+	/// ```
+	public func measureOffset<Value: Equatable>(
+		bind: Binding<Value>,
+		to transform: @escaping ( _ offset: CGPoint ) -> Value,
+	) -> some View {
+		measureOffset( of: transform ) {
+			bind.wrappedValue = $1
+		}
 	}
 }
 
