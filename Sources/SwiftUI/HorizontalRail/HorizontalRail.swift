@@ -76,6 +76,13 @@ public nonisolated struct HorizontalRail<Data, ID, Content> where Data: RandomAc
 	/// Identifiers of items sized by their content instead of the rail sizing strategy.
 	private let intrinsicSizeItemIDs: Set<ID>
 	@Environment(\.railProgressChanged) private var scrollProgressChanged
+	/// The visible width of the scroll view, used as the lower bound for the length items are sized from.
+	///
+	/// On iOS 26, `containerRelativeFrame` subtracts the inset that `defaultScrollAnchor(_:for: .alignment)`
+	/// adds to center underflowing content. That inset depends on item widths, so sizing items from it
+	/// can loop layout forever. `ScrollGeometry.containerSize` does not include that inset.
+	@available( iOS, deprecated: 27, message: "Workaround for the iOS 26 layout loop. Remove once the deployment target is iOS 27." )
+	@State private var containerLength: Double?
 
 	/// Builds the view for each item.
 	@ViewBuilder private let cellContent: ( Data.Element ) -> Content
@@ -233,6 +240,10 @@ private extension HorizontalRail {
 		) { _, progress in
 			scrollProgressChanged?( progress )
 		}
+		.onScrollGeometryChange(
+			update: $containerLength,
+			with: \.containerSize.width.asDouble,
+		)
 		.defaultScrollAnchor(
 			centersContentWhenUnderflow ? .center : .leading,
 			for: .alignment,
@@ -255,7 +266,9 @@ private extension HorizontalRail {
 				.tag( itemID )
 				.containerRelativeFrame( .horizontal ) { length, _ -> CGFloat in
 
-					return itemWidth( for: length )
+					itemWidth(
+						for: max( length, containerLength ?? 0 )
+					)
 				}
 		}
 	}
@@ -411,12 +424,12 @@ private struct PreviewContainer: View {
 	}
 }
 
-func section( _ centers: Bool ) -> some View {
+func section( _ centers: Bool, columns: RailColumnStrategy = .fixed( 3 ) ) -> some View {
 	VStack( spacing: 24 ) {
 		ForEach( [1, 2, 6], id: \.self ) { count in
 			HorizontalRail(
 				items: Array( 1...count ),
-				columns: .fixed( 3 ),
+				columns: columns,
 				extraPeekOutLength: 80,
 				centersContentWhenUnderflow: centers,
 				cellContent: cell,
@@ -427,12 +440,26 @@ func section( _ centers: Bool ) -> some View {
 
 #Preview( "Centered underflow" ) {
 
+	let variants: [(title: String, centers: Bool, columns: RailColumnStrategy)] = [
+		( ".fixed( 3 ), centered", true, .fixed( 3 ) ),
+		( ".fixed( 3 ), not centered", false, .fixed( 3 ) ),
+		( ".adaptive( maxItemWidth: 120 ), centered", true, .adaptive( maxItemWidth: 120 ) ),
+		( ".adaptive( maxItemWidth: 120 ), not centered", false, .adaptive( maxItemWidth: 120 ) ),
+	]
+
 	ScrollView {
-		VStack( spacing: 100 ) {
-			section(true)
-				.padding( .vertical )
-			section(false)
-				.padding( .vertical )
+		VStack( spacing: 0 ) {
+			ForEach( variants.indices, id: \.self ) { index in
+				let variant = variants[index]
+				VStack( alignment: .leading, spacing: 12 ) {
+					Text( variant.title )
+						.font( .headline )
+						.padding( .horizontal )
+					section( variant.centers, columns: variant.columns )
+				}
+				.padding( .vertical, 24 )
+				.background( index.isMultiple( of: 2 ) ? Color.clear : Color.secondary.opacity( 0.15 ) )
+			}
 		}
 	}
 }

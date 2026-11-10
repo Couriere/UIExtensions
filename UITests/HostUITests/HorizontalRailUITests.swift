@@ -47,6 +47,17 @@ final class HorizontalRailUITests: XCTestCase {
 		assertLabel( app.staticTexts[ HorizontalRailID.progress ], "0.00" )
 	}
 
+	/// On iOS 26 the centering inset used to shrink the length items are sized from,
+	/// switching adaptive columns between 3 and 2 on every layout pass and hanging the app.
+	func testCenteredAdaptiveUnderflowKeepsStableWidths() {
+		let app = launchRail( .centeredAdaptive )
+		let first = app.staticTexts[ HorizontalRailID.item( 1 )]
+		assertExists( first )
+		XCTAssertEqual( first.frame.width, 90.67, accuracy: 1 )
+		XCTAssertEqual( app.staticTexts[ HorizontalRailID.item( 2 )].frame.width, 90.67, accuracy: 1 )
+		assertLabel( app.staticTexts[ HorizontalRailID.progress ], "0.00" )
+	}
+
 	func testIntrinsicItemKeepsItsOwnWidth() {
 		let app = launchRail( .intrinsic )
 		let first = app.staticTexts[ HorizontalRailID.item( 1 )]

@@ -14,6 +14,7 @@ struct HorizontalRailScreen: View {
 		case .fixedColumns: .fixed( 2 )
 		case .adaptiveColumns: .adaptive( maxItemWidth: 100 )
 		case .centered: .fixed( 3 )
+		case .centeredAdaptive: .adaptive( maxItemWidth: 120 )
 		default: .fixed( 1 )
 		}
 	}
@@ -21,7 +22,7 @@ struct HorizontalRailScreen: View {
 	private var behavior: RailSelectionScrollBehavior {
 		switch variant {
 		case .onChanged: .onChanged
-		case .never, .fixedColumns, .adaptiveColumns, .centered, .intrinsic, .empty: .never
+		case .never, .fixedColumns, .adaptiveColumns, .centered, .centeredAdaptive, .intrinsic, .empty: .never
 		default: .always
 		}
 	}
@@ -29,14 +30,14 @@ struct HorizontalRailScreen: View {
 	var body: some View {
 		VStack( spacing: 20 ) {
 			HorizontalRail(
-				items: variant == .empty ? [] : variant == .centered ? [1] : items,
+				items: variant == .empty ? [] : variant == .centered ? [1] : variant == .centeredAdaptive ? [1, 2] : items,
 				id: \.self,
 				columns: columns,
 				selectedItem: $selection,
 				selectedItemScrollBehavior: behavior,
 				extraPeekOutLength: variant == .fixedColumns ? 24 : 0,
 				intrinsicSizeItemIDs: variant == .intrinsic ? [1] : [],
-				centersContentWhenUnderflow: variant == .centered,
+				centersContentWhenUnderflow: variant == .centered || variant == .centeredAdaptive,
 				cellContent: { item in
 					Text( "Item \( item )" )
 						.frame( maxWidth: .infinity )

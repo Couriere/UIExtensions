@@ -167,7 +167,7 @@ enum MaskedTextFieldID {
 /// Fixture variants and accessibility identifiers for `HorizontalRail`.
 enum HorizontalRailID {
 	enum Variant: String {
-		case standard, fixedColumns, adaptiveColumns, centered, intrinsic, onChanged, never, empty
+		case standard, fixedColumns, adaptiveColumns, centered, centeredAdaptive, intrinsic, onChanged, never, empty
 	}
 
 	static let variantArgument = "-UITestRailVariant"
