@@ -9,11 +9,21 @@ struct HorizontalRailScreen: View {
 	@State private var selection: Int? = 3
 	@State private var progress: Double = -1
 
+	init() {
+		switch variant {
+		case .empty: _items = State( initialValue: [] )
+		case .centered: _items = State( initialValue: [1] )
+		case .centeredAdaptive: _items = State( initialValue: [1, 2] )
+		default: break
+		}
+	}
+
 	private var columns: RailColumnStrategy {
 		switch variant {
 		case .fixedColumns: .fixed( 2 )
 		case .adaptiveColumns: .adaptive( maxItemWidth: 100 )
 		case .centered: .fixed( 3 )
+		case .centeredAdaptive: .adaptive( maxItemWidth: 120 )
 		default: .fixed( 1 )
 		}
 	}
@@ -21,7 +31,7 @@ struct HorizontalRailScreen: View {
 	private var behavior: RailSelectionScrollBehavior {
 		switch variant {
 		case .onChanged: .onChanged
-		case .never, .fixedColumns, .adaptiveColumns, .centered, .intrinsic, .empty: .never
+		case .never, .fixedColumns, .adaptiveColumns, .centeredAdaptive, .intrinsic, .empty: .never
 		default: .always
 		}
 	}
@@ -29,14 +39,14 @@ struct HorizontalRailScreen: View {
 	var body: some View {
 		VStack( spacing: 20 ) {
 			HorizontalRail(
-				items: variant == .empty ? [] : variant == .centered ? [1] : items,
+				items: items,
 				id: \.self,
 				columns: columns,
 				selectedItem: $selection,
 				selectedItemScrollBehavior: behavior,
 				extraPeekOutLength: variant == .fixedColumns ? 24 : 0,
 				intrinsicSizeItemIDs: variant == .intrinsic ? [1] : [],
-				centersContentWhenUnderflow: variant == .centered,
+				centersContentWhenUnderflow: variant == .centered || variant == .centeredAdaptive,
 				cellContent: { item in
 					Text( "Item \( item )" )
 						.frame( maxWidth: .infinity )
@@ -55,7 +65,7 @@ struct HorizontalRailScreen: View {
 				.accessibilityIdentifier( HorizontalRailID.progress )
 			Button( "Select 5" ) { selection = 5 }
 				.accessibilityIdentifier( HorizontalRailID.select )
-			Button( "Replace items" ) { items = Array( 5...10 ) }
+			Button( "Replace items" ) { items = variant == .centered ? Array( 1...6 ) : Array( 5...10 ) }
 				.accessibilityIdentifier( HorizontalRailID.replace )
 		}
 	}
