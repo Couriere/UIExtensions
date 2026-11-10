@@ -81,7 +81,8 @@ public nonisolated struct HorizontalRail<Data, ID, Content> where Data: RandomAc
 	/// On iOS 26, `containerRelativeFrame` subtracts the inset that `defaultScrollAnchor(_:for: .alignment)`
 	/// adds to center underflowing content. That inset depends on item widths, so sizing items from it
 	/// can loop layout forever. `ScrollGeometry.containerSize` does not include that inset.
-	@available( iOS, deprecated: 27, message: "Workaround for the iOS 26 layout loop. Remove once the deployment target is iOS 27." )
+	/// Before iOS 27 it is also the minimum content width used to center underflowing content.
+	@available( iOS, deprecated: 27, message: "Workaround for iOS 18–26 layout bugs. Remove once the deployment target is iOS 27." )
 	@State private var containerLength: Double?
 
 	/// Builds the view for each item.
@@ -233,6 +234,7 @@ private extension HorizontalRail {
 				)
 			}
 			.scrollTargetLayout()
+			.frame( minWidth: manualCenteringMinWidth )
 		}
 		.onScrollGeometryChange(
 			for: Double.self,
@@ -245,13 +247,22 @@ private extension HorizontalRail {
 			with: \.containerSize.width.asDouble,
 		)
 		.defaultScrollAnchor(
-			centersContentWhenUnderflow ? .center : .leading,
+			centersContentWhenUnderflow && manualCenteringMinWidth == nil ? .center : .leading,
 			for: .alignment,
 		)
 		.scrollIndicators( .never )
 		.scrollTargetBehavior( .viewAligned )
 		.contentMargins( .horizontal, contentInset, for: .scrollContent )
 		.scrollClipDisabled()
+	}
+
+	/// The minimum content width that centers underflowing content, or `nil` to rely on `defaultScrollAnchor`.
+	///
+	/// Before iOS 27, `defaultScrollAnchor( .center, for: .alignment )` shifts content
+	/// by the leading content margin, so content is widened to the visible width and centered instead.
+	var manualCenteringMinWidth: CGFloat? {
+		if #available( iOS 27, * ) { return nil }
+		return centersContentWhenUnderflow ? CGFloat( containerLength ?? 0 ) : nil
 	}
 
 	@ViewBuilder
