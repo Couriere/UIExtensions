@@ -59,6 +59,40 @@ extension View {
 		}
 	}
 
+	/// Observes the scroll geometry of this scroll view and updates a binding
+	/// with a transformed value.
+	///
+	/// The binding is only updated when the new value differs from the previous one
+	/// (requires `T: Equatable`).
+	///
+	/// - Parameters:
+	///   - binding: A binding that will be updated with the transformed scroll geometry value.
+	///   - transform: A closure that receives the current `ScrollGeometry` and returns
+	///     the value to assign to `binding`.
+	/// - Returns: A view that monitors its scroll geometry and updates `binding` accordingly.
+	///
+	/// ### Example
+	/// Update a binding with the scroll view's content offset:
+	/// ```swift
+	/// @State private var offset: CGFloat = 0
+	///
+	/// ScrollView { ... }
+	///     .onScrollGeometryChange(update: $offset, with: \.contentOffset.y)
+	/// ```
+	@inlinable
+	public func onScrollGeometryChange<T>(
+		update binding: Binding<T>,
+		with transform: @escaping (ScrollGeometry) -> T,
+	) -> some View where T : Equatable {
+
+		onScrollGeometryChange(
+			for: T.self,
+			of: transform,
+		) {
+			binding.wrappedValue = $1
+		}
+	}
+
 	/// Measures the size of the view and performs an action with the result.
 	///
 	/// - Parameter action: A closure that takes a CGSize as its argument,
