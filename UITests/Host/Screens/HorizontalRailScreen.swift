@@ -9,6 +9,15 @@ struct HorizontalRailScreen: View {
 	@State private var selection: Int? = 3
 	@State private var progress: Double = -1
 
+	init() {
+		switch variant {
+		case .empty: _items = State( initialValue: [] )
+		case .centered: _items = State( initialValue: [1] )
+		case .centeredAdaptive: _items = State( initialValue: [1, 2] )
+		default: break
+		}
+	}
+
 	private var columns: RailColumnStrategy {
 		switch variant {
 		case .fixedColumns: .fixed( 2 )
@@ -22,7 +31,7 @@ struct HorizontalRailScreen: View {
 	private var behavior: RailSelectionScrollBehavior {
 		switch variant {
 		case .onChanged: .onChanged
-		case .never, .fixedColumns, .adaptiveColumns, .centered, .centeredAdaptive, .intrinsic, .empty: .never
+		case .never, .fixedColumns, .adaptiveColumns, .centeredAdaptive, .intrinsic, .empty: .never
 		default: .always
 		}
 	}
@@ -30,7 +39,7 @@ struct HorizontalRailScreen: View {
 	var body: some View {
 		VStack( spacing: 20 ) {
 			HorizontalRail(
-				items: variant == .empty ? [] : variant == .centered ? [1] : variant == .centeredAdaptive ? [1, 2] : items,
+				items: items,
 				id: \.self,
 				columns: columns,
 				selectedItem: $selection,
@@ -56,7 +65,7 @@ struct HorizontalRailScreen: View {
 				.accessibilityIdentifier( HorizontalRailID.progress )
 			Button( "Select 5" ) { selection = 5 }
 				.accessibilityIdentifier( HorizontalRailID.select )
-			Button( "Replace items" ) { items = Array( 5...10 ) }
+			Button( "Replace items" ) { items = variant == .centered ? Array( 1...6 ) : Array( 5...10 ) }
 				.accessibilityIdentifier( HorizontalRailID.replace )
 		}
 	}
